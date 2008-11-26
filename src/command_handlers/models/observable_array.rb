@@ -32,7 +32,12 @@ module ObservableArray
   
   def self.extend_object(array)
     array.instance_eval("alias original_add <<")
-    array.instance_eval "def <<(value) \n self.original_add(value); notify_observers; \nend"
+    array.instance_eval <<-end_eval, __FILE__, __LINE__
+      def <<(value) 
+        self.original_add(value) 
+        notify_observers 
+      end
+    end_eval
     
     notify_observers_on_invokation(array, "delete", 1)
     notify_observers_on_invokation(array, "delete_at", 1)
@@ -48,7 +53,12 @@ module ObservableArray
       arguments += "argument" + index.to_s + ","
     end
     arguments = arguments[0..-2]
-    model.instance_eval "def #{method}(#{arguments}) \n self.original_#{method}(#{arguments}); notify_observers; \nend"
+    model.instance_eval <<-end_eval, __FILE__, __LINE__
+      def #{method}(#{arguments})
+        self.original_#{method}(#{arguments}) 
+        notify_observers 
+      end
+    end_eval
   end
 
 end

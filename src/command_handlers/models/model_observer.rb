@@ -29,5 +29,11 @@ class ModelObserver
   def evaluate_property
     @model.send(@property_name)
   end
+  def evaluate_options_property
+    @model.send(@property_name + "_options")
+  end
+  def options_property_name
+    self.property_name + "_options"    
+  end
 end
   

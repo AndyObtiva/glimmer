@@ -50,7 +50,7 @@ class GlimmerTableDataBindingTest < Test::Unit::TestCase
     group.people << person1
     group.people << person2
     
-    shell {
+    @target = shell {
       @table = table {
         table_column {
           text "Name"
@@ -121,22 +121,9 @@ class GlimmerTableDataBindingTest < Test::Unit::TestCase
     assert_equal "45", @table.widget.getItems[1].getText(1)
     assert_equal "true", @table.widget.getItems[1].getText(2)
     
-    group.people += [person1, person2]
-    
-    assert_equal 4, @table.widget.getItems.size
-    
-    assert_equal "Bruce Ting", @table.widget.getItems[2].getText(0)
-    assert_equal "45", @table.widget.getItems[2].getText(1)
-    assert_equal "true", @table.widget.getItems[2].getText(2)
-    
-    assert_equal "Julia Fang", @table.widget.getItems[3].getText(0)
-    assert_equal "17", @table.widget.getItems[3].getText(1)
-    assert_equal "false", @table.widget.getItems[3].getText(2)
-    
     person1.name = "Bruce Flee"
     
     assert_equal "Bruce Flee", @table.widget.getItems[1].getText(0)
-    assert_equal "Bruce Flee", @table.widget.getItems[2].getText(0)
   end
     
 end

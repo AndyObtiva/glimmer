@@ -26,7 +26,9 @@ class TableItemsUpdater
     model.add_observer(model_observer.property_name, self)
   end
   def update(model_collection=nil)
-    if (model_collection and model_collection.is_a?(Array))
+    if (model_collection and 
+        model_collection.is_a?(Array) and 
+        !model_collection.is_a?(ObservableArray))
       model_collection.extend(ObservableArray)
       model_collection.add_observer(@column_properties, self)
       @model_collection = model_collection

@@ -12,7 +12,8 @@
 class WidgetObserver
   attr_reader :widget, :property
   @@property_type_converters = {
-    :text => Proc.new { |value| value.to_s }
+    :text => Proc.new { |value| value.to_s },
+    :items => Proc.new { |value| value.to_java :string}
   }
   def initialize model, property
     @widget = model

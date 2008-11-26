@@ -29,15 +29,41 @@ module ObservableModel
     property_observer_list(property_name).each {|observer| observer.update(send(property_name))}
   end
   
+  class Updater
+    def initialize(property_name, observable_model)
+      @property_name = property_name
+      @observable_model = observable_model
+    end
+    def update
+      @observable_model.notify_observers(@property_name)
+    end
+  end
+  
   def self.extend_object(model)
     super
     model.methods.each do |method|
-      setter_method_pattern = /^\w+=$/
-      if (method.match(setter_method_pattern))
-        getter_method = method[0, method.length - 1]
-        model.instance_eval "alias original_#{method} #{method}\n"
-        model.instance_eval "def #{method}(value) \n self.original_#{method}(value); notify_observers('#{getter_method}'); \nend"
+      self.add_method_observers(model, method)
+    end
+  end
+  
+  def self.add_method_observers(model, method)
+    setter_method_pattern = /^\w+=$/
+    if (method.match(setter_method_pattern))
+      getter_method = method[0, method.length - 1]
+      getter_value = model.send(getter_method)
+      if (getter_value.is_a?(Array) and 
+          !getter_value.is_a?(ObservableArray))
+        getter_value.extend(ObservableArray)
+        getter_value.add_observer([], Updater.new(getter_method, model))
       end
+      model.instance_eval "alias original_#{method} #{method}\n"
+      model.instance_eval <<-end_eval, __FILE__, __LINE__
+        def #{method}(value) 
+          self.original_#{method}(value)
+          notify_observers('#{getter_method}')
+          #{"ObservableModel.add_method_observers(self, '#{method}')" if (getter_value.is_a?(Array))}
+        end
+      end_eval
     end
   end
 end
