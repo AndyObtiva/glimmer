@@ -13,8 +13,8 @@ data-binding support to greatly facilitate synchronizing UI with domain models.
 
 Instructions for use with stand-alone SWT:
 1. Download the "SWT binary and source" archive from the Eclipse site and follow their instructions.
-   http://download.eclipse.org/eclipse/downloads/drops/R-3.3.1.1-200710231652/details.php#SWT
-2. Have your program require the swt.rb file
+   http://www.eclipse.org/swt/
+2. Have your program require the file: src/swt.rb
 3. Create a class that includes the Glimmer module and you will be able to write Glimmer syntax
 
 Instructions for use with Eclipse:

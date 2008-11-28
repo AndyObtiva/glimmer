@@ -171,6 +171,17 @@ class GlimmerTest < Test::Unit::TestCase
     assert_equal 55, @spinner.widget.getSelection
   end
     
+  def test_shell_and_spinner_default
+    @target = shell {
+      @list = list {
+      }
+    }
+    
+    assert_instance_of List, @list.widget
+    assert_has_style SWT::BORDER, @list.widget
+    assert_has_style SWT::SINGLE, @list.widget
+  end
+    
   def test_shell_and_button_default
     @target = shell {
       @button = button {

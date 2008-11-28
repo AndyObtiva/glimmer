@@ -11,15 +11,16 @@
 
 require File.dirname(__FILE__) + "/../command_handler"
 require File.dirname(__FILE__) + "/models/r_widget"
+require File.dirname(__FILE__) + "/models/list_observer"
 
-class ComboSelectionDataBindingCommandHandler
+class ListSelectionDataBindingCommandHandler
   include CommandHandler
   
   include_package 'org.eclipse.swt.widgets'
 
   def can_handle?(parent, command_symbol, *args, &block)
     parent.is_a?(RWidget) and
-    parent.widget.is_a?(Combo) and
+    parent.widget.is_a?(List) and
     command_symbol.to_s == "selection" and
     args.size == 1 and
     args[0].is_a?(ModelObserver) and
@@ -35,7 +36,7 @@ class ComboSelectionDataBindingCommandHandler
     model.extend ObservableModel unless model.is_a?(ObservableModel)
     model.add_observer(model_observer.options_property_name, widget_observer)
 
-    widget_observer = WidgetObserver.new(parent, "text")
+    widget_observer = ListObserver.new(parent)
     widget_observer.update(model_observer.evaluate_property)
     model.add_observer(model_observer.property_name, widget_observer)
   end
