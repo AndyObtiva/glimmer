@@ -61,6 +61,10 @@ class GlimmerListDataBindingTest < Test::Unit::TestCase
     assert_equal -1, @list.widget.selection_index
     assert_equal [], @list.widget.selection.to_a
 
+    @list.widget.select(1)
+    @list.widget.notifyListeners(SWT::Selection, nil)
+    assert_equal "Canada", person.country
+
     person.country_options << "France"
     
     assert_equal 5, @list.widget.item_count
@@ -97,6 +101,10 @@ class GlimmerListDataBindingTest < Test::Unit::TestCase
     
     assert_equal 0, @list.widget.selection_index
     assert_equal [""], @list.widget.selection.to_a
+    
+    @list.widget.select(2)
+    @list.widget.notifyListeners(SWT::Selection, nil)
+    assert_equal "US", person.country
   end
     
   def test_single_selection_property_with_model_preinitialized
@@ -112,6 +120,10 @@ class GlimmerListDataBindingTest < Test::Unit::TestCase
     assert_equal 4, @list.widget.item_count
     assert_equal 1, @list.widget.selection_index
     assert_equal ["Canada"], @list.widget.selection.to_a
+
+    @list.widget.select(2)
+    @list.widget.notifyListeners(SWT::Selection, nil)
+    assert_equal "US", person.country
 
     person.country_options << "France"
     
@@ -156,13 +168,21 @@ class GlimmerListDataBindingTest < Test::Unit::TestCase
     
     @target = shell {
       @list = list(multi) {
-        selection bind(person, :provinces, :array)
+        selection bind(person, :provinces)
       }
     }
     
     assert_equal 0, @list.widget.selection_count.to_i
     assert_equal [], @list.widget.selection_indices
     assert_equal [], @list.widget.selection.to_a
+
+    @list.widget.select(1)
+    @list.widget.notifyListeners(SWT::Selection, nil)
+    assert_equal ["Quebec"], person.provinces
+
+    @list.widget.select(2)
+    @list.widget.notifyListeners(SWT::Selection, nil)
+    assert_equal ["Quebec", "Ontario"], person.provinces
 
     person.provinces=["Ontario", "Manitoba", "Alberta"]
     
@@ -192,6 +212,14 @@ class GlimmerListDataBindingTest < Test::Unit::TestCase
     assert_equal 0, @list.widget.selection_count.to_i
     assert_equal [], @list.widget.selection_indices
     assert_equal [], @list.widget.selection.to_a
+
+    @list.widget.select(1)
+    @list.widget.notifyListeners(SWT::Selection, nil)
+    assert_equal ["Quebec"], person.provinces
+
+    @list.widget.select(2)
+    @list.widget.notifyListeners(SWT::Selection, nil)
+    assert_equal ["Quebec", "Ontario"], person.provinces
 
     person.provinces=["Ontario", "Manitoba", "Alberta"]
     

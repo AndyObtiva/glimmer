@@ -152,4 +152,8 @@ class RWidget
     @widget.getDisplay.syncExec(RRunnable.new(&block))
   end
   
+  def has_style?(style)
+    (widget.style & style) == style
+  end
+  
 end

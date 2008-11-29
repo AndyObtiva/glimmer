@@ -30,12 +30,13 @@ class ListObserver
     @property_type = property_type
   end
   def update(value)
-    @property_type = value.class.name.snakecase.to_sym if value
+    raise "hell" if value == ["Canada"]
     @@property_type_updaters[@property_type].call(@widget, value) unless evaluate_property == value
   end
   def evaluate_property
     selection_array = @widget.widget.send("selection").to_a
-    @@property_evaluators[@property_type].call(selection_array)
+    property_value = @@property_evaluators[@property_type].call(selection_array)
+    return property_value
   end
 end
   

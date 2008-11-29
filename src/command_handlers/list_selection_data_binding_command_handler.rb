@@ -14,6 +14,8 @@ require File.dirname(__FILE__) + "/models/r_widget"
 require File.dirname(__FILE__) + "/models/list_observer"
 
 class ListSelectionDataBindingCommandHandler
+  extend Glimmer
+  include Glimmer
   include CommandHandler
   
   include_package 'org.eclipse.swt.widgets'
@@ -36,9 +38,17 @@ class ListSelectionDataBindingCommandHandler
     model.extend ObservableModel unless model.is_a?(ObservableModel)
     model.add_observer(model_observer.options_property_name, widget_observer)
 
-    list_observer = ListObserver.new(parent, model_observer.property_type)
+    property_type = :string
+    property_type = :array if parent.has_style?(multi)
+    list_observer = ListObserver.new(parent, property_type)
     list_observer.update(model_observer.evaluate_property)
     model.add_observer(model_observer.property_name, list_observer)
+    
+    add_contents(parent) {
+      on_widget_selected {
+        model_observer.update(list_observer.evaluate_property)
+      }
+    }
   end
 
 end
