@@ -14,9 +14,8 @@ require File.dirname(__FILE__) + "/models/r_widget"
 require File.dirname(__FILE__) + "/models/list_observer"
 
 class ListSelectionDataBindingCommandHandler
-  extend Glimmer
-  include Glimmer
   include CommandHandler
+  include Glimmer
   
   include_package 'org.eclipse.swt.widgets'
 

@@ -14,6 +14,7 @@ require File.dirname(__FILE__) + "/models/r_widget"
 
 class ComboSelectionDataBindingCommandHandler
   include CommandHandler
+  include Glimmer
   
   include_package 'org.eclipse.swt.widgets'
 
@@ -38,6 +39,12 @@ class ComboSelectionDataBindingCommandHandler
     widget_observer = WidgetObserver.new(parent, "text")
     widget_observer.update(model_observer.evaluate_property)
     model.add_observer(model_observer.property_name, widget_observer)
+    
+    add_contents(parent) {
+      on_widget_selected {
+        model_observer.update(widget_observer.evaluate_property)
+      }
+    }    
   end
 
 end

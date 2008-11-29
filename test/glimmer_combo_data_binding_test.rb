@@ -61,6 +61,10 @@ class GlimmerComboDataBindingTest < Test::Unit::TestCase
     assert_equal 0, @combo.widget.selection_index
     assert_equal "", @combo.widget.text
     
+    @combo.widget.select(2)
+    @combo.widget.notifyListeners(SWT::Selection, nil)
+    assert_equal "US", person.country
+
     person.country = "Canada"
     
     assert_equal 1, @combo.widget.selection_index
@@ -113,6 +117,10 @@ class GlimmerComboDataBindingTest < Test::Unit::TestCase
     assert_equal -1, @combo.widget.selection_index
     assert_equal "", @combo.widget.text
     
+    @combo.widget.select(8)
+    @combo.widget.notifyListeners(SWT::Selection, nil)
+    assert_equal "Australia", person.country
+
     person.country = "Canada"
     
     assert_equal 1, @combo.widget.selection_index
