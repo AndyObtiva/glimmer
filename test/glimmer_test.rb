@@ -180,6 +180,7 @@ class GlimmerTest < Test::Unit::TestCase
     assert_instance_of List, @list.widget
     assert_has_style SWT::BORDER, @list.widget
     assert_has_style SWT::SINGLE, @list.widget
+    assert_has_style SWT::V_SCROLL, @list.widget
   end
     
   def test_shell_and_button_default

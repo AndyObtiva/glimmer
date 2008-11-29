@@ -24,7 +24,7 @@ class RWidget
     "text" => SWT::BORDER,
     "table" => SWT::BORDER,
     "spinner" => SWT::BORDER,
-    "list" => SWT::BORDER,
+    "list" => SWT::BORDER | SWT::V_SCROLL,
     "button" => SWT::PUSH,
   }
   
