@@ -25,9 +25,26 @@ class GlimmerListDataBindingTest < Test::Unit::TestCase
   
   class Person 
     attr_accessor :country, :country_options
+    attr_accessor :provinces, :provinces_options
     
     def initialize
-      self.country_options=["", "Canada", "US", "Mexico"]
+      self.country_options=[
+        "", 
+        "Canada", 
+        "US", 
+        "Mexico"
+      ]
+      self.provinces_options=[
+        "", 
+        "Quebec", 
+        "Ontario", 
+        "Manitoba", 
+        "Saskatchewan", 
+        "Alberta", 
+        "British Columbia", 
+        "Nova Skotia", 
+        "Newfoundland"
+      ]
     end
   end
 
@@ -41,8 +58,8 @@ class GlimmerListDataBindingTest < Test::Unit::TestCase
     }
     
     assert_equal 4, @list.widget.item_count
-    assert_equal 0, @list.widget.selection_index
-    assert_equal [""], @list.widget.selection.to_a
+    assert_equal -1, @list.widget.selection_index
+    assert_equal [], @list.widget.selection.to_a
 
     person.country_options << "France"
     
@@ -82,12 +99,12 @@ class GlimmerListDataBindingTest < Test::Unit::TestCase
     assert_equal [""], @list.widget.selection.to_a
   end
     
-  def test_read_only_widget_data_binding_selection_property
+  def test_single_selection_property_with_model_preinitialized
     person = Person.new
     person.country = "Canada" 
     
     @target = shell {
-      @list = list(read_only) {
+      @list = list {
         selection bind(person, :country)
       }
     }
@@ -133,6 +150,62 @@ class GlimmerListDataBindingTest < Test::Unit::TestCase
     assert_equal 0, @list.widget.selection_index
     assert_equal [""], @list.widget.selection.to_a
   end
+  
+  def test_multi_selection_property
+    person = Person.new
     
+    @target = shell {
+      @list = list(multi) {
+        selection bind(person, :provinces, :array)
+      }
+    }
+    
+    assert_equal 0, @list.widget.selection_count.to_i
+    assert_equal [], @list.widget.selection_indices
+    assert_equal [], @list.widget.selection.to_a
+
+    person.provinces=["Ontario", "Manitoba", "Alberta"]
+    
+    assert_equal 3, @list.widget.selection_count.to_i
+    assert_equal [2, 3, 5], @list.widget.selection_indices.to_a
+    assert_equal ["Ontario", "Manitoba", "Alberta"], @list.widget.selection.to_a
+    
+    person.provinces << "Quebec"
+    person.provinces << "Saskatchewan"
+    person.provinces << "British Columbia"
+    
+    assert_equal 6, @list.widget.selection_count.to_i
+    assert_equal [1, 2, 3, 4, 5, 6], @list.widget.selection_indices.to_a
+    assert_equal ["Quebec", "Ontario", "Manitoba", "Saskatchewan", "Alberta", "British Columbia"], @list.widget.selection.to_a
+   end
+
+  def test_multi_selection_property_with_model_preinitialized
+    person = Person.new
+    person.provinces = []
+    
+    @target = shell {
+      @list = list(multi) {
+        selection bind(person, :provinces, :array)
+      }
+    }
+    
+    assert_equal 0, @list.widget.selection_count.to_i
+    assert_equal [], @list.widget.selection_indices
+    assert_equal [], @list.widget.selection.to_a
+
+    person.provinces=["Ontario", "Manitoba", "Alberta"]
+    
+    assert_equal 3, @list.widget.selection_count.to_i
+    assert_equal [2, 3, 5], @list.widget.selection_indices.to_a
+    assert_equal ["Ontario", "Manitoba", "Alberta"], @list.widget.selection.to_a
+    
+    person.provinces << "Quebec"
+    person.provinces << "Saskatchewan"
+    person.provinces << "British Columbia"
+    
+    assert_equal 6, @list.widget.selection_count.to_i
+    assert_equal [1, 2, 3, 4, 5, 6], @list.widget.selection_indices.to_a
+    assert_equal ["Quebec", "Ontario", "Manitoba", "Saskatchewan", "Alberta", "British Columbia"], @list.widget.selection.to_a
+   end
 end
 

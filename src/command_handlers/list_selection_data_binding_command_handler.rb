@@ -36,9 +36,9 @@ class ListSelectionDataBindingCommandHandler
     model.extend ObservableModel unless model.is_a?(ObservableModel)
     model.add_observer(model_observer.options_property_name, widget_observer)
 
-    widget_observer = ListObserver.new(parent)
-    widget_observer.update(model_observer.evaluate_property)
-    model.add_observer(model_observer.property_name, widget_observer)
+    list_observer = ListObserver.new(parent, model_observer.property_type)
+    list_observer.update(model_observer.evaluate_property)
+    model.add_observer(model_observer.property_name, list_observer)
   end
 
 end

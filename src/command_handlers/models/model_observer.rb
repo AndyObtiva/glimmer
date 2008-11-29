@@ -12,12 +12,12 @@
 class ModelObserver
   attr_reader :model, :property_name, :property_type
   @@property_type_converters = {
-    :undefined => Proc.new { |value| value }, 
-    :fixnum => Proc.new { |string_value| string_value.to_i }
-    #TODO check what other types are needed
+    :undefined => lambda { |value| value }, 
+    :fixnum => lambda { |value| value.to_i },
+    :array => lambda { |value| value.to_a }
   }
-  def initialize(model, property_name, property_type)
-    property_type = :undefined unless property_type
+  def initialize(model, property_name, property_type = :undefined)
+    property_type = :undefined if property_type.nil?
     @model = model
     @property_name = property_name
     @property_type = property_type

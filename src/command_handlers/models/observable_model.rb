@@ -61,7 +61,7 @@ module ObservableModel
         def #{method}(value) 
           self.original_#{method}(value)
           notify_observers('#{getter_method}')
-          #{"ObservableModel.add_method_observers(self, '#{method}')" if (getter_value.is_a?(Array))}
+          ObservableModel.add_method_observers(self, '#{method}') if (value.is_a?(Array))
         end
       end_eval
     end
