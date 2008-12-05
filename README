@@ -30,4 +30,4 @@ Instructions for use with Eclipse:
 4. Have your program require the file: src/swt.rb
 5. Create a class that includes the Glimmer module and you will be able to write Glimmer syntax
 
-Check samples folder for examples on how to write Glimmer programs.
+Check samples folder for examples on how to write Glimmer applications.
