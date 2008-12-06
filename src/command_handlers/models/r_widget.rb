@@ -121,7 +121,7 @@ class RWidget
           listener_type.getMethods.each do |listener_method|
             if (listener_method.getName.match(listener_method_name))
               listener_class = Class.new(Object)
-              listener_class.send :include, (eval listener_type.to_s)
+              listener_class.send :include, (eval listener_type.to_s.sub("interface", ""))
               listener = listener_class.new
               listener_type.getMethods.each do |t_method|
                 eval "def listener.#{t_method.getName}(event) end"
