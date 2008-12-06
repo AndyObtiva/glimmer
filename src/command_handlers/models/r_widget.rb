@@ -87,7 +87,7 @@ class RWidget
       if widget_method.getName.match(/add.*Listener/)
         widget_method.getParameterTypes.each do |listener_type|
           listener_type.getMethods.each do |listener_method|
-            if (listener_method.getName.match(listener_method_name))
+            if (listener_method.getName == listener_method_name)
               return true
             end
           end
@@ -103,7 +103,7 @@ class RWidget
       if widget_method.getName.match(/add.*Listener/)
         widget_method.getParameterTypes.each do |listener_type|
           listener_type.getMethods.each do |listener_method|
-            if (listener_method.getName.match(listener_method_name))
+            if (listener_method.getName == listener_method_name)
               return true
             end
           end
@@ -119,7 +119,7 @@ class RWidget
       if widget_method.getName.match(/add.*Listener/)
         widget_method.getParameterTypes.each do |listener_type|
           listener_type.getMethods.each do |listener_method|
-            if (listener_method.getName.match(listener_method_name))
+            if (listener_method.getName == listener_method_name)
               listener_class = Class.new(Object)
               listener_class.send :include, (eval listener_type.to_s.sub("interface", ""))
               listener = listener_class.new
