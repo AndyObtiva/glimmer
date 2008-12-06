@@ -19,7 +19,7 @@ Instructions for use with stand-alone SWT:
 
 Instructions for use with Eclipse:
 1. Download and setup Eclipse 3.4, 3.3 or 3.2
-2. Download and setup jRuby 1.1.3
+2. Download and setup jRuby 1.1.5
 3. Modify Java launch command in jRuby script/batch file to include SWT libraries in both:
  a. Classpath; must include %ECLIPSE_HOME%/plugins/org.eclipse.swt*.jar 
   For example with Eclipse 3.2 on Windows, we add the following: 
