@@ -14,26 +14,26 @@ task 'build_gemspec' do
   lib_files = GemHelper.all_files_from_dir('lib').join(" ")
   test_files = GemHelper.all_files_from_dir('test').join(" ")
   sample_files = GemHelper.all_files_from_dir('samples').join(" ")
-  gemspec = GemHelper.render_gemspec({:version => ENV["VERSION"] || "0.1.4", :lib_files => lib_files, :test_files => test_files, :sample_files => sample_files})
+  gemspec = GemHelper.render_template(GEMSPEC_TEMPLATE, {:version => ENV["VERSION"] || "0.1.4", :lib_files => lib_files, :test_files => test_files, :sample_files => sample_files})
   File.open('glimmer.gemspec', 'w') do |file|
     file.write gemspec
   end
 end
 
 
-# add all files from one directory
 module GemHelper
+  # add all files from one directory
   def self.all_files_from_dir(directory, extension='rb')
     files = Dir["#{directory}/**/*.#{extension}"]
   end
   
   # Render the string template for the GemSpec and insert all files and version no.
-  def self.render_gemspec(params={})
-    gemspec = GEMSPEC_TEMPLATE
+  def self.render_template(template, params={})
+    rendered_template = template
     params.each do |key, value|
-      gemspec.gsub!("<%= \@#{key.to_s.downcase} %>", value.to_s)
+      rendered_template.gsub!(/<%= *\@#{key.to_s.downcase} *%>/, value.to_s)
     end
-    return gemspec
+    return rendered_template
   end
 end
 
