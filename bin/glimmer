@@ -1,0 +1,115 @@
+require 'abbrev'
+load File.dirname(__FILE__) + '/../Rakefile'
+
+# Displayed when no valid command is given
+HELP_TEXT = <<-EOS
+usage: glimmer COMMAND [ARGS]
+    
+Available commands are:
+  list - display all installed Glimmer applications (samples)
+  run  - run an installed glimmer application by name
+EOS
+
+# the generate-command will create this file for a new project to start with
+GLIMMER_BASE_TEMPLATE = <<-EOS
+require 'rubygems'
+require 'swt'
+
+
+class <%= @name %>
+  include Glimmer
+  # Remember to include all SWT packages that you need
+  # or you will get a `const_missing' error
+  include_package 'org.eclipse.swt.layout'
+  
+  def initialize
+    build
+  end
+
+  def build
+    @shell = shell {
+      text "<%= @name %>"
+      
+      composite {
+        layout GridLayout.new(2, false)
+        button {
+          text "&Click"
+          on_widget_selected { my_label.text("You clicked the button") }
+        }
+        my_label = label { text "Click the button to change me" }
+      }
+    }
+  end
+  
+  def launch
+    @shell.open
+  end
+end
+# Start the application
+<%= @name %>.new.launch
+EOS
+
+class GlimmerRunner
+  
+  COMMANDS = %w[list run generate]
+  PLATFORM_EXTENSION = (PLATFORM =~ /win\d\d/) ? '.bat' : ''
+
+  SAMPLES_PATH = File.dirname(__FILE__) + "/../samples"
+  # This could be avoided by naming the main application like the directory (i.e. without underscores)
+  # You need to add new multi file applications to this list, so that they can be started using "glimmer run"
+  SAMPLES = {"contactmanager" => "contact_manager", "tictactoe" => "tic_tac_toe", "glimmereditor" => "glimmer_editor"}
+  
+  def initialize(command, name)
+    @command, @name = command, name
+    decide
+  end
+  
+  def decide
+    shortcuts = COMMANDS.abbrev
+    if @command and shortcuts.keys.include?(cmd = @command.downcase)
+      send(shortcuts[cmd])
+    else
+      puts HELP_TEXT
+    end  
+  end
+  
+  def run
+    return puts("usage example: glimmer run hello_world") unless @name
+    command = "jruby#{PLATFORM_EXTENSION} -S #{SAMPLES_PATH}/#{fetch_app(@name)}.rb"
+    puts "Starting the application with following command:"
+    puts command
+    system command
+  end
+  
+  def list
+    single_file_apps = Dir["#{SAMPLES_PATH}/*.rb"]
+    multi_file_apps = Dir["#{SAMPLES_PATH}/*"].reject{ |file| file =~ /.rb$/}
+    puts "Installed Glimmer applications:"
+    (single_file_apps + multi_file_apps).each_with_index do |file, index|
+      puts "#{index+1}. #{File.basename(file, '.*')}"
+    end
+  end
+
+  def generate
+    return puts("usage example: glimmer generate my_test_project") unless @name
+    puts "Creating directory named: #{@name}"
+    Dir.mkdir(@name)
+    File.open("#{@name}/#{@name}.rb", 'w') do |file|
+      file.write(GemHelper.render_template(GLIMMER_BASE_TEMPLATE, {:name => @name.capitalize}))
+    end
+  end
+  
+private
+  # This could be avoided by naming the main application like the directory (i.e. without underscores)
+  def fetch_app(name)
+    return name if SAMPLES[name].nil?
+    "#{name}/#{SAMPLES[name]}"
+  end
+  
+end
+
+
+# Here's where the action starts
+command, name = ARGV[0], ARGV[1]
+
+GlimmerRunner.new(command, name)
