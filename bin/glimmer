@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby 
+
 require 'abbrev'
 load File.dirname(__FILE__) + '/../Rakefile'
 
@@ -6,8 +8,11 @@ HELP_TEXT = <<-EOS
 usage: glimmer COMMAND [ARGS]
     
 Available commands are:
-  list - display all installed Glimmer applications (samples)
-  run  - run an installed glimmer application by name
+  list     - display all installed Glimmer applications (samples)
+  run      - run a any glimmer application by name (without .rb extension)
+  generate - create a new project with a scaffold of an application
+  
+Note: You can use abbreviations as long as they're unambiguos (g for generate)
 EOS
 
 # the generate-command will create this file for a new project to start with
@@ -34,9 +39,9 @@ class <%= @name %>
         layout GridLayout.new(2, false)
         button {
           text "&Click"
-          on_widget_selected { my_label.text("You clicked the button") }
+          on_widget_selected { @label.text("You clicked the button") }
         }
-        my_label = label { text "Click the button to change me" }
+        @label = label { text "Click the button to change me" }
       }
     }
   end
@@ -52,8 +57,9 @@ EOS
 class GlimmerRunner
   
   COMMANDS = %w[list run generate]
+  
   PLATFORM_EXTENSION = (PLATFORM =~ /win\d\d/) ? '.bat' : ''
-
+  JRUBY_COMMAND = "jruby#{PLATFORM_EXTENSION} -S"
   SAMPLES_PATH = File.dirname(__FILE__) + "/../samples"
   # This could be avoided by naming the main application like the directory (i.e. without underscores)
   # You need to add new multi file applications to this list, so that they can be started using "glimmer run"
@@ -73,9 +79,14 @@ class GlimmerRunner
     end  
   end
   
+  # Run a sample application or any user application with jruby
   def run
-    return puts("usage example: glimmer run hello_world") unless @name
-    command = "jruby#{PLATFORM_EXTENSION} -S #{SAMPLES_PATH}/#{fetch_app(@name)}.rb"
+    return puts("usage example: glimmer run tictactoe") unless @name
+    if File.exist?("#{@name}.rb")
+      command = "#{JRUBY_COMMAND} \"#{@name}.rb\""
+    else
+      command = "#{JRUBY_COMMAND} \"#{SAMPLES_PATH}/#{fetch_app(@name)}.rb\""
+    end
     puts "Starting the application with following command:"
     puts command
     system command
@@ -92,9 +103,11 @@ class GlimmerRunner
 
   def generate
     return puts("usage example: glimmer generate my_test_project") unless @name
-    puts "Creating directory named: #{@name}"
+    puts "Creating project named: #{@name}"
     Dir.mkdir(@name)
-    File.open("#{@name}/#{@name}.rb", 'w') do |file|
+    filename = "#{@name}/#{@name}.rb"
+    puts "Creating glimmer file:  #{filename}"
+    File.open(filename, 'w') do |file|
       file.write(GemHelper.render_template(GLIMMER_BASE_TEMPLATE, {:name => @name.capitalize}))
     end
   end

@@ -10,14 +10,16 @@ Rake::TestTask.new 'test_core' do |t|
 end
 
 desc "Build gemspec for Github (use VERSION=x.x.x to specify glimmer version)"
-task 'build_gemspec' do
+task 'gemspec' do
+  version = ENV["VERSION"] || "0.1.4"
   lib_files = GemHelper.all_files_from_dir('lib').join(" ")
   test_files = GemHelper.all_files_from_dir('test').join(" ")
   sample_files = GemHelper.all_files_from_dir('samples').join(" ")
-  gemspec = GemHelper.render_template(GEMSPEC_TEMPLATE, {:version => ENV["VERSION"] || "0.1.4", :lib_files => lib_files, :test_files => test_files, :sample_files => sample_files})
+  gemspec = GemHelper.render_template(GEMSPEC_TEMPLATE, {:version => version, :lib_files => lib_files, :test_files => test_files, :sample_files => sample_files})
   File.open('glimmer.gemspec', 'w') do |file|
     file.write gemspec
   end
+  puts "Built glimmer.gemspec with version #{version} - Ready to push to Github now."
 end
 
 
@@ -57,7 +59,8 @@ GEMSPEC_TEMPLATE = <<-EOS
     s.authors = ["Andy Maleh"]
     s.require_path = "lib"
     s.autorequire = "swt"
-    s.files = lib_files + sample_files
+    s.files = %w[bin/glimmer Rakefile] + lib_files + sample_files
+    s.executables = %w[glimmer]
     s.test_files = test_files
     #s.rdoc_options = ["--main", "README"]
     s.extra_rdoc_files = ["README"]
