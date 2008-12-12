@@ -7,7 +7,7 @@ load File.dirname(__FILE__) + '/../Rakefile'
 HELP_TEXT = <<-EOS
 usage: glimmer COMMAND [ARGS]
     
-Available commands are:
+Available COMMANDS:
   list     - display all installed Glimmer applications (samples)
   run      - run any glimmer application or sample by name
   generate - create a new project with a scaffold of an application
@@ -65,6 +65,8 @@ class GlimmerRunner
   # You need to add new multi file applications to this list, so that they can be started using "glimmer run"
   SAMPLES = {"contactmanager" => "contact_manager", "tictactoe" => "tic_tac_toe", "glimmereditor" => "glimmer_editor"}
   
+  JRUBY_BAT_LIB_REGEX = /Djava\.library\.path="%ECLIPSE_HOME%\\plugins\\org\.eclipse\.swt\.win32\.win32.x86_3.4.1.v3449c"/
+  
   def initialize(command, name)
     @command, @name = command, name
     decide
@@ -82,9 +84,11 @@ class GlimmerRunner
   # Run a sample application or any user application with jruby
   def run
     return puts("usage example: glimmer run tictactoe") unless @name
+    # Search for the filename (and add the .rb extension if not provided), and run it
     if File.exist?("#{@name}#{'.rb' unless @name =~ /.rb$/}")
-      command = "#{JRUBY_COMMAND} \"#{@name.gsub(/\\/, '/')}#{}\""
+      command = "#{JRUBY_COMMAND} \"#{@name.gsub(/\\/, '/')}#{'.rb' unless @name =~ /.rb$/}\""
     else
+      # Search for all installed samples and try to run of those
       command = "#{JRUBY_COMMAND} \"#{SAMPLES_PATH}/#{fetch_app(@name)}.rb\""
     end
     puts "Starting the application with following command:"
