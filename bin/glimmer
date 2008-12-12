@@ -82,8 +82,8 @@ class GlimmerRunner
   # Run a sample application or any user application with jruby
   def run
     return puts("usage example: glimmer run tictactoe") unless @name
-    if File.exist?("#{@name}.rb")
-      command = "#{JRUBY_COMMAND} \"#{@name}.rb\""
+    if File.exist?("#{@name}#{'.rb' unless @name =~ /.rb$/}")
+      command = "#{JRUBY_COMMAND} \"#{@name.gsub(/\\/, '/')}#{}\""
     else
       command = "#{JRUBY_COMMAND} \"#{SAMPLES_PATH}/#{fetch_app(@name)}.rb\""
     end

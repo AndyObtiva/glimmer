@@ -58,7 +58,6 @@ GEMSPEC_TEMPLATE = <<-EOS
     s.has_rdoc = true
     s.authors = ["Andy Maleh"]
     s.require_path = "lib"
-    s.autorequire = "swt"
     s.files = %w[bin/glimmer Rakefile] + lib_files + sample_files
     s.executables = %w[glimmer]
     s.test_files = test_files
