@@ -9,7 +9,7 @@ usage: glimmer COMMAND [ARGS]
     
 Available commands are:
   list     - display all installed Glimmer applications (samples)
-  run      - run a any glimmer application by name (without .rb extension)
+  run      - run any glimmer application or sample by name
   generate - create a new project with a scaffold of an application
   
 Note: You can use abbreviations as long as they're unambiguos (g for generate)
