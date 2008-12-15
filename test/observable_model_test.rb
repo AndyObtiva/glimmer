@@ -9,8 +9,8 @@
 #    Annas Al Maleh - initial API and implementation
 ################################################################################ 
 
-require "test/unit"
-require File.dirname(__FILE__) + "/../src/command_handlers/models/observable_model"
+require File.dirname(__FILE__) + "/test_helper"
+require File.dirname(__FILE__) + "/../lib/command_handlers/models/observable_model"
 
 require "test/unit"
 class ObservableModelTest < Test::Unit::TestCase

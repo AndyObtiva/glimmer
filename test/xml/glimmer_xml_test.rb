@@ -9,9 +9,10 @@
 #    Annas Al Maleh - initial API and implementation
 ################################################################################ 
 
-require "test/unit"
-require File.dirname(__FILE__) + "/../../src/parent"
-require File.dirname(__FILE__) + "/../../src/xml"
+require File.dirname(__FILE__) + "/../test_helper"
+
+require File.dirname(__FILE__) + "/../../lib/parent"
+require File.dirname(__FILE__) + "/../../lib/xml"
 
 class GlimmerXmlTest < Test::Unit::TestCase
 	include Glimmer

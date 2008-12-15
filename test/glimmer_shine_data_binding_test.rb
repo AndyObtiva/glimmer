@@ -9,9 +9,8 @@
 #    Annas Al Maleh - initial API and implementation
 ################################################################################ 
 
-require "test/unit"
-require File.dirname(__FILE__) + "/../src/swt"
-require File.dirname(__FILE__) + "/../src/shine"
+require File.dirname(__FILE__) + "/test_helper"
+require File.dirname(__FILE__) + "/../lib/shine"
 
 class GlimmerDataBindingTest < Test::Unit::TestCase
 	include Glimmer

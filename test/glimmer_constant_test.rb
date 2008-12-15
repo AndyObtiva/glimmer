@@ -9,12 +9,12 @@
 #    Annas Al Maleh - initial API and implementation
 ################################################################################ 
 
-require "test/unit"
-require File.dirname(__FILE__) + "/../src/swt"
+require File.dirname(__FILE__) + "/test_helper"
 
 class GlimmerTest < Test::Unit::TestCase
 	include Glimmer
-
+  include TestHelper
+  
 	include_package 'org.eclipse.swt'
 	include_package 'org.eclipse.swt.widgets'
 	include_package 'org.eclipse.swt.layout'
@@ -35,10 +35,5 @@ class GlimmerTest < Test::Unit::TestCase
     assert_has_style SWT::NO_FOCUS, composite_widget
     assert_has_style SWT::BORDER, composite_widget
   end
-  
-  def assert_has_style(style, widget)
-    assert_equal style, widget.getStyle & style
-  end
-  
 end
 
