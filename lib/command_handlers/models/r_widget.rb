@@ -41,7 +41,7 @@ class RWidget
   
   def initialize(underscored_widget_name, parent, style, &contents)
     style = default_style(underscored_widget_name) unless style
-    @widget = eval underscored_widget_name.to_s.camelcase(true) + '.new(parent, style)'
+    @widget = eval underscored_widget_name.to_s.camelcase + '.new(parent, style)'
     @@default_initializers[underscored_widget_name].call(@widget) if @@default_initializers[underscored_widget_name]
   end
   
@@ -52,11 +52,11 @@ class RWidget
   end
   
   def respond_to?(method_symbol, *args)
-    @widget.respond_to?("set" + method_symbol.to_s.camelcase(true), args)
+    @widget.respond_to?("#{method_symbol.to_s}=", args)
   end
   
   def method_missing(method_symbol, *args)
-    statement_to_eval = "@widget.send('set' + method_symbol.to_s.camelcase(true)"
+    statement_to_eval = "@widget.send(method_symbol.to_s + '='"
     statement_to_eval << expand_arguments(args)
     statement_to_eval << ")"
     eval statement_to_eval
@@ -74,7 +74,7 @@ class RWidget
   
   def self.widget_exists?(underscored_widget_name)
     begin
-      eval underscored_widget_name.camelcase(true)
+      eval underscored_widget_name.camelcase
       true
     rescue NameError        
       false
@@ -82,7 +82,7 @@ class RWidget
   end
   
   def widget_listener_exists?(underscored_listener_name)
-    listener_method_name = underscored_listener_name.camelcase(false)
+    listener_method_name = underscored_listener_name.listener_method_name(:lower)
     @widget.getClass.getMethods.each do |widget_method| 
       if widget_method.getName.match(/add.*Listener/)
         widget_method.getParameterTypes.each do |listener_type|
@@ -98,7 +98,7 @@ class RWidget
   end
   
   def can_add_listener?(underscored_listener_name)
-    listener_method_name = underscored_listener_name.camelcase(false)
+    listener_method_name = underscored_listener_name.camelcase(:lower)
     @widget.getClass.getMethods.each do |widget_method| 
       if widget_method.getName.match(/add.*Listener/)
         widget_method.getParameterTypes.each do |listener_type|
@@ -114,7 +114,7 @@ class RWidget
   end
   
   def add_listener(underscored_listener_name, &block) 
-    listener_method_name = underscored_listener_name.camelcase(false)
+    listener_method_name = underscored_listener_name.camelcase(:lower)
     @widget.getClass.getMethods.each do |widget_method| 
       if widget_method.getName.match(/add.*Listener/)
         widget_method.getParameterTypes.each do |listener_type|

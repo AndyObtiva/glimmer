@@ -14,12 +14,13 @@ data-binding support to greatly facilitate synchronizing UI with domain models.
 Instructions for use with stand-alone SWT:
 1. Download the "SWT binary and source" archive from the Eclipse site and follow their instructions.
    http://www.eclipse.org/swt/
-2. Have your program require the file: src/swt.rb
-3. Create a class that includes the Glimmer module and you will be able to write Glimmer syntax
+2. Download and setup jRuby 1.5.6 (rvm install jruby -v1.5.6)
+3. Have your program require the file: src/swt.rb
+4. Create a class that includes the Glimmer module and you will be able to write Glimmer syntax
 
 Instructions for use with Eclipse:
 1. Download and setup Eclipse 3.4, 3.3 or 3.2
-2. Download and setup jRuby 1.1.5
+2. Download and setup jRuby 1.5.6 (rvm install jruby -v1.5.6)
 3. Modify Java launch command in jRuby script/batch file to include SWT libraries in both:
  a. Classpath; must include %ECLIPSE_HOME%/plugins/org.eclipse.swt*.jar 
   For example with Eclipse 3.2 on Windows, we add the following: 
@@ -31,3 +32,8 @@ Instructions for use with Eclipse:
 5. Create a class that includes the Glimmer module and you will be able to write Glimmer syntax
 
 Check samples folder for examples on how to write Glimmer applications.
+
+Note:
+
+In order to run Glimmer on the Mac, you need to pass an extra option to JRuby. For example:
+jruby samples/hello_world.rb -XstartOnFirstThread
