@@ -10,6 +10,8 @@ Contributors:
 
 == Glimmer
 
+![Glimmer](https://github.com/AndyObtiva/glimmer/raw/master/images/Bitter-sweet.jpg)
+
 Glimmer is a JRuby DSL that enables easy and efficient authoring of desktop application user-interfaces. It relies on the robust platform-independent Eclipse SWT library. Glimmer comes with built-in data-binding support to greatly facilitate synchronizing UI with domain models.
  
 == Example
