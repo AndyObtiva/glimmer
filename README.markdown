@@ -16,7 +16,7 @@ Example
 Getting Started
 ---
 1. Download the "SWT binary and source" archive from the Eclipse site and follow their instructions.
-   {http://www.eclipse.org/swt/}[http://www.eclipse.org/swt/]
+   [http://www.eclipse.org/swt/](http://www.eclipse.org/swt/)
 2. Download and setup jRuby 1.5.6 (rvm install jruby -v1.5.6)
 3. Install bundler (gem install bundler)
 4. Install project required gems (bundle install)
@@ -38,10 +38,10 @@ Ruby is a dynamically-typed object-oriented language, which provides great produ
 
 Resources
 ---
-* {Eclipse Zone Tutorial}[http://eclipse.dzone.com/articles/an-introduction-glimmer]
-* {InfoQ Article}[http://www.infoq.com/news/2008/02/glimmer-jruby-swt]
-* {RubyConf 2008 Video}[http://rubyconf2008.confreaks.com/desktop-development-with-glimmer.html]
-* {Code Painter Blog}[http://andymaleh.blogspot.com/search/label/Glimmer]
+* [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer)
+* [InfoQ Article](http://www.infoq.com/news/2008/02/glimmer-jruby-swt)
+* [RubyConf 2008 Video](http://rubyconf2008.confreaks.com/desktop-development-with-glimmer.html)
+* [Code Painter Blog](http://andymaleh.blogspot.com/search/label/Glimmer)
 
 Contributors
 ---
@@ -54,4 +54,4 @@ Copyright (c) 2011 Annas Al Maleh.
 All rights reserved. This program and the accompanying materials
 are made available under the terms of the Eclipse Public License v1.0
 which accompanies this distribution, and is available at
-{http://www.eclipse.org/legal/epl-v10.html}[http://www.eclipse.org/legal/epl-v10.html]
+[http://www.eclipse.org/legal/epl-v10.html](http://www.eclipse.org/legal/epl-v10.html)
