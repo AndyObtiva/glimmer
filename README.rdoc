@@ -16,12 +16,12 @@ data-binding support to greatly facilitate synchronizing UI with domain models.
  
 == Example
 
-shell {
-  text "Example"
-  label {
-    text "Hello World!"
-  }
-}.open
+  shell {
+    text "Example"
+    label {
+      text "Hello World!"
+    }
+  }.open
 
 == Getting Started
 1. Download the "SWT binary and source" archive from the Eclipse site and follow their instructions.
