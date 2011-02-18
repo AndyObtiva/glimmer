@@ -7,33 +7,35 @@ http://www.eclipse.org/legal/epl-v10.html
 Contributors:
    Annas Al Maleh - initial API and implementation
 
-Glimmer - a JRuby DSL that enables easy and efficient authoring of user-interfaces 
+== Glimmer
+
+Glimmer is a JRuby DSL that enables easy and efficient authoring of user-interfaces
 using the robust platform-independent Eclipse SWT library. Glimmer comes with built-in 
 data-binding support to greatly facilitate synchronizing UI with domain models.
+ 
+== Example
 
-Instructions for use with stand-alone SWT:
+shell {
+  text "Example"
+  label {
+    text "Hello World!"
+  }
+}.open
+
+== Getting Started
 1. Download the "SWT binary and source" archive from the Eclipse site and follow their instructions.
    http://www.eclipse.org/swt/
 2. Download and setup jRuby 1.5.6 (rvm install jruby -v1.5.6)
-3. Have your program require the file: src/swt.rb
-4. Create a class that includes the Glimmer module and you will be able to write Glimmer syntax
+3. Install bundler (gem install bundler)
+4. Install project required gems (bundle install)
+5. Write a program that requires the file "lib/swt.rb" and has the UI class (view) include the Glimmer module
+6. Run your program with jruby
 
-Instructions for use with Eclipse:
-1. Download and setup Eclipse 3.4, 3.3 or 3.2
-2. Download and setup jRuby 1.5.6 (rvm install jruby -v1.5.6)
-3. Modify Java launch command in jRuby script/batch file to include SWT libraries in both:
- a. Classpath; must include %ECLIPSE_HOME%/plugins/org.eclipse.swt*.jar 
-  For example with Eclipse 3.2 on Windows, we add the following: 
-  -cp "%CLASSPATH%;%ECLIPSE_HOME%\plugins\org.eclipse.swt.win32.win32.x86_3.2.0.v3232m.jar;%ECLIPSE_HOME%\plugins\org.eclipse.swt_3.2.0.v3232o.jar"
- b. java.library.path; must point to %ECLIPSE_HOME%/plugins/org.eclipse.swt* folder 
-  For example, with Eclipse 3.2 on Windows, we add the following:
-  -Djava.library.path="%ECLIPSE_HOME%\plugins\org.eclipse.swt.win32.win32.x86_3.2.0.v3232m" 
-4. Have your program require the file: src/swt.rb
-5. Create a class that includes the Glimmer module and you will be able to write Glimmer syntax
+== Samples
 
-Check samples folder for examples on how to write Glimmer applications.
+Check the "samples" folder for examples on how to write Glimmer applications.
 
-Note:
+== Mac Support
 
 In order to run Glimmer on the Mac, you need to pass an extra option to JRuby. For example:
 jruby samples/hello_world.rb -XstartOnFirstThread
