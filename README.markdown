@@ -6,12 +6,12 @@ Glimmer is a JRuby DSL that enables easy and efficient authoring of desktop appl
 
 Example
 ---
-  shell {
-    text "Example"
-    label {
-      text "Hello World!"
-    }
-  }.open
+    shell {
+      text "Example"
+      label {
+        text "Hello World!"
+      }
+    }.open
 
 Getting Started
 ---
