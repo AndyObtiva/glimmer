@@ -43,13 +43,13 @@ Resources
 * {RubyConf 2008 Video}[http://rubyconf2008.confreaks.com/desktop-development-with-glimmer.html]
 * {Code Painter Blog}[http://andymaleh.blogspot.com/search/label/Glimmer]
 
-Contributors:
-
-* Annas Al Maleh - initial API and implementation
+Contributors
+---
+* Annas "Andy" Al Maleh (Founder)
 * Dennis Theisen
 
+License
 ---
-
 Copyright (c) 2011 Annas Al Maleh.
 All rights reserved. This program and the accompanying materials
 are made available under the terms of the Eclipse Public License v1.0
