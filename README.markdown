@@ -48,7 +48,7 @@ Contributors:
 * Annas Al Maleh - initial API and implementation
 * Dennis Theisen
 
-- - -
+---
 
 Copyright (c) 2011 Annas Al Maleh.
 All rights reserved. This program and the accompanying materials
