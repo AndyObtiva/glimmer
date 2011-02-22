@@ -46,3 +46,6 @@ pkg
 #
 # For Aptana:
 .project
+
+#Bundler:
+Gemfile.lock
