@@ -58,4 +58,5 @@ module Glimmer
 end
 
 # Command handlers may rely on Glimmer, so this is put here to avoid an infinite loop.
-#require File.dirname(__FILE__) + "/command_handlers"
+require File.dirname(__FILE__) + "/command_handlers"
+require File.dirname(__FILE__) + "/xml_command_handlers"

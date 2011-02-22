@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + "/../lib/swt"
+require File.dirname(__FILE__) + "/../lib/glimmer"
 
 class Person
   attr_accessor :country, :country_options

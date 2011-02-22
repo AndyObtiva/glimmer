@@ -10,7 +10,7 @@
 ################################################################################ 
 
 require "java"
-require File.dirname(__FILE__) + "/../lib/swt"
+require File.dirname(__FILE__) + "/../lib/glimmer"
 
 class HelloWorld
 	include_package 'org.eclipse.swt'

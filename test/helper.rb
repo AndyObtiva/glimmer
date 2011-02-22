@@ -12,8 +12,7 @@ require 'test/unit'
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'samples'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
-require 'swt'
-require 'xml'
+require 'glimmer'
 
 class Test::Unit::TestCase
   def assert_has_style(style, widget)

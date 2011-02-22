@@ -11,7 +11,7 @@
 
 require "java"
 require "observer"
-require File.dirname(__FILE__) + "/../lib/swt"
+require File.dirname(__FILE__) + "/../lib/glimmer"
 
 #Presents login screen data
 class LoginPresenter

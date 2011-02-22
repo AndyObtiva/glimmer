@@ -10,7 +10,7 @@
 ################################################################################ 
 
 require File.dirname(__FILE__) + "/contact_manager_presenter"
-require File.dirname(__FILE__) + "/../../lib/swt"
+require File.dirname(__FILE__) + "/../../lib/glimmer"
 
 class RWidget
   include_package 'org.eclipse.jface.viewers'

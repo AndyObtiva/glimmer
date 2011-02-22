@@ -9,7 +9,7 @@
 #    Annas Al Maleh - initial API and implementation
 ################################################################################ 
 
-require File.dirname(__FILE__) + "/../../lib/swt"
+require File.dirname(__FILE__) + "/../../lib/glimmer"
 require File.dirname(__FILE__) + "/tic_tac_toe_board"
 
 

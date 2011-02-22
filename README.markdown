@@ -20,7 +20,7 @@ Getting Started
 2. Download and setup jRuby 1.5.6 (rvm install jruby -v1.5.6)
 3. Install bundler (gem install bundler)
 4. Install project required gems (bundle install)
-5. Write a program that requires the file "lib/swt.rb" and has the UI class (view) include the Glimmer module
+5. Write a program that requires the file "lib/glimmer.rb" (or glimmer gem) and has the UI class (view) include the Glimmer module
 6. Run your program with jruby
 
 Samples
