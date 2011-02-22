@@ -9,7 +9,6 @@
 #    Annas Al Maleh - initial API and implementation
 ################################################################################ 
 
-require "facets/dictionary"
 require File.dirname(__FILE__) + "/../command_handler"
 require File.dirname(__FILE__) + "/models/node"
 
@@ -22,7 +21,7 @@ class HtmlCommandHandler
   end
   
   def do_handle(parent, command_symbol, *args, &block)
-    attributes = Dictionary.new
+    attributes = Hash.new
     attributes = args[0] if (args.size == 1) 
     append_id_and_class_attributes(command_symbol.to_s, attributes)
     tag_name = parse_tag_name(command_symbol.to_s)

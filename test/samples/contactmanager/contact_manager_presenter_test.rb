@@ -9,7 +9,7 @@
 #    Annas Al Maleh - initial API and implementation
 ################################################################################ 
 
-require File.dirname(__FILE__) + "/../../test_helper"
+require File.dirname(__FILE__) + "/../../helper"
 require File.dirname(__FILE__) + "/../../../samples/contactmanager/contact_manager_presenter"
 
 class ContactManagerPresenterTest < Test::Unit::TestCase

@@ -17,7 +17,7 @@ require File.dirname(__FILE__) + "/xml_command_handlers/html_command_handler"
 require File.dirname(__FILE__) + "/xml_command_handlers/xml_command_handler"
 
 # edit to add more command handlers and extend Glimmer
-CommandHandlerChainFactory.set_command_handlers(
+CommandHandlerChainFactory.def_dsl(:xml,
   XmlNameSpaceCommandHandler.new,
   XmlTextCommandHandler.new,
   XmlTagCommandHandler.new,

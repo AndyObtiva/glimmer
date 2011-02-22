@@ -9,7 +9,7 @@
 #    Annas Al Maleh - initial API and implementation
 ################################################################################ 
 
-require "facets/dictionary"
+require "facets"
 require File.dirname(__FILE__) + "/../command_handler"
 require File.dirname(__FILE__) + "/models/node"
 

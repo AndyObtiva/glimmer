@@ -38,6 +38,10 @@ module Glimmer
     @@parent_stack.pop if parent.is_a?(Parent)
   end
 
+  def self.dsl(dsl)
+    CommandHandlerChainFactory.select_dsl(dsl)
+  end
+
   #added for convenience
   
   def method_missing(method_symbol, *args, &block)
@@ -46,6 +50,10 @@ module Glimmer
 
   def add_contents(parent, &block)
     Glimmer.add_contents(parent, &block)
+  end
+
+  def dsl(dsl)
+    CommandHandlerChainFactory.select_dsl(dsl)
   end
 end
 

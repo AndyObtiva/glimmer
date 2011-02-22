@@ -9,15 +9,19 @@
 #    Annas Al Maleh - initial API and implementation
 ################################################################################ 
 
-require File.dirname(__FILE__) + "/test_helper"
+require File.dirname(__FILE__) + "/helper"
 
 class GlimmerListDataBindingTest < Test::Unit::TestCase
-	include Glimmer
+  include Glimmer
 
 	include_package 'org.eclipse.swt'
 	include_package 'org.eclipse.swt.widgets'
 	include_package 'org.eclipse.swt.layout'
 		
+  def setup
+    dsl :swt
+  end
+
 	def teardown
   	@target.display.dispose if @target.display
 	end
@@ -78,9 +82,6 @@ class GlimmerListDataBindingTest < Test::Unit::TestCase
     
     assert_equal 9, @list.widget.item_count
     
-    assert_equal -1, @list.widget.selection_index
-    assert_equal [], @list.widget.selection.to_a
-    
     person.country = "Canada"
     
     assert_equal 1, @list.widget.selection_index
@@ -138,9 +139,6 @@ class GlimmerListDataBindingTest < Test::Unit::TestCase
     
     assert_equal 9, @list.widget.item_count
     
-    assert_equal -1, @list.widget.selection_index
-    assert_equal [], @list.widget.selection.to_a
-    
     person.country = "Canada"
     
     assert_equal 1, @list.widget.selection_index
@@ -172,7 +170,6 @@ class GlimmerListDataBindingTest < Test::Unit::TestCase
     }
     
     assert_equal 0, @list.widget.selection_count.to_i
-    assert_equal [], @list.widget.selection_indices
     assert_equal [], @list.widget.selection.to_a
 
     @list.widget.select(1)
@@ -209,7 +206,6 @@ class GlimmerListDataBindingTest < Test::Unit::TestCase
     }
     
     assert_equal 0, @list.widget.selection_count.to_i
-    assert_equal [], @list.widget.selection_indices
     assert_equal [], @list.widget.selection.to_a
 
     @list.widget.select(1)

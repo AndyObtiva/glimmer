@@ -9,17 +9,20 @@
 #    Annas Al Maleh - initial API and implementation
 ################################################################################ 
 
-require File.dirname(__FILE__) + "/test_helper"
+require File.dirname(__FILE__) + "/helper"
 
 class GlimmerTest < Test::Unit::TestCase
-	include Glimmer
-  include TestHelper
-	
+  include Glimmer
+
 	include_package 'org.eclipse.swt'
 	include_package 'org.eclipse.swt.widgets'
 	include_package 'org.eclipse.swt.layout'
 	include_package 'org.eclipse.swt.graphics'
 		
+  def setup
+    dsl :swt
+  end
+
 	def teardown
 		@target.display.dispose if @target.display
 	end

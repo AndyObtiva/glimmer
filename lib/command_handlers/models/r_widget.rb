@@ -52,11 +52,11 @@ class RWidget
   end
   
   def respond_to?(method_symbol, *args)
-    @widget.respond_to?("#{method_symbol.to_s}=", args)
+    @widget.respond_to?("set#{method_symbol.to_s.camelcase(:upper)}", args)
   end
   
   def method_missing(method_symbol, *args)
-    statement_to_eval = "@widget.send(method_symbol.to_s + '='"
+    statement_to_eval = "@widget.send('set' + method_symbol.to_s.camelcase(:upper)"
     statement_to_eval << expand_arguments(args)
     statement_to_eval << ")"
     eval statement_to_eval

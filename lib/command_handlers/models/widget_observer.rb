@@ -23,7 +23,7 @@ class WidgetObserver
     converted_value = value
     converter = @@property_type_converters[@property.to_sym]
     converted_value = converter.call(value) if converter
-    @widget.widget.send "#{@property}=", converted_value unless evaluate_property == converted_value
+    @widget.widget.send("set#{@property.camelcase(:upper)}", converted_value) unless evaluate_property == converted_value
   end
   def evaluate_property
     @widget.widget.send(@property)

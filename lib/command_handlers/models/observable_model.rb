@@ -47,7 +47,7 @@ module ObservableModel
   end
   
   def self.add_method_observers(model, method)
-    setter_method_pattern = /^\w+=$/
+    setter_method_pattern = /^(\w+=)$/
     if (method.match(setter_method_pattern))
       getter_method = method[0, method.length - 1]
       getter_value = model.send(getter_method)

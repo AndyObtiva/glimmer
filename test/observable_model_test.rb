@@ -9,7 +9,8 @@
 #    Annas Al Maleh - initial API and implementation
 ################################################################################ 
 
-require File.dirname(__FILE__) + "/test_helper"
+require File.dirname(__FILE__) + "/helper"
+
 require File.dirname(__FILE__) + "/../lib/command_handlers/models/observable_model"
 
 require "test/unit"

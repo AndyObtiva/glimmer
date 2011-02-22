@@ -24,7 +24,7 @@ require File.dirname(__FILE__) + "/command_handlers/widget_command_handler"
 require File.dirname(__FILE__) + "/command_handlers/swt_constant_command_handler"
 
 # edit to add more command handlers and extend Glimmer
-CommandHandlerChainFactory.set_command_handlers(
+CommandHandlerChainFactory.def_dsl(:swt,
   ShellCommandHandler.new,
   WidgetListenerCommandHandler.new,
   BindCommandHandler.new,

@@ -9,10 +9,14 @@
 #    Annas Al Maleh - initial API and implementation
 ################################################################################ 
 
-require File.dirname(__FILE__) + "/test_helper"
+require File.dirname(__FILE__) + "/helper"
 
 class RWidgetTest < Test::Unit::TestCase
   include Glimmer
+
+  def setup
+    dsl :swt
+  end
 
   def test_async_exec
     @target = shell {
