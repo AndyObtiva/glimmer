@@ -27,7 +27,7 @@ class ListSelectionDataBindingCommandHandler
     model.add_observer(model_observer.options_property_name, widget_observer)
 
     property_type = :string
-    property_type = :array if parent.has_style?(multi)
+    property_type = :array if parent.has_style?(:multi)
     list_observer = ListObserver.new(parent, property_type)
     list_observer.update(model_observer.evaluate_property)
     model.add_observer(model_observer.property_name, list_observer)

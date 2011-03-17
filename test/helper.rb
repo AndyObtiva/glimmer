@@ -16,6 +16,6 @@ require 'glimmer'
 
 class Test::Unit::TestCase
   def assert_has_style(style, widget)
-    assert_equal style, widget.getStyle & style
+    assert_equal style.swt_constant, widget.getStyle & style.swt_constant
   end  
 end

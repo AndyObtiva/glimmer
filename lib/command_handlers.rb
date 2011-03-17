@@ -10,7 +10,6 @@ require File.dirname(__FILE__) + "/command_handlers/table_column_properties_data
 require File.dirname(__FILE__) + "/command_handlers/data_binding_command_handler"
 require File.dirname(__FILE__) + "/command_handlers/widget_method_command_handler"
 require File.dirname(__FILE__) + "/command_handlers/widget_command_handler"
-require File.dirname(__FILE__) + "/command_handlers/swt_constant_command_handler"
 
 # edit to add more command handlers and extend Glimmer
 CommandHandlerChainFactory.def_dsl(:swt,
@@ -24,6 +23,5 @@ CommandHandlerChainFactory.def_dsl(:swt,
   TableColumnPropertiesDataBindingCommandHandler.new,
   DataBindingCommandHandler.new,
   WidgetMethodCommandHandler.new,
-  WidgetCommandHandler.new,
-  SwtConstantCommandHandler.new #at the bottom to avoid stealing commands from other command handlers
+  WidgetCommandHandler.new
 )

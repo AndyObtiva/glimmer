@@ -66,7 +66,7 @@ class Login
         } 
         
         label { text "Password:" } 
-        text(SWT::PASSWORD | SWT::BORDER) { 
+        text(:password, :border) {
           text bind(presenter, :password) 
           enabled bind(presenter, :logged_out)
         }

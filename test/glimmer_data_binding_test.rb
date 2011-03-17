@@ -85,7 +85,7 @@ class GlimmerDataBindingTest < Test::Unit::TestCase
     
     @target = shell {
       composite {
-        @check_box = button(SWT::CHECK) {
+        @check_box = button(:check) {
           selection bind(person, :adult)
         }
       }
@@ -107,7 +107,7 @@ class GlimmerDataBindingTest < Test::Unit::TestCase
     
     @target = shell {
       composite {
-        @radio = button(SWT::RADIO) {
+        @radio = button(:radio) {
           selection bind(person, :adult)
         }
       }
@@ -205,7 +205,7 @@ class GlimmerDataBindingTest < Test::Unit::TestCase
         @text = text {
           text bind(person, :age, :fixnum)
         }
-        @check_box = button(SWT::CHECK) {
+        @check_box = button(:check) {
           selection bind(person, :adult)
         }
       }

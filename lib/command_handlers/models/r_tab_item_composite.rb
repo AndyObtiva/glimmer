@@ -11,15 +11,21 @@ class RTabItemComposite < RWidget
     @tab_item.widget.control = self.widget
   end
   
-  def respond_to?(method_symbol, *args)
-    if method_symbol.to_s == "text"
+  def has_attribute?(attribute_name, *args)
+    if attribute_name.to_s == "text"
       true
     else
-      super(method_symbol, *args)
+      super(attribute_name, *args)
     end
   end
 
-  def text(text_value)
-    @tab_item.widget.text=text_value
+  def set_attribute(attribute_name, *args)
+    if attribute_name.to_s == "text"
+      text_value = args[0]
+      @tab_item.widget.text = text_value
+    else
+      super(attribute_name, *args)
+    end
   end
+
 end

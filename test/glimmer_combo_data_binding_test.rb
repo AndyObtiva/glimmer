@@ -82,7 +82,7 @@ class GlimmerComboDataBindingTest < Test::Unit::TestCase
     person.country = "Canada"
 
     @target = shell {
-      @combo = combo(read_only) {
+      @combo = combo(:read_only) {
         selection bind(person, :country)
       }
     }

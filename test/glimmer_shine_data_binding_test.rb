@@ -56,7 +56,7 @@ class GlimmerDataBindingTest < Test::Unit::TestCase
       composite {
         @label = label {}
         @text = text {}
-        @check_box = button(SWT::CHECK) {}
+        @check_box = button(:check) {}
       }
     }
     

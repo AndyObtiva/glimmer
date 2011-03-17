@@ -17,15 +17,15 @@ class GlimmerTest < Test::Unit::TestCase
 	
   def test_shell_with_default_layout
     @target = shell {
-      composite(border | no_focus) {
+      composite(:border, :no_focus) {
       }
     }
     
     assert_equal 1, @target.widget.children.size
     assert_instance_of Composite, @target.widget.children[0]
     composite_widget = @target.widget.children[0]
-    assert_has_style SWT::NO_FOCUS, composite_widget
-    assert_has_style SWT::BORDER, composite_widget
+    assert_has_style :no_focus, composite_widget
+    assert_has_style :border, composite_widget
   end
 end
 

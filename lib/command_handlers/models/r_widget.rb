@@ -27,40 +27,21 @@ class RWidget
     "table_column" => Proc.new { |table_column| table_column.setWidth(80) },
     "group" => Proc.new {|group| group.setLayout(GridLayout.new) },
   }
-  
-  def initialize(underscored_widget_name, parent, style, &contents)
-    style = default_style(underscored_widget_name) unless style
-    @widget = eval underscored_widget_name.to_s.camelcase + '.new(parent, style)'
+
+  #styles is a comma separate list of symbols representing SWT styles in lower case
+  def initialize(underscored_widget_name, parent, styles, &contents)
+    @widget = underscored_widget_name.swt_widget.new(parent, style(underscored_widget_name, styles))
     @@default_initializers[underscored_widget_name].call(@widget) if @@default_initializers[underscored_widget_name]
   end
   
-  def default_style(underscored_widget_name)
-    style = @@default_styles[underscored_widget_name] if @@default_styles[underscored_widget_name]
-    style = SWT::NONE unless style
-    style
+  def has_attribute?(attribute_name, *args)
+    @widget.respond_to?(attribute_setter(attribute_name), args)
   end
-  
-  def respond_to?(method_symbol, *args)
-    @widget.respond_to?("set#{method_symbol.to_s.camelcase(:upper)}", args)
+
+  def set_attribute(attribute_name, *args)
+    @widget.send(attribute_setter(attribute_name), *args)
   end
-  
-  def method_missing(method_symbol, *args)
-    statement_to_eval = "@widget.send('set' + method_symbol.to_s.camelcase(:upper)"
-    statement_to_eval << expand_arguments(args)
-    statement_to_eval << ")"
-    eval statement_to_eval
-  end
-  
-  def expand_arguments(args)
-    expanded_args = ""
-    index = 0
-    args.each do
-      expanded_args << ", args[#{index}]"
-      index += 1
-    end
-    expanded_args
-  end
-  
+
   def self.widget_exists?(underscored_widget_name)
     begin
       eval underscored_widget_name.camelcase
@@ -142,7 +123,31 @@ class RWidget
   end
   
   def has_style?(style)
-    (widget.style & style) == style
+    (widget.style & style.swt_constant) == style.swt_constant
   end
+
+  private
+
+  def style(underscored_widget_name, styles)
+    styles.empty? ? default_style(underscored_widget_name) : swt_style(styles)
+  end
+
+  def default_style(underscored_widget_name)
+    style = @@default_styles[underscored_widget_name] if @@default_styles[underscored_widget_name]
+    style = SWT::NONE unless style
+    style
+  end
+
+  def swt_style(styles)
+    swt_styles(styles).inject(0) { |combined_style, style| combined_style | style }
+  end
+
+  def swt_styles(styles)
+    styles.map(&:swt_constant)
+  end  
   
+  def attribute_setter(attribute_name)
+    "set#{attribute_name.to_s.camelcase(:upper)}"
+  end
+
 end

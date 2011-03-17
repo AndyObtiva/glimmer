@@ -15,7 +15,7 @@ class HelloCombo
     person = Person.new
     shell {
       composite {
-        combo(read_only) {
+        combo(:read_only) {
           selection bind(person, :country)
         }
         button {

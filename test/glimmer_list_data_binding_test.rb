@@ -153,7 +153,7 @@ class GlimmerListDataBindingTest < Test::Unit::TestCase
     person = Person.new
     
     @target = shell {
-      @list = list(multi) {
+      @list = list(:multi) {
         selection bind(person, :provinces)
       }
     }
@@ -189,7 +189,7 @@ class GlimmerListDataBindingTest < Test::Unit::TestCase
     person.provinces = []
     
     @target = shell {
-      @list = list(multi) {
+      @list = list(:multi) {
         selection bind(person, :provinces)
       }
     }

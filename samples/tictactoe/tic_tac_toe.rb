@@ -20,7 +20,7 @@ class TicTacToe
         (1..3).each { |row_number|
           (1..3).each { |column_number|
             button {
-              layout_data GridData.new(fill, fill, true, true)
+              layout_data GridData.new(:fill.swt_constant, :fill.swt_constant, true, true)
               text        bind(@tic_tac_toe_board.box(row_number, column_number), :sign)
               enabled     bind(@tic_tac_toe_board.box(row_number, column_number), :empty)
               on_widget_selected {

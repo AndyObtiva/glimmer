@@ -10,11 +10,9 @@ class HelloWorld
 	def launch
 		@shell = shell {
 			text "SWT"
-			composite {
-				label { 
-					text "Hello World!" 
-				}
-			}
+      label {
+        text "Hello World!"
+      }
 		}
     @shell.open
 	end

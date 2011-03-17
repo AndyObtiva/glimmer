@@ -8,15 +8,12 @@ class TabItemCommandHandler
   
   def can_handle?(parent, command_symbol, *args, &block)
     parent.is_a?(RWidget) and 
-      command_symbol.to_s == "tab_item" and
-      (args.size == 0 or 
-        (args.size == 1 and args[0].is_a?(Fixnum)))
+      command_symbol.to_s == "tab_item"
   end
   
   def do_handle(parent, command_symbol, *args, &block) 
-    style = args[0] if args.size == 1
-    tab_item = RWidget.new(command_symbol.to_s, parent.widget, style)
-    RTabItemComposite.new(tab_item, parent.widget, style)
+    tab_item = RWidget.new(command_symbol.to_s, parent.widget, args)
+    RTabItemComposite.new(tab_item, parent.widget, args)
   end
   
 end

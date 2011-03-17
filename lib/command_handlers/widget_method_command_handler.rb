@@ -8,11 +8,11 @@ class WidgetMethodCommandHandler
     parent.is_a?(RWidget) and 
       args.size > 0 and
       block == nil and
-      parent.respond_to?(command_symbol, *args)
+      parent.has_attribute?(command_symbol, *args)
   end
   
   def do_handle(parent, command_symbol, *args, &block) 
-    parent.send(command_symbol, *args)
+    parent.set_attribute(command_symbol, *args)
     nil
   end
   
