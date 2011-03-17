@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{glimmer}
-  s.version = "0.1.2"
+  s.version = "0.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Andy Maleh"]
-  s.date = %q{2011-02-22}
+  s.date = %q{2011-03-17}
   s.default_executable = %q{glimmer}
   s.description = %q{JRuby DSL that enables easy and efficient authoring of user-interfaces using the robust platform-independent Eclipse SWT library}
   s.email = %q{andy@obtiva.com}
@@ -49,7 +49,6 @@ Gem::Specification.new do |s|
     "lib/command_handlers/models/table_items_updater.rb",
     "lib/command_handlers/models/widget_observer.rb",
     "lib/command_handlers/shell_command_handler.rb",
-    "lib/command_handlers/swt_constant_command_handler.rb",
     "lib/command_handlers/tab_item_command_handler.rb",
     "lib/command_handlers/table_column_properties_data_binding_command_handler.rb",
     "lib/command_handlers/table_items_data_binding_command_handler.rb",
@@ -59,6 +58,8 @@ Gem::Specification.new do |s|
     "lib/glimmer.rb",
     "lib/parent.rb",
     "lib/shine.rb",
+    "lib/string.rb",
+    "lib/symbol.rb",
     "lib/xml_command_handlers.rb",
     "lib/xml_command_handlers/html_command_handler.rb",
     "lib/xml_command_handlers/models/depth_first_search_iterator.rb",
