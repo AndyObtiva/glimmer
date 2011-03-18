@@ -17,11 +17,12 @@ Getting Started
 ---
 1. Download the "SWT binary and source" archive from the Eclipse site and follow their instructions.
    [http://www.eclipse.org/swt/](http://www.eclipse.org/swt/)
-2. Download and setup jRuby 1.5.6 (rvm install jruby -v1.5.6)
-3. Install bundler (gem install bundler)
-4. Install project required gems (bundle install)
-5. Write a program that requires the file "lib/glimmer.rb" (or glimmer gem) and has the UI class (view) include the Glimmer module
-6. Run your program with jruby
+2. Add swt.jar to your environment Java classpath (e.g. export CLASSPATH="/path_to_swt_jar/swt.jar")
+3. Download and setup jRuby 1.5.6 (rvm install jruby -v1.5.6)
+4. Install bundler (gem install bundler)
+5. Install project required gems (bundle install)
+6. Write a program that requires the file "lib/glimmer.rb" (or glimmer gem) and has the UI class (view) include the Glimmer module
+7. Run your program with jruby (pass -J-XstartOnFirstThread option if on the Mac)
 
 Samples
 ---
@@ -30,7 +31,7 @@ Check the "samples" folder for examples on how to write Glimmer applications.
 Mac Support
 ---
 In order to run Glimmer on the Mac, you need to pass an extra option to JRuby. For example:
-jruby samples/hello_world.rb -XstartOnFirstThread
+jruby -J-XstartOnFirstThread samples/hello_world.rb
 
 Background
 ---
