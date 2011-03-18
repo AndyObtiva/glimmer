@@ -10,8 +10,12 @@ class ContactManagerPresenter
     @results = []
   end
   
+  def list
+    self.results=@contact_repository.find({})
+  end
+  
   def find
-    filter_map = Hash.new
+    filter_map = {}
     @@contact_attributes.each do |attribute_name| 
       filter_map[attribute_name] = self.send(attribute_name) if self.send(attribute_name)
     end

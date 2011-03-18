@@ -48,13 +48,22 @@ class ContactManager
           text "Email"
           width 120
         }
-        items bind(contact_manager_presenter, :results), column_properties(:first_name, :last_name, :email)
+        items bind(contact_manager_presenter, :results), 
+              column_properties(:first_name, :last_name, :email)
       }
-      
-      button {
-        text "&Find"
-        on_widget_selected {
-          contact_manager_presenter.find
+      composite {
+        layout GridLayout.new(2, false)
+        button {
+          text "&List"
+          on_widget_selected {
+            contact_manager_presenter.list
+          }
+        }
+        button {
+          text "&Find"
+          on_widget_selected {
+            contact_manager_presenter.find
+          }
         }
       }
     }

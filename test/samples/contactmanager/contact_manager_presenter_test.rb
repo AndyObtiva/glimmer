@@ -47,6 +47,30 @@ class ContactManagerPresenterTest < Test::Unit::TestCase
     assert_equal 0, contacts.size
   end
   
+  def test_find_specify_no_fields_for_all_results
+    contact_manager_presenter = ContactManagerPresenter.new
+    contact_manager_presenter.find
+    contacts = contact_manager_presenter.results
+    assert_not_nil contacts
+    assert_equal 4, contacts.size
+    assert_equal "Anne", contacts[0].first_name
+    assert_equal "Beatrice", contacts[1].first_name
+    assert_equal "Frank", contacts[2].first_name
+    assert_equal "franky", contacts[3].first_name
+  end
+  
+  def test_list_all_results
+    contact_manager_presenter = ContactManagerPresenter.new
+    contact_manager_presenter.list
+    contacts = contact_manager_presenter.results
+    assert_not_nil contacts
+    assert_equal 4, contacts.size
+    assert_equal "Anne", contacts[0].first_name
+    assert_equal "Beatrice", contacts[1].first_name
+    assert_equal "Frank", contacts[2].first_name
+    assert_equal "franky", contacts[3].first_name
+  end
+  
   def test_initial_results
     contact_manager_presenter = ContactManagerPresenter.new
     contacts = contact_manager_presenter.results
