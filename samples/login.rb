@@ -32,8 +32,6 @@ class LoginPresenter
   end
   
   def login
-    self.user_name = ""
-    self.password = ""
     self.status = "Logged In"
   end
   
