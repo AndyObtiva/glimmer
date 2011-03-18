@@ -7,6 +7,10 @@ class Person
     self.country_options=["", "Canada", "US", "Mexico"]
     self.country = "Canada"
   end
+  
+  def reset_country
+    self.country = "Canada"
+  end  
 end
 
 class HelloCombo
@@ -21,7 +25,7 @@ class HelloCombo
         button {
           text "Reset"
           on_widget_selected do
-            person.country = "Canada"
+            person.reset_country
           end
         }
       }
