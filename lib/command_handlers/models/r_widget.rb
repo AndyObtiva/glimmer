@@ -149,5 +149,4 @@ class RWidget
   def attribute_setter(attribute_name)
     "set#{attribute_name.to_s.camelcase(:upper)}"
   end
-
 end
