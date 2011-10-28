@@ -1,13 +1,13 @@
 require File.dirname(__FILE__) + "/node_visitor"
 
 class XmlVisitor < NodeVisitor
-  
+
   attr_reader :document
-  
+
   def initialize
     @document = ""
   end
-  
+
   def process_before_children(node)
     if (node.is_a?(String))
       @document << node
@@ -17,27 +17,27 @@ class XmlVisitor < NodeVisitor
     append_attributes(node) if node.attributes
     end_open_tag(node)
   end
-  
+
   def process_after_children(node)
     return if (node.is_a?(String))
     append_close_tag(node)
   end
-  
+
   def begin_open_tag(node)
     @document << "<"
     @document << "#{node.name_space.name}:" if node.name_space
     @document << node.name
   end
-  
+
   def end_open_tag(node)
-    if (node.contents) 
+    if (node.contents)
       @document << ">"
     else
       @document << " " if node.attributes.keys.size > 0
       @document << "/>"
     end
   end
-  
+
   def append_close_tag(node)
     if (node.contents)
       @document << "</"
@@ -45,7 +45,7 @@ class XmlVisitor < NodeVisitor
       @document << "#{node.name}>"
     end
   end
-  
+
   def append_attributes(node)
     puts "Take 3"
     p node.attributes
@@ -55,5 +55,5 @@ class XmlVisitor < NodeVisitor
       @document << " #{attribute_name}=\"#{node.attributes[attribute]}\""
     end
   end
-  
+
 end

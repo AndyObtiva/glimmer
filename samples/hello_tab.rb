@@ -8,14 +8,14 @@ class HelloTab
       tab_folder {
         tab_item {
           text "Tab 1"
-          label { 
-            text "Hello World!" 
+          label {
+            text "Hello World!"
           }
         }
         tab_item {
           text "Tab 2"
-          label { 
-            text "Bonjour Univers!" 
+          label {
+            text "Bonjour Univers!"
           }
         }
       }

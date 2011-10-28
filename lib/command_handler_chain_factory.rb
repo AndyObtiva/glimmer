@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + "/command_handler_chain_link"
 
 class CommandHandlerChainFactory
   @@dsls = {}
-  
+
   def self.def_dsl(dsl, *command_handler_array)
     @@last_chain_link = nil
     @@chain = nil
@@ -23,7 +23,7 @@ class CommandHandlerChainFactory
     @@last_chain_link = @@dsls[dsl][:last_chain_link]
     @@chain = @@dsls[dsl][:chain]
   end
-  
+
   def self.chain
     @@chain
   end

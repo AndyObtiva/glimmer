@@ -5,7 +5,7 @@ require File.dirname(__FILE__) + "/models/list_observer"
 class ListSelectionDataBindingCommandHandler
   include CommandHandler
   include Glimmer
-  
+
   include_package 'org.eclipse.swt.widgets'
 
   def can_handle?(parent, command_symbol, *args, &block)
@@ -17,7 +17,7 @@ class ListSelectionDataBindingCommandHandler
     args[0].evaluate_options_property.is_a?(Array) and
     block == nil
   end
-  
+
   def do_handle(parent, command_symbol, *args, &block)
     model_observer = args[0]
     widget_observer = WidgetObserver.new(parent, "items")
@@ -31,7 +31,7 @@ class ListSelectionDataBindingCommandHandler
     list_observer = ListObserver.new(parent, property_type)
     list_observer.update(model_observer.evaluate_property)
     model.add_observer(model_observer.property_name, list_observer)
-    
+
     add_contents(parent) {
       on_widget_selected {
         model_observer.update(list_observer.evaluate_property)

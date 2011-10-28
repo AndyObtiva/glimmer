@@ -2,9 +2,9 @@ require File.dirname(__FILE__) + "/glimmer"
 
 class Array
   include Glimmer
-  
+
   alias original_compare <=>
-  
+
   def <=>(other)
     if (self[0].class.name == "RWidget")
       add_contents(self[0]) {

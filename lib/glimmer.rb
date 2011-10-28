@@ -1,6 +1,6 @@
 # Glimmer - a JRuby DSL that enables easy and efficient authoring of user
-# interfaces using the robust platform-independent Eclipse SWT library. Glimmer 
-# comes with built-in data-binding support to greatly facilitate synchronizing 
+# interfaces using the robust platform-independent Eclipse SWT library. Glimmer
+# comes with built-in data-binding support to greatly facilitate synchronizing
 # UI with domain models.
 
 require "rubygems"
@@ -11,9 +11,9 @@ require File.dirname(__FILE__) + "/symbol"
 require File.dirname(__FILE__) + "/parent"
 
 module Glimmer
-  
+
   include_package 'org.eclipse.swt'
-  
+
   @@parent_stack = []
 
   def self.method_missing(method_symbol, *args, &block)
@@ -35,7 +35,7 @@ module Glimmer
   end
 
   #added for convenience
-  
+
   def method_missing(method_symbol, *args, &block)
     Glimmer.method_missing(method_symbol, *args, &block)
   end

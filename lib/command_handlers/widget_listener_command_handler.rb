@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + "/models/r_widget"
 
 class WidgetListenerCommandHandler
   include CommandHandler
-  
+
   include_package 'org.eclipse.swt.widgets'
 
   def can_handle?(parent, command_symbol, *args, &block)
@@ -18,20 +18,20 @@ class WidgetListenerCommandHandler
     puts "can add listener? " + (parent.can_add_listener?(command_symbol.to_s[3, command_symbol.to_s.length])).to_s
     parent.can_add_listener?(command_symbol.to_s[3, command_symbol.to_s.length])
   end
-  
+
   def do_handle(parent, command_symbol, *args, &block)
     parent.add_listener(command_symbol.to_s[3, command_symbol.to_s.length], &block)
     ListenerParent.new #TODO refactor and move to models
   end
-  
+
   #TODO refactor and move to separate file
   class ListenerParent
       include Parent
-      
+
     def process_block(block)
       #NOOP
     end
-    
+
   end
-  
+
 end

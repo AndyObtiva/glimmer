@@ -4,7 +4,7 @@ require File.dirname(__FILE__) + "/observable_model"
 class TableItemsUpdater
   include_package 'org.eclipse.swt'
   include_package 'org.eclipse.swt.widgets'
-  
+
   def initialize(parent, model_observer, column_properties)
     @table = parent
     @model_observer = model_observer
@@ -31,6 +31,6 @@ class TableItemsUpdater
       end
     end
   end
-  
+
 end
-  
+

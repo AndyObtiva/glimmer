@@ -4,7 +4,7 @@ require File.dirname(__FILE__) + "/models/model_observer"
 
 class BindCommandHandler
   include CommandHandler
-  
+
   include_package 'org.eclipse.swt.widgets'
 
   def can_handle?(parent, command_symbol, *args, &block)
@@ -17,10 +17,10 @@ class BindCommandHandler
     (args[2].is_a?(Symbol) or args[2].is_a?(String)))) and
     block == nil
   end
-  
+
   def do_handle(parent, command_symbol, *args, &block)
     property_type = args[2] if (args.size == 3)
     ModelObserver.new(args[0], args[1].to_s, property_type)
   end
-  
+
 end

@@ -3,14 +3,14 @@ require File.dirname(__FILE__) + "/r_runnable"
 
 class RTabItemComposite < RWidget
   include_package 'org.eclipse.swt.widgets'
-  
+
   attr_reader :tab_item
   def initialize(tab_item, parent, style, &contents)
     super("composite", parent, style, &contents)
     @tab_item = tab_item
     @tab_item.widget.control = self.widget
   end
-  
+
   def has_attribute?(attribute_name, *args)
     if attribute_name.to_s == "text"
       true

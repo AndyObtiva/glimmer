@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + "/models/r_widget"
 
 class TableColumnPropertiesDataBindingCommandHandler
   include CommandHandler
-  
+
   include_package 'org.eclipse.swt'
   include_package 'org.eclipse.swt.widgets'
 
@@ -13,9 +13,9 @@ class TableColumnPropertiesDataBindingCommandHandler
     command_symbol.to_s == "column_properties" and
     block == nil
   end
-  
+
   def do_handle(parent, command_symbol, *args, &block)
     args
   end
-  
+
 end

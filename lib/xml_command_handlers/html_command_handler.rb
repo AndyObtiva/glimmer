@@ -3,20 +3,20 @@ require File.dirname(__FILE__) + "/models/node"
 
 class HtmlCommandHandler
   include CommandHandler
-  
+
   def can_handle?(parent, command_symbol, *args, &block)
     (parent == nil or parent.is_a?(Node)) and
     (args.size == 0 or ((args.size == 1) and ((args[0].is_a?(Hash)) or (args[0].is_a?(Hash)))))
   end
-  
+
   def do_handle(parent, command_symbol, *args, &block)
     attributes = Hash.new
-    attributes = args[0] if (args.size == 1) 
+    attributes = args[0] if (args.size == 1)
     append_id_and_class_attributes(command_symbol.to_s, attributes)
     tag_name = parse_tag_name(command_symbol.to_s)
     Node.new(parent, tag_name, attributes, &block)
   end
-  
+
   def parse_tag_name(command)
     match_data = command.match("_")
     if (match_data.to_a.size > 0)
@@ -25,11 +25,11 @@ class HtmlCommandHandler
       command
     end
   end
-  
+
   def append_id_and_class_attributes(command, attributes)
     class_only_match = command.match("__.+").to_s
     if class_only_match.length > 0
-      class_value = class_only_match[2, class_only_match.length] 
+      class_value = class_only_match[2, class_only_match.length]
     else
       match_data = command.match("_[^_]+")
       return unless match_data
@@ -41,5 +41,5 @@ class HtmlCommandHandler
     end
     attributes[:class] = class_value if class_value
   end
-  
+
 end
