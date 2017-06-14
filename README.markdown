@@ -53,5 +53,5 @@ Contributors
 
 License
 ---
-Copyright (c) 2011 Annas Al Maleh.
+Copyright (c) 2007-2017 Annas Al Maleh.
 See LICENSE.txt for further details.
