@@ -1,6 +1,8 @@
-Glimmer
+Glimmer (The Original One And Only)
 ===
-Glimmer is a JRuby DSL that enables easy and efficient authoring of desktop application user-interfaces. It relies on the robust platform-independent Eclipse SWT library. Glimmer comes with built-in data-binding support to greatly facilitate synchronizing UI with domain models.
+Glimmer is a cross-platform Ruby desktop development library. Glimmer's main innovation is a JRuby DSL that enables easy and efficient authoring of desktop application user-interfaces while relying on the robust platform-independent Eclipse SWT library. Glimmer additionally innovates by having built-in desktop UI data-binding support to greatly facilitate synchronizing the UI with domain models. As a result, that achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about UI concerns, or alternatively drive development UI-first, and then write clean business components test-first afterward.
+
+You may learn more by reading this article: * [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer)
 
 ![Glimmer](https://github.com/AndyObtiva/glimmer/raw/master/images/Bitter-sweet.jpg)
 
@@ -16,7 +18,7 @@ Example
 Getting Started
 ---
 1. Download the "SWT binary and source" archive from the Eclipse site and follow their instructions.
-   [http://www.eclipse.org/swt/](http://www.eclipse.org/swt/)
+   [http://www.eclipse.org/swt/](http://www.eclipse.org/swt/) ( e.g. http://download.eclipse.org/eclipse/downloads/drops4/R-4.6.3-201703010400/#SWT )
 2. Add swt.jar to your environment Java classpath (e.g. export CLASSPATH="/path_to_swt_jar/swt.jar")
 3. Download and setup jRuby 1.5.6 (rvm install jruby -v1.5.6)
 4. Install bundler (gem install bundler)
