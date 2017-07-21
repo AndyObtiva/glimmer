@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.authors = ["Andy Maleh".freeze]
   s.date = "2017-07-21"
   s.description = "JRuby DSL that enables easy and efficient authoring of user-interfaces using the robust platform-independent Eclipse SWT library".freeze
-  s.email = "andy@obtiva.com".freeze
+  s.email = "andy.am@gmail.com".freeze
   s.executables = ["glimmer".freeze]
   s.extra_rdoc_files = [
     "LICENSE.txt",
