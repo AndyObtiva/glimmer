@@ -13,7 +13,7 @@ class WidgetCommandHandler
   end
   
   def do_handle(parent, command_symbol, *args, &block)
-    puts "widget styles are: " + args.inspect
+    Glimmer.logger.debug "widget styles are: " + args.inspect
     RWidget.new(command_symbol.to_s, parent.widget, args)
   end
   

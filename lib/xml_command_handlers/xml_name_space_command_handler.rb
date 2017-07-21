@@ -20,7 +20,7 @@ class XmlNameSpaceCommandHandler
       name_space_visitor = NameSpaceVisitor.new(args[0].to_s)
       DepthFirstSearchIterator.new(node, name_space_visitor).iterate
       def node.process_block(block) 
-      puts 'block'
+      Glimmer.logger.debug 'block'
         #NOOP
       end
     end

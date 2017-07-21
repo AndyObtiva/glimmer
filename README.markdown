@@ -25,6 +25,32 @@ You may learn more by reading this article: * [Eclipse Zone Tutorial](http://ecl
 6. Write a program that requires the file "lib/glimmer.rb" (or glimmer gem) and has the UI class (view) include the Glimmer module
 7. Run your program with `bin/glimmer` or jruby (pass `-J-XstartOnFirstThread` option if on the Mac)
 
+## Logging
+
+Glimmer comes with a Ruby Logger accessible via `Glimmer.logger`
+Its level of logging defaults to `Logger::WARN`
+It may be configured to show a different level of logging as follows:
+```ruby
+Glimmer.logger.level = Logger::DEBUG
+```
+This results in more verbose debugging log to `STDOUT`, which is helpful in troubleshooting Glimmer DSL syntax when needed.
+
+Example log:
+```
+D, [2017-07-21T19:23:12.587870 #35707] DEBUG -- : method: shell and args: []
+D, [2017-07-21T19:23:12.594405 #35707] DEBUG -- : ShellCommandHandler will handle command: shell with arguments []
+D, [2017-07-21T19:23:12.844775 #35707] DEBUG -- : method: composite and args: []
+D, [2017-07-21T19:23:12.845388 #35707] DEBUG -- : parent is a widget: true
+D, [2017-07-21T19:23:12.845833 #35707] DEBUG -- : on listener?: false
+D, [2017-07-21T19:23:12.864395 #35707] DEBUG -- : WidgetCommandHandler will handle command: composite with arguments []
+D, [2017-07-21T19:23:12.864893 #35707] DEBUG -- : widget styles are: []
+D, [2017-07-21T19:23:12.874296 #35707] DEBUG -- : method: list and args: [:multi]
+D, [2017-07-21T19:23:12.874969 #35707] DEBUG -- : parent is a widget: true
+D, [2017-07-21T19:23:12.875452 #35707] DEBUG -- : on listener?: false
+D, [2017-07-21T19:23:12.878434 #35707] DEBUG -- : WidgetCommandHandler will handle command: list with arguments [:multi]
+D, [2017-07-21T19:23:12.878798 #35707] DEBUG -- : widget styles are: [:multi]
+```
+
 ## Samples
 
 Check the "samples" folder for examples on how to write Glimmer applications.

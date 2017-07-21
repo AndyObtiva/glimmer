@@ -47,7 +47,7 @@ class XmlVisitor < NodeVisitor
   end
   
   def append_attributes(node)
-    puts "Take 3"
+    Glimmer.logger.debug "Take 3"
     p node.attributes
     node.attributes.each_key do |attribute|
       attribute_name = attribute
