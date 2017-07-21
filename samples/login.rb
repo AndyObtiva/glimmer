@@ -1,6 +1,6 @@
 require "java"
 require "observer"
-require File.dirname(__FILE__) + "/../lib/glimmer"
+require_relative "../lib/glimmer"
 
 #Presents login screen data
 class LoginPresenter

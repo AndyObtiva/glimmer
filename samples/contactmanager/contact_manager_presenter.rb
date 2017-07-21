@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + "/contact_repository"
+require_relative "contact_repository"
 
 class ContactManagerPresenter
   attr_accessor :results

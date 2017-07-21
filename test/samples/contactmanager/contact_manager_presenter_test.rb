@@ -1,5 +1,5 @@
-require File.dirname(__FILE__) + "/../../helper"
-require File.dirname(__FILE__) + "/../../../samples/contactmanager/contact_manager_presenter"
+require_relative "../../helper"
+require_relative "../../../samples/contactmanager/contact_manager_presenter"
 
 class ContactManagerPresenterTest < Test::Unit::TestCase
 

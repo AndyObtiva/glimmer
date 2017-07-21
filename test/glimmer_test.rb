@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + "/helper"
+require_relative "helper"
 
 class GlimmerTest < Test::Unit::TestCase
   include Glimmer
@@ -163,7 +163,7 @@ class GlimmerTest < Test::Unit::TestCase
     assert_equal 55, @spinner.widget.getSelection
   end
 
-  def test_shell_and_spinner_default
+  def test_shell_and_list_default
     @target = shell {
       @list = list {
       }
@@ -233,6 +233,5 @@ class GlimmerTest < Test::Unit::TestCase
     assert_has_style :password, text_widget
     assert_equal "Hello", text_widget.getText
   end
-  
-end
 
+end

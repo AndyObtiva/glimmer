@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + "/helper"
+require_relative "helper"
 
-require File.dirname(__FILE__) + "/../lib/shine"
+require_relative "../lib/shine"
 
 class GlimmerDataBindingTest < Test::Unit::TestCase
   include Glimmer

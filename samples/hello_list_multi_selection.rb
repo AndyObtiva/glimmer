@@ -1,26 +1,26 @@
-require File.dirname(__FILE__) + "/../lib/glimmer"
+require_relative "../lib/glimmer"
 
-class Person 
+class Person
   attr_accessor :provinces, :provinces_options
-  
+
   def initialize
     self.provinces_options=[
-      "", 
-      "Quebec", 
-      "Ontario", 
-      "Manitoba", 
-      "Saskatchewan", 
-      "Alberta", 
-      "British Columbia", 
-      "Nova Skotia", 
+      "",
+      "Quebec",
+      "Ontario",
+      "Manitoba",
+      "Saskatchewan",
+      "Alberta",
+      "British Columbia",
+      "Nova Skotia",
       "Newfoundland"
     ]
     self.provinces = ["Quebec", "Manitoba", "Alberta"]
   end
-  
+
   def reset_provinces
     self.provinces = ["Quebec", "Manitoba", "Alberta"]
-  end  
+  end
 end
 
 class HelloListMultiSelection

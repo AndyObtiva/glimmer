@@ -19,10 +19,8 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{JRuby DSL that enables easy and efficient authoring of user-interfaces using the robust platform-independent Eclipse SWT library}
   gem.email = "andy@obtiva.com"
   gem.authors = ["Andy Maleh"]
-  # Include your dependencies below. Runtime dependencies are required when using your gem,
-  # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
-  gem.add_runtime_dependency 'facets', '2.9.0'
-  #  gem.add_development_dependency 'rspec', '> 1.2.3'
+  gem.executables = ['glimmer']
+  # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
 
@@ -31,24 +29,7 @@ Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'samples' << 'test'
   test.pattern = 'test/**/*_test.rb'
   test.verbose = true
-  test.ruby_opts = ['-J-XstartOnFirstThread']
-end
-
-require 'rcov/rcovtask'
-Rcov::RcovTask.new do |test|
-  test.libs << 'test'
-  test.pattern = 'test/**/*_test.rb'
-  test.verbose = true
+  test.ruby_opts = ['-J-XstartOnFirstThread -Xcli.debug=true --debug']
 end
 
 task :default => :test
-
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "glimmer #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end

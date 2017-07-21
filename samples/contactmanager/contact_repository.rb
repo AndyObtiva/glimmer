@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + "/contact"
+require_relative "contact"
 
 class ContactRepository
   def initialize

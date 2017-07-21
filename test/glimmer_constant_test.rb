@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + "/helper"
+require_relative "helper"
 
 class GlimmerTest < Test::Unit::TestCase
   include Glimmer
@@ -14,13 +14,13 @@ class GlimmerTest < Test::Unit::TestCase
 	def teardown
 		@target.display.dispose if @target.display
 	end
-	
-  def test_shell_with_default_layout
+
+  def test_shell_with_default_layout_and_composite
     @target = shell {
       composite(:border, :no_focus) {
       }
     }
-    
+
     assert_equal 1, @target.widget.children.size
     assert_instance_of Composite, @target.widget.children[0]
     composite_widget = @target.widget.children[0]
@@ -28,4 +28,3 @@ class GlimmerTest < Test::Unit::TestCase
     assert_has_style :border, composite_widget
   end
 end
-

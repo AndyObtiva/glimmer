@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + "/helper"
+require_relative "helper"
 
-require File.dirname(__FILE__) + "/../lib/command_handlers/models/observable_model"
+require_relative "../lib/command_handlers/models/observable_model"
 
 require "test/unit"
 class ObservableModelTest < Test::Unit::TestCase

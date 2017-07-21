@@ -1,5 +1,5 @@
-require File.dirname(__FILE__) + "/../helper"
-require File.dirname(__FILE__) + "/../../lib/parent"
+require_relative "../helper"
+require_relative "../../lib/parent"
 
 class GlimmerXmlTest < Test::Unit::TestCase
   include Glimmer

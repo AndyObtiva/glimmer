@@ -1,5 +1,5 @@
-require File.dirname(__FILE__) + "/contact_manager_presenter"
-require File.dirname(__FILE__) + "/../../lib/glimmer"
+require_relative "contact_manager_presenter"
+require_relative "../../lib/glimmer"
 
 class RWidget
   include_package 'org.eclipse.jface.viewers'

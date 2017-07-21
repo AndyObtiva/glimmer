@@ -44,16 +44,16 @@ class RWidget
 
   def self.widget_exists?(underscored_widget_name)
     begin
-      eval underscored_widget_name.camelcase
+      eval underscored_widget_name.camelcase(:upper)
       true
-    rescue NameError        
+    rescue NameError
       false
     end
   end
-  
+
   def widget_listener_exists?(underscored_listener_name)
     listener_method_name = underscored_listener_name.listener_method_name(:lower)
-    @widget.getClass.getMethods.each do |widget_method| 
+    @widget.getClass.getMethods.each do |widget_method|
       if widget_method.getName.match(/add.*Listener/)
         widget_method.getParameterTypes.each do |listener_type|
           listener_type.getMethods.each do |listener_method|

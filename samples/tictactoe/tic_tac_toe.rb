@@ -1,5 +1,5 @@
-require File.dirname(__FILE__) + "/../../lib/glimmer"
-require File.dirname(__FILE__) + "/tic_tac_toe_board"
+require_relative "../../lib/glimmer"
+require_relative "tic_tac_toe_board"
 
 
 class TicTacToe

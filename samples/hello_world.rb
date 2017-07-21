@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + "/../lib/glimmer"
+require_relative "../lib/glimmer"
 
 include Glimmer
 

@@ -1,5 +1,5 @@
-require File.dirname(__FILE__) + "/../../helper"
-require File.dirname(__FILE__) + "/../../../samples/tictactoe/tic_tac_toe_board"
+require_relative "../../helper"
+require_relative "../../../samples/tictactoe/tic_tac_toe_board"
 
 class TicTacToeTest < Test::Unit::TestCase
 

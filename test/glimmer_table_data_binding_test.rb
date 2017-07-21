@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + "/helper"
+require_relative "helper"
 
 class GlimmerTableDataBindingTest < Test::Unit::TestCase
   include Glimmer
