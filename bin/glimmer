@@ -1,2 +1,3 @@
-#!/bin/bash
-ruby -J-XstartOnFirstThread $1
+#!/usr/bin/env ruby
+
+`ruby -J-XstartOnFirstThread #{ARGV.first}`
