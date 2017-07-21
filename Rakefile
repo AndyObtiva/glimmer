@@ -18,7 +18,7 @@ Jeweler::Tasks.new do |gem|
   gem.summary = %Q{Desktop application development library}
   gem.description = %Q{JRuby DSL that enables easy and efficient authoring of user-interfaces using the robust platform-independent Eclipse SWT library}
   gem.email = "andy.am@gmail.com"
-  gem.authors = ["Andy Maleh"]
+  gem.authors = ["AndyMaleh"]
   gem.executables = ['glimmer']
   # dependencies defined in Gemfile
 end

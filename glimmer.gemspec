@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
-  s.authors = ["Andy Maleh".freeze]
+  s.authors = ["AndyMaleh".freeze]
   s.date = "2017-07-21"
   s.description = "JRuby DSL that enables easy and efficient authoring of user-interfaces using the robust platform-independent Eclipse SWT library".freeze
   s.email = "andy.am@gmail.com".freeze
