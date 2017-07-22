@@ -2,28 +2,66 @@
 
 Glimmer is a cross-platform Ruby desktop development library. Glimmer's main innovation is a JRuby DSL that enables easy and efficient authoring of desktop application user-interfaces while relying on the robust platform-independent Eclipse SWT library. Glimmer additionally innovates by having built-in desktop UI data-binding support to greatly facilitate synchronizing the UI with domain models. As a result, that achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about UI concerns, or alternatively drive development UI-first, and then write clean business components test-first afterward.
 
-You may learn more by reading this article: * [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer)
+You may learn more by reading this article: [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer)
 
 ![Glimmer](https://github.com/AndyObtiva/glimmer/raw/master/images/Bitter-sweet.jpg)
 
 ## Example
 
+```ruby
     shell {
       text "Example"
       label {
         text "Hello World!"
       }
     }.open
+```
 
-## Getting Started
+## Setup
 
-1. Download and extract the ["SWT binary and source"](http://download.eclipse.org/eclipse/downloads/drops4/R-4.7-201706120950/#SWT).
-2. Add swt.jar to your Java CLASSPATH environment (e.g. `export CLASSPATH="/path_to_swt_jar/swt.jar"`)
-3. Download and setup jRuby 1.5.6 (`rvm install jruby-9.1.12.0`)
-4. Install bundler (gem install bundler)
-5. Install project required gems (bundle install)
-6. Write a program that requires the file "lib/glimmer.rb" (or glimmer gem) and has the UI class (view) include the Glimmer module
-7. Run your program with `bin/glimmer` or jruby (pass `-J-XstartOnFirstThread` option if on the Mac)
+Please follow these instructions to make the `glimmer` command available on your system.
+
+### Option 1: Bundler
+
+Add the following to `Gemfile`:
+```
+gem 'glimmer', '~> 0.1.5.470'
+```
+
+And, then run:
+```
+bundle install
+```
+
+### Option 2: Direct RubyGem
+
+Run this command to get directly:
+```
+gem install glimmer -v 0.1.5.470
+```
+
+## Usage
+
+Usage: `glimmer [--setup] [application_ruby_file_path.rb]`
+
+Example 1: `glimmer hello_combo.rb`
+This runs the Glimmer application hello_combo.rb
+If the SWT Jar is missing, it downloads it and sets it up first.
+
+Example 2: `glimmer --setup hello_combo.rb`
+This performs setup and then runs the Glimmer application hello_combo.rb
+It downloads and sets up the SWT jar whether missing or not.
+
+Example 3: `glimmer --setup`
+This downloads and sets up the SWT jar whether missing or not.    
+
+## Samples
+
+Check the "samples" folder for examples on how to write Glimmer applications.
+
+## Background
+
+Ruby is a dynamically-typed object-oriented language, which provides great productivity gains due to its powerful expressive syntax and dynamic nature. While it is proven by the Ruby on Rails framework for web development, it currently lacks a robust platform-independent framework for building desktop applications. Given that Java libraries can now be utilized in Ruby code through JRuby, Eclipse technologies, such as SWT, JFace, and RCP can help fill the gap of desktop application development with Ruby.
 
 ## Logging
 
@@ -51,18 +89,22 @@ D, [2017-07-21T19:23:12.878434 #35707] DEBUG -- : WidgetCommandHandler will hand
 D, [2017-07-21T19:23:12.878798 #35707] DEBUG -- : widget styles are: [:multi]
 ```
 
-## Samples
-
-Check the "samples" folder for examples on how to write Glimmer applications.
-
 ## Mac Support
 
 In order to run Glimmer on the Mac, you need to pass an extra option to JRuby. For example:
 `jruby -J-XstartOnFirstThread samples/hello_world.rb`
 
-## Background
+## Contributing to Glimmer
 
-Ruby is a dynamically-typed object-oriented language, which provides great productivity gains due to its powerful expressive syntax and dynamic nature. While it is proven by the Ruby on Rails framework for web development, it currently lacks a robust platform-independent framework for building desktop applications. Given that Java libraries can now be utilized in Ruby code through JRuby, Eclipse technologies, such as SWT, JFace, and RCP can help fill the gap of desktop application development with Ruby.
+Please follow these instructions if you would like to help us develop Glimmer:
+
+1. Download and extract the ["SWT binary and source"](http://download.eclipse.org/eclipse/downloads/drops4/R-4.7-201706120950/#SWT).
+2. Add swt.jar to your Java CLASSPATH environment (e.g. `export CLASSPATH="$CLASSPATH:/path_to_swt_jar/swt.jar"`)
+3. Download and setup jRuby 1.5.6 (`rvm install jruby-9.1.12.0`)
+4. Install bundler (gem install bundler)
+5. Install project required gems (bundle install)
+6. Write a program that requires the file "lib/glimmer.rb" (or glimmer gem) and has the UI class (view) include the Glimmer module
+7. Run your program with `bin/glimmer` or jruby (pass `-J-XstartOnFirstThread` option if on the Mac)
 
 ## Resources
 

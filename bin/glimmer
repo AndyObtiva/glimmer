@@ -1,3 +1,4 @@
 #!/usr/bin/env ruby
 
-`ruby -J-XstartOnFirstThread #{ARGV.first}`
+require_relative File.join('..', 'lib', 'glimmer_application')
+GlimmerApplication.new(ARGV).start
