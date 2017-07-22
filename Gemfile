@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'facets', '3.1.0'
+gem 'os', '1.0.0'
 
 group :development do
   gem "rdoc", "~> 2.3.0"

@@ -1,9 +1,20 @@
 require 'net/http'
 require 'fileutils'
+require 'os'
 
 class GlimmerApplication
   SWT_ZIP_FILE = File.join(`echo ~`.strip, '.glimmer', 'vendor', 'swt.zip')
   SWT_JAR_FILE = File.join(File.dirname(SWT_ZIP_FILE), 'swt.jar')
+
+  OPERATING_SYSTEMS = ["mac", "windows", "linux"]
+
+  SWT_URL = {
+    "mac_x86_64" => "http://mirror.csclub.uwaterloo.ca/eclipse/eclipse/downloads/drops4/R-4.7-201706120950/swt-4.7-cocoa-macosx-x86_64.zip",
+    "linux_x86_64" => "http://mirror.cc.vt.edu/pub/eclipse/eclipse/downloads/drops4/R-4.7-201706120950/swt-4.7-gtk-linux-x86_64.zip",
+    "linux_x86" => "http://mirror.csclub.uwaterloo.ca/eclipse/eclipse/downloads/drops4/R-4.7-201706120950/swt-4.7-gtk-linux-x86.zip",
+    "windows_x86_64" => "http://mirror.csclub.uwaterloo.ca/eclipse/eclipse/downloads/drops4/R-4.7-201706120950/swt-4.7-win32-win32-x86_64.zip",
+    "windows_x86" => "http://eclipse.mirror.rafal.ca/eclipse/downloads/drops4/R-4.7-201706120950/swt-4.7-win32-win32-x86.zip"
+  }
 
   attr_reader :setup_requested, :application
   alias :setup_requested? :setup_requested
@@ -26,7 +37,8 @@ class GlimmerApplication
 
     if application
       puts "Starting Glimmer Application #{application}"
-      `ruby -J-XstartOnFirstThread -J-classpath "#{SWT_JAR_FILE}" #{application}`
+      additional_options
+      `ruby #{additional_options} -J-classpath "#{SWT_JAR_FILE}" #{application}`
     end
   end
 
@@ -57,7 +69,7 @@ class GlimmerApplication
   end
 
   def download(file)
-    uri = URI('http://mirror.csclub.uwaterloo.ca/eclipse/eclipse/downloads/drops4/R-4.7-201706120950/swt-4.7-cocoa-macosx-x86_64.zip')
+    uri = URI(platform_swt_url)
     puts "Downloading #{uri}"
     File.open(file, 'w') do |f|
       f.write(Net::HTTP.get(uri))
@@ -65,4 +77,23 @@ class GlimmerApplication
     puts "Finished downloading"
   end
 
+  def platform_swt_url
+    SWT_URL[platform_swt_url_key]
+  end
+
+  def platform_swt_url_key
+    "#{platform_os}_#{platform_cpu}"
+  end
+
+  def platform_os
+    OPERATING_SYSTEMS.detect {|os| OS.send("#{os}?")}
+  end
+
+  def platform_cpu
+    OS.host_cpu
+  end
+
+  def additional_options
+    OS.mac? ? "-J-XstartOnFirstThread" : ""
+  end
 end

@@ -1,5 +1,7 @@
 require 'rubygems'
 require 'bundler'
+require 'os'
+require_relative 'lib/glimmer_application'
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -29,7 +31,8 @@ Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'samples' << 'test'
   test.pattern = 'test/**/*_test.rb'
   test.verbose = true
-  test.ruby_opts = ['-J-XstartOnFirstThread -Xcli.debug=true --debug']
+  additional_options = OS.mac? ? "-J-XstartOnFirstThread" : ""
+  test.ruby_opts = ["#{additional_options} -J-classpath \"#{GlimmerApplication::SWT_JAR_FILE}\" -Xcli.debug=true --debug"]
 end
 
 task :default => :test
