@@ -1,83 +1,83 @@
-require_relative "helper"
+require "spec_helper"
 
-class GlimmerComboDataBindingTest < Test::Unit::TestCase
+describe "Glimmer Combo Data Binding" do
 	include Glimmer
 
 	include_package 'org.eclipse.swt'
 	include_package 'org.eclipse.swt.widgets'
 	include_package 'org.eclipse.swt.layout'
 
-  def setup
+  before do
     dsl :swt
   end
-		
-	def teardown
+
+	after do
   	@target.display.dispose if @target.display
 	end
-  
-  class Person 
+
+  class Person
     attr_accessor :country, :country_options
-    
+
     def initialize
       self.country_options=["", "Canada", "US", "Mexico"]
     end
   end
 
-  def test_data_binding_selection_property
+  it "tests data binding selection property" do
     person = Person.new
-    
+
     @target = shell {
       @combo = combo {
         selection bind(person, :country)
       }
     }
-    
-    assert_equal 4, @combo.widget.item_count
-    assert_equal -1, @combo.widget.selection_index
-    assert_equal "", @combo.widget.text
+
+    expect(@combo.widget.item_count).to eq(4)
+    expect(@combo.widget.selection_index).to eq(-1)
+    expect(@combo.widget.text).to eq("")
 
     person.country = "Canada"
 
-    assert_equal "Canada", @combo.widget.text
+    expect(@combo.widget.text).to eq("Canada")
 
     person.country_options << "France"
-    
-    assert_equal 5, @combo.widget.item_count
-    
+
+    expect(@combo.widget.item_count).to eq(5)
+
     person.country_options=["", "Canada", "US", "Mexico", "Russia", "France"]
-    
-    assert_equal 6, @combo.widget.item_count
-    
+
+    expect(@combo.widget.item_count).to eq(6)
+
     person.country_options << "Italy"
     person.country_options << "Germany"
     person.country_options << "Australia"
-    
-    assert_equal 9, @combo.widget.item_count
-    
-    assert_equal "", @combo.widget.text
-    
+
+    expect(@combo.widget.item_count).to eq(9)
+
+    expect(@combo.widget.text).to eq("")
+
     @combo.widget.select(2)
     @combo.widget.notifyListeners(SWT::Selection, nil)
-    assert_equal "US", person.country
+    expect(person.country).to eq("US")
 
     person.country = "Canada"
 
-    assert_equal "Canada", @combo.widget.text
+    expect(@combo.widget.text).to eq("Canada")
 
     person.country = "Russia"
-    
-    assert_equal "Russia", @combo.widget.text
+
+    expect(@combo.widget.text).to eq("Russia")
 
     person.country = ""
-    
-    assert_equal "", @combo.widget.text
+
+    expect(@combo.widget.text).to eq("")
 
     person.country = "Japan"
-    
-    assert_equal "Japan", @combo.widget.text
+
+    expect(@combo.widget.text).to eq("Japan")
   end
-    
-  def test_read_only_widget_data_binding_selection_property
+
+  it "tests read only widget data binding selection property" do
     person = Person.new
     person.country = "Canada"
 
@@ -87,45 +87,44 @@ class GlimmerComboDataBindingTest < Test::Unit::TestCase
       }
     }
 
-    assert_equal 4, @combo.widget.item_count
-    assert_equal "Canada", @combo.widget.text
+    expect(@combo.widget.item_count).to eq(4)
+    expect(@combo.widget.text).to eq("Canada")
 
     person.country_options << "France"
 
-    assert_equal 5, @combo.widget.item_count
+    expect(@combo.widget.item_count).to eq(5)
 
     person.country_options=["", "Canada", "US", "Mexico", "Russia", "France"]
 
-    assert_equal 6, @combo.widget.item_count
+    expect(@combo.widget.item_count).to eq(6)
 
     person.country_options << "Italy"
     person.country_options << "Germany"
     person.country_options << "Australia"
 
-    assert_equal 9, @combo.widget.item_count
+    expect(@combo.widget.item_count).to eq(9)
 
-    assert_equal "", @combo.widget.text
+    expect(@combo.widget.text).to eq("")
 
     @combo.widget.select(8)
     @combo.widget.notifyListeners(SWT::Selection, nil)
-    assert_equal "Australia", person.country
+    expect(person.country).to eq("Australia")
 
     person.country = "Canada"
 
-    assert_equal "Canada", @combo.widget.text
+    expect(@combo.widget.text).to eq("Canada")
 
     person.country = "Russia"
 
-    assert_equal "Russia", @combo.widget.text
+    expect(@combo.widget.text).to eq("Russia")
 
     person.country = ""
 
-    assert_equal "", @combo.widget.text
+    expect(@combo.widget.text).to eq("")
 
     person.country = "Japan"
 
-    assert_equal "", @combo.widget.text
+    expect(@combo.widget.text).to eq("")
   end
-    
-end
 
+end

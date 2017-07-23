@@ -7,6 +7,7 @@ require "rubygems"
 require "facets"
 require "logger"
 require "java"
+require "puts_debuggerer"
 require File.dirname(__FILE__) + "/string"
 require File.dirname(__FILE__) + "/symbol"
 require File.dirname(__FILE__) + "/parent"
@@ -17,6 +18,7 @@ module Glimmer
 
   @@parent_stack = []
   @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}
+  PutsDebuggerer.print_engine = lambda {|content| @@logger.debug(content)} #TODO use everywhere in place of logger
 
   def self.logger
     @@logger

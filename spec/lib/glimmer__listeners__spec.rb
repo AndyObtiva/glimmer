@@ -1,25 +1,25 @@
-require_relative "helper"
+require "spec_helper"
 
-class GlimmerDataBindingTest < Test::Unit::TestCase
+describe "Glimmer Listeners" do
   include Glimmer
 
 	include_package 'org.eclipse.swt'
 	include_package 'org.eclipse.swt.widgets'
 	include_package 'org.eclipse.swt.layout'
-		
-  def setup
+
+  before do
     dsl :swt
   end
 
-	def teardown
+	after do
   	@target.display.dispose if @target.display
 	end
-	
-  class Person 
+
+  class Person
     attr_accessor :name, :age, :adult
   end
-  
-  def test_text_widget_verify_listener
+
+  it "tests text widget verify listener" do
     @target = shell {
       composite {
         @text = text {
@@ -30,18 +30,18 @@ class GlimmerDataBindingTest < Test::Unit::TestCase
         }
       }
     }
-    
+
     @text.widget.setText("Hi")
-    assert_equal "Hi", @text.widget.getText
-    
+    expect(@text.widget.getText).to eq("Hi")
+
     @text.widget.setText("Hello")
-    assert_equal "Hi", @text.widget.getText
+    expect(@text.widget.getText).to eq("Hi")
   end
-    
+
   def test_button_widget_selection_listener
     person = Person.new
     person.name = "Bruce Ting"
-    
+
     @target = shell {
       composite {
         @button = button {
@@ -51,11 +51,10 @@ class GlimmerDataBindingTest < Test::Unit::TestCase
         }
       }
     }
-    assert_equal "Bruce Ting", person.name
+    expect(person.name).to eq("Bruce Ting")
     @button.widget.setSelection(true)
     @button.widget.notifyListeners(SWT::Selection, nil)
-    assert_equal "Bruce Lao", person.name
+    expect(person.name).to eq("Bruce Lao")
   end
-    
-end
 
+end

@@ -1,28 +1,30 @@
-require_relative "helper"
+   require 'spec_helper'
 
-class GlimmerDataBindingTest < Test::Unit::TestCase
+describe "Glimmer Data Binding" do
   include Glimmer
 
 	include_package 'org.eclipse.swt'
 	include_package 'org.eclipse.swt.widgets'
 	include_package 'org.eclipse.swt.layout'
-		
-  def setup
+
+  SWT = org.eclipse.swt.SWT unless Object.const_defined?(:SWT)
+
+  before do
     dsl :swt
   end
 
-	def teardown
+	after do
   	@target.display.dispose if @target.display
 	end
-	
-  class Person 
+
+  class Person
     attr_accessor :name, :age, :adult
   end
-  
-  def test_text_widget_data_binding_string_property
+
+  it "tests text widget data binding string property" do
     person = Person.new
     person.name = "Bruce Ting"
-    
+
     @target = shell {
       composite {
         @text = text {
@@ -30,20 +32,20 @@ class GlimmerDataBindingTest < Test::Unit::TestCase
         }
       }
     }
-    
-    assert_equal "Bruce Ting", @text.widget.getText
-    
+
+    expect(@text.widget.getText).to eq("Bruce Ting")
+
     person.name = "Lady Butterfly"
-    assert_equal "Lady Butterfly", @text.widget.getText
-    
+    expect(@text.widget.getText).to eq("Lady Butterfly")
+
     @text.widget.setText("Allen Cork")
-    assert_equal "Allen Cork", person.name
+    expect(person.name).to eq("Allen Cork")
   end
-    
-  def test_text_widget_data_binding_fixnum_property
+
+  it "tests text widget data binding fixnum property" do
     person = Person.new
     person.age = 15
-    
+
     @target = shell {
       composite {
         @text = text {
@@ -51,20 +53,20 @@ class GlimmerDataBindingTest < Test::Unit::TestCase
         }
       }
     }
-    
-    assert_equal "15", @text.widget.getText
-    
+
+    expect(@text.widget.getText).to eq("15")
+
     person.age = 27
-    assert_equal "27", @text.widget.getText
-    
+    expect(@text.widget.getText).to eq("27")
+
     @text.widget.setText("30")
-    assert_equal 30, person.age
+    expect(person.age).to eq(30)
   end
-    
-  def test_label_widget_data_binding_string_property
+
+   it "tests label widget data binding string property" do
     person = Person.new
     person.name = "Bruce Ting"
-    
+
     @target = shell {
       composite {
         @label = label {
@@ -72,17 +74,17 @@ class GlimmerDataBindingTest < Test::Unit::TestCase
         }
       }
     }
-    
-    assert_equal "Bruce Ting", @label.widget.getText
-    
+
+    expect(@label.widget.getText).to eq("Bruce Ting")
+
     person.name = "Lady Butterfly"
-    assert_equal "Lady Butterfly", @label.widget.getText
+    expect(@label.widget.getText).to eq("Lady Butterfly")
   end
-    
-  def test_checkbox_widget_data_binding_boolean_property
+
+   it "tests checkbox widget data binding boolean property" do
     person = Person.new
     person.adult = true
-    
+
     @target = shell {
       composite {
         @check_box = button(:check) {
@@ -90,21 +92,21 @@ class GlimmerDataBindingTest < Test::Unit::TestCase
         }
       }
     }
-    
-    assert_equal true, @check_box.widget.getSelection
-    
+
+    expect(@check_box.widget.getSelection).to eq(true)
+
     person.adult = false
-    assert_equal false, @check_box.widget.getSelection
-    
+    expect(@check_box.widget.getSelection).to eq(false)
+
     @check_box.widget.setSelection(true)
     @check_box.widget.notifyListeners(SWT::Selection, nil)
-    assert_equal true, person.adult
+    expect(person.adult).to eq(true)
   end
-    
-  def test_radio_widget_data_binding_boolean_property
+
+   it "tests radio widget data binding boolean property" do
     person = Person.new
     person.adult = true
-    
+
     @target = shell {
       composite {
         @radio = button(:radio) {
@@ -112,21 +114,21 @@ class GlimmerDataBindingTest < Test::Unit::TestCase
         }
       }
     }
-    
-    assert_equal true, @radio.widget.getSelection
-    
+
+    expect(@radio.widget.getSelection).to eq(true)
+
     person.adult = false
-    assert_equal false, @radio.widget.getSelection
-    
+    expect(@radio.widget.getSelection).to eq(false)
+
     @radio.widget.setSelection(true)
     @radio.widget.notifyListeners(SWT::Selection, nil)
-    assert_equal true, person.adult
+    expect(person.adult).to eq(true)
   end
-    
-  def test_spinner_widget_data_binding_fixnum_property
+
+   it "tests spinner widget data binding fixnum property" do
     person = Person.new
     person.age = 17
-    
+
     @target = shell {
       composite {
         @spinner = spinner {
@@ -134,21 +136,21 @@ class GlimmerDataBindingTest < Test::Unit::TestCase
         }
       }
     }
-    
-    assert_equal 17, @spinner.widget.getSelection
-    
+
+    expect(@spinner.widget.getSelection).to eq(17)
+
     person.age = 20
-    assert_equal 20, @spinner.widget.getSelection
-    
+    expect(@spinner.widget.getSelection).to eq(20)
+
     @spinner.widget.setSelection(34)
     @spinner.widget.notifyListeners(SWT::Selection, nil)
-    assert_equal 34, person.age
+    expect(person.age).to eq(34)
   end
-    
-  def test_widget_data_binding_enablement
+
+   it "tests widget data binding enablement" do
     person = Person.new
     person.adult = true
-    
+
     @target = shell {
       composite {
         @text = text {
@@ -156,17 +158,17 @@ class GlimmerDataBindingTest < Test::Unit::TestCase
         }
       }
     }
-    
-    assert_equal true, @text.widget.isEnabled
-    
+
+    expect(@text.widget.isEnabled).to eq(true)
+
     person.adult = false
-    assert_equal false, @text.widget.isEnabled
+    expect(@text.widget.isEnabled).to eq(false)
   end
-    
-  def test_multiple_widget_data_binding_enablement_to_same_model_property
+
+   it "tests multiple widget data binding enablement to same model property" do
     person = Person.new
     person.adult = true
-    
+
     @target = shell {
       composite {
         @text = text {
@@ -180,23 +182,23 @@ class GlimmerDataBindingTest < Test::Unit::TestCase
         }
       }
     }
-    
-    assert_equal true, @text.widget.isEnabled
-    assert_equal true, @text2.widget.isEnabled
-    assert_equal true, @text3.widget.isEnabled
-    
+
+    expect(@text.widget.isEnabled).to eq(true)
+    expect(@text2.widget.isEnabled).to eq(true)
+    expect(@text3.widget.isEnabled).to eq(true)
+
     person.adult = false
-    assert_equal false, @text.widget.isEnabled
-    assert_equal false, @text2.widget.isEnabled
-    assert_equal false, @text3.widget.isEnabled
+    expect(@text.widget.isEnabled).to eq(false)
+    expect(@text2.widget.isEnabled).to eq(false)
+    expect(@text3.widget.isEnabled).to eq(false)
   end
-    
-  def test_multiple_widget_data_bindings_to_different_model_properties
+
+   it "tests multiple widget data bindings to different model properties" do
     person = Person.new
     person.name = "Nancy"
     person.age = 15
     person.adult = true
-    
+
     @target = shell {
       composite {
         @label = label {
@@ -210,27 +212,26 @@ class GlimmerDataBindingTest < Test::Unit::TestCase
         }
       }
     }
-    
-    assert_equal "Nancy", @label.widget.getText
-    assert_equal "15", @text.widget.getText
-    assert_equal true, @check_box.widget.getSelection
-    
+
+    expect(@label.widget.getText).to eq("Nancy")
+    expect(@text.widget.getText).to eq("15")
+    expect(@check_box.widget.getSelection).to eq(true)
+
     person.name = "Drew"
-    assert_equal "Drew", @label.widget.getText
-    
+    expect(@label.widget.getText).to eq("Drew")
+
     person.age = 27
-    assert_equal "27", @text.widget.getText
+    expect(@text.widget.getText).to eq("27")
 
     person.adult = false
-    assert_equal false, @check_box.widget.getSelection
-    
+    expect(@check_box.widget.getSelection).to eq(false)
+
     @text.widget.setText("30")
-    assert_equal 30, person.age
+    expect(person.age).to eq(30)
 
     @check_box.widget.setSelection(true)
     @check_box.widget.notifyListeners(SWT::Selection, nil)
-    assert_equal true, person.adult
+    expect(person.adult).to eq(true)
   end
-    
-end
 
+end

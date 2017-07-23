@@ -37,8 +37,7 @@ class GlimmerApplication
 
     if application
       puts "Starting Glimmer Application #{application}"
-      additional_options
-      `ruby #{additional_options} -J-classpath "#{SWT_JAR_FILE}" #{application}`
+      system "ruby #{additional_options} -J-classpath \"#{SWT_JAR_FILE}\" #{application}"
     end
   end
 

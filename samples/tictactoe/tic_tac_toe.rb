@@ -3,20 +3,20 @@ require_relative "tic_tac_toe_board"
 
 
 class TicTacToe
-  
+
   include_package 'org.eclipse.swt'
   include_package 'org.eclipse.swt.widgets'
   include_package 'org.eclipse.swt.layout'
-  
+
   include Glimmer
 
   def initialize
     @tic_tac_toe_board = TicTacToeBoard.new
-    @main = 
+    @main =
     @shell = shell {
       text "Tic-Tac-Toe"
       composite {
-        layout GridLayout.new(3,true) 
+        layout GridLayout.new(3,true)
         (1..3).each { |row_number|
           (1..3).each { |column_number|
             button {
@@ -34,20 +34,20 @@ class TicTacToe
     @tic_tac_toe_board.extend(ObservableModel) #make board an observable model
     @tic_tac_toe_board.add_observer("game_status", self)
   end
-  
-  def update(game_status) 
+
+  def update(game_status)
     display_win_message if game_status == TicTacToeBoard::WIN
     display_draw_message if game_status == TicTacToeBoard::DRAW
   end
-  
+
   def display_win_message()
     display_game_over_message("Player #{@tic_tac_toe_board.winning_sign} has won!")
   end
-  
+
   def display_draw_message()
     display_game_over_message("Draw!")
   end
-  
+
   def display_game_over_message(message)
     message_box = MessageBox.new(@shell.widget)
     message_box.setText("Game Over")
@@ -55,9 +55,9 @@ class TicTacToe
     message_box.open
     @tic_tac_toe_board.reset
   end
-  
+
   def open 
-      @main.open
+    @main.open
   end
 end
 
