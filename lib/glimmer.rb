@@ -17,7 +17,6 @@ module Glimmer
 
   @@parent_stack = []
   @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}
-  PutsDebuggerer.print_engine = lambda {|content| @@logger.debug(content)} #TODO use everywhere in place of logger
 
   def self.logger
     @@logger
