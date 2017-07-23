@@ -11,15 +11,17 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["AndyMaleh".freeze]
-  s.date = "2017-07-22"
+  s.date = "2017-07-23"
   s.description = "JRuby DSL that enables easy and efficient authoring of user-interfaces using the robust platform-independent Eclipse SWT library".freeze
   s.email = "andy.am@gmail.com".freeze
-  s.executables = ["glimmer".freeze]
+  s.executables = ["glimmer".freeze, "girb".freeze]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.markdown"
   ]
   s.files = [
+    ".coveralls.yml",
+    ".rspec",
     ".ruby-gemset",
     ".ruby-version",
     "Gemfile",
@@ -28,6 +30,8 @@ Gem::Specification.new do |s|
     "Rakefile",
     "TODO.md",
     "VERSION",
+    "bin/girb",
+    "bin/girb_runner.rb",
     "bin/glimmer",
     "glimmer.gemspec",
     "images/Bitter-sweet.jpg",
@@ -87,21 +91,21 @@ Gem::Specification.new do |s|
     "samples/login.rb",
     "samples/tictactoe/tic_tac_toe.rb",
     "samples/tictactoe/tic_tac_toe_board.rb",
-    "test/glimmer_combo_data_binding_test.rb",
-    "test/glimmer_constant_test.rb",
-    "test/glimmer_data_binding_test.rb",
-    "test/glimmer_list_data_binding_test.rb",
-    "test/glimmer_listeners_test.rb",
-    "test/glimmer_shine_data_binding_test.rb",
-    "test/glimmer_tab_item_test.rb",
-    "test/glimmer_table_data_binding_test.rb",
-    "test/glimmer_test.rb",
-    "test/helper.rb",
-    "test/observable_model_test.rb",
-    "test/r_widget_test.rb",
-    "test/samples/contactmanager/contact_manager_presenter_test.rb",
-    "test/samples/tictactoe/tic_tac_toe_test.rb",
-    "test/xml/glimmer_xml_test.rb"
+    "spec/lib/command_handlers/models/observable_model_spec.rb",
+    "spec/lib/command_handlers/models/r_widget_spec.rb",
+    "spec/lib/glimmer__combo_data_binding__spec.rb",
+    "spec/lib/glimmer__constant__spec.rb",
+    "spec/lib/glimmer__data_binding__spec.rb",
+    "spec/lib/glimmer__list_data_binding__spec.rb",
+    "spec/lib/glimmer__listeners__spec.rb",
+    "spec/lib/glimmer__shine_data_binding__spec.rb",
+    "spec/lib/glimmer__tab_item__spec.rb",
+    "spec/lib/glimmer__table_data_binding__spec.rb",
+    "spec/lib/glimmer_spec.rb",
+    "spec/lib/xml/glimmer_xml_spec.rb",
+    "spec/samples/contactmanager/contact_manager_presenter_spec.rb",
+    "spec/samples/tictactoe/tic_tac_toe_spec.rb",
+    "spec/spec_helper.rb"
   ]
   s.homepage = "http://github.com/AndyObtiva/glimmer".freeze
   s.licenses = ["MIT".freeze]
@@ -114,6 +118,8 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<facets>.freeze, ["= 3.1.0"])
       s.add_runtime_dependency(%q<os>.freeze, ["= 1.0.0"])
+      s.add_development_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
+      s.add_development_dependency(%q<rspec-mocks>.freeze, ["~> 3.5.0"])
       s.add_development_dependency(%q<rdoc>.freeze, ["~> 2.3.0"])
       s.add_development_dependency(%q<bundler>.freeze, ["~> 1.0"])
       s.add_development_dependency(%q<jeweler>.freeze, ["~> 2.3.0"])
@@ -123,6 +129,8 @@ Gem::Specification.new do |s|
     else
       s.add_dependency(%q<facets>.freeze, ["= 3.1.0"])
       s.add_dependency(%q<os>.freeze, ["= 1.0.0"])
+      s.add_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
+      s.add_dependency(%q<rspec-mocks>.freeze, ["~> 3.5.0"])
       s.add_dependency(%q<rdoc>.freeze, ["~> 2.3.0"])
       s.add_dependency(%q<bundler>.freeze, ["~> 1.0"])
       s.add_dependency(%q<jeweler>.freeze, ["~> 2.3.0"])
@@ -133,6 +141,8 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<facets>.freeze, ["= 3.1.0"])
     s.add_dependency(%q<os>.freeze, ["= 1.0.0"])
+    s.add_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
+    s.add_dependency(%q<rspec-mocks>.freeze, ["~> 3.5.0"])
     s.add_dependency(%q<rdoc>.freeze, ["~> 2.3.0"])
     s.add_dependency(%q<bundler>.freeze, ["~> 1.0"])
     s.add_dependency(%q<jeweler>.freeze, ["~> 2.3.0"])
@@ -141,3 +151,4 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<puts_debuggerer>.freeze, ["= 0.6.1"])
   end
 end
+
