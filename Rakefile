@@ -26,15 +26,6 @@ Jeweler::Tasks.new do |gem|
 end
 Jeweler::RubygemsDotOrgTasks.new
 
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'samples' << 'test'
-  test.pattern = 'test/**/*_test.rb'
-  test.verbose = true
-  additional_options = OS.mac? ? "-J-XstartOnFirstThread" : ""
-  test.ruby_opts = ["#{additional_options} -J-classpath \"#{GlimmerApplication::SWT_JAR_FILE}\" -Xcli.debug=true --debug"]
-end
-
 require 'rspec/core'
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec) do |spec|
