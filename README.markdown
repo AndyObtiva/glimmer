@@ -26,7 +26,7 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.1.5.470'
+gem 'glimmer', '~> 0.1.6.470'
 ```
 
 And, then run:
@@ -38,7 +38,7 @@ bundle install
 
 Run this command to get directly:
 ```
-gem install glimmer -v 0.1.5.470
+gem install glimmer -v 0.1.6.470
 ```
 
 ## Usage
@@ -55,6 +55,10 @@ It downloads and sets up the SWT jar whether missing or not.
 
 Example 3: `glimmer --setup`
 This downloads and sets up the SWT jar whether missing or not.    
+
+## Girb (Glimmer irb)
+
+You may run girb instead of standard irb to have SWT preloaded and the Glimmer required and included for quick Glimmer coding/testing.  
 
 ## Samples
 
