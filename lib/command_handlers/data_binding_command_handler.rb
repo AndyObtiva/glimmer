@@ -4,12 +4,19 @@ require File.dirname(__FILE__) + "/models/observable_model"
 require File.dirname(__FILE__) + "/models/model_observer"
 require File.dirname(__FILE__) + "/models/widget_observer"
 
-class DataBindingCommandHandler 
+# Responsible for wiring two-way data-binding for text and selection properties
+# on Text, Button, and Spinner widgets.
+# Does so by using the output of the bind(model, property) command in the form
+# of a ModelObserver, which is then connected to an anonymous widget observer
+# (aka widget_data_binder as per widget_data_binders array)
+#
+# Depends on BindCommandHandler
+class DataBindingCommandHandler
   extend Glimmer
   include CommandHandler
-  
+
   include_package 'org.eclipse.swt.widgets'
-  
+
   @@widget_data_binders = {
     Java::OrgEclipseSwtWidgets::Text => {
       :text => Proc.new do |rwidget, model_observer|
@@ -38,14 +45,14 @@ class DataBindingCommandHandler
           }
         end
       }
-    }    
-    
+    }
+
     def can_handle?(parent, command_symbol, *args, &block)
-      parent.is_a?(RWidget) and
+      (parent.is_a?(RWidget) and
        args.size == 1 and
-       args[0].is_a?(ModelObserver)
+       args[0].is_a?(ModelObserver))
     end
-    
+
     def do_handle(parent, command_symbol, *args, &block)
       model_observer = args[0]
       widget_observer = WidgetObserver.new(parent, command_symbol.to_s)
@@ -57,5 +64,5 @@ class DataBindingCommandHandler
       widget_data_binder = widget_data_binder_map[command_symbol.to_s.to_sym] if widget_data_binder_map
       widget_data_binder.call(parent, model_observer) if widget_data_binder
     end
-    
+
   end

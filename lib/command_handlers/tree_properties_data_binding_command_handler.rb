@@ -2,8 +2,8 @@ require File.dirname(__FILE__) + "/../command_handler"
 require File.dirname(__FILE__) + "/models/r_widget"
 
 # Responsible for providing a readable keyword (command symbol) to capture
-# and return column properties for use in TreeItemsDataBindingCommandHandler
-class TableColumnPropertiesDataBindingCommandHandler
+# and return tree properties for use in TreeItemsDataBindingCommandHandler
+class TreePropertiesDataBindingCommandHandler
   include CommandHandler
 
   include_package 'org.eclipse.swt'
@@ -11,8 +11,8 @@ class TableColumnPropertiesDataBindingCommandHandler
 
   def can_handle?(parent, command_symbol, *args, &block)
     parent.is_a?(RWidget) and
-    parent.widget.is_a?(Table) and
-    command_symbol.to_s == "column_properties" and
+    parent.widget.is_a?(Tree) and
+    command_symbol.to_s == "tree_properties" and
     block == nil
   end
 
