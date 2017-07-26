@@ -87,7 +87,7 @@ describe "Glimmer Tree Data Binding" do
     expect(node2.getText()).to eq("Julia Katherine Fang")
 
     person3 = Person.new
-    person3.name = "Bob Kennith"
+    person3.name = "Bob David Kennith"
     person3.age = 37
     person3.adult = true
 
@@ -97,7 +97,16 @@ describe "Glimmer Tree Data Binding" do
     rootNode = @tree.widget.getItems.first
     expect(rootNode.getItems.size).to eq(3)
     node3 = rootNode.getItems.last
-    expect(node3.getText()).to eq("Bob Kennith")
+    expect(node3.getText()).to eq("Bob David Kennith")
+
+    manager.people.delete_at(0)
+
+    rootNode = @tree.widget.getItems.first
+    expect(rootNode.getItems.size).to eq(2)
+    node1 = rootNode.getItems.first
+    node2 = rootNode.getItems.last
+    expect(node1.getText()).to eq("Julia Katherine Fang")
+    expect(node2.getText()).to eq("Bob David Kennith")
 
   end
 

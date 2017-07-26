@@ -26,7 +26,7 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.1.8.470'
+gem 'glimmer', '~> 0.1.9.470'
 ```
 
 And, then run:
@@ -38,7 +38,7 @@ bundle install
 
 Run this command to get directly:
 ```
-gem install glimmer -v 0.1.8.470
+gem install glimmer -v 0.1.9.470
 ```
 
 ## Usage

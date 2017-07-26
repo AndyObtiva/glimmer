@@ -2,7 +2,6 @@
 
 Here is a list of tasks to do (please delete once done):
 
-* Support Tree databinding (read-only)
 * Support Tree databinding (bidirectional)
 * Figure out what is missing from table databinding (bidirectional?)
 * Explore rewriting shine with Ruby 2 support
