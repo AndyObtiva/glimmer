@@ -29,7 +29,9 @@ class TreeItemsUpdater
   def populate_tree_node(node, parent, tree_properties)
     table_item = TreeItem.new(parent, SWT::NONE)
     table_item.setText((node && node.send(tree_properties[:text])).to_s)
-    [node && node.send(tree_properties[:children])].flatten.to_a.compact.each do |child|
+      [node && node.send(tree_properties[:children])].flatten.to_a.compact.each do |child|
+      child.extend(ObservableModel) unless child.is_a?(ObservableModel)
+      child.add_observer(@tree_properties[:text], self)
       populate_tree_node(child, table_item, tree_properties)
     end
   end

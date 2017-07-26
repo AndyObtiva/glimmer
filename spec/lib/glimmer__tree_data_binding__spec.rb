@@ -12,7 +12,7 @@ describe "Glimmer Tree Data Binding" do
   end
 
 	after do
-  	@target.display.dispose if @target.display
+  	@target.display.dispose if @target && @target.display
 	end
 
   class Person
@@ -68,8 +68,24 @@ describe "Glimmer Tree Data Binding" do
     expect(rootNode.getText()).to eq("Tim Harkins")
 
     expect(rootNode.getItems.size).to eq(2)
-    expect(rootNode.getItems[0].getText()).to eq("Bruce Ting")
-    expect(rootNode.getItems[1].getText()).to eq("Julia Fang")
+    node1 = rootNode.getItems[0]
+    node2 = rootNode.getItems[1]
+    expect(node1.getText()).to eq("Bruce Ting")
+    expect(node2.getText()).to eq("Julia Fang")
+
+    manager.name = "Tim Lee Harkins"
+
+    rootNode = @tree.widget.getItems[0]
+    expect(rootNode.getText()).to eq("Tim Lee Harkins")
+
+    person1.name = "Bruce A. Ting"
+    node1 = @tree.widget.getItems.first.getItems.first
+    expect(node1.getText()).to eq("Bruce A. Ting")
+
+    person2.name = "Julia Katherine Fang"
+    node2 = @tree.widget.getItems.first.getItems.last
+    expect(node2.getText()).to eq("Julia Katherine Fang")
+
   end
 
 end
