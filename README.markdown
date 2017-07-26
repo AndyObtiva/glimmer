@@ -18,6 +18,18 @@ You may learn more by reading this article: [Eclipse Zone Tutorial](http://eclip
     }.open
 ```
 
+## Pre-requisites
+
+JRuby 9.1.12.0 (supporting Ruby 2.3.0 syntax)
+
+Easiest way to obtain is through [RVM](http://rvm.io)
+
+With RVM installed on your system, please run this command to install JRuby:
+
+```bash
+rvm install jruby-9.1.12.0
+```
+
 ## Setup
 
 Please follow these instructions to make the `glimmer` command available on your system.
