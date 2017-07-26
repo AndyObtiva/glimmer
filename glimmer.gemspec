@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["AndyMaleh".freeze]
-  s.date = "2017-07-23"
+  s.date = "2017-07-26"
   s.description = "JRuby DSL that enables easy and efficient authoring of user-interfaces using the robust platform-independent Eclipse SWT library".freeze
   s.email = "andy.am@gmail.com".freeze
   s.executables = ["glimmer".freeze, "girb".freeze]
@@ -39,6 +39,7 @@ Gem::Specification.new do |s|
     "lib/command_handler_chain_factory.rb",
     "lib/command_handler_chain_link.rb",
     "lib/command_handlers.rb",
+    "lib/command_handlers/RELEASE.md",
     "lib/command_handlers/bind_command_handler.rb",
     "lib/command_handlers/combo_selection_data_binding_command_handler.rb",
     "lib/command_handlers/data_binding_command_handler.rb",
@@ -54,11 +55,14 @@ Gem::Specification.new do |s|
     "lib/command_handlers/models/r_widget_listener.rb",
     "lib/command_handlers/models/r_widget_packages.rb",
     "lib/command_handlers/models/table_items_updater.rb",
+    "lib/command_handlers/models/tree_items_updater.rb",
     "lib/command_handlers/models/widget_observer.rb",
     "lib/command_handlers/shell_command_handler.rb",
     "lib/command_handlers/tab_item_command_handler.rb",
     "lib/command_handlers/table_column_properties_data_binding_command_handler.rb",
     "lib/command_handlers/table_items_data_binding_command_handler.rb",
+    "lib/command_handlers/tree_items_data_binding_command_handler.rb",
+    "lib/command_handlers/tree_properties_data_binding_command_handler.rb",
     "lib/command_handlers/widget_command_handler.rb",
     "lib/command_handlers/widget_listener_command_handler.rb",
     "lib/command_handlers/widget_method_command_handler.rb",
@@ -101,6 +105,7 @@ Gem::Specification.new do |s|
     "spec/lib/glimmer__shine_data_binding__spec.rb",
     "spec/lib/glimmer__tab_item__spec.rb",
     "spec/lib/glimmer__table_data_binding__spec.rb",
+    "spec/lib/glimmer__tree_data_binding__spec.rb",
     "spec/lib/glimmer_spec.rb",
     "spec/lib/xml/glimmer_xml_spec.rb",
     "spec/samples/contactmanager/contact_manager_presenter_spec.rb",
@@ -118,37 +123,37 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<facets>.freeze, ["= 3.1.0"])
       s.add_runtime_dependency(%q<os>.freeze, ["= 1.0.0"])
-      s.add_development_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
       s.add_development_dependency(%q<rspec-mocks>.freeze, ["~> 3.5.0"])
+      s.add_development_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
       s.add_development_dependency(%q<rdoc>.freeze, ["~> 2.3.0"])
       s.add_development_dependency(%q<bundler>.freeze, ["~> 1.0"])
       s.add_development_dependency(%q<jeweler>.freeze, ["~> 2.3.0"])
       s.add_development_dependency(%q<coveralls>.freeze, ["= 0.8.5"])
       s.add_development_dependency(%q<simplecov>.freeze, ["~> 0.10.0"])
-      s.add_development_dependency(%q<puts_debuggerer>.freeze, ["= 0.6.1"])
+      s.add_development_dependency(%q<puts_debuggerer>.freeze, ["~> 0.7.1"])
     else
       s.add_dependency(%q<facets>.freeze, ["= 3.1.0"])
       s.add_dependency(%q<os>.freeze, ["= 1.0.0"])
-      s.add_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
       s.add_dependency(%q<rspec-mocks>.freeze, ["~> 3.5.0"])
+      s.add_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
       s.add_dependency(%q<rdoc>.freeze, ["~> 2.3.0"])
       s.add_dependency(%q<bundler>.freeze, ["~> 1.0"])
       s.add_dependency(%q<jeweler>.freeze, ["~> 2.3.0"])
       s.add_dependency(%q<coveralls>.freeze, ["= 0.8.5"])
       s.add_dependency(%q<simplecov>.freeze, ["~> 0.10.0"])
-      s.add_dependency(%q<puts_debuggerer>.freeze, ["= 0.6.1"])
+      s.add_dependency(%q<puts_debuggerer>.freeze, ["~> 0.7.1"])
     end
   else
     s.add_dependency(%q<facets>.freeze, ["= 3.1.0"])
     s.add_dependency(%q<os>.freeze, ["= 1.0.0"])
-    s.add_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
     s.add_dependency(%q<rspec-mocks>.freeze, ["~> 3.5.0"])
+    s.add_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
     s.add_dependency(%q<rdoc>.freeze, ["~> 2.3.0"])
     s.add_dependency(%q<bundler>.freeze, ["~> 1.0"])
     s.add_dependency(%q<jeweler>.freeze, ["~> 2.3.0"])
     s.add_dependency(%q<coveralls>.freeze, ["= 0.8.5"])
     s.add_dependency(%q<simplecov>.freeze, ["~> 0.10.0"])
-    s.add_dependency(%q<puts_debuggerer>.freeze, ["= 0.6.1"])
+    s.add_dependency(%q<puts_debuggerer>.freeze, ["~> 0.7.1"])
   end
 end
 
