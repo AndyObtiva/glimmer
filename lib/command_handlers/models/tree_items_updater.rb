@@ -14,22 +14,23 @@ class TreeItemsUpdater
     model.extend(ObservableModel) unless model.is_a?(ObservableModel)
     model.add_observer(model_observer.property_name, self)
   end
-  def update(model_tree_root=nil)
-    if model_tree_root and model_tree_root.respond_to?(@tree_properties[:children])
-      model_tree_root.extend(ObservableModel) unless model_tree_root.is_a?(ObservableModel)
-      model_tree_root.add_observer(@tree_properties[:text], self)
-      @model_tree_root = model_tree_root
+  def update(model_tree_root_node=nil)
+    if model_tree_root_node and model_tree_root_node.respond_to?(@tree_properties[:children])
+      model_tree_root_node.extend(ObservableModel) unless model_tree_root_node.is_a?(ObservableModel)
+      model_tree_root_node.add_observer(@tree_properties[:text], self)
+      model_tree_root_node.add_observer(@tree_properties[:children], self)
+      @model_tree_root_node = model_tree_root_node
     end
-    populate_tree(@model_tree_root, @tree, @tree_properties)
+    populate_tree(@model_tree_root_node, @tree, @tree_properties)
   end
-  def populate_tree(model_tree_root, parent, tree_properties)
+  def populate_tree(model_tree_root_node, parent, tree_properties)
     parent.widget.removeAll
-    populate_tree_node(model_tree_root, parent.widget, tree_properties)
+    populate_tree_node(model_tree_root_node, parent.widget, tree_properties)
   end
-  def populate_tree_node(node, parent, tree_properties)
+  def populate_tree_node(model_tree_node, parent, tree_properties)
     table_item = TreeItem.new(parent, SWT::NONE)
-    table_item.setText((node && node.send(tree_properties[:text])).to_s)
-      [node && node.send(tree_properties[:children])].flatten.to_a.compact.each do |child|
+    table_item.setText((model_tree_node && model_tree_node.send(tree_properties[:text])).to_s)
+      [model_tree_node && model_tree_node.send(tree_properties[:children])].flatten.to_a.compact.each do |child|
       child.extend(ObservableModel) unless child.is_a?(ObservableModel)
       child.add_observer(@tree_properties[:text], self)
       populate_tree_node(child, table_item, tree_properties)
