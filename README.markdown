@@ -55,15 +55,27 @@ gem install glimmer -v 0.1.9.470
 
 ## Usage
 
-Usage: `glimmer [--setup] [application_ruby_file_path.rb]`
+Usage: 
+```
+glimmer [--setup] [application_ruby_file_path.rb]
+```
 
-Example 1: `glimmer hello_combo.rb`
+Example 1: 
+```
+glimmer hello_combo.rb
+```
 This runs the Glimmer application `hello_combo.rb` (if the SWT Jar is missing, it downloads it and sets it up first.)
 
-Example 2: `glimmer --setup hello_combo.rb`
+Example 2: 
+```
+glimmer --setup hello_combo.rb
+```
 This performs setup and then runs the Glimmer application `hello_combo.rb` (downloads and sets up the SWT jar whether present or not)
 
-Example 3: `glimmer --setup`
+Example 3: 
+```
+glimmer --setup
+```
 This just downloads and sets up the SWT jar even if already present.
 
 ## Girb (Glimmer irb)
