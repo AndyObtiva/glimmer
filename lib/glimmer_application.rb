@@ -42,19 +42,19 @@ class GlimmerApplication
   end
 
   def usage
-    puts <<~MULTILINE
-    Usage: glimmer [--setup] [application_ruby_file_path.rb]
+    puts <<-MULTILINE
+Usage: glimmer [--setup] [application_ruby_file_path.rb]
 
-    Example 1: glimmer hello_combo.rb
-    This runs the Glimmer application hello_combo.rb
-    If the SWT Jar is missing, it downloads it and sets it up first.
+Example 1: glimmer hello_combo.rb
+This runs the Glimmer application hello_combo.rb
+If the SWT Jar is missing, it downloads it and sets it up first.
 
-    Example 2: glimmer --setup hello_combo.rb
-    This performs setup and then runs the Glimmer application hello_combo.rb
-    It downloads and sets up the SWT jar whether missing or not.
+Example 2: glimmer --setup hello_combo.rb
+This performs setup and then runs the Glimmer application hello_combo.rb
+It downloads and sets up the SWT jar whether missing or not.
 
-    Example 3: glimmer --setup
-    This downloads and sets up the SWT jar whether missing or not.
+Example 3: glimmer --setup
+This downloads and sets up the SWT jar whether missing or not.
     MULTILINE
   end
 
