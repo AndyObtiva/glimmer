@@ -80,7 +80,7 @@ This just downloads and sets up the SWT jar even if already present.
 
 ## Girb (Glimmer irb)
 
-With Glimmer installed, you may run want to run `girb` instead of standard `irb` to have SWT preloaded and the Glimmer required and included for quick Glimmer coding/testing.
+With Glimmer installed, you may run want to run `girb` instead of standard `irb` to have SWT preloaded and the Glimmer library required and included for quick Glimmer coding/testing.
 
 ## Samples
 
