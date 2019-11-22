@@ -18,6 +18,13 @@ You may learn more by reading this article: [Eclipse Zone Tutorial](http://eclip
     }.open
 ```
 
+## Resources
+
+* [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer)
+* [InfoQ Article](http://www.infoq.com/news/2008/02/glimmer-jruby-swt)
+* [RubyConf 2008 Video](https://confreaks.tv/videos/rubyconf2008-desktop-development-with-glimmer)
+* [Code Blog](http://andymaleh.blogspot.com/search/label/Glimmer)
+
 ## Pre-requisites
 
 JRuby 9.1.12.0 (supporting Ruby 2.3.0 syntax)
@@ -142,13 +149,6 @@ Please follow these instructions if you would like to help us develop Glimmer:
 5. Install project required gems (bundle install)
 6. Write a program that requires the file "lib/glimmer.rb" (or glimmer gem) and has the UI class (view) include the Glimmer module
 7. Run your program with `bin/glimmer` or jruby (pass `-J-XstartOnFirstThread` option if on the Mac)
-
-## Resources
-
-* [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer)
-* [InfoQ Article](http://www.infoq.com/news/2008/02/glimmer-jruby-swt)
-* [RubyConf 2008 Video](http://rubyconf2008.confreaks.com/desktop-development-with-glimmer.html)
-* [Code Painter Blog](http://andymaleh.blogspot.com/search/label/Glimmer)
 
 ## Contributors
 
