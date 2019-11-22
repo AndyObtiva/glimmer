@@ -157,5 +157,5 @@ Please follow these instructions if you would like to help us develop Glimmer:
 
 ## License
 
-Copyright (c) 2007-2017 Annas Al Maleh.
+Copyright (c) 2007-2019 Annas Al Maleh.
 See LICENSE.txt for further details.
