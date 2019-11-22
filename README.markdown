@@ -118,8 +118,18 @@ D, [2017-07-21T19:23:12.878798 #35707] DEBUG -- : widget styles are: [:multi]
 
 ## Mac Support
 
-In order to run Glimmer on the Mac, you need to pass an extra option to JRuby. For example:
+Mac is well supported with the `glimmer` command.
+
+If there is a reason to use the raw jruby command on the Mac, you need to pass an extra option to JRuby. For example:
 `jruby -J-XstartOnFirstThread samples/hello_world.rb`
+
+## Windows Support
+
+Windows is supported by JRuby and the Eclipse SWT library Glimmer runs on. However, the `glimmer` command has not been confirmed to be working on Windows yet. Please feel free to share experiences and provide help in ensuring support for Windows.
+
+## Linux Support
+
+Same as Windows
 
 ## Contributing to Glimmer
 
