@@ -26,7 +26,13 @@ class BindCommandHandler
         (
           (args.size == 3) and
           (args[1].is_a?(Symbol) or args[1].is_a?(String)) and
-          (args[2].is_a?(Symbol) or args[2].is_a?(String))
+          (args[2].is_a?(Symbol) or args[2].is_a?(String) or args[2].is_a?(Hash))
+        ) or
+        (
+          (args.size == 4) and
+          (args[1].is_a?(Symbol) or args[1].is_a?(String)) and
+          (args[2].is_a?(Symbol) or args[2].is_a?(String)) and
+          (args[3].is_a?(Hash))
         )
       ) and
       block == nil
@@ -34,8 +40,10 @@ class BindCommandHandler
   end
 
   def do_handle(parent, command_symbol, *args, &block)
-    property_type = args[2] if (args.size == 3)
-    ModelObserver.new(args[0], args[1].to_s, property_type)
+    property_type = args[2] if (args.size == 3) && !args[2].is_a?(Hash)
+    observer_options = args[2] if args[2].is_a?(Hash)
+    observer_options = args[3] if args[3].is_a?(Hash)
+    ModelObserver.new(args[0], args[1].to_s, property_type, observer_options)
   end
 
 end

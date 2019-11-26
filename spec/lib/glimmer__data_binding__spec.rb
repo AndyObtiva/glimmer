@@ -21,6 +21,16 @@ describe "Glimmer Data Binding" do
     attr_accessor :name, :age, :adult
   end
 
+  class PersonWithComputedValues
+    attr_accessor :first_name, :last_name, :year_of_birth
+    def name
+      "#{last_name}, #{first_name}"
+    end
+    def age
+      Time.now.year - year_of_birth
+    end
+  end
+
   it "tests text widget data binding string property" do
     person = Person.new
     person.name = "Bruce Ting"
@@ -63,7 +73,7 @@ describe "Glimmer Data Binding" do
     expect(person.age).to eq(30)
   end
 
-   it "tests label widget data binding string property" do
+  it "tests label widget data binding string property" do
     person = Person.new
     person.name = "Bruce Ting"
 
@@ -79,6 +89,46 @@ describe "Glimmer Data Binding" do
 
     person.name = "Lady Butterfly"
     expect(@label.widget.getText).to eq("Lady Butterfly")
+  end
+
+  it "tests label widget computed value data binding string property" do
+    person = PersonWithComputedValues.new
+    person.first_name = "Marty"
+    person.last_name = "McFly"
+
+    @target = shell {
+      composite {
+        @label = label {
+          text bind(person, :name, computed_by: [:first_name, :last_name])
+        }
+      }
+    }
+
+    expect(@label.widget.getText).to eq("McFly, Marty")
+
+    person.first_name = "Martin"
+    expect(@label.widget.getText).to eq("McFly, Martin")
+
+    person.last_name = "MacFly"
+    expect(@label.widget.getText).to eq("MacFly, Martin")
+  end
+
+  it "tests label widget computed value data binding fixnum property" do
+    person = PersonWithComputedValues.new
+    person.year_of_birth = Time.now.year - 40 #TODO TimeCop gem ?
+
+    @target = shell {
+      composite {
+        @label = label {
+          text bind(person, :age, :fixnum, computed_by: [:year_of_birth])
+        }
+      }
+    }
+
+    expect(@label.widget.getText).to eq("40")
+
+    person.year_of_birth = Time.now.year - 41
+    expect(@label.widget.getText).to eq("41")
   end
 
    it "tests checkbox widget data binding boolean property" do

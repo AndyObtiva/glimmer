@@ -27,14 +27,14 @@ You may learn more by reading this article: [Eclipse Zone Tutorial](http://eclip
 
 ## Pre-requisites
 
-JRuby 9.1.12.0 (supporting Ruby 2.3.0 syntax)
+JRuby 9.2.9.0 (supporting Ruby 2.5.0 syntax)
 
 Easiest way to obtain is through [RVM](http://rvm.io)
 
 With RVM installed on your system, please run this command to install JRuby:
 
 ```bash
-rvm install jruby-9.1.12.0
+rvm install jruby-9.2.9.0
 ```
 
 ## Setup
@@ -45,7 +45,7 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.1.9.470'
+gem 'glimmer', '~> 0.1.10.470'
 ```
 
 And, then run:
@@ -57,33 +57,65 @@ bundle install
 
 Run this command to get directly:
 ```
-gem install glimmer -v 0.1.9.470
+gem install glimmer -v 0.1.10.470
 ```
 
 ## Usage
 
-Usage: 
+Usage:
 ```
 glimmer [--setup] [application_ruby_file_path.rb]
 ```
 
-Example 1: 
+Example 1:
 ```
 glimmer hello_combo.rb
 ```
 This runs the Glimmer application `hello_combo.rb` (if the SWT Jar is missing, it downloads it and sets it up first.)
 
-Example 2: 
+Example 2:
 ```
 glimmer --setup hello_combo.rb
 ```
 This performs setup and then runs the Glimmer application `hello_combo.rb` (downloads and sets up the SWT jar whether present or not)
 
-Example 3: 
+Example 3:
 ```
 glimmer --setup
 ```
 This just downloads and sets up the SWT jar even if already present.
+
+## Syntax
+
+Check out the SWT library API for a list of available widgets:
+https://help.eclipse.org/oxygen/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fswt%2Fwidgets%2Fpackage-summary.html
+
+In Glimmer DSL, SWT widgets are declared with lowercase underscored naming.
+
+Widget examples:
+- `button` for `org.eclipse.swt.widgets.Button`
+- `label` for `org.eclipse.swt.widgets.Label`
+- `table_column` for `org.eclipse.swt.widgets.TableColumn`
+
+The `shell` widget is always the outermost widget containing all others in a desktop windowed application.
+
+Widget properties may be set with methods matching their names in lower snakecase.
+
+Widget property examples:
+- `text` to set text value of a `label`
+- `gridData` to set grid data of a `composite`
+
+Data-binding is done with `bind` command following widget property to bind and taking model and bindable attribute as arguments.
+
+Data-binding examples:
+- `text bind(contact, :first_name)`
+- `text bind(contact, :name, computed_by: [:first_name, :last_name])`
+
+The first example binds the text property of a widget like `label` to the first name of a contact model.
+
+The second example demonstrates computed value data binding whereby the value of `name` depends on changes to both `first_name` and `last_name`
+
+You may learn more about Glimmer's syntax by reading the Eclipse Zone Tutorial mentioned in resources and opening up the samples under the `samples` folder.
 
 ## Girb (Glimmer irb)
 
@@ -144,7 +176,7 @@ Please follow these instructions if you would like to help us develop Glimmer:
 
 1. Download and extract the ["SWT binary and source"](http://download.eclipse.org/eclipse/downloads/drops4/R-4.7-201706120950/#SWT).
 2. Add swt.jar to your Java CLASSPATH environment (e.g. `export CLASSPATH="$CLASSPATH:/path_to_swt_jar/swt.jar"`)
-3. Download and setup jRuby 1.5.6 (`rvm install jruby-9.1.12.0`)
+3. Download and setup jRuby 1.5.6 (`rvm install jruby-9.2.9.0`)
 4. Install bundler (gem install bundler)
 5. Install project required gems (bundle install)
 6. Write a program that requires the file "lib/glimmer.rb" (or glimmer gem) and has the UI class (view) include the Glimmer module
@@ -157,5 +189,5 @@ Please follow these instructions if you would like to help us develop Glimmer:
 
 ## License
 
-Copyright (c) 2007-2019 Annas Al Maleh.
+Copyright (c) 2007-2019 Annas "Andy" Al Maleh.
 See LICENSE.txt for further details.

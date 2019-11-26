@@ -1,15 +1,16 @@
 class ModelObserver
-  attr_reader :model, :property_name, :property_type
+  attr_reader :model, :property_name, :property_type, :observer_options
   @@property_type_converters = {
-    :undefined => lambda { |value| value }, 
+    :undefined => lambda { |value| value },
     :fixnum => lambda { |value| value.to_i },
     :array => lambda { |value| value.to_a }
   }
-  def initialize(model, property_name, property_type = :undefined)
+  def initialize(model, property_name, property_type = :undefined, observer_options = nil)
     property_type = :undefined if property_type.nil?
     @model = model
     @property_name = property_name
     @property_type = property_type
+    @observer_options = observer_options || {}
   end
   def update(value)
     converted_value = @@property_type_converters[@property_type].call(value)
@@ -22,7 +23,6 @@ class ModelObserver
     @model.send(@property_name + "_options")
   end
   def options_property_name
-    self.property_name + "_options"    
+    self.property_name + "_options"
   end
 end
-  

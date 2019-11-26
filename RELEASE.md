@@ -1,6 +1,6 @@
 # Release Notes
 
-** 0.1.9.470 **
+** 0.1.10.470 **
 - Support Tree data-binding (one-way from model to tree)
 
 ** 0.1.8.470 **
