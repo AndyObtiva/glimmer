@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["AndyMaleh".freeze]
-  s.date = "2019-11-26"
+  s.date = "2019-11-27"
   s.description = "JRuby Desktop UI DSL + Data-Binding library that enables easy and efficient authoring of user-interfaces using the robust platform-independent Eclipse SWT library".freeze
   s.email = "andy.am@gmail.com".freeze
   s.executables = ["glimmer".freeze, "girb".freeze]
@@ -92,6 +92,8 @@ Gem::Specification.new do |s|
     "samples/hello_list_single_selection.rb",
     "samples/hello_tab.rb",
     "samples/hello_world.rb",
+    "samples/hellocomputed/contact.rb",
+    "samples/hellocomputed/hello_computed.rb",
     "samples/login.rb",
     "samples/tictactoe/tic_tac_toe.rb",
     "samples/tictactoe/tic_tac_toe_board.rb",
