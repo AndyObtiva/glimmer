@@ -5,14 +5,14 @@ class TreeItemsUpdater
   include_package 'org.eclipse.swt'
   include_package 'org.eclipse.swt.widgets'
 
-  def initialize(parent, model_observer, tree_properties)
+  def initialize(parent, model_binding, tree_properties)
     @tree = parent
-    @model_observer = model_observer
+    @model_binding = model_binding
     @tree_properties = [tree_properties].flatten.first.to_h
-    update(@model_observer.evaluate_property)
-    model = model_observer.model
+    update(@model_binding.evaluate_property)
+    model = model_binding.model
     model.extend(ObservableModel) unless model.is_a?(ObservableModel)
-    model.add_observer(model_observer.property_name, self)
+    model.add_observer(model_binding.property_name, self)
   end
   def update(model_tree_root_node=nil)
     if model_tree_root_node and model_tree_root_node.respond_to?(@tree_properties[:children])

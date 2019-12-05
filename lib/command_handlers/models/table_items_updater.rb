@@ -5,14 +5,14 @@ class TableItemsUpdater
   include_package 'org.eclipse.swt'
   include_package 'org.eclipse.swt.widgets'
   
-  def initialize(parent, model_observer, column_properties)
+  def initialize(parent, model_binding, column_properties)
     @table = parent
-    @model_observer = model_observer
+    @model_binding = model_binding
     @column_properties = column_properties
-    update(@model_observer.evaluate_property)
-    model = model_observer.model
+    update(@model_binding.evaluate_property)
+    model = model_binding.model
     model.extend(ObservableModel) unless model.is_a?(ObservableModel)
-    model.add_observer(model_observer.property_name, self)
+    model.add_observer(model_binding.property_name, self)
   end
   def update(model_collection=nil)
     if model_collection and model_collection.is_a?(Array)

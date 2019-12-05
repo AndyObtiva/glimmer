@@ -1,16 +1,16 @@
-class ModelObserver
-  attr_reader :model, :property_name, :property_type, :observer_options
+class ModelBinding
+  attr_reader :model, :property_name, :property_type, :binding_options
   @@property_type_converters = {
     :undefined => lambda { |value| value },
     :fixnum => lambda { |value| value.to_i },
     :array => lambda { |value| value.to_a }
   }
-  def initialize(model, property_name, property_type = :undefined, observer_options = nil)
+  def initialize(model, property_name, property_type = :undefined, binding_options = nil)
     property_type = :undefined if property_type.nil?
     @model = model
     @property_name = property_name
     @property_type = property_type
-    @observer_options = observer_options || {}
+    @binding_options = binding_options || {}
   end
   def update(value)
     converted_value = @@property_type_converters[@property_type].call(value)

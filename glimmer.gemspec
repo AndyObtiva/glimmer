@@ -45,7 +45,7 @@ Gem::Specification.new do |s|
     "lib/command_handlers/data_binding_command_handler.rb",
     "lib/command_handlers/list_selection_data_binding_command_handler.rb",
     "lib/command_handlers/models/list_observer.rb",
-    "lib/command_handlers/models/model_observer.rb",
+    "lib/command_handlers/models/model_binding.rb",
     "lib/command_handlers/models/observable_array.rb",
     "lib/command_handlers/models/observable_model.rb",
     "lib/command_handlers/models/r_runnable.rb",
@@ -155,4 +155,3 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<puts_debuggerer>.freeze, ["~> 0.8.1"])
   end
 end
-
