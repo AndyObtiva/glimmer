@@ -170,6 +170,13 @@ Windows is supported by JRuby and the Eclipse SWT library Glimmer runs on. Howev
 
 Same as Windows
 
+## Feature Suggestions
+
+These features have been suggested. You might see them in a future version of Glimmer. You are welcome to contribute more feature suggestions.
+
+- Nested binding via attribute expressions (e.g. `bind(person, "address.city")`)
+- bind_collection: an iterator that enables spawning widgets based on a collection (e.g. spawn 2 `AddressWidget`s if `user.addresses` bind collection contains 2 addresses)
+
 ## Contributing to Glimmer
 
 Please follow these instructions if you would like to help us develop Glimmer:
