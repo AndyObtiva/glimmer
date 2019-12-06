@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + "/../command_handler"
 require File.dirname(__FILE__) + "/models/r_widget"
 require File.dirname(__FILE__) + "/models/observable_model"
 require File.dirname(__FILE__) + "/models/model_binding"
-require File.dirname(__FILE__) + "/models/widget_observer"
+require File.dirname(__FILE__) + "/models/widget_binding"
 
 # Responsible for wiring two-way data-binding for text and selection properties
 # on Text, Button, and Spinner widgets.
@@ -55,16 +55,16 @@ class DataBindingCommandHandler
 
     def do_handle(parent, command_symbol, *args, &block)
       model_binding = args[0]
-      widget_observer_parameters = [parent, command_symbol.to_s]
-      widget_observer_parameters << proc {|value| model_binding.evaluate_property} if model_binding.binding_options.has_key?(:computed_by)
-      widget_observer = WidgetObserver.new(*widget_observer_parameters)
-      widget_observer.update(model_binding.evaluate_property)
+      widget_binding_parameters = [parent, command_symbol.to_s]
+      widget_binding_parameters << proc {|value| model_binding.evaluate_property} if model_binding.binding_options.has_key?(:computed_by)
+      widget_binding = WidgetBinding.new(*widget_binding_parameters)
+      widget_binding.update(model_binding.evaluate_property)
       model = model_binding.model
       model.extend ObservableModel unless model.is_a?(ObservableModel)
-      model.add_observer(model_binding.property_name, widget_observer)
+      model.add_observer(model_binding.property_name, widget_binding)
       computed_by_property_names = model_binding.binding_options[:computed_by]
       computed_by_property_names&.each do |computed_by_property_name|
-        model.add_observer(computed_by_property_name, widget_observer)
+        model.add_observer(computed_by_property_name, widget_binding)
       end
       widget_data_binder_map = @@widget_data_binders[parent.widget.class]
       widget_data_binder = widget_data_binder_map[command_symbol.to_s.to_sym] if widget_data_binder_map

@@ -1,4 +1,4 @@
-class WidgetObserver
+class WidgetBinding
   attr_reader :widget, :property
   @@property_type_converters = {
     :text => Proc.new { |value| value.to_s },

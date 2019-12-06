@@ -20,11 +20,11 @@ class ListSelectionDataBindingCommandHandler
 
   def do_handle(parent, command_symbol, *args, &block)
     model_binding = args[0]
-    widget_observer = WidgetObserver.new(parent, "items")
-    widget_observer.update(model_binding.evaluate_options_property)
+    widget_binding = WidgetBinding.new(parent, "items")
+    widget_binding.update(model_binding.evaluate_options_property)
     model = model_binding.model
     model.extend ObservableModel unless model.is_a?(ObservableModel)
-    model.add_observer(model_binding.options_property_name, widget_observer)
+    model.add_observer(model_binding.options_property_name, widget_binding)
 
     property_type = :string
     property_type = :array if parent.has_style?(:multi)
