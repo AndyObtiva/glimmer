@@ -44,7 +44,7 @@ Gem::Specification.new do |s|
     "lib/command_handlers/combo_selection_data_binding_command_handler.rb",
     "lib/command_handlers/data_binding_command_handler.rb",
     "lib/command_handlers/list_selection_data_binding_command_handler.rb",
-    "lib/command_handlers/models/list_binding.rb",
+    "lib/command_handlers/models/list_selection_binding.rb",
     "lib/command_handlers/models/model_binding.rb",
     "lib/command_handlers/models/observable_array.rb",
     "lib/command_handlers/models/observable_model.rb",

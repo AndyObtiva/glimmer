@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + "/observer"
 
-# SWT List widget binding
-class ListBinding
+# SWT List widget selection binding
+class ListSelectionBinding
   include Observer
 
   attr_reader :widget
@@ -18,6 +18,9 @@ class ListBinding
       selection_array
     end
   }
+  # Initialize with list widget and property_type
+  # property_type :string represents default list single selection
+  # property_type :array represents list multi selection
   def initialize(widget, property_type)
     property_type = :string if property_type.nil? or property_type == :undefined
     @widget = widget

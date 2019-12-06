@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + "/../command_handler"
 require File.dirname(__FILE__) + "/models/r_widget"
-require File.dirname(__FILE__) + "/models/list_binding"
+require File.dirname(__FILE__) + "/models/list_selection_binding"
 
 class ListSelectionDataBindingCommandHandler
   include CommandHandler
@@ -28,13 +28,13 @@ class ListSelectionDataBindingCommandHandler
 
     property_type = :string
     property_type = :array if parent.has_style?(:multi)
-    list_binding = ListBinding.new(parent, property_type)
-    list_binding.update(model_binding.evaluate_property)
-    model.add_observer(model_binding.property_name, list_binding)
+    list_selection_binding = ListSelectionBinding.new(parent, property_type)
+    list_selection_binding.update(model_binding.evaluate_property)
+    model.add_observer(model_binding.property_name, list_selection_binding)
 
     add_contents(parent) {
       on_widget_selected {
-        model_binding.update(list_binding.evaluate_property)
+        model_binding.update(list_selection_binding.evaluate_property)
       }
     }
   end
