@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + "/observable_array"
 require File.dirname(__FILE__) + "/observable_model"
 
-class TableItemsUpdater
+class TableItemsBinding
   include_package 'org.eclipse.swt'
   include_package 'org.eclipse.swt.widgets'
-  
+
   def initialize(parent, model_binding, column_properties)
     @table = parent
     @model_binding = model_binding
@@ -31,6 +31,5 @@ class TableItemsUpdater
       end
     end
   end
-  
+
 end
-  

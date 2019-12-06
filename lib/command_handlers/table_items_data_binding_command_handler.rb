@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + "/../command_handler"
 require File.dirname(__FILE__) + "/models/r_widget"
-require File.dirname(__FILE__) + "/models/table_items_updater"
+require File.dirname(__FILE__) + "/models/table_items_binding"
 
 #Depends on BindCommandHandler and TableColumnPropertiesDataBindingCommandHandler
 class TableItemsDataBindingCommandHandler
@@ -22,7 +22,7 @@ class TableItemsDataBindingCommandHandler
   def do_handle(parent, command_symbol, *args, &block)
     model_binding = args[0]
     column_properties = args[1]
-    TableItemsUpdater.new(parent, model_binding, column_properties)
+    TableItemsBinding.new(parent, model_binding, column_properties)
   end
 
 end
