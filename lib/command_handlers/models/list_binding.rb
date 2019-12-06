@@ -1,4 +1,5 @@
-class ListObserver
+# SWT List widget binding
+class ListBinding
   attr_reader :widget
   @@property_type_updaters = {
     :string => lambda { |widget, value| widget.widget.select(widget.widget.index_of(value.to_s)) },
