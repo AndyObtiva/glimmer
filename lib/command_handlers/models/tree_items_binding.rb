@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + "/observable_array"
 require File.dirname(__FILE__) + "/observable_model"
 
-class TreeItemsUpdater
+class TreeItemsBinding
   include_package 'org.eclipse.swt'
   include_package 'org.eclipse.swt.widgets'
 

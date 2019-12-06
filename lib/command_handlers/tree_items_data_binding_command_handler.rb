@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + "/../command_handler"
 require File.dirname(__FILE__) + "/models/r_widget"
-require File.dirname(__FILE__) + "/models/tree_items_updater"
+require File.dirname(__FILE__) + "/models/tree_items_binding"
 
 class TreeItemsDataBindingCommandHandler
   include CommandHandler
@@ -21,7 +21,7 @@ class TreeItemsDataBindingCommandHandler
   def do_handle(parent, command_symbol, *args, &block)
     model_binding = args[0]
     tree_properties = args[1]
-    TreeItemsUpdater.new(parent, model_binding, tree_properties)
+    TreeItemsBinding.new(parent, model_binding, tree_properties)
   end
 
 end

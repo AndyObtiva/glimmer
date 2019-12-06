@@ -55,7 +55,7 @@ Gem::Specification.new do |s|
     "lib/command_handlers/models/r_widget_listener.rb",
     "lib/command_handlers/models/r_widget_packages.rb",
     "lib/command_handlers/models/table_items_binding.rb",
-    "lib/command_handlers/models/tree_items_updater.rb",
+    "lib/command_handlers/models/tree_items_binding.rb",
     "lib/command_handlers/models/widget_binding.rb",
     "lib/command_handlers/shell_command_handler.rb",
     "lib/command_handlers/tab_item_command_handler.rb",
