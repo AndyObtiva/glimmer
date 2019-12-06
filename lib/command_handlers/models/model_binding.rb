@@ -1,4 +1,8 @@
+require File.dirname(__FILE__) + "/observer"
+
 class ModelBinding
+  include Observer
+  
   attr_reader :model, :property_name, :property_type, :binding_options
   @@property_type_converters = {
     :undefined => lambda { |value| value },

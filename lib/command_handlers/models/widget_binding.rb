@@ -1,4 +1,8 @@
+require File.dirname(__FILE__) + "/observer"
+
 class WidgetBinding
+  include Observer
+  
   attr_reader :widget, :property
   @@property_type_converters = {
     :text => Proc.new { |value| value.to_s },

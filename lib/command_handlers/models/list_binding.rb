@@ -1,5 +1,9 @@
+require File.dirname(__FILE__) + "/observer"
+
 # SWT List widget binding
 class ListBinding
+  include Observer
+
   attr_reader :widget
   @@property_type_updaters = {
     :string => lambda { |widget, value| widget.widget.select(widget.widget.index_of(value.to_s)) },
