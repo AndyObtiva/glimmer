@@ -12,9 +12,9 @@ class TreeItemsBinding
     @model_binding = model_binding
     @tree_properties = [tree_properties].flatten.first.to_h
     update(@model_binding.evaluate_property)
-    model = model_binding.model
+    model = model_binding.base_model
     model.extend(ObservableModel) unless model.is_a?(ObservableModel)
-    model.add_observer(model_binding.property_name, self)
+    model.add_observer(model_binding.property_name_expression, self)
   end
   def update(model_tree_root_node=nil)
     if model_tree_root_node and model_tree_root_node.respond_to?(@tree_properties[:children])

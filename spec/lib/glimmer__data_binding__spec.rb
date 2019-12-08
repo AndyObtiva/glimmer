@@ -31,6 +31,14 @@ describe "Glimmer Data Binding" do
     end
   end
 
+  class Address
+    attr_accessor :street, :city, :state, :zip
+  end
+
+  class PersonWithNestedProperties
+    attr_accessor :address1, :address2
+  end
+
   it "tests text widget data binding string property" do
     person = Person.new
     person.name = "Bruce Ting"
@@ -284,4 +292,92 @@ describe "Glimmer Data Binding" do
     expect(person.adult).to eq(true)
   end
 
+  context "nested data binding" do
+
+    it "tests text widget data binding to nested string property" do
+      person = PersonWithNestedProperties.new
+      person.address1 = Address.new
+      person.address2 = Address.new
+
+      person.address1.street = "20 Naper Ave"
+      person.address1.city = "Indianapolis"
+      person.address1.state = "IN"
+      person.address1.zip = "46183"
+
+      person.address2.street = "101 Confession St"
+      person.address2.city = "Denver"
+      person.address2.state = "CO"
+      person.address2.zip = "80014"
+
+      @target = shell {
+        composite {
+          @address1_street_text_widget = text {
+            text bind(person, "address1.street")
+          }
+          @address1_city_text_widget = text {
+            text bind(person, "address1.city")
+          }
+          @address1_state_text_widget = text {
+            text bind(person, "address1.state")
+          }
+          @address1_zip_text_widget = text {
+            text bind(person, "address1.zip")
+          }
+        }
+        composite {
+          @address2_street_text_widget = text {
+            text bind(person, "address2.street")
+          }
+          @address2_city_text_widget = text {
+            text bind(person, "address2.city")
+          }
+          @address2_state_text_widget = text {
+            text bind(person, "address2.state")
+          }
+          @address2_zip_text_widget = text {
+            text bind(person, "address2.zip")
+          }
+        }
+      }
+
+      expect(@address1_street_text_widget.widget.getText).to eq("20 Naper Ave")
+      expect(@address1_city_text_widget.widget.getText).to eq("Indianapolis")
+      expect(@address1_state_text_widget.widget.getText).to eq("IN")
+      expect(@address1_zip_text_widget.widget.getText).to eq("46183")
+
+      expect(@address2_street_text_widget.widget.getText).to eq("101 Confession St")
+      expect(@address2_city_text_widget.widget.getText).to eq("Denver")
+      expect(@address2_state_text_widget.widget.getText).to eq("CO")
+      expect(@address2_zip_text_widget.widget.getText).to eq("80014")
+
+      person.address1.street = "123 Main St"
+      person.address1.city = "Chicago"
+      person.address1.state = "IL"
+      person.address1.zip = "60654"
+
+      person.address2.street = "100 Park Ave"
+      person.address2.city = "San Diego"
+      person.address2.state = "CA"
+      person.address2.zip = "92014"
+
+      expect(@address1_street_text_widget.widget.getText).to eq("123 Main St")
+      expect(@address1_city_text_widget.widget.getText).to eq("Chicago")
+      expect(@address1_state_text_widget.widget.getText).to eq("IL")
+      expect(@address1_zip_text_widget.widget.getText).to eq("60654")
+
+      expect(@address2_street_text_widget.widget.getText).to eq("100 Park Ave")
+      expect(@address2_city_text_widget.widget.getText).to eq("San Diego")
+      expect(@address2_state_text_widget.widget.getText).to eq("CA")
+      expect(@address2_zip_text_widget.widget.getText).to eq("92014")
+
+      person.address2 = person.address1
+
+      expect(@address2_street_text_widget.widget.getText).to eq("123 Main St")
+      expect(@address2_city_text_widget.widget.getText).to eq("Chicago")
+      expect(@address2_state_text_widget.widget.getText).to eq("IL")
+      expect(@address2_zip_text_widget.widget.getText).to eq("60654")
+
+    end
+
+  end
 end

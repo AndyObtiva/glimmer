@@ -2,6 +2,7 @@ require 'set'
 module ObservableModel
 
   def add_observer(property_name, observer)
+    # TODO do something if property_name is nested, containing a dot .
     property_observer_list(property_name) << observer
   end
 

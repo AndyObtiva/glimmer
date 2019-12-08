@@ -12,9 +12,9 @@ class TableItemsBinding
     @model_binding = model_binding
     @column_properties = column_properties
     update(@model_binding.evaluate_property)
-    model = model_binding.model
+    model = model_binding.base_model
     model.extend(ObservableModel) unless model.is_a?(ObservableModel)
-    model.add_observer(model_binding.property_name, self)
+    model.add_observer(model_binding.property_name_expression, self)
   end
   def update(model_collection=nil)
     if model_collection and model_collection.is_a?(Array)

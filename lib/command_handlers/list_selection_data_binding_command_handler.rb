@@ -22,7 +22,7 @@ class ListSelectionDataBindingCommandHandler
     model_binding = args[0]
     widget_binding = WidgetBinding.new(parent, "items")
     widget_binding.update(model_binding.evaluate_options_property)
-    model = model_binding.model
+    model = model_binding.base_model
     model.extend ObservableModel unless model.is_a?(ObservableModel)
     model.add_observer(model_binding.options_property_name, widget_binding)
 
@@ -30,7 +30,7 @@ class ListSelectionDataBindingCommandHandler
     property_type = :array if parent.has_style?(:multi)
     list_selection_binding = ListSelectionBinding.new(parent, property_type)
     list_selection_binding.update(model_binding.evaluate_property)
-    model.add_observer(model_binding.property_name, list_selection_binding)
+    model.add_observer(model_binding.property_name_expression, list_selection_binding)
 
     add_contents(parent) {
       on_widget_selected {

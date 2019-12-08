@@ -21,13 +21,13 @@ class ComboSelectionDataBindingCommandHandler
     model_binding = args[0]
     widget_binding = WidgetBinding.new(parent, "items")
     widget_binding.update(model_binding.evaluate_options_property)
-    model = model_binding.model
+    model = model_binding.base_model
     model.extend ObservableModel unless model.is_a?(ObservableModel)
     model.add_observer(model_binding.options_property_name, widget_binding)
 
     widget_binding = WidgetBinding.new(parent, "text")
     widget_binding.update(model_binding.evaluate_property)
-    model.add_observer(model_binding.property_name, widget_binding)
+    model.add_observer(model_binding.property_name_expression, widget_binding)
 
     add_contents(parent) {
       on_widget_selected {
