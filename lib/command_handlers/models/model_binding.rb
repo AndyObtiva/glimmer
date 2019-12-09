@@ -19,10 +19,18 @@ class ModelBinding
   def model
     nested_property? ? nested_model : base_model
   end
-  def nested_model
-    property_name_expression.split(".")[0...-1].reduce(base_model) do |reduced_model, nested_model_property_name|
-      reduced_model.send(nested_model_property_name)
+  # e.g. person.address.state returns [person, person.address]
+  def nested_models
+    @nested_models = [base_model]
+    model_property_names.reduce(base_model) do |reduced_model, nested_model_property_name|
+      reduced_model.send(nested_model_property_name).tap do |new_reduced_model|
+        @nested_models << new_reduced_model
+      end
     end
+    @nested_models
+  end
+  def nested_model
+    nested_models.last
   end
   def base_model
     @base_model
@@ -30,14 +38,40 @@ class ModelBinding
   def property_name
     nested_property? ? nested_property_name : property_name_expression
   end
+  # All nested property names
+  # e.g. property name expression "address.state" gives [:address, :state]
+  def nested_property_names
+    property_name_expression.split(".").map(&:to_sym)
+  end
+  # Final nested property name
+  # e.g. property name expression "address.state" gives :state
   def nested_property_name
-    property_name_expression.split(".")[-1].to_sym
+    nested_property_names.last
+  end
+  # Model representing nested property names
+  # e.g. property name expression "address.state" gives [:address]
+  def model_property_names
+    nested_property_names[0...-1]
   end
   def nested_property?
     property_name_expression.include?(".")
   end
   def property_name_expression
     @property_name_expression
+  end
+  def add_observer(observer)
+    if nested_property?
+      nested_models.zip(nested_property_names).each do |model, property_name|
+        model.extend ObservableModel unless model.is_a?(ObservableModel)
+        model.add_observer(property_name) do
+          # TODO make sure observers are attached upon materializing objects at higher levels
+          observer.update(evaluate_property)
+        end
+      end
+    else
+      model.extend ObservableModel unless model.is_a?(ObservableModel)
+      model.add_observer(property_name, observer)
+    end
   end
   def update(value)
     converted_value = @@property_type_converters[@property_type].call(value)

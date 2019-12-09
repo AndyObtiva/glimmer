@@ -59,9 +59,8 @@ class DataBindingCommandHandler
       widget_binding_parameters << proc {|value| model_binding.evaluate_property} if model_binding.binding_options.has_key?(:computed_by)
       widget_binding = WidgetBinding.new(*widget_binding_parameters)
       widget_binding.update(model_binding.evaluate_property)
-      model = model_binding.base_model
-      model.extend ObservableModel unless model.is_a?(ObservableModel)
-      model.add_observer(model_binding.property_name_expression, widget_binding)
+      model = model_binding.model
+      model_binding.add_observer(widget_binding)
       computed_by_property_names = model_binding.binding_options[:computed_by]
       computed_by_property_names&.each do |computed_by_property_name|
         model.add_observer(computed_by_property_name, widget_binding)

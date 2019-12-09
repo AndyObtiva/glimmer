@@ -1,8 +1,12 @@
 require 'set'
+
+require File.dirname(__FILE__) + "/block_observer"
+
 module ObservableModel
 
-  def add_observer(property_name, observer)
-    # TODO do something if property_name is nested, containing a dot .
+  # Takes observer as an object or a block updater
+  def add_observer(property_name, observer = nil, &updater)
+    observer ||= BlockObserver.new(&updater)
     property_observer_list(property_name) << observer
   end
 
