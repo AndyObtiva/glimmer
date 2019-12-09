@@ -4,18 +4,18 @@ class HelloTab
   include Glimmer
   def launch
     shell {
-      text "SWT"
+      text "Hello Tab"
       tab_folder {
         tab_item {
-          text "Tab 1"
-          label { 
-            text "Hello World!" 
+          text "English"
+          label {
+            text "Hello World!"
           }
         }
         tab_item {
-          text "Tab 2"
-          label { 
-            text "Bonjour Univers!" 
+          text "French"
+          label {
+            text "Bonjour Univers!"
           }
         }
       }
