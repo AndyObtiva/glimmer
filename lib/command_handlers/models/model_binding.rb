@@ -41,7 +41,7 @@ class ModelBinding
   # All nested property names
   # e.g. property name expression "address.state" gives [:address, :state]
   def nested_property_names
-    property_name_expression.split(".").map(&:to_sym)
+    property_name_expression.split(".")
   end
   # Final nested property name
   # e.g. property name expression "address.state" gives :state
@@ -59,14 +59,25 @@ class ModelBinding
   def property_name_expression
     @property_name_expression
   end
-  def add_observer(observer)
-    if nested_property?
-      nested_models.zip(nested_property_names).each do |model, property_name|
-        model.extend ObservableModel unless model.is_a?(ObservableModel)
-        model.add_observer(property_name) do
-          # TODO make sure observers are attached upon materializing objects at higher levels
+  def nested_property_observers_for(observer)
+    @nested_property_observers_collection ||= {}
+    unless @nested_property_observers_collection.has_key?(observer)
+      @nested_property_observers_collection[observer] = nested_property_names.reduce({}) do |output, property_name|
+        block_observer = BlockObserver.new do |changed_value|
+          add_observer(observer)
           observer.update(evaluate_property)
         end
+        output.merge(property_name => block_observer)
+      end
+    end
+    @nested_property_observers_collection[observer]
+  end
+  def add_observer(observer)
+    if nested_property?
+      nested_property_observers = nested_property_observers_for(observer)
+      nested_models.zip(nested_property_names).each do |model, property_name|
+        model.extend ObservableModel unless model.is_a?(ObservableModel)
+        model.add_observer(property_name, nested_property_observers[property_name]) unless model.has_observer?(property_name, nested_property_observers[property_name])
       end
     else
       model.extend ObservableModel unless model.is_a?(ObservableModel)

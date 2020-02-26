@@ -10,6 +10,10 @@ module ObservableModel
     property_observer_list(property_name) << observer
   end
 
+  def has_observer?(property_name, observer)
+    property_observer_list(property_name).include?(observer)
+  end
+
   def property_observer_hash
     @property_observers = Hash.new unless @property_observers
     @property_observers

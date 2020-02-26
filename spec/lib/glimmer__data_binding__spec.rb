@@ -377,6 +377,27 @@ describe "Glimmer Data Binding" do
       expect(@address2_state_text_widget.widget.getText).to eq("IL")
       expect(@address2_zip_text_widget.widget.getText).to eq("60654")
 
+      person.address2 = Address.new
+
+      person.address2.street = "101 Confession St"
+      person.address2.city = "Denver"
+      person.address2.state = "CO"
+      person.address2.zip = "80014"
+
+      expect(@address2_street_text_widget.widget.getText).to eq("101 Confession St")
+      expect(@address2_city_text_widget.widget.getText).to eq("Denver")
+      expect(@address2_state_text_widget.widget.getText).to eq("CO")
+      expect(@address2_zip_text_widget.widget.getText).to eq("80014")
+
+      person.address2.street = "123 Main St"
+      person.address2.city = "Chicago"
+      person.address2.state = "IL"
+      person.address2.zip = "60654"
+
+      expect(@address2_street_text_widget.widget.getText).to eq("123 Main St")
+      expect(@address2_city_text_widget.widget.getText).to eq("Chicago")
+      expect(@address2_state_text_widget.widget.getText).to eq("IL")
+      expect(@address2_zip_text_widget.widget.getText).to eq("60654")
     end
 
   end
