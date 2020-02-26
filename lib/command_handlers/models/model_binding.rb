@@ -63,11 +63,13 @@ class ModelBinding
     @nested_property_observers_collection ||= {}
     unless @nested_property_observers_collection.has_key?(observer)
       @nested_property_observers_collection[observer] = nested_property_names.reduce({}) do |output, property_name|
-        block_observer = BlockObserver.new do |changed_value|
-          add_observer(observer)
-          observer.update(evaluate_property)
-        end
-        output.merge(property_name => block_observer)
+        output.merge(
+          property_name => BlockObserver.new do |changed_value|
+            # Ensure reattaching observers when a higher level nested property is updated (e.g. person.address changes reattaches person.address.street observer)
+            add_observer(observer)
+            observer.update(evaluate_property)
+          end
+        )
       end
     end
     @nested_property_observers_collection[observer]
