@@ -1,5 +1,8 @@
 # Release Notes
 
+** 0.1.11.470 **
+- Nested property data binding support
+
 ** 0.1.10.470 **
 - Support Tree data-binding (one-way from model to tree)
 
