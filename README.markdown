@@ -178,7 +178,6 @@ Same as Windows
 
 These features have been suggested. You might see them in a future version of Glimmer. You are welcome to contribute more feature suggestions.
 
-- Nested binding via attribute expressions (e.g. `bind(person, "address.city")`)
 - bind_collection: an iterator that enables spawning widgets based on a collection (e.g. spawn 2 `AddressWidget`s if `user.addresses` bind collection contains 2 addresses)
 
 ## Contributing to Glimmer
