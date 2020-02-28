@@ -1,6 +1,6 @@
 # Release Notes
 
-** 0.1.11.swt4.14 **
+** 0.1.11.SWT4.14 **
 - Upgraded SWT to version 4.14
 
 ** 0.1.11.470 **
