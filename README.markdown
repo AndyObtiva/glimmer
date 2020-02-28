@@ -194,10 +194,10 @@ Please follow these instructions if you would like to help us develop Glimmer:
 
 ## Contributors
 
-* Annas "Andy" Al Maleh (Founder)
+* Andy Maleh (Founder)
 * Dennis Theisen
 
 ## License
 
-Copyright (c) 2007-2019 Annas "Andy" Al Maleh.
+Copyright (c) 2007-2020 Andy Maleh.
 See LICENSE.txt for further details.
