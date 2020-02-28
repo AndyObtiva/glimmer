@@ -8,7 +8,12 @@ class GlimmerApplication
   SWT_JAR_FILE = File.join(File.dirname(SWT_ZIP_FILE), 'swt.jar')
 
   OPERATING_SYSTEMS = ["mac", "windows", "linux"]
-  REGEX_SWT_VERSION = /^[0-9]+(\.[0-9]+)*$/
+  REGEX_SETUP = /--setup/
+  REGEX_SWT_VERSION = /[0-9]+[.0-9]*/
+  REGEX_APPLICATION = /.+/
+  REGEX_OPTIONS = [
+    REGEX_SETUP, REGEX_SWT_VERSION, REGEX_APPLICATION
+  ].map {|re| "(#{re})?"}.join("\s*")
 
   attr_reader :setup_requested, :swt_version_specified, :application
   alias :setup_requested? :setup_requested
@@ -20,10 +25,10 @@ class GlimmerApplication
   # or
   # app_file_path.rb
   def initialize(options)
-    application_option_index = 0
-    (@setup_requested = (options[0] == '--setup')).yield_self {|present| present && application_option_index+=1}
-    (@swt_version_specified = options[1] && options[1].match(REGEX_SWT_VERSION)[0]).yield_self {|present| present && application_option_index+=1}
-    @application = options[application_option_index]
+    options_regex_match = options.join(' ').match(REGEX_OPTIONS)
+    @setup_requested = !!options_regex_match[1]
+    @swt_version_specified = options_regex_match[2]
+    @application = options_regex_match[3]
   end
 
   def start
@@ -31,7 +36,7 @@ class GlimmerApplication
 
     setup if setup_requested? || !File.exist?(SWT_JAR_FILE)
 
-    if application
+    if application && File.exist?(SWT_JAR_FILE)
       puts "Starting Glimmer Application #{application}"
       system "ruby #{additional_options} -J-classpath \"#{SWT_JAR_FILE}\" #{application}"
     end
@@ -39,18 +44,21 @@ class GlimmerApplication
 
   def usage
     puts <<-MULTILINE
-Usage: glimmer [--setup] [application_ruby_file_path.rb]
+Usage: glimmer [--setup] [SWT_VERSION] [application_ruby_file_path.rb]
 
 Example 1: glimmer hello_combo.rb
 This runs the Glimmer application hello_combo.rb
-If the SWT Jar is missing, it downloads it and sets it up first.
+If the SWT Jar is missing, it first downloads the latest version supported.
 
 Example 2: glimmer --setup hello_combo.rb
 This performs setup and then runs the Glimmer application hello_combo.rb
-It downloads and sets up the SWT jar whether missing or not.
+It downloads and sets up the latest SWT jar whether missing or not.
 
 Example 3: glimmer --setup
-This downloads and sets up the SWT jar whether missing or not.
+This downloads and sets up the latest SWT jar whether missing or not.
+
+Example 4: glimmer --setup 4.14
+This downloads and sets up the SWT jar specified version 4.14 whether missing or not.
     MULTILINE
   end
 
@@ -61,6 +69,8 @@ This downloads and sets up the SWT jar whether missing or not.
     puts "Unzipping #{SWT_ZIP_FILE}"
     `unzip -o #{SWT_ZIP_FILE} -d #{File.dirname(SWT_ZIP_FILE)}`
     puts "Finished unzipping"
+  rescue => e
+    puts e.message
   end
 
   def download(file)
@@ -73,10 +83,9 @@ This downloads and sets up the SWT jar whether missing or not.
   end
 
   def platform_swt_url
-    require 'puts_debuggerer'
     swt_config[swt_version][platform_swt_url_key]
   rescue
-    puts "SWT version #{swt_version_specified} is not available!" if swt_version_specified
+    raise "SWT version #{swt_version} is not available for download!"
   end
 
   def swt_config
