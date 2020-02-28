@@ -1,22 +1,16 @@
 require 'net/http'
 require 'fileutils'
 require 'os'
+require 'yaml'
 
 class GlimmerApplication
   SWT_ZIP_FILE = File.join(`echo ~`.strip, '.glimmer', 'vendor', 'swt.zip')
   SWT_JAR_FILE = File.join(File.dirname(SWT_ZIP_FILE), 'swt.jar')
 
   OPERATING_SYSTEMS = ["mac", "windows", "linux"]
+  REGEX_SWT_VERSION = /^[0-9]+(\.[0-9]+)*$/
 
-  SWT_URL = {
-    "mac_x86_64" => "http://mirror.csclub.uwaterloo.ca/eclipse/eclipse/downloads/drops4/R-4.7-201706120950/swt-4.7-cocoa-macosx-x86_64.zip",
-    "linux_x86_64" => "http://mirror.cc.vt.edu/pub/eclipse/eclipse/downloads/drops4/R-4.7-201706120950/swt-4.7-gtk-linux-x86_64.zip",
-    "linux_x86" => "http://mirror.csclub.uwaterloo.ca/eclipse/eclipse/downloads/drops4/R-4.7-201706120950/swt-4.7-gtk-linux-x86.zip",
-    "windows_x86_64" => "http://mirror.csclub.uwaterloo.ca/eclipse/eclipse/downloads/drops4/R-4.7-201706120950/swt-4.7-win32-win32-x86_64.zip",
-    "windows_x86" => "http://eclipse.mirror.rafal.ca/eclipse/downloads/drops4/R-4.7-201706120950/swt-4.7-win32-win32-x86.zip"
-  }
-
-  attr_reader :setup_requested, :application
+  attr_reader :setup_requested, :swt_version_specified, :application
   alias :setup_requested? :setup_requested
 
   # Accepts the following options string:
@@ -26,8 +20,10 @@ class GlimmerApplication
   # or
   # app_file_path.rb
   def initialize(options)
-    @setup_requested = options.first == '--setup'
-    @application = setup_requested? ? options[1] : options.first
+    application_option_index = 0
+    (@setup_requested = (options[0] == '--setup')).yield_self {|present| present && application_option_index+=1}
+    (@swt_version_specified = options[1] && options[1].match(REGEX_SWT_VERSION)[0]).yield_self {|present| present && application_option_index+=1}
+    @application = options[application_option_index]
   end
 
   def start
@@ -77,7 +73,22 @@ This downloads and sets up the SWT jar whether missing or not.
   end
 
   def platform_swt_url
-    SWT_URL[platform_swt_url_key]
+    require 'puts_debuggerer'
+    swt_config[swt_version][platform_swt_url_key]
+  rescue
+    puts "SWT version #{swt_version_specified} is not available!" if swt_version_specified
+  end
+
+  def swt_config
+    @swt_config ||= YAML.load_file(File.join(__FILE__, '..', '..', 'config', 'swt.yml'))['SWT']
+  end
+
+  def swt_version
+    swt_version_specified || swt_latest_version
+  end
+
+  def swt_latest_version
+    @swt_latest_version ||= swt_config.keys.max_by {|v| v.split('.').reverse.map(&:to_i).each_with_index.map {|n, i| n*(1000**i)}.sum}
   end
 
   def platform_swt_url_key
