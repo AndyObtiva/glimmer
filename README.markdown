@@ -64,7 +64,7 @@ gem install glimmer -v 0.1.11.SWT4.14
 
 Usage:
 ```
-glimmer [--setup] [application_ruby_file_path.rb]
+glimmer [--setup] [SWT_VERSION] [application_ruby_file_path.rb]
 ```
 
 Example 1:
