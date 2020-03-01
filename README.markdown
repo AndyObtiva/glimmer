@@ -5,13 +5,13 @@ Glimmer is a cross-platform Ruby desktop development library. Glimmer's main inn
 
 You may learn more by reading this article: [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer)
 
-![Glimmer](https://github.com/AndyObtiva/glimmer/raw/master/images/Bitter-sweet.jpg)
+![Glimmer](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-world.png)
 
 ## Example
 
 ```ruby
     shell {
-      text "Example"
+      text "Glimmer"
       label {
         text "Hello World!"
       }
@@ -27,14 +27,14 @@ You may learn more by reading this article: [Eclipse Zone Tutorial](http://eclip
 
 ## Pre-requisites
 
-JRuby 9.2.9.0 (supporting Ruby 2.5.0 syntax)
+JRuby 9.2.10.0 (supporting Ruby 2.5.x syntax)
 
 Easiest way to obtain is through [RVM](http://rvm.io)
 
 With RVM installed on your system, please run this command to install JRuby:
 
 ```bash
-rvm install jruby-9.2.9.0
+rvm install jruby-9.2.10.0
 ```
 
 ## Setup
@@ -186,7 +186,7 @@ Please follow these instructions if you would like to help us develop Glimmer:
 
 1. Download and extract the ["SWT binary and source"](http://download.eclipse.org/eclipse/downloads/drops4/R-4.7-201706120950/#SWT).
 2. Add swt.jar to your Java CLASSPATH environment (e.g. `export CLASSPATH="$CLASSPATH:/path_to_swt_jar/swt.jar"`)
-3. Download and setup jRuby 1.5.6 (`rvm install jruby-9.2.9.0`)
+3. Download and setup JRuby (`rvm install jruby-9.2.10.0`)
 4. Install bundler (gem install bundler)
 5. Install project required gems (bundle install)
 6. Write a program that requires the file "lib/glimmer.rb" (or glimmer gem) and has the UI class (view) include the Glimmer module

@@ -3,7 +3,7 @@ require_relative "../lib/glimmer"
 include Glimmer
 
 shell {
-  text "SWT"
+  text "Glimmer"
   label {
     text "Hello World!"
   }
