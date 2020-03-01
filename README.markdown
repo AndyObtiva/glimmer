@@ -66,7 +66,7 @@ jgem install glimmer -v 0.2.0
 
 Add the following to `Gemfile`:
 ```
-jgem 'glimmer', '~> 0.2.0'
+gem 'glimmer', '~> 0.2.0'
 ```
 
 And, then run:
