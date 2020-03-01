@@ -1,4 +1,3 @@
-require_relative "../../lib/glimmer"
 require_relative "contact"
 
 class HelloComputed

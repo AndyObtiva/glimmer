@@ -1,6 +1,4 @@
-require_relative "../../lib/glimmer"
 require_relative "tic_tac_toe_board"
-
 
 class TicTacToe
 
@@ -56,7 +54,7 @@ class TicTacToe
     @tic_tac_toe_board.reset
   end
 
-  def open 
+  def open
     @main.open
   end
 end

@@ -7,16 +7,27 @@ You may learn more by reading this article: [Eclipse Zone Tutorial](http://eclip
 
 ## Example
 
+Code (`hello_world.rb`):
+```ruby
+include Glimmer
+
+shell {
+  text "Glimmer"
+  label {
+    text "Hello World!"
+  }
+}.open
+```
+
+Run:
+```
+glimmer hello_world.rb
+```
+
+Glimmer app:
+
 ![Glimmer](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-world.png)
 
-```ruby
-    shell {
-      text "Glimmer"
-      label {
-        text "Hello World!"
-      }
-    }.open
-```
 
 ## Resources
 
@@ -25,13 +36,16 @@ You may learn more by reading this article: [Eclipse Zone Tutorial](http://eclip
 * [RubyConf 2008 Video](https://confreaks.tv/videos/rubyconf2008-desktop-development-with-glimmer)
 * [Code Blog](http://andymaleh.blogspot.com/search/label/Glimmer)
 
+## Background
+
+Ruby is a dynamically-typed object-oriented language, which provides great productivity gains due to its powerful expressive syntax and dynamic nature. While it is proven by the Ruby on Rails framework for web development, it currently lacks a robust platform-independent framework for building desktop applications. Given that Java libraries can now be utilized in Ruby code through JRuby, Eclipse technologies, such as SWT, JFace, and RCP can help fill the gap of desktop application development with Ruby.
+
 ## Pre-requisites
 
-JRuby 9.2.10.0 (supporting Ruby 2.5.x syntax)
+* Java SE Runtime Environment 7 or higher (find at https://www.oracle.com/java/technologies/javase-downloads.html)
+* JRuby 9.2.10.0 (supporting Ruby 2.5.x syntax) (find at https://www.jruby.org/download)
 
-Easiest way to obtain is through [RVM](http://rvm.io)
-
-With RVM installed on your system, please run this command to install JRuby:
+On **Mac** and **Linux**, an easy way to obtain JRuby is through [RVM](http://rvm.io) by running:
 
 ```bash
 rvm install jruby-9.2.10.0
@@ -41,11 +55,18 @@ rvm install jruby-9.2.10.0
 
 Please follow these instructions to make the `glimmer` command available on your system.
 
-### Option 1: Bundler
+### Option 1: Direct Install
+
+Run this command to install directly:
+```
+jgem install glimmer -v 0.2.0
+```
+
+### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.1.11.SWT4.14'
+jgem 'glimmer', '~> 0.2.0'
 ```
 
 And, then run:
@@ -53,57 +74,50 @@ And, then run:
 bundle install
 ```
 
-### Option 2: Direct RubyGem
-
-Run this command to get directly:
-```
-gem install glimmer -v 0.1.11.SWT4.14
-```
-
-## Usage
+## Glimmer command
 
 Usage:
 ```
-glimmer [--setup] [SWT_VERSION] [application_ruby_file_path.rb]
+glimmer application.rb
 ```
 
-Example 1:
-```
-glimmer hello_combo.rb
-```
-This runs the Glimmer application `hello_combo.rb` (if the SWT Jar is missing, it downloads it and sets it up first.)
+Runs a Glimmer application using JRuby, automatically preloading
+the glimmer ruby gem and SWT jar dependency.
 
-Example 2:
+Example:
 ```
-glimmer --setup hello_combo.rb
+glimmer hello_world.rb
 ```
-This performs setup and then runs the Glimmer application `hello_combo.rb` (downloads and sets up the SWT jar whether present or not)
+This runs the Glimmer application hello_world.rb
 
-Example 3:
-```
-glimmer --setup
-```
-This just downloads and sets up the SWT jar even if already present.
+## Glimmer DSL Syntax
 
-## Syntax
+### Widgets
 
-Check out the SWT library API for a list of available widgets:
-https://help.eclipse.org/oxygen/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fswt%2Fwidgets%2Fpackage-summary.html
+Glimmer UIs (user interfaces) are modeled with widgets (wrappers around the SWT library widgets found here: https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/guide/swt_widgets_controls.htm?cp=2_0_7_0_0).
 
-In Glimmer DSL, SWT widgets are declared with lowercase underscored naming.
-
-Widget examples:
-- `button` for `org.eclipse.swt.widgets.Button`
-- `label` for `org.eclipse.swt.widgets.Label`
-- `table_column` for `org.eclipse.swt.widgets.TableColumn`
+In Glimmer DSL, widgets are declared with lowercase underscored naming (you may look at usage examples in the `samples` directory).
 
 The `shell` widget is always the outermost widget containing all others in a desktop windowed application.
 
-Widget properties may be set with methods matching their names in lower snakecase.
+Other widget examples:
+- `button`: wrapper for `org.eclipse.swt.widgets.Button`
+- `label`: wrapper for `org.eclipse.swt.widgets.Label`
+- `tab_folder`: wrapper for `org.eclipse.swt.widgets.TabFolder`
+- `tab_item`: wrapper for `org.eclipse.swt.widgets.TabItem`
+- `table`: wrapper for `org.eclipse.swt.widgets.Table`
+- `table_column`: wrapper for `org.eclipse.swt.widgets.TableColumn`
+- `tree`: wrapper for `org.eclipse.swt.widgets.Tree`
+
+### Widget Properties
+
+Widget properties (e.g. `text`) may be set with methods matching their names in lower snakecase.
 
 Widget property examples:
 - `text` to set text value of a `label`
 - `gridData` to set grid data of a `composite`
+
+### Data-Binding
 
 Data-binding is done with `bind` command following widget property to bind and taking model and bindable attribute as arguments.
 
@@ -121,17 +135,28 @@ The third example demonstrates computed value data binding whereby the value of 
 
 You may learn more about Glimmer's syntax by reading the Eclipse Zone Tutorial mentioned in resources and opening up the samples under the `samples` folder.
 
+## Samples
+
+Check the "samples" folder for examples on how to write Glimmer applications. To run them, make sure to install the `glimmer` gem first and then use the `glimmer` command.
+
+Example:
+
+```
+glimmer samples/hello_world.rb
+```
+
+## SWT Reference
+
+https://www.eclipse.org/swt/docs.php
+
+Here is a list of SWT widgets:
+
+https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/guide/swt_widgets_controls.htm?cp=2_0_7_0_0
+
+
 ## Girb (Glimmer irb)
 
 With Glimmer installed, you may run want to run `girb` instead of standard `irb` to have SWT preloaded and the Glimmer library required and included for quick Glimmer coding/testing.
-
-## Samples
-
-Check the "samples" folder for examples on how to write Glimmer applications.
-
-## Background
-
-Ruby is a dynamically-typed object-oriented language, which provides great productivity gains due to its powerful expressive syntax and dynamic nature. While it is proven by the Ruby on Rails framework for web development, it currently lacks a robust platform-independent framework for building desktop applications. Given that Java libraries can now be utilized in Ruby code through JRuby, Eclipse technologies, such as SWT, JFace, and RCP can help fill the gap of desktop application development with Ruby.
 
 ## Logging
 
@@ -159,20 +184,34 @@ D, [2017-07-21T19:23:12.878434 #35707] DEBUG -- : WidgetCommandHandler will hand
 D, [2017-07-21T19:23:12.878798 #35707] DEBUG -- : widget styles are: [:multi]
 ```
 
-## Mac Support
+## Raw JRuby Command
 
-Mac is well supported with the `glimmer` command.
+If there is a need to run Glimmer directly via the `jruby` command, you
+may run the following:
 
-If there is a reason to use the raw jruby command on the Mac, you need to pass an extra option to JRuby. For example:
-`jruby -J-XstartOnFirstThread samples/hello_world.rb`
+```
+jruby -J-classpath "path_to/swt.jar" -r glimmer -S application.rb
+```
 
-## Windows Support
+The `-J-classpath` option specifies the `swt.jar` file path, which can be a
+manually downloaded version of SWT, or otherwise the one included in the gem. You can lookup the one included in the gem by running `jgem which glimmer` to find the gem path and then look through the `vendor` directory.
 
-Windows is supported by JRuby and the Eclipse SWT library Glimmer runs on. However, the `glimmer` command has not been confirmed to be working on Windows yet. Please feel free to share experiences and provide help in ensuring support for Windows.
+The `-r` option preloads (requires) the `glimmer` library in Ruby.
 
-## Linux Support
+The `-S` option specifies a script to run.
 
-Same as Windows
+## Platform Support
+
+Glimmer runs on Mac, Windows, and Linux
+
+### Mac Support
+
+Mac is well supported with the `glimmer` command. However, if there is a reason to use the raw jruby command, you need to pass an extra option (`-J-XstartOnFirstThread`) to JRuby on the Mac.
+
+Example:
+```
+jruby -J-XstartOnFirstThread -J-classpath "path_to/swt.jar" -r glimmer -S application.rb
+```
 
 ## Feature Suggestions
 
@@ -187,7 +226,7 @@ Please follow these instructions if you would like to help us develop Glimmer:
 1. Download and extract the ["SWT binary and source"](http://download.eclipse.org/eclipse/downloads/drops4/R-4.7-201706120950/#SWT).
 2. Add swt.jar to your Java CLASSPATH environment (e.g. `export CLASSPATH="$CLASSPATH:/path_to_swt_jar/swt.jar"`)
 3. Download and setup JRuby (`rvm install jruby-9.2.10.0`)
-4. Install bundler (gem install bundler)
+4. Install bundler (jgem install bundler)
 5. Install project required gems (bundle install)
 6. Write a program that requires the file "lib/glimmer.rb" (or glimmer gem) and has the UI class (view) include the Glimmer module
 7. Run your program with `bin/glimmer` or jruby (pass `-J-XstartOnFirstThread` option if on the Mac)

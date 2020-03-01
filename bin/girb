@@ -1,5 +1,3 @@
 #!/usr/bin/env ruby
-require 'os'
 require_relative '../lib/glimmer_application'
-additional_options = OS.mac? ? "-J-XstartOnFirstThread" : ""
-system "ruby #{additional_options} -J-classpath \"#{GlimmerApplication::SWT_JAR_FILE}\" -S irb -r #{File.expand_path(File.join(__FILE__, '..', 'girb_runner.rb'))}"
+GlimmerApplication.launch('irb')

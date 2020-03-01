@@ -1,5 +1,3 @@
-require_relative "../lib/glimmer"
-
 class Person
   attr_accessor :provinces, :provinces_options
 

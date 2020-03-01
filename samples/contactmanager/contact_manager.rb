@@ -1,5 +1,4 @@
 require_relative "contact_manager_presenter"
-require_relative "../../lib/glimmer"
 
 class RWidget
   include_package 'org.eclipse.jface.viewers'
@@ -12,9 +11,9 @@ class ContactManager
   include_package 'org.eclipse.swt.widgets'
   include_package 'org.eclipse.swt.layout'
   include_package 'org.eclipse.jface.viewers'
-  
+
   contact_manager_presenter = ContactManagerPresenter.new
-  
+
   shell {
     text "Contact Manager"
     composite {
@@ -33,7 +32,7 @@ class ContactManager
           text bind(contact_manager_presenter, :email)
         }
       }
-      
+
       table {
         layout_data GridData.new(:fill.swt_constant, :fill.swt_constant, true, true)
         table_column {
@@ -48,7 +47,7 @@ class ContactManager
           text "Email"
           width 120
         }
-        items bind(contact_manager_presenter, :results), 
+        items bind(contact_manager_presenter, :results),
               column_properties(:first_name, :last_name, :email)
       }
       composite {

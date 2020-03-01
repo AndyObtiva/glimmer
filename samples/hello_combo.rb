@@ -1,5 +1,3 @@
-require_relative "../lib/glimmer"
-
 class Person
   attr_accessor :country, :country_options
 
@@ -7,10 +5,10 @@ class Person
     self.country_options=["", "Canada", "US", "Mexico"]
     self.country = "Canada"
   end
-  
+
   def reset_country
     self.country = "Canada"
-  end  
+  end
 end
 
 class HelloCombo

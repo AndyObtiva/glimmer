@@ -1,5 +1,3 @@
-require_relative "../lib/glimmer"
-
 class HelloTab
   include Glimmer
   def launch

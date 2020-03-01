@@ -1,5 +1,11 @@
 # Release Notes
 
+** 0.2.0 **
+- Upgraded to JRuby 9.2.10.0
+- Fixed support for Windows & Linux
+- Removed need to download SWT by including directly in gem for all platforms
+- Simplified usage of glimmer command by preloading glimmer and not requiring setup
+
 ** 0.1.11.SWT4.14 **
 - Upgraded SWT to version 4.14
 

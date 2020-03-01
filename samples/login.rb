@@ -1,6 +1,5 @@
 require "java"
 require "observer"
-require_relative "../lib/glimmer"
 
 #Presents login screen data
 class LoginPresenter

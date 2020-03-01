@@ -1,5 +1,3 @@
-require_relative "../lib/glimmer"
-
 include Glimmer
 
 shell {

@@ -27,6 +27,7 @@ unless jeweler_required.nil?
     gem.email = "andy.am@gmail.com"
     gem.authors = ["AndyMaleh"]
     gem.executables = ['glimmer', 'girb']
+    gem.files = Dir['bin/**/*', 'lib/**/*', 'vendor/**/*']
     # dependencies defined in Gemfile
   end
   Jeweler::RubygemsDotOrgTasks.new
@@ -36,8 +37,7 @@ require 'rspec/core'
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = FileList['spec/**/*_spec.rb']
-  additional_options = OS.mac? ? "-J-XstartOnFirstThread" : ""
-  spec.ruby_opts = ["#{additional_options} -J-classpath \"#{GlimmerApplication::SWT_JAR_FILE}\" -Xcli.debug=true --debug"]
+  spec.ruby_opts = ["-Xcli.debug=true --debug #{GlimmerApplication.jruby_command_options}"]
 end
 
 task :default => :spec
