@@ -5,9 +5,9 @@ Glimmer is a cross-platform Ruby desktop development library. Glimmer's main inn
 
 You may learn more by reading this article: [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer)
 
-![Glimmer](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-world.png)
-
 ## Example
+
+![Glimmer](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-world.png)
 
 ```ruby
     shell {
