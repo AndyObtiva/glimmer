@@ -40,14 +40,14 @@ This runs the Glimmer application hello_world.rb
 
   def start
     if @application_path
-      run_application
+      launch_application
     else
       display_usage
     end
   end
 
-  def run_application
-    puts "Starting Glimmer Application #{@application_path}"
+  def launch_application
+    puts "Launching Glimmer Application: #{@application_path}"
     self.class.launch(@application_path)
   end
 
