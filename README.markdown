@@ -220,18 +220,6 @@ These features have been suggested. You might see them in a future version of Gl
 - **Nested indexed property data binding**: a complementary feature to nested property data binding that binds to a collection element by index (e.g. `bind(user, 'addresses[1].street')`)
 - **bind_collection**: an iterator that enables spawning widgets based on a variable collection (e.g. `bind_collection('user.addresses') { |address| address_widget {...} }` spawns 3 `AddressWidget`s if `user.addresses` is set with 3 addresses; and replaces with 2 `AddressWidget`s if `user.addresses` is reset with 2 addresses only). Needs further thought on naming and functionality.
 
-## Contributing to Glimmer
-
-Please follow these instructions if you would like to help us develop Glimmer:
-
-1. Download and extract the ["SWT binary and source"](http://download.eclipse.org/eclipse/downloads/drops4/R-4.7-201706120950/#SWT).
-2. Add swt.jar to your Java CLASSPATH environment (e.g. `export CLASSPATH="$CLASSPATH:/path_to_swt_jar/swt.jar"`)
-3. Download and setup JRuby (`rvm install jruby-9.2.10.0`)
-4. Install bundler (jgem install bundler)
-5. Install project required gems (bundle install)
-6. Write a program that requires the file "lib/glimmer.rb" (or glimmer gem) and has the UI class (view) include the Glimmer module
-7. Run your program with `bin/glimmer` or jruby (pass `-J-XstartOnFirstThread` option if on the Mac)
-
 ## Contributors
 
 * Andy Maleh (Founder)
