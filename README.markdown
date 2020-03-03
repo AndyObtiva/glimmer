@@ -217,7 +217,8 @@ jruby -J-XstartOnFirstThread -J-classpath "path_to/swt.jar" -r glimmer -S applic
 
 These features have been suggested. You might see them in a future version of Glimmer. You are welcome to contribute more feature suggestions.
 
-- bind_collection: an iterator that enables spawning widgets based on a collection (e.g. spawn 2 `AddressWidget`s if `user.addresses` bind collection contains 2 addresses)
+- **Nested indexed property data binding**: a complementary feature to nested property data binding that binds to a collection element by index (e.g. `bind(user, 'addresses[1].street')`)
+- **bind_collection**: an iterator that enables spawning widgets based on a variable collection (e.g. `bind_collection('user.addresses') { |address| address_widget {...} }` spawns 3 `AddressWidget`s if `user.addresses` is set with 3 addresses; and replaces with 2 `AddressWidget`s if `user.addresses` is reset with 2 addresses only). Needs further thought on naming and functionality.
 
 ## Contributing to Glimmer
 
