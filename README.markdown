@@ -40,6 +40,13 @@ Glimmer app:
 
 Ruby is a dynamically-typed object-oriented language, which provides great productivity gains due to its powerful expressive syntax and dynamic nature. While it is proven by the Ruby on Rails framework for web development, it currently lacks a robust platform-independent framework for building desktop applications. Given that Java libraries can now be utilized in Ruby code through JRuby, Eclipse technologies, such as SWT, JFace, and RCP can help fill the gap of desktop application development with Ruby.
 
+## Platform Support
+
+Glimmer runs on the following platforms:
+- Mac
+- Windows
+- Linux
+
 ## Pre-requisites
 
 * Java SE Runtime Environment 7 or higher (find at https://www.oracle.com/java/technologies/javase-downloads.html)
@@ -199,10 +206,6 @@ manually downloaded version of SWT, or otherwise the one included in the gem. Yo
 The `-r` option preloads (requires) the `glimmer` library in Ruby.
 
 The `-S` option specifies a script to run.
-
-## Platform Support
-
-Glimmer runs on Mac, Windows, and Linux
 
 ### Mac Support
 
