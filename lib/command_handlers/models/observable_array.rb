@@ -11,6 +11,14 @@ module ObservableArray
     end
   end
 
+  def add_array_observer(observer)
+    property_observer_list << observer
+  end
+
+  def has_array_observer?(observer)
+    property_observer_list.include?(observer)
+  end
+
   def property_observer_list
     @property_observer_list = Set.new unless @property_observer_list
     @property_observer_list
@@ -29,6 +37,14 @@ module ObservableArray
       end
     end_eval
 
+    array.instance_eval("alias original_set_value []=")
+    array.instance_eval <<-end_eval, __FILE__, __LINE__
+      def []=(index, value)
+        self.original_set_value(index, value)
+        notify_observers
+      end
+    end_eval
+
     notify_observers_on_invokation(array, "delete", 1)
     notify_observers_on_invokation(array, "delete_at", 1)
     notify_observers_on_invokation(array, "clear")
@@ -37,6 +53,7 @@ module ObservableArray
   end
 
   def self.notify_observers_on_invokation(model, method, argument_count=0)
+    #TODO look into need for argument_count in case no longer needed
     model.instance_eval "alias original_#{method} #{method}\n"
     arguments = ""
     for index in 1..argument_count

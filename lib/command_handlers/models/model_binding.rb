@@ -21,11 +21,20 @@ class ModelBinding
   end
   # e.g. person.address.state returns [person, person.address]
   def nested_models
-    @nested_models = [base_model]
+    pd (@nested_models = [base_model]), header: '>>'*20
     model_property_names.reduce(base_model) do |reduced_model, nested_model_property_name|
-      reduced_model.send(nested_model_property_name).tap do |new_reduced_model|
-        @nested_models << new_reduced_model
+      new_reduced_model = nil
+      pd nested_model_property_name, header: true, caller: 10
+      if nested_model_property_name.start_with?('[')
+        property_method = '[]'
+        property_argument = nested_model_property_name[1...-1]
+        property_argument = property_argument.to_i if property_argument.match(/\d+/)
+        pd new_reduced_model = reduced_model.send(property_method, property_argument)
+      else
+        pd new_reduced_model = reduced_model.send(nested_model_property_name)
       end
+      @nested_models << new_reduced_model
+      new_reduced_model
     end
     @nested_models
   end
@@ -39,9 +48,11 @@ class ModelBinding
     nested_property? ? nested_property_name : property_name_expression
   end
   # All nested property names
-  # e.g. property name expression "address.state" gives [:address, :state]
+  # e.g. property name expression "address.state" gives ['address', 'state']
+  # If there are any indexed property names, this returns indexes as properties.
+  # e.g. property name expression "addresses[1].state" gives ['addresses', '[1]', 'state']
   def nested_property_names
-    property_name_expression.split(".")
+    @nested_property_names ||= property_name_expression.split(".").map {|pne| pne.match(/([^\[]+)(\[[^\]]+\])?/).to_a.drop(1)}.flatten.compact
   end
   # Final nested property name
   # e.g. property name expression "address.state" gives :state
@@ -64,7 +75,7 @@ class ModelBinding
     unless @nested_property_observers_collection.has_key?(observer)
       @nested_property_observers_collection[observer] = nested_property_names.reduce({}) do |output, property_name|
         output.merge(
-          property_name => BlockObserver.new do |changed_value|
+          property_name => BlockObserver.new do |changed_value=nil|
             # Ensure reattaching observers when a higher level nested property is updated (e.g. person.address changes reattaches person.address.street observer)
             add_observer(observer)
             observer.update(evaluate_property)
@@ -78,8 +89,13 @@ class ModelBinding
     if nested_property?
       nested_property_observers = nested_property_observers_for(observer)
       nested_models.zip(nested_property_names).each do |model, property_name|
-        model.extend ObservableModel unless model.is_a?(ObservableModel)
-        model.add_observer(property_name, nested_property_observers[property_name]) unless model.has_observer?(property_name, nested_property_observers[property_name])
+        if property_name.start_with?('[')
+          model.extend ObservableArray unless model.is_a?(ObservableArray)
+          model.add_array_observer(nested_property_observers[property_name]) unless model.has_array_observer?(nested_property_observers[property_name])
+        else
+          model.extend ObservableModel unless model.is_a?(ObservableModel)
+          model.add_observer(property_name, nested_property_observers[property_name]) unless model.has_observer?(property_name, nested_property_observers[property_name])
+        end
       end
     else
       model.extend ObservableModel unless model.is_a?(ObservableModel)
@@ -87,13 +103,17 @@ class ModelBinding
     end
   end
   def update(value)
+    #TODO support for nested property
     converted_value = @@property_type_converters[@property_type].call(value)
     model.send(property_name + "=", converted_value) unless evaluate_property == converted_value
   end
   def evaluate_property
+    #TODO support for nested indexed property
     model.send(property_name)
   end
   def evaluate_options_property
+    #TODO support for nested property
+    #TODO support for nested indexed property
     model.send(property_name + "_options")
   end
   def options_property_name

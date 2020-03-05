@@ -1,7 +1,7 @@
 require 'coveralls'
 Coveralls.wear!
 require 'bundler'
-
+require_relative '../lib/glimmer'
 begin
   Bundler.require(:default, :development)
 rescue Bundler::BundlerError => e

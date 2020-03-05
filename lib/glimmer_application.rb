@@ -26,11 +26,11 @@ This runs the Glimmer application hello_world.rb
     end
 
     def jruby_command_options
-      "#{jruby_os_specific_options} -J-classpath \"#{swt_jar_file}\" -r glimmer"
+      "#{jruby_os_specific_options} -J-classpath \"#{swt_jar_file}\""
     end
 
     def launch(application)
-      system "jruby #{jruby_command_options} -S #{application}"
+      system "jruby #{jruby_command_options} -r glimmer -S #{application}"
     end
   end
 
