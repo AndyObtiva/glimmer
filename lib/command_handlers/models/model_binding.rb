@@ -23,16 +23,20 @@ class ModelBinding
   def nested_models
     @nested_models = [base_model]
     model_property_names.reduce(base_model) do |reduced_model, nested_model_property_name|
-      if nested_model_property_name.start_with?('[')
-        property_method = '[]'
-        property_argument = nested_model_property_name[1...-1]
-        property_argument = property_argument.to_i if property_argument.match(/\d+/)
-        new_reduced_model = reduced_model.send(property_method, property_argument)
+      if reduced_model.nil?
+        nil
       else
-        new_reduced_model = reduced_model.send(nested_model_property_name)
+        if nested_model_property_name.start_with?('[')
+          property_method = '[]'
+          property_argument = nested_model_property_name[1...-1]
+          property_argument = property_argument.to_i if property_argument.match(/\d+/)
+          new_reduced_model = reduced_model.send(property_method, property_argument)
+        else
+          new_reduced_model = reduced_model.send(nested_model_property_name)
+        end
+        @nested_models << new_reduced_model
+        new_reduced_model
       end
-      @nested_models << new_reduced_model
-      new_reduced_model
     end
     @nested_models
   end

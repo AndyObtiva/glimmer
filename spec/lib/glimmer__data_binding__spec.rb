@@ -433,19 +433,6 @@ describe "Glimmer Data Binding" do
 
     it "tests text widget data binding to nested indexed string property" do
       person = PersonWithNestedIndexedProperties.new
-      person.addresses = []
-      person.addresses[0] = Address.new
-      person.addresses[1] = Address.new
-
-      person.addresses[0].street = "20 Naper Ave"
-      person.addresses[0].city = "Indianapolis"
-      person.addresses[0].state = "IN"
-      person.addresses[0].zip = "46183"
-
-      person.addresses[1].street = "101 Confession St"
-      person.addresses[1].city = "Denver"
-      person.addresses[1].state = "CO"
-      person.addresses[1].zip = "80014"
 
       @target = shell {
         composite {
@@ -477,6 +464,30 @@ describe "Glimmer Data Binding" do
           }
         }
       }
+
+      expect(@address1_street_text_widget.widget.getText).to eq("")
+      expect(@address1_city_text_widget.widget.getText).to eq("")
+      expect(@address1_state_text_widget.widget.getText).to eq("")
+      expect(@address1_zip_text_widget.widget.getText).to eq("")
+
+      expect(@address2_street_text_widget.widget.getText).to eq("")
+      expect(@address2_city_text_widget.widget.getText).to eq("")
+      expect(@address2_state_text_widget.widget.getText).to eq("")
+      expect(@address2_zip_text_widget.widget.getText).to eq("")
+
+      person.addresses = []
+      person.addresses[0] = Address.new
+      person.addresses[1] = Address.new
+
+      person.addresses[0].street = "20 Naper Ave"
+      person.addresses[0].city = "Indianapolis"
+      person.addresses[0].state = "IN"
+      person.addresses[0].zip = "46183"
+
+      person.addresses[1].street = "101 Confession St"
+      person.addresses[1].city = "Denver"
+      person.addresses[1].state = "CO"
+      person.addresses[1].zip = "80014"
 
       expect(@address1_street_text_widget.widget.getText).to eq("20 Naper Ave")
       expect(@address1_city_text_widget.widget.getText).to eq("Indianapolis")
