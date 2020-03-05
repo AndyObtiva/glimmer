@@ -44,14 +44,6 @@ class BindCommandHandler
     binding_options = args[2] if args[2].is_a?(Hash)
     binding_options = args[3] if args[3].is_a?(Hash)
     ModelBinding.new(args[0], args[1].to_s, property_type, binding_options)
-    #TODO replace ModelObserver with something else. It's inaccurate
-    # it doesn't observe the model, it updates it, observing the widget
-    # yet also contains information about observing the model, like the property
-    # to observe. That's the real object spit out here. Must name is something else.
-    # Maybe call ModelBinding and spin off Observer as ModelPropertyUpdateCommand
-    # similarly create a WidgetPropertyUpdateCommand (execute not update method)
-    # Have an observer be a general thin skeleton with an update method instead.
-    # In the future, switch observer to a simple block.
   end
 
 end
