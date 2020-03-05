@@ -21,17 +21,16 @@ class ModelBinding
   end
   # e.g. person.address.state returns [person, person.address]
   def nested_models
-    pd (@nested_models = [base_model]), header: '>>'*20
+    @nested_models = [base_model]
     model_property_names.reduce(base_model) do |reduced_model, nested_model_property_name|
       new_reduced_model = nil
-      pd nested_model_property_name, header: true, caller: 10
       if nested_model_property_name.start_with?('[')
         property_method = '[]'
         property_argument = nested_model_property_name[1...-1]
         property_argument = property_argument.to_i if property_argument.match(/\d+/)
-        pd new_reduced_model = reduced_model.send(property_method, property_argument)
+        new_reduced_model = reduced_model.send(property_method, property_argument)
       else
-        pd new_reduced_model = reduced_model.send(nested_model_property_name)
+        new_reduced_model = reduced_model.send(nested_model_property_name)
       end
       @nested_models << new_reduced_model
       new_reduced_model

@@ -451,35 +451,35 @@ describe "Glimmer Data Binding" do
         }
       }
 
-      # expect(@address1_street_text_widget.widget.getText).to eq("20 Naper Ave")
-      # expect(@address1_city_text_widget.widget.getText).to eq("Indianapolis")
-      # expect(@address1_state_text_widget.widget.getText).to eq("IN")
-      # expect(@address1_zip_text_widget.widget.getText).to eq("46183")
-      #
-      # expect(@address2_street_text_widget.widget.getText).to eq("101 Confession St")
-      # expect(@address2_city_text_widget.widget.getText).to eq("Denver")
-      # expect(@address2_state_text_widget.widget.getText).to eq("CO")
-      # expect(@address2_zip_text_widget.widget.getText).to eq("80014")
-      #
-      # person.addresses[0].street = "123 Main St"
-      # person.addresses[0].city = "Chicago"
-      # person.addresses[0].state = "IL"
-      # person.addresses[0].zip = "60654"
-      #
-      # person.addresses[1].street = "100 Park Ave"
-      # person.addresses[1].city = "San Diego"
-      # person.addresses[1].state = "CA"
-      # person.addresses[1].zip = "92014"
-      #
-      # expect(@address1_street_text_widget.widget.getText).to eq("123 Main St")
-      # expect(@address1_city_text_widget.widget.getText).to eq("Chicago")
-      # expect(@address1_state_text_widget.widget.getText).to eq("IL")
-      # expect(@address1_zip_text_widget.widget.getText).to eq("60654")
-      #
-      # expect(@address2_street_text_widget.widget.getText).to eq("100 Park Ave")
-      # expect(@address2_city_text_widget.widget.getText).to eq("San Diego")
-      # expect(@address2_state_text_widget.widget.getText).to eq("CA")
-      # expect(@address2_zip_text_widget.widget.getText).to eq("92014")
+      expect(@address1_street_text_widget.widget.getText).to eq("20 Naper Ave")
+      expect(@address1_city_text_widget.widget.getText).to eq("Indianapolis")
+      expect(@address1_state_text_widget.widget.getText).to eq("IN")
+      expect(@address1_zip_text_widget.widget.getText).to eq("46183")
+
+      expect(@address2_street_text_widget.widget.getText).to eq("101 Confession St")
+      expect(@address2_city_text_widget.widget.getText).to eq("Denver")
+      expect(@address2_state_text_widget.widget.getText).to eq("CO")
+      expect(@address2_zip_text_widget.widget.getText).to eq("80014")
+
+      person.addresses[0].street = "123 Main St"
+      person.addresses[0].city = "Chicago"
+      person.addresses[0].state = "IL"
+      person.addresses[0].zip = "60654"
+
+      person.addresses[1].street = "100 Park Ave"
+      person.addresses[1].city = "San Diego"
+      person.addresses[1].state = "CA"
+      person.addresses[1].zip = "92014"
+
+      expect(@address1_street_text_widget.widget.getText).to eq("123 Main St")
+      expect(@address1_city_text_widget.widget.getText).to eq("Chicago")
+      expect(@address1_state_text_widget.widget.getText).to eq("IL")
+      expect(@address1_zip_text_widget.widget.getText).to eq("60654")
+
+      expect(@address2_street_text_widget.widget.getText).to eq("100 Park Ave")
+      expect(@address2_city_text_widget.widget.getText).to eq("San Diego")
+      expect(@address2_state_text_widget.widget.getText).to eq("CA")
+      expect(@address2_zip_text_widget.widget.getText).to eq("92014")
 
       person.addresses[1] = person.addresses[0]
 

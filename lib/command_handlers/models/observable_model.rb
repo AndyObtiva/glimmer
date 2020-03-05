@@ -6,8 +6,7 @@ module ObservableModel
 
   # Takes observer as an object or a block updater
   def add_observer(property_name, observer = nil, &updater)
-    pd updater if observer.nil?
-    observer ||= BlockObserver.new(&updater) #TODO check if this is needed anymore
+    observer ||= BlockObserver.new(&updater)
     property_observer_list(property_name) << observer
   end
 
