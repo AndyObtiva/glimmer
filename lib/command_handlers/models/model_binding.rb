@@ -23,7 +23,6 @@ class ModelBinding
   def nested_models
     @nested_models = [base_model]
     model_property_names.reduce(base_model) do |reduced_model, nested_model_property_name|
-      new_reduced_model = nil
       if nested_model_property_name.start_with?('[')
         property_method = '[]'
         property_argument = nested_model_property_name[1...-1]
@@ -74,7 +73,7 @@ class ModelBinding
     unless @nested_property_observers_collection.has_key?(observer)
       @nested_property_observers_collection[observer] = nested_property_names.reduce({}) do |output, property_name|
         output.merge(
-          property_name => BlockObserver.new do |changed_value=nil|
+          property_name => BlockObserver.new do |changed_value|
             # Ensure reattaching observers when a higher level nested property is updated (e.g. person.address changes reattaches person.address.street observer)
             add_observer(observer)
             observer.update(evaluate_property)

@@ -29,40 +29,34 @@ module ObservableArray
   end
 
   def self.extend_object(array)
-    array.instance_eval("alias original_add <<")
+    array.instance_eval("alias __original_add__ <<")
     array.instance_eval <<-end_eval, __FILE__, __LINE__
       def <<(value)
-        self.original_add(value)
+        self.__original_add__(value)
         notify_observers
       end
     end_eval
 
-    array.instance_eval("alias original_set_value []=")
+    array.instance_eval("alias __original_set_value__ []=")
     array.instance_eval <<-end_eval, __FILE__, __LINE__
       def []=(index, value)
-        self.original_set_value(index, value)
+        self.__original_set_value__(index, value)
         notify_observers
       end
     end_eval
 
-    notify_observers_on_invokation(array, "delete", 1)
-    notify_observers_on_invokation(array, "delete_at", 1)
+    notify_observers_on_invokation(array, "delete")
+    notify_observers_on_invokation(array, "delete_at")
     notify_observers_on_invokation(array, "clear")
 
     super
   end
 
-  def self.notify_observers_on_invokation(model, method, argument_count=0)
-    #TODO look into need for argument_count in case no longer needed
-    model.instance_eval "alias original_#{method} #{method}\n"
-    arguments = ""
-    for index in 1..argument_count
-      arguments += "argument" + index.to_s + ","
-    end
-    arguments = arguments[0..-2]
+  def self.notify_observers_on_invokation(model, method)
+    model.instance_eval "alias __original_#{method}__ #{method}\n"
     model.instance_eval <<-end_eval, __FILE__, __LINE__
-      def #{method}(#{arguments})
-        self.original_#{method}(#{arguments})
+      def #{method}(*args, &block)
+        self.__original_#{method}__(*args, &block)
         notify_observers
       end
     end_eval
