@@ -354,6 +354,26 @@ describe "Glimmer Data Binding" do
       expect(@address2_state_text_widget.widget.getText).to eq("CO")
       expect(@address2_zip_text_widget.widget.getText).to eq("80014")
 
+      @address1_street_text_widget.widget.setText "101 Confession St"
+      @address1_city_text_widget.widget.setText "Denver"
+      @address1_state_text_widget.widget.setText "CO"
+      @address1_zip_text_widget.widget.setText "80014"
+
+      @address2_street_text_widget.widget.setText "20 Naper Ave"
+      @address2_city_text_widget.widget.setText "Indianapolis"
+      @address2_state_text_widget.widget.setText "IN"
+      @address2_zip_text_widget.widget.setText "46183"
+
+      expect(person.address1.street).to eq("101 Confession St")
+      expect(person.address1.city).to eq("Denver")
+      expect(person.address1.state).to eq("CO")
+      expect(person.address1.zip).to eq("80014")
+
+      expect(person.address2.street).to eq("20 Naper Ave")
+      expect(person.address2.city).to eq("Indianapolis")
+      expect(person.address2.state).to eq("IN")
+      expect(person.address2.zip).to eq("46183")
+
       person.address1.street = "123 Main St"
       person.address1.city = "Chicago"
       person.address1.state = "IL"
@@ -460,6 +480,26 @@ describe "Glimmer Data Binding" do
       expect(@address2_city_text_widget.widget.getText).to eq("Denver")
       expect(@address2_state_text_widget.widget.getText).to eq("CO")
       expect(@address2_zip_text_widget.widget.getText).to eq("80014")
+
+      @address1_street_text_widget.widget.setText "101 Confession St"
+      @address1_city_text_widget.widget.setText "Denver"
+      @address1_state_text_widget.widget.setText "CO"
+      @address1_zip_text_widget.widget.setText "80014"
+
+      @address2_street_text_widget.widget.setText "20 Naper Ave"
+      @address2_city_text_widget.widget.setText "Indianapolis"
+      @address2_state_text_widget.widget.setText "IN"
+      @address2_zip_text_widget.widget.setText "46183"
+
+      expect(person.addresses[0].street).to eq("101 Confession St")
+      expect(person.addresses[0].city).to eq("Denver")
+      expect(person.addresses[0].state).to eq("CO")
+      expect(person.addresses[0].zip).to eq("80014")
+
+      expect(person.addresses[1].street).to eq("20 Naper Ave")
+      expect(person.addresses[1].city).to eq("Indianapolis")
+      expect(person.addresses[1].state).to eq("IN")
+      expect(person.addresses[1].zip).to eq("46183")
 
       person.addresses[0].street = "123 Main St"
       person.addresses[0].city = "Chicago"

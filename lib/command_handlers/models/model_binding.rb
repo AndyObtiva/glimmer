@@ -101,17 +101,13 @@ class ModelBinding
     end
   end
   def update(value)
-    #TODO support for nested property
     converted_value = @@property_type_converters[@property_type].call(value)
     model.send(property_name + "=", converted_value) unless evaluate_property == converted_value
   end
   def evaluate_property
-    #TODO support for nested indexed property
     model.send(property_name)
   end
   def evaluate_options_property
-    #TODO support for nested property
-    #TODO support for nested indexed property
     model.send(property_name + "_options")
   end
   def options_property_name
