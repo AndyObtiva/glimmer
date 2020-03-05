@@ -87,12 +87,14 @@ class ModelBinding
     if nested_property?
       nested_property_observers = nested_property_observers_for(observer)
       nested_models.zip(nested_property_names).each do |model, property_name|
-        if property_name.start_with?('[')
-          model.extend ObservableArray unless model.is_a?(ObservableArray)
-          model.add_array_observer(nested_property_observers[property_name]) unless model.has_array_observer?(nested_property_observers[property_name])
-        else
-          model.extend ObservableModel unless model.is_a?(ObservableModel)
-          model.add_observer(property_name, nested_property_observers[property_name]) unless model.has_observer?(property_name, nested_property_observers[property_name])
+        unless model.nil?
+          if property_name.start_with?('[')
+            model.extend ObservableArray unless model.is_a?(ObservableArray)
+            model.add_array_observer(nested_property_observers[property_name]) unless model.has_array_observer?(nested_property_observers[property_name])
+          else
+            model.extend ObservableModel unless model.is_a?(ObservableModel)
+            model.add_observer(property_name, nested_property_observers[property_name]) unless model.has_observer?(property_name, nested_property_observers[property_name])
+          end
         end
       end
     else
@@ -101,14 +103,15 @@ class ModelBinding
     end
   end
   def update(value)
+    return if model.nil?
     converted_value = @@property_type_converters[@property_type].call(value)
     model.send(property_name + "=", converted_value) unless evaluate_property == converted_value
   end
   def evaluate_property
-    model.send(property_name)
+    model.send(property_name) unless model.nil?
   end
   def evaluate_options_property
-    model.send(property_name + "_options")
+    model.send(property_name + "_options") unless model.nil?
   end
   def options_property_name
     self.property_name + "_options"
