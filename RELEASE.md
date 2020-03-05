@@ -1,5 +1,8 @@
 # Release Notes
 
+** 0.2.1 **
+- Added nested indexed property data binding support
+
 ** 0.2.0 **
 - Upgraded to JRuby 9.2.10.0
 - Fixed support for Windows & Linux

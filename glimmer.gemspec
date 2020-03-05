@@ -116,4 +116,3 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<puts_debuggerer>.freeze, ["~> 0.8.1"])
   end
 end
-

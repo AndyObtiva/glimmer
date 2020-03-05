@@ -66,14 +66,14 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.2.0
+jgem install glimmer -v 0.2.1
 ```
 
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.2.0'
+gem 'glimmer', '~> 0.2.1'
 ```
 
 And, then run:
@@ -131,6 +131,7 @@ Data-binding is done with `bind` command following widget property to bind and t
 Data-binding examples:
 - `text bind(contact, :first_name)`
 - `text bind(contact, 'address.street')`
+- `text bind(contact, 'addresses[1].street')`
 - `text bind(contact, :name, computed_by: [:first_name, :last_name])`
 
 The first example binds the text property of a widget like `label` to the first name of a contact model.
@@ -138,7 +139,9 @@ The first example binds the text property of a widget like `label` to the first 
 The second example binds the text property of a widget like `label` to the nested street of
 the address of a contact. This is called nested property data binding.
 
-The third example demonstrates computed value data binding whereby the value of `name` depends on changes to both `first_name` and `last_name`
+The third example binds the text property of a widget like `label` to the nested indexed address street of a contact. This is called nested indexed property data binding.
+
+The fourth example demonstrates computed value data binding whereby the value of `name` depends on changes to both `first_name` and `last_name`
 
 You may learn more about Glimmer's syntax by reading the Eclipse Zone Tutorial mentioned in resources and opening up the samples under the `samples` folder.
 
