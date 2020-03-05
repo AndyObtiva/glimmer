@@ -1,6 +1,6 @@
 # Release Notes
 
-** 0.2.1 **
+** 0.2.2 **
 - Added nested indexed property data binding support
 
 ** 0.2.0 **
