@@ -40,7 +40,7 @@ describe "Glimmer Data Binding" do
   end
 
   class PersonWithNestedIndexedProperties
-    attr_accessor :addresses
+    attr_accessor :addresses, :names
   end
 
   it "tests text widget data binding string property" do
@@ -436,6 +436,9 @@ describe "Glimmer Data Binding" do
 
       @target = shell {
         composite {
+          @name1 = text {
+            text bind(person, "names[0]")
+          }
           @address1_street_text_widget = text {
             text bind(person, "addresses[0].street")
           }
@@ -450,6 +453,9 @@ describe "Glimmer Data Binding" do
           }
         }
         composite {
+          @name2 = text {
+            text bind(person, "names[1]")
+          }
           @address2_street_text_widget = text {
             text bind(person, "addresses[1].street")
           }
@@ -465,15 +471,21 @@ describe "Glimmer Data Binding" do
         }
       }
 
+      expect(@name1.widget.getText).to eq("")
       expect(@address1_street_text_widget.widget.getText).to eq("")
       expect(@address1_city_text_widget.widget.getText).to eq("")
       expect(@address1_state_text_widget.widget.getText).to eq("")
       expect(@address1_zip_text_widget.widget.getText).to eq("")
 
+      expect(@name2.widget.getText).to eq("")
       expect(@address2_street_text_widget.widget.getText).to eq("")
       expect(@address2_city_text_widget.widget.getText).to eq("")
       expect(@address2_state_text_widget.widget.getText).to eq("")
       expect(@address2_zip_text_widget.widget.getText).to eq("")
+
+      person.names = []
+      person.names[0] = 'Robert'
+      person.names[1] = 'Bob'
 
       person.addresses = []
       person.addresses[0] = Address.new
@@ -489,65 +501,79 @@ describe "Glimmer Data Binding" do
       person.addresses[1].state = "CO"
       person.addresses[1].zip = "80014"
 
+      expect(@name1.widget.getText).to eq("Robert")
       expect(@address1_street_text_widget.widget.getText).to eq("20 Naper Ave")
       expect(@address1_city_text_widget.widget.getText).to eq("Indianapolis")
       expect(@address1_state_text_widget.widget.getText).to eq("IN")
       expect(@address1_zip_text_widget.widget.getText).to eq("46183")
 
+      expect(@name2.widget.getText).to eq("Bob")
       expect(@address2_street_text_widget.widget.getText).to eq("101 Confession St")
       expect(@address2_city_text_widget.widget.getText).to eq("Denver")
       expect(@address2_state_text_widget.widget.getText).to eq("CO")
       expect(@address2_zip_text_widget.widget.getText).to eq("80014")
 
+      @name1.widget.setText "Roberto"
       @address1_street_text_widget.widget.setText "101 Confession St"
       @address1_city_text_widget.widget.setText "Denver"
       @address1_state_text_widget.widget.setText "CO"
       @address1_zip_text_widget.widget.setText "80014"
 
+      @name2.widget.setText "Bobo"
       @address2_street_text_widget.widget.setText "20 Naper Ave"
       @address2_city_text_widget.widget.setText "Indianapolis"
       @address2_state_text_widget.widget.setText "IN"
       @address2_zip_text_widget.widget.setText "46183"
 
+      expect(person.names[0]).to eq("Roberto")
       expect(person.addresses[0].street).to eq("101 Confession St")
       expect(person.addresses[0].city).to eq("Denver")
       expect(person.addresses[0].state).to eq("CO")
       expect(person.addresses[0].zip).to eq("80014")
 
+      expect(person.names[1]).to eq("Bobo")
       expect(person.addresses[1].street).to eq("20 Naper Ave")
       expect(person.addresses[1].city).to eq("Indianapolis")
       expect(person.addresses[1].state).to eq("IN")
       expect(person.addresses[1].zip).to eq("46183")
 
+      person.names[0] = "Robertissimo"
       person.addresses[0].street = "123 Main St"
       person.addresses[0].city = "Chicago"
       person.addresses[0].state = "IL"
       person.addresses[0].zip = "60654"
 
+      person.names[1] = "Bobissimo"
       person.addresses[1].street = "100 Park Ave"
       person.addresses[1].city = "San Diego"
       person.addresses[1].state = "CA"
       person.addresses[1].zip = "92014"
 
+      expect(@name1.widget.getText).to eq("Robertissimo")
       expect(@address1_street_text_widget.widget.getText).to eq("123 Main St")
       expect(@address1_city_text_widget.widget.getText).to eq("Chicago")
       expect(@address1_state_text_widget.widget.getText).to eq("IL")
       expect(@address1_zip_text_widget.widget.getText).to eq("60654")
 
+      expect(@name2.widget.getText).to eq("Bobissimo")
       expect(@address2_street_text_widget.widget.getText).to eq("100 Park Ave")
       expect(@address2_city_text_widget.widget.getText).to eq("San Diego")
       expect(@address2_state_text_widget.widget.getText).to eq("CA")
       expect(@address2_zip_text_widget.widget.getText).to eq("92014")
 
+      person.names[1] = person.names[0]
       person.addresses[1] = person.addresses[0]
 
+      expect(@name2.widget.getText).to eq("Robertissimo")
       expect(@address2_street_text_widget.widget.getText).to eq("123 Main St")
       expect(@address2_city_text_widget.widget.getText).to eq("Chicago")
       expect(@address2_state_text_widget.widget.getText).to eq("IL")
       expect(@address2_zip_text_widget.widget.getText).to eq("60654")
 
+      person.names[1] = nil
       person.addresses[1] = nil
 
+      expect(@name2.widget.getText).to eq("")
       expect(@address2_street_text_widget.widget.getText).to eq("")
       expect(@address2_city_text_widget.widget.getText).to eq("")
       expect(@address2_state_text_widget.widget.getText).to eq("")

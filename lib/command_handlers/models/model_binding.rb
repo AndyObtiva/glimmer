@@ -26,16 +26,9 @@ class ModelBinding
       if reduced_model.nil?
         nil
       else
-        if nested_model_property_name.start_with?('[')
-          property_method = '[]'
-          property_argument = nested_model_property_name[1...-1]
-          property_argument = property_argument.to_i if property_argument.match(/\d+/)
-          new_reduced_model = reduced_model.send(property_method, property_argument)
-        else
-          new_reduced_model = reduced_model.send(nested_model_property_name)
+        invoke_property_reader(reduced_model, nested_model_property_name).tap do |new_reduced_model|
+          @nested_models << new_reduced_model
         end
-        @nested_models << new_reduced_model
-        new_reduced_model
       end
     end
     @nested_models
@@ -67,7 +60,7 @@ class ModelBinding
     nested_property_names[0...-1]
   end
   def nested_property?
-    property_name_expression.include?(".")
+    property_name_expression.match(/[.\[]/)
   end
   def property_name_expression
     @property_name_expression
@@ -92,7 +85,7 @@ class ModelBinding
       nested_property_observers = nested_property_observers_for(observer)
       nested_models.zip(nested_property_names).each do |model, property_name|
         unless model.nil?
-          if property_name.start_with?('[')
+          if property_indexed?(property_name)
             model.extend ObservableArray unless model.is_a?(ObservableArray)
             model.add_array_observer(nested_property_observers[property_name]) unless model.has_array_observer?(nested_property_observers[property_name])
           else
@@ -109,15 +102,38 @@ class ModelBinding
   def update(value)
     return if model.nil?
     converted_value = @@property_type_converters[@property_type].call(value)
-    model.send(property_name + "=", converted_value) unless evaluate_property == converted_value
+    invoke_property_writer(model, "#{property_name}=", converted_value) unless evaluate_property == converted_value
   end
   def evaluate_property
-    model.send(property_name) unless model.nil?
+    invoke_property_reader(model, property_name) unless model.nil?
   end
   def evaluate_options_property
     model.send(property_name + "_options") unless model.nil?
   end
   def options_property_name
     self.property_name + "_options"
+  end
+  def property_indexed?(property_expression)
+    property_expression.start_with?('[')
+  end
+  def invoke_property_reader(object, property_expression)
+    if property_indexed?(property_expression)
+      property_method = '[]'
+      property_argument = property_expression[1...-1]
+      property_argument = property_argument.to_i if property_argument.match(/\d+/)
+      object.send(property_method, property_argument)
+    else
+      object.send(property_expression)
+    end
+  end
+  def invoke_property_writer(object, property_expression, value)
+    if property_indexed?(property_expression)
+      property_method = '[]='
+      property_argument = property_expression[1...-2]
+      property_argument = property_argument.to_i if property_argument.match(/\d+/)
+      object.send(property_method, property_argument, value)
+    else
+      object.send(property_expression, value)
+    end
   end
 end

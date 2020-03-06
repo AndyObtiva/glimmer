@@ -1,7 +1,10 @@
 # Release Notes
 
+** 0.2.3 **
+- Fixed nested indexed property data binding support for indexed leaf property (e.g. bind(person, 'names[1]'))
+
 ** 0.2.2 **
-- Added nested indexed property data binding support
+- Added nested indexed property data binding support (e.g. bind(person, 'addresses[1].street'))
 
 ** 0.2.0 **
 - Upgraded to JRuby 9.2.10.0
