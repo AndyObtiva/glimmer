@@ -31,6 +31,16 @@ describe "Glimmer Data Binding" do
     end
   end
 
+  class PersonWithNestedComputedValues
+    class Address
+      attr_accessor :streets
+      def street_count
+        streets.count
+      end
+    end
+    attr_accessor :addresses
+  end
+
   class Address
     attr_accessor :street, :city, :state, :zip
   end
@@ -600,6 +610,41 @@ describe "Glimmer Data Binding" do
       expect(@address2_city_text_widget.widget.getText).to eq("Chicago")
       expect(@address2_state_text_widget.widget.getText).to eq("IL")
       expect(@address2_zip_text_widget.widget.getText).to eq("60654")
+    end
+
+    it "tests label widget nested computed value data binding string property" do
+      person = PersonWithNestedComputedValues.new
+      person.addresses = []
+      person.addresses[0] = PersonWithNestedComputedValues::Address.new
+      person.addresses[1] = PersonWithNestedComputedValues::Address.new
+      person.addresses[0].streets = ['123 Main', '234 Park']
+      person.addresses[1].streets = ['456 Milwaukee', '789 Superior', '983 Owen']
+
+      @target = shell {
+        composite {
+          @label1 = label {
+            text bind(person, 'addresses[0].street_count', computed_by: ['addresses[0].streets'])
+          }
+          @label2 = label {
+            text bind(person, 'addresses[1].street_count', computed_by: ['addresses[1].streets'])
+          }
+        }
+      }
+
+      expect(@label1.widget.getText).to eq("2")
+      expect(@label2.widget.getText).to eq("3")
+
+      person.addresses[0].streets = []
+      expect(@label1.widget.getText).to eq("0")
+
+      person.addresses[0].streets = ['8376 Erie']
+      expect(@label1.widget.getText).to eq("1")
+
+      person.addresses[0].streets.clear
+      expect(@label1.widget.getText).to eq("0")
+
+      person.addresses[1].streets << '923 Huron'
+      expect(@label2.widget.getText).to eq("4")
     end
   end
 end

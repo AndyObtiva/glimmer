@@ -1,5 +1,8 @@
 # Release Notes
 
+** 0.2.4 **
+- Added nested indexed computed property data binding support (e.g. bind(person, 'addresses[0].street_count', computed_by: ['addresses[0].streets']))
+
 ** 0.2.3 **
 - Fixed nested indexed property data binding support for indexed leaf property (e.g. bind(person, 'names[1]'))
 

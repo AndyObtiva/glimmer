@@ -15,6 +15,11 @@ class ModelBinding
     @property_name_expression = property_name_expression
     @property_type = property_type
     @binding_options = binding_options || {}
+    if computed?
+      @computed_model_bindings = computed_by.map do |computed_by_property_expression|
+        self.class.new(base_model, computed_by_property_expression, :undefined, computed_binding_options)
+      end
+    end
   end
   def model
     nested_property? ? nested_model : base_model
@@ -65,6 +70,15 @@ class ModelBinding
   def property_name_expression
     @property_name_expression
   end
+  def computed?
+    !!computed_by
+  end
+  def computed_by
+    @binding_options[:computed_by]
+  end
+  def computed_binding_options
+    @binding_options.reject {|k,v| k == :computed_by}
+  end
   def nested_property_observers_for(observer)
     @nested_property_observers_collection ||= {}
     unless @nested_property_observers_collection.has_key?(observer)
@@ -81,6 +95,21 @@ class ModelBinding
     @nested_property_observers_collection[observer]
   end
   def add_observer(observer)
+    if computed?
+      add_computed_observers(observer)
+    else
+      add_direct_observer(observer)
+    end
+  end
+  def add_computed_observers(observer)
+    computed_observer = BlockObserver.new do |changed_value|
+      observer.update(evaluate_property)
+    end
+    @computed_model_bindings.each do |computed_model_binding|
+      computed_model_binding.add_observer(computed_observer)
+    end
+  end
+  def add_direct_observer(observer)
     if nested_property?
       nested_property_observers = nested_property_observers_for(observer)
       nested_models.zip(nested_property_names).each do |model, property_name|
