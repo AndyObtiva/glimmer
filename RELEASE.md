@@ -1,5 +1,8 @@
 # Release Notes
 
+** 0.2.5 **
+- Register a property type converter for `visible` property in widget binding, to ensure converting to boolean before setting in SWT widget.
+
 ** 0.2.4 **
 - Added nested indexed computed property data binding support (e.g. bind(person, 'addresses[0].street_count', computed_by: ['addresses[0].streets']))
 

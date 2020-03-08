@@ -2,11 +2,12 @@ require File.dirname(__FILE__) + "/observer"
 
 class WidgetBinding
   include Observer
-  
+
   attr_reader :widget, :property
   @@property_type_converters = {
     :text => Proc.new { |value| value.to_s },
-    :items => Proc.new { |value| value.to_java :string}
+    :items => Proc.new { |value| value.to_java :string},
+    :visible => Proc.new { |value| !!value}
   }
   def initialize(model, property, translator = nil)
     @widget = model
