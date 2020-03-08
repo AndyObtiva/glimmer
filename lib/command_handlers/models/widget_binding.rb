@@ -18,9 +18,9 @@ class WidgetBinding
     converted_value = translated_value = @translator.call(value)
     converter = @@property_type_converters[@property.to_sym]
     converted_value = converter.call(translated_value) if converter
-    @widget.widget.send("set#{@property.camelcase(:upper)}", converted_value) unless evaluate_property == converted_value
+    @widget.widget.send("set#{@property.camelcase(:upper)}", converted_value) unless @widget.widget.isDisposed || evaluate_property == converted_value
   end
   def evaluate_property
-    @widget.widget.send(@property)
+    @widget.widget.send(@property) unless @widget.widget.isDisposed
   end
 end

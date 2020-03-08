@@ -1,5 +1,8 @@
 # Release Notes
 
+** 0.2.6 **
+- Added a safety check to ensure no SWT widget method is invoked if disposed
+
 ** 0.2.5 **
 - Register a property type converter for `visible` property in widget binding, to ensure converting to boolean before setting in SWT widget.
 

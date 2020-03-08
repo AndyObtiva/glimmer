@@ -5,9 +5,9 @@ class RWidget
   require File.dirname(__FILE__) + "/r_widget_packages"
 
   include Parent
-  
+
   attr_reader :widget
-  
+
   #TODO externalize
   @@default_styles = {
     "text" => SWT::BORDER,
@@ -16,11 +16,11 @@ class RWidget
     "list" => SWT::BORDER | SWT::V_SCROLL,
     "button" => SWT::PUSH,
   }
-  
+
   #TODO externalize
   @@default_initializers = {
     "composite" => Proc.new {|composite| composite.setLayout(GridLayout.new) },
-    "table" => Proc.new do |table| 
+    "table" => Proc.new do |table|
       table.setHeaderVisible(true)
       table.setLinesVisible(true)
     end,
@@ -31,9 +31,31 @@ class RWidget
   #styles is a comma separate list of symbols representing SWT styles in lower case
   def initialize(underscored_widget_name, parent, styles, &contents)
     @widget = underscored_widget_name.swt_widget.new(parent, style(underscored_widget_name, styles))
+    @widget.class.__persistent__ = true
+    @widget.methods.each do |method|
+      next if !method.to_s.match(/^[a-zA-Z]/) || method == :isDisposed
+      arity = @widget.method(method).arity
+      if method.to_s.end_with?('=')
+        args = 'arg'
+      elsif arity == 0
+        args = ''
+      elsif arity.positive?
+        args = arity.times.map {|i| "arg#{i}"}.join(', ')
+      else
+        # args = (arity+1).times.map {|i| "arg#{i}"}.join(', ')
+        # args += ", " if args.size > 0
+        args = "*args"
+      end
+      @widget.instance_eval <<-end_eval, __FILE__, __LINE__
+        alias unsafe_#{method} #{method}
+        def #{method}(#{args})
+          self.unsafe_#{method}(#{args}) unless self.isDisposed
+        end
+      end_eval
+    end
     @@default_initializers[underscored_widget_name].call(@widget) if @@default_initializers[underscored_widget_name]
   end
-  
+
   def has_attribute?(attribute_name, *args)
     @widget.respond_to?(attribute_setter(attribute_name), args)
   end
@@ -66,10 +88,10 @@ class RWidget
     end
     return false
   end
-  
+
   def can_add_listener?(underscored_listener_name)
     listener_method_name = underscored_listener_name.camelcase(:lower)
-    @widget.getClass.getMethods.each do |widget_method| 
+    @widget.getClass.getMethods.each do |widget_method|
       if widget_method.getName.match(/add.*Listener/)
         widget_method.getParameterTypes.each do |listener_type|
           listener_type.getMethods.each do |listener_method|
@@ -82,10 +104,10 @@ class RWidget
     end
     return false
   end
-  
-  def add_listener(underscored_listener_name, &block) 
+
+  def add_listener(underscored_listener_name, &block)
     listener_method_name = underscored_listener_name.camelcase(:lower)
-    @widget.getClass.getMethods.each do |widget_method| 
+    @widget.getClass.getMethods.each do |widget_method|
       if widget_method.getName.match(/add.*Listener/)
         widget_method.getParameterTypes.each do |listener_type|
           listener_type.getMethods.each do |listener_method|
@@ -109,11 +131,11 @@ class RWidget
       end
     end
   end
-  
+
   def process_block(block)
     block.call(@widget)
   end
-  
+
   def async_exec(&block)
     @widget.getDisplay.asyncExec(RRunnable.new(&block))
   end
@@ -121,7 +143,7 @@ class RWidget
   def sync_exec(&block)
     @widget.getDisplay.syncExec(RRunnable.new(&block))
   end
-  
+
   def has_style?(style)
     (widget.style & style.swt_constant) == style.swt_constant
   end
@@ -144,8 +166,8 @@ class RWidget
 
   def swt_styles(styles)
     styles.map(&:swt_constant)
-  end  
-  
+  end
+
   def attribute_setter(attribute_name)
     "set#{attribute_name.to_s.camelcase(:upper)}"
   end
