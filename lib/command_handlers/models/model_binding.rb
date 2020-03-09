@@ -83,7 +83,6 @@ class ModelBinding
     @nested_property_observers_collection ||= {}
     unless @nested_property_observers_collection.has_key?(observer)
       @nested_property_observers_collection[observer] = nested_property_names.reduce({}) do |output, property_name|
-        #TODO link children to parent observers to allow proper cleanup on unsetting of a value
         output.merge(
           property_name => BlockObserver.new do |changed_value|
             # Ensure reattaching observers when a higher level nested property is updated (e.g. person.address changes reattaches person.address.street observer)
@@ -93,13 +92,22 @@ class ModelBinding
         )
       end
     end
+    @nested_property_observers_collection[observer].keys.each_with_index do |property_name, i|
+      previous_property_name = nested_property_names[i-1]
+      previous_observer = @nested_property_observers_collection[observer][previous_property_name]
+      nested_property_observer = @nested_property_observers_collection[observer][property_name]
+      previous_observer.add_dependent(nested_property_observer) unless previous_observer.nil?
+    end
     @nested_property_observers_collection[observer]
   end
   def add_observer(observer)
     if computed?
       add_computed_observers(observer)
+    elsif nested_property?
+      add_nested_observers(observer)
     else
-      add_direct_observer(observer)
+      model.extend(ObservableModel) unless model.is_a?(ObservableModel)
+      model.add_observer(property_name, observer)
     end
     observer.register(self)
   end
@@ -109,16 +117,14 @@ class ModelBinding
         computed_model_binding.remove_observer(computed_observer_for(observer))
       end
       @computed_observer_collection[observer] = nil
-    else
-      if nested_property?
-        nested_property_observers_for(observer).values.each do |nested_property_observer|
-          nested_property_observer.unregister_all_observables
-        end
-        nested_property_observers_for(observer).clear
-      else
-        model.extend(ObservableModel) unless model.is_a?(ObservableModel)
-        model.remove_observer(property_name, observer)
+    elsif nested_property?
+      nested_property_observers_for(observer).values.each do |nested_property_observer|
+        nested_property_observer.unregister_all_observables
       end
+      nested_property_observers_for(observer).clear
+    else
+      model.extend(ObservableModel) unless model.is_a?(ObservableModel)
+      model.remove_observer(property_name, observer)
     end
   end
   def computed_observer_for(observer)
@@ -135,23 +141,18 @@ class ModelBinding
       computed_model_binding.add_observer(computed_observer_for(observer))
     end
   end
-  def add_direct_observer(observer)
-    if nested_property?
-      nested_property_observers = nested_property_observers_for(observer)
-      nested_models.zip(nested_property_names).each do |model, property_name|
-        unless model.nil?
-          if property_indexed?(property_name)
-            model.extend(ObservableArray) unless model.is_a?(ObservableArray)
-            model.add_array_observer(nested_property_observers[property_name]) unless model.has_array_observer?(nested_property_observers[property_name])
-          else
-            model.extend(ObservableModel) unless model.is_a?(ObservableModel)
-            model.add_observer(property_name, nested_property_observers[property_name]) unless model.has_observer?(property_name, nested_property_observers[property_name])
-          end
+  def add_nested_observers(observer)
+    nested_property_observers = nested_property_observers_for(observer)
+    nested_models.zip(nested_property_names).each do |model, property_name|
+      unless model.nil?
+        if property_indexed?(property_name)
+          model.extend(ObservableArray) unless model.is_a?(ObservableArray)
+          model.add_array_observer(nested_property_observers[property_name]) unless model.has_array_observer?(nested_property_observers[property_name])
+        else
+          model.extend(ObservableModel) unless model.is_a?(ObservableModel)
+          model.add_observer(property_name, nested_property_observers[property_name]) unless model.has_observer?(property_name, nested_property_observers[property_name])
         end
       end
-    else
-      model.extend(ObservableModel) unless model.is_a?(ObservableModel)
-      model.add_observer(property_name, observer)
     end
   end
   def update(value)
