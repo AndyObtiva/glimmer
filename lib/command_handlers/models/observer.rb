@@ -12,7 +12,7 @@ module Observer
     @dependents ||= Set.new
   end
 
-  def owners
+  def parents
     @dependents ||= Set.new
   end
 
@@ -45,28 +45,28 @@ module Observer
   def unregister_all_dependent_observables
     self.dependents.each do |dependent|
       remove_dependent(dependent)
-      dependent.unregister_all_observables if dependent.owners.empty?
+      dependent.unregister_all_observables if dependent.parents.empty?
     end
   end
 
   # add dependent observer to unregister when unregistering observer
   def add_dependent(observer)
     dependents << observer
-    observer.owners << self
+    observer.parents << self
   end
 
   def remove_dependent(observer)
     dependents.delete(observer)
-    observer.owners.delete(self)
+    observer.parents.delete(self)
   end
 
-  def add_owner(observer)
-    owners << observer
+  def add_parent(observer)
+    parents << observer
     observer.dependents << self
   end
 
-  def remove_owner(observer)
-    owners.delete(observer)
+  def remove_parent(observer)
+    parents.delete(observer)
     observer.dependents.delete(self)
   end
 
