@@ -108,11 +108,13 @@ class ModelBinding
       @computed_model_bindings.each do |computed_model_binding|
         computed_model_binding.remove_observer(computed_observer_for(observer))
       end
+      @computed_observer_collection[observer] = nil
     else
       if nested_property?
         nested_property_observers_for(observer).values.each do |nested_property_observer|
           nested_property_observer.unregister_all_observables
         end
+        nested_property_observers_for(observer).clear
       else
         model.extend(ObservableModel) unless model.is_a?(ObservableModel)
         model.remove_observer(property_name, observer)

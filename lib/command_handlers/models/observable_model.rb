@@ -18,11 +18,10 @@ module ObservableModel
   # Takes observer as an object or a block updater
   def add_observer(property_name, observer = nil, &updater)
     observer ||= BlockObserver.new(&updater)
-    unless has_observer?(property_name, observer)
-      property_observer_list(property_name) << observer
-      add_property_writer_observers(property_name)
-      observer.register(self, property_name)
-    end
+    return observer if has_observer?(property_name, observer)
+    property_observer_list(property_name) << observer
+    add_property_writer_observers(property_name)
+    observer.register(self, property_name)
     observer
   end
 
@@ -50,26 +49,32 @@ module ObservableModel
 
   def add_property_writer_observers(property_name)
     property_writer_name = "#{property_name}="
-    property_value = self.send(property_name)
-    if (property_value.is_a?(Array) and
-        !property_value.is_a?(ObservableArray))
-      property_value.extend(ObservableArray)
-      property_value.add_observer([], ObservableModel::Updater.new(self, property_name))
-    end
+    ensure_array_object_observer(property_name, send(property_name))
     begin
       method("__original_#{property_writer_name}")
     rescue
-      self.instance_eval "alias __original_#{property_writer_name} #{property_writer_name}"
-      self.instance_eval <<-end_eval, __FILE__, __LINE__
+      instance_eval "alias __original_#{property_writer_name} #{property_writer_name}"
+      instance_eval <<-end_eval, __FILE__, __LINE__
         def #{property_writer_name}(value)
           self.__original_#{property_writer_name}(value)
           notify_observers('#{property_name}')
-          if (value.is_a?(Array) and !value.is_a?(ObservableArray))
-            value.extend(ObservableArray)
-            value.add_array_observer(ObservableModel::Updater.new(self, '#{property_name}'))
-          end
+          ensure_array_object_observer('#{property_name}', value)
         end
       end_eval
     end
+  end
+
+  def ensure_array_object_observer(property_name, object)
+    return unless object.is_a?(Array)
+    object.extend(ObservableArray) unless object.is_a?(ObservableArray)
+    object.add_array_observer(array_object_observer_for(property_name))
+  end
+
+  def array_object_observer_for(property_name)
+    @array_object_observers ||= {}
+    unless @array_object_observers.has_key?(property_name)
+      @array_object_observers[property_name] = ObservableModel::Updater.new(self, property_name)
+    end
+    @array_object_observers[property_name]
   end
 end
