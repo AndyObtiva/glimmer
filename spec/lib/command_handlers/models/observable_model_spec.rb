@@ -17,7 +17,7 @@ describe ObservableModel do
     person = Person.new
     person.name = "Marty"
     expect(person.name).to eq("Marty")
-    person.extend ObservableModel
+    person.extend(ObservableModel)
     observer = SpecObserver.new
     person.add_observer(:name, observer)
     person.name = "Julia"

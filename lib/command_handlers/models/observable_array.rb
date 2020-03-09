@@ -23,8 +23,8 @@ module ObservableArray
   end
 
   def add_array_observer(observer)
-    observer.register(self)
     property_observer_list << observer
+    observer.register(self)
     observer
   end
 
@@ -70,10 +70,10 @@ module ObservableArray
   end
 
   def self.notify_observers_on_invokation(model, method)
-    model.instance_eval "alias __original_#{method}__ #{method}\n"
+    model.instance_eval "alias __original_#{method} #{method}\n"
     model.instance_eval <<-end_eval, __FILE__, __LINE__
       def #{method}(*args, &block)
-        self.__original_#{method}__(*args, &block)
+        self.__original_#{method}(*args, &block)
         notify_observers
       end
     end_eval

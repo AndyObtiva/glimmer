@@ -96,12 +96,12 @@ class ModelBinding
     @nested_property_observers_collection[observer]
   end
   def add_observer(observer)
-    observer.register(self)
     if computed?
       add_computed_observers(observer)
     else
       add_direct_observer(observer)
     end
+    observer.register(self)
   end
   def remove_observer(observer)
     if computed?
@@ -114,7 +114,7 @@ class ModelBinding
           nested_property_observer.unregister_all_observables
         end
       else
-        model.extend ObservableModel unless model.is_a?(ObservableModel)
+        model.extend(ObservableModel) unless model.is_a?(ObservableModel)
         model.remove_observer(property_name, observer)
       end
     end
@@ -139,16 +139,16 @@ class ModelBinding
       nested_models.zip(nested_property_names).each do |model, property_name|
         unless model.nil?
           if property_indexed?(property_name)
-            model.extend ObservableArray unless model.is_a?(ObservableArray)
+            model.extend(ObservableArray) unless model.is_a?(ObservableArray)
             model.add_array_observer(nested_property_observers[property_name]) unless model.has_array_observer?(nested_property_observers[property_name])
           else
-            model.extend ObservableModel unless model.is_a?(ObservableModel)
+            model.extend(ObservableModel) unless model.is_a?(ObservableModel)
             model.add_observer(property_name, nested_property_observers[property_name]) unless model.has_observer?(property_name, nested_property_observers[property_name])
           end
         end
       end
     else
-      model.extend ObservableModel unless model.is_a?(ObservableModel)
+      model.extend(ObservableModel) unless model.is_a?(ObservableModel)
       model.add_observer(property_name, observer)
     end
   end

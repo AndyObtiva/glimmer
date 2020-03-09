@@ -22,7 +22,7 @@ class ComboSelectionDataBindingCommandHandler
     widget_binding = WidgetBinding.new(parent, "items")
     widget_binding.update(model_binding.evaluate_options_property)
     model = model_binding.base_model
-    model.extend ObservableModel unless model.is_a?(ObservableModel)
+    model.extend(ObservableModel) unless model.is_a?(ObservableModel)
     model.add_observer(model_binding.options_property_name, widget_binding)
 
     widget_binding = WidgetBinding.new(parent, "text")
