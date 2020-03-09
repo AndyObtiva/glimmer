@@ -67,7 +67,11 @@ module ObservableModel
   def ensure_array_object_observer(property_name, object)
     return unless object.is_a?(Array)
     object.extend(ObservableArray) unless object.is_a?(ObservableArray)
-    object.add_array_observer(array_object_observer_for(property_name))
+    array_object_observer = array_object_observer_for(property_name)
+    object.add_array_observer(array_object_observer)
+    property_observer_list(property_name).each do |observer|
+      observer.add_dependent(array_object_observer)
+    end
   end
 
   def array_object_observer_for(property_name)

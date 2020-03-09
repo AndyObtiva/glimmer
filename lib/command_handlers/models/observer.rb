@@ -8,6 +8,14 @@ module Observer
     @registrations ||= Set.new
   end
 
+  def dependents
+    @dependents ||= Set.new
+  end
+
+  def owners
+    @dependents ||= Set.new
+  end
+
   # helps observer remove itself from observables for cleaning purposes
   def register(observable, property = nil)
     [observable, property].tap do |registration|
@@ -36,22 +44,30 @@ module Observer
 
   def unregister_all_dependent_observables
     self.dependents.each do |dependent|
-      dependent.unregister_all_observables
-      remove_dependent(observer)
+      remove_dependent(dependent)
+      dependent.unregister_all_observables if dependent.owners.empty?
     end
   end
 
-  # dependent observers to unregister when unregistering observer
-  def dependents
-    @dependents ||= Set.new
-  end
-
+  # add dependent observer to unregister when unregistering observer
   def add_dependent(observer)
-    @dependents << observer
+    dependents << observer
+    observer.owners << self
   end
 
   def remove_dependent(observer)
-    @dependents.delete(observer)
+    dependents.delete(observer)
+    observer.owners.delete(self)
+  end
+
+  def add_owner(observer)
+    owners << observer
+    observer.dependents << self
+  end
+
+  def remove_owner(observer)
+    owners.delete(observer)
+    observer.dependents.delete(self)
   end
 
   def update(changed_value)
