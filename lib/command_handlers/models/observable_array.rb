@@ -2,17 +2,34 @@ require 'set'
 module ObservableArray
 
   def add_observer(element_properties, observer)
-    property_observer_list << observer
+    add_array_observer(observer)
     each do |element|
       [element_properties].flatten.each do |property|
         element.extend(ObservableModel) unless element.is_a?(ObservableModel)
         element.add_observer(property, observer)
       end
     end
+    observer
+  end
+
+  def remove_observer(element_properties, observer)
+    remove_array_observer(observer)
+    each do |element|
+      [element_properties].flatten.each do |property|
+        element.extend(ObservableModel) unless element.is_a?(ObservableModel)
+        element.remove_observer(property, observer)
+      end
+    end
   end
 
   def add_array_observer(observer)
+    observer.register(self)
     property_observer_list << observer
+    observer
+  end
+
+  def remove_array_observer(observer)
+    property_observer_list.delete(observer)
   end
 
   def has_array_observer?(observer)

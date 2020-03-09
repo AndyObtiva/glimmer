@@ -1,5 +1,6 @@
-# Observer that takes an updater block to process updates
+require_relative 'observer'
 
+# Observer that takes an updater block to process updates
 class BlockObserver
   include Observer
 

@@ -31,28 +31,28 @@ class RWidget
   #styles is a comma separate list of symbols representing SWT styles in lower case
   def initialize(underscored_widget_name, parent, styles, &contents)
     @widget = underscored_widget_name.swt_widget.new(parent, style(underscored_widget_name, styles))
-    @widget.class.__persistent__ = true
-    @widget.methods.each do |method|
-      next if !method.to_s.match(/^[a-zA-Z]/) || method == :isDisposed
-      arity = @widget.method(method).arity
-      if method.to_s.end_with?('=')
-        args = 'arg'
-      elsif arity == 0
-        args = ''
-      elsif arity.positive?
-        args = arity.times.map {|i| "arg#{i}"}.join(', ')
-      else
-        # args = (arity+1).times.map {|i| "arg#{i}"}.join(', ')
-        # args += ", " if args.size > 0
-        args = "*args"
-      end
-      @widget.instance_eval <<-end_eval, __FILE__, __LINE__
-        alias unsafe_#{method} #{method}
-        def #{method}(#{args})
-          self.unsafe_#{method}(#{args}) unless self.isDisposed
-        end
-      end_eval
-    end
+    # @widget.class.__persistent__ = true
+    # @widget.methods.each do |method|
+    #   next if !method.to_s.match(/^[a-zA-Z]/) || method == :isDisposed
+    #   arity = @widget.method(method).arity
+    #   if method.to_s.end_with?('=')
+    #     args = 'arg'
+    #   elsif arity == 0
+    #     args = ''
+    #   elsif arity.positive?
+    #     args = arity.times.map {|i| "arg#{i}"}.join(', ')
+    #   else
+    #     # args = (arity+1).times.map {|i| "arg#{i}"}.join(', ')
+    #     # args += ", " if args.size > 0
+    #     args = "*args"
+    #   end
+    #   @widget.instance_eval <<-end_eval, __FILE__, __LINE__
+    #     alias unsafe_#{method} #{method}
+    #     def #{method}(#{args})
+    #       self.unsafe_#{method}(#{args}) unless self.isDisposed
+    #     end
+    #   end_eval
+    # end
     @@default_initializers[underscored_widget_name].call(@widget) if @@default_initializers[underscored_widget_name]
   end
 

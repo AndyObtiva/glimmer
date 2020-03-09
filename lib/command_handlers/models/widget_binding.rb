@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + "/observer"
 
 class WidgetBinding
+  include Glimmer
   include Observer
 
   attr_reader :widget, :property
@@ -13,6 +14,11 @@ class WidgetBinding
     @widget = model
     @property = property
     @translator = translator || proc {|value| value}
+    add_contents(@widget) {
+      on_widget_disposed { |dispose_event|
+        unregister_all_observables
+      }
+    }
   end
   def update(value)
     converted_value = translated_value = @translator.call(value)

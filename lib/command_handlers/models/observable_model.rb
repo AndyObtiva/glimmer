@@ -1,13 +1,21 @@
 require 'set'
 
-require File.dirname(__FILE__) + "/block_observer"
+require_relative 'observer'
+require_relative 'block_observer'
 
 module ObservableModel
+  REGEX_ATTR_WRITER = /^(\w+=)$/
 
   # Takes observer as an object or a block updater
   def add_observer(property_name, observer = nil, &updater)
     observer ||= BlockObserver.new(&updater)
+    observer.register(self, property_name)
     property_observer_list(property_name) << observer
+    observer
+  end
+
+  def remove_observer(property_name, observer = nil)
+    property_observer_list(property_name).delete(observer)
   end
 
   def has_observer?(property_name, observer)
@@ -29,11 +37,12 @@ module ObservableModel
   end
 
   class Updater
-    def initialize(property_name, observable_model)
-      @property_name = property_name
+    include Observer
+    def initialize(observable_model, property_name)
       @observable_model = observable_model
+      @property_name = property_name
     end
-    def update
+    def update(changed_value=nil)
       @observable_model.notify_observers(@property_name)
     end
   end
@@ -46,14 +55,13 @@ module ObservableModel
   end
 
   def self.add_method_observers(model, method)
-    setter_method_pattern = /^(\w+=)$/
-    if (method.match(setter_method_pattern))
+    if method.match(REGEX_ATTR_WRITER)
       getter_method = method[0, method.length - 1]
       getter_value = model.send(getter_method)
       if (getter_value.is_a?(Array) and
           !getter_value.is_a?(ObservableArray))
         getter_value.extend(ObservableArray)
-        getter_value.add_observer([], Updater.new(getter_method, model))
+        getter_value.add_observer([], Updater.new(model, getter_method))
       end
       model.instance_eval "alias original_#{method} #{method}\n"
       model.instance_eval <<-end_eval, __FILE__, __LINE__
@@ -62,7 +70,7 @@ module ObservableModel
           notify_observers('#{getter_method}')
           if (value.is_a?(Array) and !value.is_a?(ObservableArray))
             value.extend(ObservableArray)
-            value.add_observer([], ObservableModel::Updater.new('#{getter_method}', self))
+            value.add_array_observer(ObservableModel::Updater.new(self, '#{getter_method}'))
           end
         end
       end_eval

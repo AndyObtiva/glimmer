@@ -83,6 +83,7 @@ class ModelBinding
     @nested_property_observers_collection ||= {}
     unless @nested_property_observers_collection.has_key?(observer)
       @nested_property_observers_collection[observer] = nested_property_names.reduce({}) do |output, property_name|
+        #TODO link children to parent observers to allow proper cleanup on unsetting of a value
         output.merge(
           property_name => BlockObserver.new do |changed_value|
             # Ensure reattaching observers when a higher level nested property is updated (e.g. person.address changes reattaches person.address.street observer)
@@ -95,18 +96,41 @@ class ModelBinding
     @nested_property_observers_collection[observer]
   end
   def add_observer(observer)
+    observer.register(self)
     if computed?
       add_computed_observers(observer)
     else
       add_direct_observer(observer)
     end
   end
-  def add_computed_observers(observer)
-    computed_observer = BlockObserver.new do |changed_value|
-      observer.update(evaluate_property)
+  def remove_observer(observer)
+    if computed?
+      @computed_model_bindings.each do |computed_model_binding|
+        computed_model_binding.remove_observer(computed_observer_for(observer))
+      end
+    else
+      if nested_property?
+        nested_property_observers_for(observer).values.each do |nested_property_observer|
+          nested_property_observer.unregister_all_observables
+        end
+      else
+        model.extend ObservableModel unless model.is_a?(ObservableModel)
+        model.remove_observer(property_name, observer)
+      end
     end
+  end
+  def computed_observer_for(observer)
+    @computed_observer_collection ||= {}
+    unless @computed_observer_collection.has_key?(observer)
+      @computed_observer_collection[observer] = BlockObserver.new do |changed_value|
+        observer.update(evaluate_property)
+      end
+    end
+    @computed_observer_collection[observer]
+  end
+  def add_computed_observers(observer)
     @computed_model_bindings.each do |computed_model_binding|
-      computed_model_binding.add_observer(computed_observer)
+      computed_model_binding.add_observer(computed_observer_for(observer))
     end
   end
   def add_direct_observer(observer)

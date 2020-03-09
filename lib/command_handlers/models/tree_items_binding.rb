@@ -3,6 +3,7 @@ require File.dirname(__FILE__) + "/observable_model"
 require File.dirname(__FILE__) + "/observer"
 
 class TreeItemsBinding
+  include Glimmer
   include Observer
   include_package 'org.eclipse.swt'
   include_package 'org.eclipse.swt.widgets'
@@ -15,6 +16,11 @@ class TreeItemsBinding
     model = model_binding.base_model
     model.extend(ObservableModel) unless model.is_a?(ObservableModel)
     model.add_observer(model_binding.property_name_expression, self)
+    add_contents(@tree) {
+      on_widget_disposed { |dispose_event|
+        unregister_all_observables
+      }
+    }
   end
   def update(model_tree_root_node=nil)
     if model_tree_root_node and model_tree_root_node.respond_to?(@tree_properties[:children])

@@ -572,6 +572,7 @@ describe "Glimmer Data Binding" do
       expect(@address2_zip_text_widget.widget.getText).to eq("92014")
 
       person.names[1] = person.names[0]
+      original_address2 = person.addresses[1]
       person.addresses[1] = person.addresses[0]
 
       expect(@name2.widget.getText).to eq("Robertissimo")
@@ -579,6 +580,12 @@ describe "Glimmer Data Binding" do
       expect(@address2_city_text_widget.widget.getText).to eq("Chicago")
       expect(@address2_state_text_widget.widget.getText).to eq("IL")
       expect(@address2_zip_text_widget.widget.getText).to eq("60654")
+
+      # Ensure data-binding observers are removed when address value changed
+      original_address2.street = '838 Newman'
+      expect(@address2_street_text_widget.widget.getText).to_not eq('838 Newman')
+      person.addresses[1].street = '838 Newman'
+      expect(@address2_street_text_widget.widget.getText).to eq('838 Newman')
 
       person.names[1] = nil
       person.addresses[1] = nil

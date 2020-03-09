@@ -233,6 +233,11 @@ a new component and extend the DSL with it
 - **Nested indexed property data binding**: a complementary feature to nested property data binding that binds to a collection element by index (e.g. `bind(user, 'addresses[1].street')`)
 - **bind_collection**: an iterator that enables spawning widgets based on a variable collection (e.g. `bind_collection('user.addresses') { |address| address_widget {...} }` spawns 3 `AddressWidget`s if `user.addresses` is set with 3 addresses; and replaces with 2 `AddressWidget`s if `user.addresses` is reset with 2 addresses only). Needs further thought on naming and functionality.
 - Handle widget disposed event clearing WidgetBinding observers
+1. - [DONE] #TODO prevent operations on disposed widgets
+2. #TODO remove observer from old value when changed
+3. [DONE] #TODO remove observers upon disposing a widget
+4. #TODO automatically remove remaining observers upon calling a disposed widget
+5. Clear nested data binding children observers (keeping parent/child relationships in model binding)
 
 ## Contributors
 
