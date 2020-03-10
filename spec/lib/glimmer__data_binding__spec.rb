@@ -653,5 +653,50 @@ describe "Glimmer Data Binding" do
       person.addresses[1].streets << '923 Huron'
       expect(@label2.widget.getText).to eq("4")
     end
+
+    it 'removes observers upon disposing a widget' do
+      person = Person.new
+      person.adult = true
+
+      @target = shell {
+        composite {
+          @radio = button(:radio) {
+            selection bind(person, :adult)
+          }
+        }
+      }
+
+      expect(@radio.widget.getSelection).to eq(true)
+      @radio.widget.dispose
+      expect {person.adult = false}.to_not raise_error
+    end
+
+    it 'removes nested/indexed observers upon disposing a widget' do
+      person = PersonWithNestedIndexedProperties.new
+      person.addresses = []
+      person.addresses[0] = Address.new
+      person.addresses[1] = Address.new
+
+      @target = shell {
+        composite {
+          @address1_street_text_widget = text {
+            text bind(person, "addresses[0].street")
+          }
+          @address1b_street_text_widget = text {
+            text bind(person, "addresses[0].street")
+          }
+          @address2_street_text_widget = text {
+            text bind(person, "addresses[1].street")
+          }
+        }
+      }
+
+      @address1_street_text_widget.widget.dispose
+      expect {person.addresses[0].street = "123 Main St"}.to_not raise_error
+      expect(@address1b_street_text_widget.widget.getText).to eq("123 Main St")
+
+      person.addresses[1].street = "79 Park Ave"
+      expect(@address2_street_text_widget.widget.getText).to eq("79 Park Ave")
+    end
   end
 end
