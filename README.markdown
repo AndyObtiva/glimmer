@@ -235,7 +235,7 @@ a new component and extend the DSL with it
 - Handle widget disposed event clearing WidgetBinding observers
 2. [DONE] remove observer from old value when changed
 3. [DONE] #TODO remove observers upon disposing a widget
-4. Clear nested data binding children observers (keeping parent/child relationships in model binding)
+4. [DONE] Clear nested data binding children observers (keeping parent/child relationships in model binding)
 
 ## Contributors
 

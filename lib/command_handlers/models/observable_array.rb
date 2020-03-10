@@ -1,4 +1,6 @@
 require 'set'
+
+# TODO prefix utility methods with double-underscore
 module ObservableArray
 
   def add_observer(element_properties, observer)

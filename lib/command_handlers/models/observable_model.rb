@@ -3,6 +3,7 @@ require 'set'
 require_relative 'observer'
 require_relative 'block_observer'
 
+# TODO prefix utility methods with double-underscore
 module ObservableModel
   class Updater
     include Observer
@@ -62,11 +63,20 @@ module ObservableModel
       instance_eval <<-end_eval, __FILE__, __LINE__
         def #{property_writer_name}(value)
           old_value = self.#{property_name}
+          unregister_dependent_observers('#{property_name}', old_value)
           self.__original_#{property_writer_name}(value)
           notify_observers('#{property_name}')
           ensure_array_object_observer('#{property_name}', value, old_value)
         end
       end_eval
+    end
+  end
+
+  def unregister_dependent_observers(property_name, old_value)
+    # TODO look into optimizing this
+    return unless old_value.is_a?(ObservableModel) || old_value.is_a?(ObservableArray)
+    property_observer_list(property_name).each do |observer|
+      observer.unregister_dependents_with_observable([self, property_name], old_value)
     end
   end
 
