@@ -54,21 +54,36 @@ module ObservableArray
       end
     end_eval
 
+    #TODO upon updating array values, make sure dependent observers are cleared
     array.instance_eval("alias __original_set_value__ []=")
     array.instance_eval <<-end_eval, __FILE__, __LINE__
       def []=(index, value)
+        old_value = self[index]
+        unregister_dependent_observers(old_value)
         self.__original_set_value__(index, value)
         notify_observers
       end
     end_eval
 
+    #TODO upon updating array values, make sure dependent observers are cleared
     notify_observers_on_invokation(array, "delete")
+    #TODO upon updating array values, make sure dependent observers are cleared
     notify_observers_on_invokation(array, "delete_at")
+    #TODO upon updating array values, make sure dependent observers are cleared
     notify_observers_on_invokation(array, "clear")
 
     super
   end
 
+  def unregister_dependent_observers(old_value)
+    # TODO look into optimizing this
+    return unless old_value.is_a?(ObservableModel) || old_value.is_a?(ObservableArray)
+    property_observer_list.each do |observer|
+      observer.unregister_dependents_with_observable([self, nil], old_value)
+    end
+  end
+
+  #TODO upon updating array values, make sure dependent observers are cleared
   def self.notify_observers_on_invokation(model, method)
     model.instance_eval "alias __original_#{method} #{method}\n"
     model.instance_eval <<-end_eval, __FILE__, __LINE__

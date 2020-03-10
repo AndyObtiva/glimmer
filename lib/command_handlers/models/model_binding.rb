@@ -92,12 +92,15 @@ class ModelBinding
         )
       end
     end
-    @nested_property_observers_collection[observer].keys.each_with_index do |property_name, i|
-      previous_property_name = nested_property_names[i-1]
-      previous_observer = @nested_property_observers_collection[observer][previous_property_name]
-      nested_property_observer = @nested_property_observers_collection[observer][property_name]
-      previous_observer.add_dependent(nested_property_observer) unless previous_observer.nil?
-    end
+    # @nested_property_observers_collection[observer].keys.each_with_index do |property_name, i|
+    #   previous_property_name = nested_property_names[i-1]
+    #   previous_observer = @nested_property_observers_collection[observer][previous_property_name]
+    #   nested_property_observer = @nested_property_observers_collection[observer][property_name]
+    #   previous_observer.add_dependent(nested_property_observer) unless previous_observer.nil?
+    # end
+    # TODO remove this brainstorming
+    # person.addresses[1].streets[2].number
+    # person.addresses[1] = ...
     @nested_property_observers_collection[observer]
   end
   def add_observer(observer)
@@ -108,6 +111,7 @@ class ModelBinding
     else
       model.extend(ObservableModel) unless model.is_a?(ObservableModel)
       model.add_observer(property_name, observer)
+      observer.add_dependent([self, nil] => [observer, model, property_name])
     end
     observer.register(self)
   end
@@ -118,9 +122,6 @@ class ModelBinding
       end
       @computed_observer_collection[observer] = nil
     elsif nested_property?
-      nested_property_observers_for(observer).values.each do |nested_property_observer|
-        nested_property_observer.unregister_all_observables
-      end
       nested_property_observers_for(observer).clear
     else
       model.extend(ObservableModel) unless model.is_a?(ObservableModel)
@@ -139,18 +140,28 @@ class ModelBinding
   def add_computed_observers(observer)
     @computed_model_bindings.each do |computed_model_binding|
       computed_model_binding.add_observer(computed_observer_for(observer))
+      observer.add_dependent([self, nil] => [computed_observer_for(observer), computed_model_binding, nil])
     end
   end
   def add_nested_observers(observer)
     nested_property_observers = nested_property_observers_for(observer)
-    nested_models.zip(nested_property_names).each do |model, property_name|
+    nested_models.zip(nested_property_names).each_with_index do |zip, i|
+      model, property_name = zip
+      nested_property_observer = nested_property_observers[property_name]
+      previous_index = i - 1
+      parent_model = previous_index.negative? ? self : nested_models[previous_index]
+      parent_property_name = previous_index.negative? ? nil : nested_property_names[previous_index]
+      parent_observer = previous_index.negative? ? observer : nested_property_observers[parent_property_name]
+      parent_property_name = nil if parent_property_name.to_s.start_with?('[')
       unless model.nil?
         if property_indexed?(property_name)
           model.extend(ObservableArray) unless model.is_a?(ObservableArray)
-          model.add_array_observer(nested_property_observers[property_name]) unless model.has_array_observer?(nested_property_observers[property_name])
+          model.add_array_observer(nested_property_observer) unless model.has_array_observer?(nested_property_observer)
+          parent_observer.add_dependent([parent_model, parent_property_name] => [nested_property_observer, model, nil])
         else
           model.extend(ObservableModel) unless model.is_a?(ObservableModel)
-          model.add_observer(property_name, nested_property_observers[property_name]) unless model.has_observer?(property_name, nested_property_observers[property_name])
+          model.add_observer(property_name, nested_property_observer) unless model.has_observer?(property_name, nested_property_observer)
+          parent_observer.add_dependent([parent_model, parent_property_name] => [nested_property_observer, model, property_name])
         end
       end
     end
@@ -164,7 +175,7 @@ class ModelBinding
     invoke_property_reader(model, property_name) unless model.nil?
   end
   def evaluate_options_property
-    model.send(property_name + "_options") unless model.nil?
+    model.send(options_property_name) unless model.nil?
   end
   def options_property_name
     self.property_name + "_options"

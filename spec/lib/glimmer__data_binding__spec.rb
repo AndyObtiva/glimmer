@@ -617,6 +617,41 @@ describe "Glimmer Data Binding" do
       expect(@address2_city_text_widget.widget.getText).to eq("Chicago")
       expect(@address2_state_text_widget.widget.getText).to eq("IL")
       expect(@address2_zip_text_widget.widget.getText).to eq("60654")
+
+      # test removal of observers on severed nested chains
+      old_address2 = person.addresses[1]
+      expect(old_address2.property_observer_list('street').to_a.empty?).to be_falsey
+      expect(old_address2.property_observer_list('city').to_a.empty?).to be_falsey
+      expect(old_address2.property_observer_list('state').to_a.empty?).to be_falsey
+      expect(old_address2.property_observer_list('zip').to_a.empty?).to be_falsey
+      person.addresses[1] = Address.new
+      expect(old_address2.property_observer_list('street').to_a.empty?).to be_truthy
+      expect(old_address2.property_observer_list('city').to_a.empty?).to be_truthy
+      expect(old_address2.property_observer_list('state').to_a.empty?).to be_truthy
+      expect(old_address2.property_observer_list('zip').to_a.empty?).to be_truthy
+
+      # old_addresses = person.addresses
+      # old_address1 = person.addresses[0]
+      # old_address2 = person.addresses[1]
+      # expect(old_addresses.property_observer_list.to_a.empty?).to be_falsey
+      # expect(old_address1.property_observer_list('street').to_a.empty?).to be_falsey
+      # expect(old_address1.property_observer_list('city').to_a.empty?).to be_falsey
+      # expect(old_address1.property_observer_list('state').to_a.empty?).to be_falsey
+      # expect(old_address1.property_observer_list('zip').to_a.empty?).to be_falsey
+      # expect(old_address2.property_observer_list('street').to_a.empty?).to be_falsey
+      # expect(old_address2.property_observer_list('city').to_a.empty?).to be_falsey
+      # expect(old_address2.property_observer_list('state').to_a.empty?).to be_falsey
+      # expect(old_address2.property_observer_list('zip').to_a.empty?).to be_falsey
+      # person.addresses = []
+      # expect(old_addresses.property_observer_list.to_a.empty?).to be_truthy
+      # expect(old_address1.property_observer_list('street').to_a.empty?).to be_truthy
+      # expect(old_address1.property_observer_list('city').to_a.empty?).to be_truthy
+      # expect(old_address1.property_observer_list('state').to_a.empty?).to be_truthy
+      # expect(old_address1.property_observer_list('zip').to_a.empty?).to be_truthy
+      # expect(old_address2.property_observer_list('street').to_a.empty?).to be_truthy
+      # expect(old_address2.property_observer_list('city').to_a.empty?).to be_truthy
+      # expect(old_address2.property_observer_list('state').to_a.empty?).to be_truthy
+      # expect(old_address2.property_observer_list('zip').to_a.empty?).to be_truthy
     end
 
     it "tests label widget nested computed value data binding string property" do

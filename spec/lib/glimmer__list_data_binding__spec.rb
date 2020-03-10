@@ -220,5 +220,17 @@ describe "Glimmer List Data Binding" do
     expect(@list.widget.selection_count.to_i).to eq(6)
     expect(@list.widget.selection_indices.to_a).to eq([1, 2, 3, 4, 5, 6])
     expect(@list.widget.selection.to_a).to eq(["Quebec", "Ontario", "Manitoba", "Saskatchewan", "Alberta", "British Columbia"])
+
+    old_provinces = person.provinces
+    expect(old_provinces.property_observer_list.to_a.empty?).to be_falsey
+    person.provinces = ["Quebec", "Saskatchewan", "British Columbia"]
+    expect(@list.widget.selection_count.to_i).to eq(3)
+    expect(@list.widget.selection.to_a).to eq(["Quebec", "Saskatchewan", "British Columbia"])
+
+    # old binding doesn't observe anymore
+    old_provinces << "New Brunswick"
+    expect(@list.widget.selection_count.to_i).to eq(3)
+    expect(@list.widget.selection.to_a).to eq(["Quebec", "Saskatchewan", "British Columbia"])
+    expect(old_provinces.property_observer_list.to_a.empty?).to be_truthy
    end
 end
