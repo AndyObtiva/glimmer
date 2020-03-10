@@ -1,4 +1,5 @@
-require File.dirname(__FILE__) + "/observer"
+require_relative 'observer'
+require_relative 'block_observer'
 
 class ModelBinding
   include Observer
@@ -110,22 +111,21 @@ class ModelBinding
       add_nested_observers(observer)
     else
       model.extend(ObservableModel) unless model.is_a?(ObservableModel)
-      model.add_observer(property_name, observer)
+      observer.observe(model, property_name)
       observer.add_dependent([self, nil] => [observer, model, property_name])
     end
-    observer.register(self)
   end
   def remove_observer(observer)
     if computed?
       @computed_model_bindings.each do |computed_model_binding|
-        computed_model_binding.remove_observer(computed_observer_for(observer))
+        computed_observer_for(observer).unobserve(computed_model_binding)
       end
       @computed_observer_collection[observer] = nil
     elsif nested_property?
       nested_property_observers_for(observer).clear
     else
       model.extend(ObservableModel) unless model.is_a?(ObservableModel)
-      model.remove_observer(property_name, observer)
+      observer.unobserve(model, property_name)
     end
   end
   def computed_observer_for(observer)
@@ -139,7 +139,7 @@ class ModelBinding
   end
   def add_computed_observers(observer)
     @computed_model_bindings.each do |computed_model_binding|
-      computed_model_binding.add_observer(computed_observer_for(observer))
+      computed_observer_for(observer).observe(computed_model_binding)
       observer.add_dependent([self, nil] => [computed_observer_for(observer), computed_model_binding, nil])
     end
   end
@@ -156,11 +156,11 @@ class ModelBinding
       unless model.nil?
         if property_indexed?(property_name)
           model.extend(ObservableArray) unless model.is_a?(ObservableArray)
-          model.add_array_observer(nested_property_observer) unless model.has_array_observer?(nested_property_observer)
+          nested_property_observer.observe(model) unless model.has_observer?(nested_property_observer)
           parent_observer.add_dependent([parent_model, parent_property_name] => [nested_property_observer, model, nil])
         else
           model.extend(ObservableModel) unless model.is_a?(ObservableModel)
-          model.add_observer(property_name, nested_property_observer) unless model.has_observer?(property_name, nested_property_observer)
+          nested_property_observer.observe(model, property_name) unless model.has_observer?(nested_property_observer, property_name)
           parent_observer.add_dependent([parent_model, parent_property_name] => [nested_property_observer, model, property_name])
         end
       end

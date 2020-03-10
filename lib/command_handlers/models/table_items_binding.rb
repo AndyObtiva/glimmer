@@ -15,7 +15,7 @@ class TableItemsBinding
     update(@model_binding.evaluate_property)
     model = model_binding.base_model
     model.extend(ObservableModel) unless model.is_a?(ObservableModel)
-    model.add_observer(model_binding.property_name_expression, self)
+    observe(model, model_binding.property_name_expression)
     add_contents(@table) {
       on_widget_disposed { |dispose_event|
         unregister_all_observables
@@ -25,7 +25,7 @@ class TableItemsBinding
   def update(model_collection=nil)
     if model_collection and model_collection.is_a?(Array)
       model_collection.extend(ObservableArray) unless model_collection.is_a?(ObservableArray)
-      model_collection.add_observer(@column_properties, self)
+      observe(model_collection, @column_properties)
       @model_collection = model_collection
     end
     populate_table(@model_collection, @table, @column_properties)

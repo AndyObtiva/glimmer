@@ -25,14 +25,14 @@ class ListSelectionDataBindingCommandHandler
     model = model_binding.base_model
     model.extend(ObservableModel) unless model.is_a?(ObservableModel)
     #TODO make this options observer dependent and all similar observers in widget specific data binding handlers
-    model.add_observer(model_binding.options_property_name, widget_binding)
+    widget_binding.observe(model, model_binding.options_property_name)
 
     property_type = :string
     property_type = :array if parent.has_style?(:multi)
     list_selection_binding = ListSelectionBinding.new(parent, property_type)
     list_selection_binding.update(model_binding.evaluate_property)
     #TODO check if nested data binding works for list widget and other widgets that need custom data binding
-    model.add_observer(model_binding.property_name_expression, list_selection_binding)
+    list_selection_binding.observe(model, model_binding.property_name_expression)
 
     add_contents(parent) {
       on_widget_selected {

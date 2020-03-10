@@ -1,10 +1,12 @@
 require 'set'
 
+require_relative 'observable'
 require_relative 'observer'
-require_relative 'block_observer'
 
 # TODO prefix utility methods with double-underscore
 module ObservableModel
+  include Observable
+
   class Updater
     include Observer
     def initialize(observable_model, property_name)
@@ -16,21 +18,18 @@ module ObservableModel
     end
   end
 
-  # Takes observer as an object or a block updater
-  def add_observer(property_name, observer = nil, &updater)
-    observer ||= BlockObserver.new(&updater)
-    return observer if has_observer?(property_name, observer)
+  def add_observer(observer, property_name)
+    return observer if has_observer?(observer, property_name)
     property_observer_list(property_name) << observer
     add_property_writer_observers(property_name)
-    observer.register(self, property_name)
     observer
   end
 
-  def remove_observer(property_name, observer = nil)
+  def remove_observer(observer, property_name)
     property_observer_list(property_name).delete(observer)
   end
 
-  def has_observer?(property_name, observer)
+  def has_observer?(observer, property_name)
     property_observer_list(property_name).include?(observer)
   end
 
@@ -84,7 +83,7 @@ module ObservableModel
     return unless object.is_a?(Array)
     object.extend(ObservableArray) unless object.is_a?(ObservableArray)
     array_object_observer = array_object_observer_for(property_name)
-    object.add_array_observer(array_object_observer)
+    array_object_observer.observe(object)
     property_observer_list(property_name).each do |observer|
       observer.add_dependent([self, property_name] => [array_object_observer, object, nil])
     end

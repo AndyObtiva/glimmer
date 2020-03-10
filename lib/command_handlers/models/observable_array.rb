@@ -1,46 +1,39 @@
 require 'set'
 
+require_relative 'observable'
+
 # TODO prefix utility methods with double-underscore
 module ObservableArray
+  include Observable
 
-  def add_observer(element_properties, observer)
-    add_array_observer(observer)
-    each do |element|
-      [element_properties].flatten.each do |property|
-        element.extend(ObservableModel) unless element.is_a?(ObservableModel)
-        element.add_observer(property, observer)
-      end
-    end
-    observer
-  end
-
-  def remove_observer(element_properties, observer)
-    remove_array_observer(observer)
-    each do |element|
-      [element_properties].flatten.each do |property|
-        element.extend(ObservableModel) unless element.is_a?(ObservableModel)
-        element.remove_observer(property, observer)
-      end
-    end
-  end
-
-  def add_array_observer(observer)
+  def add_observer(observer, element_properties=nil)
     property_observer_list << observer
-    observer.register(self)
+    [element_properties].flatten.compact.each do |property|
+      each do |element|
+        element.extend(ObservableModel) unless element.is_a?(ObservableModel)
+        observer.observe(element, property)
+      end
+    end
     observer
   end
 
-  def remove_array_observer(observer)
+  def remove_observer(observer, element_properties=nil)
     property_observer_list.delete(observer)
+    [element_properties].flatten.compact.each do |property|
+      each do |element|
+        element.extend(ObservableModel) unless element.is_a?(ObservableModel)
+        observer.unobserve(element, property)
+      end
+    end
+    observer
   end
 
-  def has_array_observer?(observer)
+  def has_observer?(observer)
     property_observer_list.include?(observer)
   end
 
   def property_observer_list
-    @property_observer_list = Set.new unless @property_observer_list
-    @property_observer_list
+    @property_observer_list ||= Set.new
   end
 
   def notify_observers
@@ -48,31 +41,53 @@ module ObservableArray
   end
 
   def self.extend_object(array)
-    array.instance_eval("alias __original_add__ <<")
+    array.instance_eval("alias __original_add <<")
     array.instance_eval <<-end_eval, __FILE__, __LINE__
       def <<(value)
-        self.__original_add__(value)
+        self.__original_add(value)
         notify_observers
       end
     end_eval
 
-    #TODO upon updating array values, make sure dependent observers are cleared
-    array.instance_eval("alias __original_set_value__ []=")
+    array.instance_eval("alias __original_set_value []=")
     array.instance_eval <<-end_eval, __FILE__, __LINE__
       def []=(index, value)
         old_value = self[index]
         unregister_dependent_observers(old_value)
-        self.__original_set_value__(index, value)
+        self.__original_set_value(index, value)
         notify_observers
       end
     end_eval
 
-    #TODO upon updating array values, make sure dependent observers are cleared
-    notify_observers_on_invokation(array, "delete")
-    #TODO upon updating array values, make sure dependent observers are cleared
-    notify_observers_on_invokation(array, "delete_at")
-    #TODO upon updating array values, make sure dependent observers are cleared
-    notify_observers_on_invokation(array, "clear")
+    array.instance_eval("alias __original_delete delete")
+    array.instance_eval <<-end_eval, __FILE__, __LINE__
+      def delete(value)
+        unregister_dependent_observers(value)
+        self.__original_delete(value)
+        notify_observers
+      end
+    end_eval
+
+    array.instance_eval("alias __original_delete_at delete_at")
+    array.instance_eval <<-end_eval, __FILE__, __LINE__
+      def delete_at(index)
+        old_value = self[index]
+        unregister_dependent_observers(old_value)
+        self.__original_delete_at(index)
+        notify_observers
+      end
+    end_eval
+
+    array.instance_eval("alias __original_clear clear")
+    array.instance_eval <<-end_eval, __FILE__, __LINE__
+      def clear
+        each do |old_value|
+          unregister_dependent_observers(old_value)
+        end
+        self.__original_clear
+        notify_observers
+      end
+    end_eval
 
     super
   end
@@ -83,17 +98,6 @@ module ObservableArray
     property_observer_list.each do |observer|
       observer.unregister_dependents_with_observable([self, nil], old_value)
     end
-  end
-
-  #TODO upon updating array values, make sure dependent observers are cleared
-  def self.notify_observers_on_invokation(model, method)
-    model.instance_eval "alias __original_#{method} #{method}\n"
-    model.instance_eval <<-end_eval, __FILE__, __LINE__
-      def #{method}(*args, &block)
-        self.__original_#{method}(*args, &block)
-        notify_observers
-      end
-    end_eval
   end
 
 end

@@ -15,7 +15,7 @@ class TreeItemsBinding
     update(@model_binding.evaluate_property)
     model = model_binding.base_model
     model.extend(ObservableModel) unless model.is_a?(ObservableModel)
-    model.add_observer(model_binding.property_name_expression, self)
+    observe(model, model_binding.property_name_expression)
     add_contents(@tree) {
       on_widget_disposed { |dispose_event|
         unregister_all_observables
@@ -25,8 +25,8 @@ class TreeItemsBinding
   def update(model_tree_root_node=nil)
     if model_tree_root_node and model_tree_root_node.respond_to?(@tree_properties[:children])
       model_tree_root_node.extend(ObservableModel) unless model_tree_root_node.is_a?(ObservableModel)
-      model_tree_root_node.add_observer(@tree_properties[:text], self)
-      model_tree_root_node.add_observer(@tree_properties[:children], self)
+      observe(model_tree_root_node, @tree_properties[:text])
+      observe(model_tree_root_node, @tree_properties[:children])
       @model_tree_root_node = model_tree_root_node
     end
     populate_tree(@model_tree_root_node, @tree, @tree_properties)
@@ -40,7 +40,7 @@ class TreeItemsBinding
     table_item.setText((model_tree_node && model_tree_node.send(tree_properties[:text])).to_s)
       [model_tree_node && model_tree_node.send(tree_properties[:children])].flatten.to_a.compact.each do |child|
       child.extend(ObservableModel) unless child.is_a?(ObservableModel)
-      child.add_observer(@tree_properties[:text], self)
+      observe(child, @tree_properties[:text])
       populate_tree_node(child, table_item, tree_properties)
     end
   end

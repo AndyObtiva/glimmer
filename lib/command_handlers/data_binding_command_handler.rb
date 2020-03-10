@@ -58,7 +58,7 @@ class DataBindingCommandHandler
       widget_binding_parameters = [parent, command_symbol.to_s]
       widget_binding = WidgetBinding.new(*widget_binding_parameters)
       widget_binding.update(model_binding.evaluate_property)
-      model_binding.add_observer(widget_binding)
+      widget_binding.observe(model_binding)
       widget_data_binder_map = @@widget_data_binders[parent.widget.class]
       widget_data_binder = widget_data_binder_map[command_symbol.to_s.to_sym] if widget_data_binder_map
       widget_data_binder.call(parent, model_binding) if widget_data_binder

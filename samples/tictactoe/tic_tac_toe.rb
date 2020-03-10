@@ -30,7 +30,7 @@ class TicTacToe
       }
     }
     @tic_tac_toe_board.extend(ObservableModel) #make board an observable model
-    @tic_tac_toe_board.add_observer("game_status", self)
+    observe(@tic_tac_toe_board, "game_status")
   end
 
   def update(game_status)

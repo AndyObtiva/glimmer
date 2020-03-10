@@ -630,6 +630,50 @@ describe "Glimmer Data Binding" do
       expect(old_address2.property_observer_list('state').to_a.empty?).to be_truthy
       expect(old_address2.property_observer_list('zip').to_a.empty?).to be_truthy
 
+      old_address2 = person.addresses[1]
+      expect(old_address2.property_observer_list('street').to_a.empty?).to be_falsey
+      expect(old_address2.property_observer_list('city').to_a.empty?).to be_falsey
+      expect(old_address2.property_observer_list('state').to_a.empty?).to be_falsey
+      expect(old_address2.property_observer_list('zip').to_a.empty?).to be_falsey
+      person.addresses.delete(old_address2)
+      expect(old_address2.property_observer_list('street').to_a.empty?).to be_truthy
+      expect(old_address2.property_observer_list('city').to_a.empty?).to be_truthy
+      expect(old_address2.property_observer_list('state').to_a.empty?).to be_truthy
+      expect(old_address2.property_observer_list('zip').to_a.empty?).to be_truthy
+      person.addresses << old_address2
+
+      expect(old_address2.property_observer_list('street').to_a.empty?).to be_falsey
+      expect(old_address2.property_observer_list('city').to_a.empty?).to be_falsey
+      expect(old_address2.property_observer_list('state').to_a.empty?).to be_falsey
+      expect(old_address2.property_observer_list('zip').to_a.empty?).to be_falsey
+      person.addresses.delete_at(1)
+      expect(old_address2.property_observer_list('street').to_a.empty?).to be_truthy
+      expect(old_address2.property_observer_list('city').to_a.empty?).to be_truthy
+      expect(old_address2.property_observer_list('state').to_a.empty?).to be_truthy
+      expect(old_address2.property_observer_list('zip').to_a.empty?).to be_truthy
+      person.addresses << old_address2
+
+      old_address1 = person.addresses[0]
+      expect(old_address1.property_observer_list('street').to_a.empty?).to be_falsey
+      expect(old_address1.property_observer_list('city').to_a.empty?).to be_falsey
+      expect(old_address1.property_observer_list('state').to_a.empty?).to be_falsey
+      expect(old_address1.property_observer_list('zip').to_a.empty?).to be_falsey
+      expect(old_address2.property_observer_list('street').to_a.empty?).to be_falsey
+      expect(old_address2.property_observer_list('city').to_a.empty?).to be_falsey
+      expect(old_address2.property_observer_list('state').to_a.empty?).to be_falsey
+      expect(old_address2.property_observer_list('zip').to_a.empty?).to be_falsey
+      person.addresses.clear
+      expect(old_address1.property_observer_list('street').to_a.empty?).to be_truthy
+      expect(old_address1.property_observer_list('city').to_a.empty?).to be_truthy
+      expect(old_address1.property_observer_list('state').to_a.empty?).to be_truthy
+      expect(old_address1.property_observer_list('zip').to_a.empty?).to be_truthy
+      expect(old_address2.property_observer_list('street').to_a.empty?).to be_truthy
+      expect(old_address2.property_observer_list('city').to_a.empty?).to be_truthy
+      expect(old_address2.property_observer_list('state').to_a.empty?).to be_truthy
+      expect(old_address2.property_observer_list('zip').to_a.empty?).to be_truthy
+      person.addresses << old_address1
+      person.addresses << old_address2
+
       old_addresses = person.addresses
       old_address1 = person.addresses[0]
       old_address2 = person.addresses[1]

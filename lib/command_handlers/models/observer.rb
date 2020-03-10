@@ -30,22 +30,18 @@ module Observer
     parents[registration] ||= Set.new
   end
 
-  # helps observer remove itself from observables for cleaning purposes
+  # registers observer in an observable on a property (optional)
+  # observer maintains registration list to unregister later
   def register(observable, property = nil)
-    #TODO consider performing add observer here to avoid having to extend model as observable (simplify)
+    observable.add_observer(*[self, property].compact)
     [observable, property].tap do |registration|
       self.registrations << registration
     end
   end
+  alias observe register
 
   def unregister(observable, property = nil)
-    if observable.is_a?(ObservableArray)
-      observable.remove_array_observer(self)
-    elsif observable.is_a?(ObservableModel)
-      observable.remove_observer(property, self)
-    else
-      observable.remove_observer(self)
-    end
+    observable.remove_observer(*[self, property].compact)
     registration = [observable, property]
     dependents_for(registration).each do |dependent|
       dependent_observer, dependent_observable, dependent_property = dependent
@@ -54,6 +50,7 @@ module Observer
     end
     registrations.delete(registration)
   end
+  alias unobserve unregister
 
   def unregister_dependents_with_observable(registration, dependent_observable)
     thedependents = dependents_for(registration).select do |d_observer, d_observable, d_property|
@@ -70,6 +67,7 @@ module Observer
       unregister(observable, property)
     end
   end
+  alias unobserve_all_observables unregister_all_observables
 
   # add dependent observer to unregister when unregistering observer
   def add_dependent(parent_to_dependent_hash)

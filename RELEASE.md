@@ -1,7 +1,8 @@
 # Release Notes
 
-** 0.2.6 **
-- Added a safety check to ensure no SWT widget method is invoked if disposed
+** 0.3.0 **
+- Automatic cleanup of observers upon updating values in data-binding (nested/indexed) or disposing a widget
+- Change of APIs whereby Observer class is responsible for registering observers with observables on properties
 
 ** 0.2.5 **
 - Register a property type converter for `visible` property in widget binding, to ensure converting to boolean before setting in SWT widget.
