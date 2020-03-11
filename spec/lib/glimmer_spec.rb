@@ -3,11 +3,6 @@ require "spec_helper"
 describe Glimmer do
   include Glimmer
 
-	include_package 'org.eclipse.swt'
-	include_package 'org.eclipse.swt.widgets'
-	include_package 'org.eclipse.swt.layout'
-	include_package 'org.eclipse.swt.graphics'
-
   before do
     @target = nil
     dsl :swt

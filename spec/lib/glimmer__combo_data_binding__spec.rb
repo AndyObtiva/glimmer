@@ -3,10 +3,6 @@ require "spec_helper"
 describe "Glimmer Combo Data Binding" do
 	include Glimmer
 
-	include_package 'org.eclipse.swt'
-	include_package 'org.eclipse.swt.widgets'
-	include_package 'org.eclipse.swt.layout'
-
   before do
     dsl :swt
   end

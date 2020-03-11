@@ -3,10 +3,6 @@ require "spec_helper"
 describe "Glimmer List Data Binding" do
   include Glimmer
 
-	include_package 'org.eclipse.swt'
-	include_package 'org.eclipse.swt.widgets'
-	include_package 'org.eclipse.swt.layout'
-
   SWT = org.eclipse.swt.SWT unless Object.const_defined?(:SWT)
 
   before do
