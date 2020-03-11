@@ -206,7 +206,7 @@ button {
 }
 ```
 
-In the above example, the `text` widget `enabled` property was data-bound to `empty` method on `@tic_tac_toe_board.box(row, column)` (learn more about data-binding below)
+In the above example, the `text` widget `enabled` property was data-bound to `#empty` method on `@tic_tac_toe_board.box(row, column)` (learn more about data-binding below)
 
 ### Data-Binding
 
