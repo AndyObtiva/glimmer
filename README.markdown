@@ -356,6 +356,7 @@ a new component and extend the DSL with it
 - bind_collection: an iterator that enables spawning widgets based on a variable collection (e.g. `bind_collection('user.addresses') { |address| address_widget {...} }` spawns 3 `AddressWidget`s if `user.addresses` is set with 3 addresses; and replaces with 2 `AddressWidget`s if `user.addresses` is reset with 2 addresses only). Needs further thought on naming and functionality.
 - Automatic relayout of "glimmer components" when disposing one or as an option
 - Consider using Ruby Refinements for Glimmer
+- Add 'color' to Glimmer DSL to build color objects easily
 
 
 ## Contributors
