@@ -232,9 +232,9 @@ The fifth example demonstrates nested indexed computed value data binding whereb
 
 You may learn more about Glimmer's syntax by reading the Eclipse Zone Tutorial mentioned in resources and opening up the samples under the `samples` folder.
 
-### Observer/Observable
+### Observer
 
-Glimmer comes with the two classes `Observer`/`Observable`, which are used internally for data-binding, but can also be used externally for custom use of the Observer Pattern.
+Glimmer comes with `Observer` module, which is used internally for data-binding, but can also be used externally for custom use of the Observer Pattern.
 
 In summary, the class that needs to observe an object, must include Observer and implement `#update(changed_value)` method. The class to be observed doesn't need to do anything. It will automatically be enhanced by Glimmer for observation.
 
