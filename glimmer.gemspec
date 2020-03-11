@@ -42,7 +42,6 @@ Gem::Specification.new do |s|
     "lib/command_handlers/models/r_tab_item_composite.rb",
     "lib/command_handlers/models/r_widget.rb",
     "lib/command_handlers/models/r_widget_listener.rb",
-    "lib/command_handlers/models/r_widget_packages.rb",
     "lib/command_handlers/models/table_items_binding.rb",
     "lib/command_handlers/models/tree_items_binding.rb",
     "lib/command_handlers/models/widget_binding.rb",
@@ -60,6 +59,7 @@ Gem::Specification.new do |s|
     "lib/parent.rb",
     "lib/shine.rb",
     "lib/string.rb",
+    "lib/swt_packages.rb",
     "lib/symbol.rb",
     "lib/xml_command_handlers.rb",
     "lib/xml_command_handlers/html_command_handler.rb",
@@ -117,3 +117,4 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<puts_debuggerer>.freeze, ["~> 0.8.1"])
   end
 end
+
