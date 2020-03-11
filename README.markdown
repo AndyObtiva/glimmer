@@ -299,7 +299,6 @@ jruby -J-XstartOnFirstThread -J-classpath "path_to/swt.jar" -r glimmer -S applic
 
 These features have been suggested. You might see them in a future version of Glimmer. You are welcome to contribute more feature suggestions.
 
-- Auto-include SWT packages when including Glimmer
 - Glimmer Application: provide a standard structure for building a Glimmer app
 - Glimmer Component: Glimmer already supports components by externalizing to objects, but it would be good if there is a module to include so Glimmer would automatically register
 a new component and extend the DSL with it
