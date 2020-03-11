@@ -152,13 +152,61 @@ Other widget examples:
 - `table_column`: wrapper for `org.eclipse.swt.widgets.TableColumn`
 - `tree`: wrapper for `org.eclipse.swt.widgets.Tree`
 
+### Widget Styles
+
+SWT widgets receive SWT bit styles in their constructor as per this guide:
+
+https://wiki.eclipse.org/SWT_Widget_Style_Bits
+
+Glimmer DSL facilitates that by passing uppercased constants namespaced under `SWT` as widget method arguments (i.e. inside widget `()` parentheses. See example below).
+
+These style bits customize widget look, feel, and behavior.
+
+Example:
+```ruby
+list(SWT::MULTI) { # SWT style bits go inside ()
+  selection bind(person, :provinces)
+}
+```
+
+Passing `SWT::MULTI` to `list` widget enables list element multi-selection. Passing `SWT::BORDER` to `text` widget ensure it has a border.
+
+Glimmer ships with these SWT style bit smart defaults so you wouldn't have to set them yourself most of the time (albeit you can always override them):
+
+```ruby
+  "text" => SWT::BORDER,
+  "table" => SWT::BORDER,
+  "spinner" => SWT::BORDER,
+  "list" => SWT::BORDER | SWT::V_SCROLL,
+  "button" => SWT::PUSH,
+```
+
+Notice how list takes 2 style bits. Since they are bits, they can be "or"ed together using the Ruby `|` operator. That's how SWT expects them to be passed.
+
 ### Widget Properties
 
-Widget properties (e.g. `text`) may be set with methods matching their names in lower snakecase.
+Widget properties such as value, enablement, and layout details are set within the widget block using methods matching SWT widget property names in lower snakecase. You may refer to SWT widget guide for details on available widget properties:
 
-Widget property examples:
-- `text` to set text value of a `label`
-- `gridData` to set grid data of a `composite`
+https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/guide/swt_widgets_controls.htm?cp=2_0_7_0_0
+
+
+Code examples:
+
+```ruby
+label {
+  text "Hello World!" # SWT properties go inside {} block
+}
+```
+
+In the above example, the `label` widget `text` property was set to "Hello World!".
+
+```ruby
+button {
+  enabled bind(@tic_tac_toe_board.box(row, column), :empty)
+}
+```
+
+In the above example, the `text` widget `enabled` property was data-bound to `empty` method on `@tic_tac_toe_board.box(row, column)` (learn more about data-binding below)
 
 ### Data-Binding
 
@@ -239,6 +287,9 @@ Here is a list of SWT widgets:
 
 https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/guide/swt_widgets_controls.htm?cp=2_0_7_0_0
 
+Here is a list of SWT style bits:
+
+https://wiki.eclipse.org/SWT_Widget_Style_Bits
 
 ## Girb (Glimmer irb)
 
