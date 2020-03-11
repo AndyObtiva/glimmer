@@ -5,9 +5,11 @@ Glimmer is a cross-platform Ruby desktop development library. Glimmer's main inn
 
 You may learn more by reading this article: [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer)
 
-## Example
+## Examples
 
-Code (`hello_world.rb`):
+### Hello World
+
+Glimmer code (from `samples/hello_world.rb`):
 ```ruby
 include Glimmer
 
@@ -21,13 +23,47 @@ shell {
 
 Run:
 ```
-glimmer hello_world.rb
+glimmer samples/hello_world.rb
 ```
 
 Glimmer app:
 
-![Glimmer](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-world.png)
+![Hello World](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-world.png)
 
+### Tic Tac Toe
+
+Glimmer code (from `samples/tictactoe/tic_tac_toe.rb`):
+
+```ruby
+shell {
+  text "Tic-Tac-Toe"
+  composite {
+    layout GridLayout.new(3,true)
+    (1..3).each { |row|
+      (1..3).each { |column|
+        button {
+          layout_data GridData.new(:fill.swt_constant, :fill.swt_constant, true, true)
+          text        bind(@tic_tac_toe_board.box(row, column), :sign)
+          enabled     bind(@tic_tac_toe_board.box(row, column), :empty)
+          on_widget_selected {
+            @tic_tac_toe_board.mark_box(row, column)
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+Run:
+
+```
+glimmer samples/tictactoe/tic_tac_toe.rb
+```
+
+Glimmer app:
+
+![Tic Tac Toe](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-tic-tac-toe.png)
 
 ## Resources
 
@@ -147,6 +183,43 @@ The fourth example demonstrates computed value data binding whereby the value of
 The fifth example demonstrates nested indexed computed value data binding whereby the value of `profiles[0].name` depends on changes to both nested `profiles[0].first_name` and `profiles[0].last_name`.
 
 You may learn more about Glimmer's syntax by reading the Eclipse Zone Tutorial mentioned in resources and opening up the samples under the `samples` folder.
+
+### Observer/Observable
+
+Glimmer comes with the two classes `Observer`/`Observable`, which are used internally for data-binding, but can also be used externally for custom use of the Observer Pattern.
+
+In summary, the class that needs to observe an object, must include Observer and implement `#update(changed_value)` method. The class to be observed doesn't need to do anything. It will automatically be enhanced by Glimmer for observation.
+
+Observers can be a good mechanism for displaying dialog messages with Glimmer (using SWT's `MessageBox`).
+
+Look at `samples/tictactoe/tic_tac_toe.rb` for an `Observer` dialog message example.
+
+```ruby
+observe(@tic_tac_toe_board, "game_status")
+```
+
+```ruby
+def update(game_status)
+  display_win_message if game_status == TicTacToeBoard::WIN
+  display_draw_message if game_status == TicTacToeBoard::DRAW
+end
+
+def display_win_message
+  display_game_over_message("Player #{@tic_tac_toe_board.winning_sign} has won!")
+end
+
+def display_draw_message
+  display_game_over_message("Draw!")
+end
+
+def display_game_over_message(message)
+  message_box = MessageBox.new(@shell.widget)
+  message_box.setText("Game Over")
+  message_box.setMessage(message)
+  message_box.open
+  @tic_tac_toe_board.reset
+end
+```
 
 ## Samples
 

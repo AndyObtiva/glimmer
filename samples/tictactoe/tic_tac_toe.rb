@@ -33,11 +33,11 @@ class TicTacToe
     display_draw_message if game_status == TicTacToeBoard::DRAW
   end
 
-  def display_win_message()
+  def display_win_message
     display_game_over_message("Player #{@tic_tac_toe_board.winning_sign} has won!")
   end
 
-  def display_draw_message()
+  def display_draw_message
     display_game_over_message("Draw!")
   end
 
