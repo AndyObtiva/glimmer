@@ -1,7 +1,9 @@
-require File.dirname(__FILE__) + "/observer"
+require_relative 'observable'
+require_relative 'observer'
 
 class WidgetBinding
   include Glimmer
+  include Observable
   include Observer
 
   attr_reader :widget, :property

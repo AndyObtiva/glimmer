@@ -3,10 +3,6 @@ require_relative "contact"
 class HelloComputed
   extend Glimmer
 
-  include_package 'org.eclipse.swt'
-  include_package 'org.eclipse.swt.widgets'
-  include_package 'org.eclipse.swt.layout'
-
   contact = Contact.new(
     first_name: "Barry",
     last_name: "McKibbin",

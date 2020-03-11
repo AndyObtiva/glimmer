@@ -1,12 +1,8 @@
 require_relative "tic_tac_toe_board"
 
 class TicTacToe
-
-  include_package 'org.eclipse.swt'
-  include_package 'org.eclipse.swt.widgets'
-  include_package 'org.eclipse.swt.layout'
-
   include Glimmer
+  include Observer
 
   def initialize
     @tic_tac_toe_board = TicTacToeBoard.new
@@ -15,21 +11,20 @@ class TicTacToe
       text "Tic-Tac-Toe"
       composite {
         layout GridLayout.new(3,true)
-        (1..3).each { |row_number|
-          (1..3).each { |column_number|
+        (1..3).each { |row|
+          (1..3).each { |column|
             button {
               layout_data GridData.new(:fill.swt_constant, :fill.swt_constant, true, true)
-              text        bind(@tic_tac_toe_board.box(row_number, column_number), :sign)
-              enabled     bind(@tic_tac_toe_board.box(row_number, column_number), :empty)
+              text        bind(@tic_tac_toe_board.box(row, column), :sign)
+              enabled     bind(@tic_tac_toe_board.box(row, column), :empty)
               on_widget_selected {
-                @tic_tac_toe_board.mark_box(row_number, column_number)
+                @tic_tac_toe_board.mark_box(row, column)
               }
             }
           }
         }
       }
     }
-    @tic_tac_toe_board.extend(ObservableModel) #make board an observable model
     observe(@tic_tac_toe_board, "game_status")
   end
 

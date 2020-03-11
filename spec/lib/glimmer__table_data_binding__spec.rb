@@ -9,23 +9,25 @@ describe "Glimmer Table Data Binding" do
 
   before do
     dsl :swt
+
+    class Group
+      attr_accessor :people
+
+      def initialize
+        @people = []
+      end
+    end
+
+    class Person
+      attr_accessor :name, :age, :adult
+    end
   end
 
 	after do
   	@target.display.dispose if @target.display
+    Object.send(:remove_const, :Group) if Object.const_defined?(:Group)
+    Object.send(:remove_const, :Person) if Object.const_defined?(:Person)
 	end
-
-  class Group
-    def initialize
-      @people = []
-    end
-
-    attr_accessor :people
-  end
-
-  class Person
-    attr_accessor :name, :age, :adult
-  end
 
   it "data binds text widget to a string property" do
     person1 = Person.new

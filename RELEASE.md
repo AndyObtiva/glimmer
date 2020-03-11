@@ -1,5 +1,9 @@
 # Release Notes
 
+** 0.3.2 **
+- Automatically import SWT packages when including/extending Glimmer
+- Automatically enhance objects as ObservableArray or ObservableModel when observing them
+
 ** 0.3.1 **
 - Fixed issue related to unnecessary tracking of parents in Observer
 

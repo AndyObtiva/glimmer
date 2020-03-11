@@ -23,7 +23,6 @@ class ListSelectionDataBindingCommandHandler
     widget_binding = WidgetBinding.new(parent, "items")
     widget_binding.update(model_binding.evaluate_options_property)
     model = model_binding.base_model
-    model.extend(ObservableModel) unless model.is_a?(ObservableModel)
     #TODO make this options observer dependent and all similar observers in widget specific data binding handlers
     widget_binding.observe(model, model_binding.options_property_name)
 

@@ -1,8 +1,10 @@
-require File.dirname(__FILE__) + "/observer"
+require_relative 'observable'
+require_relative 'observer'
 
 # SWT List widget selection binding
 class ListSelectionBinding
   include Glimmer
+  include Observable
   include Observer
 
   attr_reader :widget

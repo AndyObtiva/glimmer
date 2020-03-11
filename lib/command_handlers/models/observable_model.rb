@@ -54,6 +54,7 @@ module ObservableModel
 
   def add_property_writer_observers(property_name)
     property_writer_name = "#{property_name}="
+    method(property_writer_name)
     ensure_array_object_observer(property_name, send(property_name))
     begin
       method("__original_#{property_writer_name}")
@@ -69,6 +70,9 @@ module ObservableModel
         end
       end_eval
     end
+  rescue => e
+    # ignore writing if no property writer exists
+    Glimmer.logger.debug "No need to observe property writer: #{property_writer_name}\n#{e.message}\n#{e.backtrace.join("\n")}"
   end
 
   def unregister_dependent_observers(property_name, old_value)
@@ -81,7 +85,6 @@ module ObservableModel
 
   def ensure_array_object_observer(property_name, object, old_object = nil)
     return unless object.is_a?(Array)
-    object.extend(ObservableArray) unless object.is_a?(ObservableArray)
     array_object_observer = array_object_observer_for(property_name)
     array_object_observer.observe(object)
     property_observer_list(property_name).each do |observer|

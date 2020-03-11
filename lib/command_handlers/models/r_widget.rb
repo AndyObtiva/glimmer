@@ -1,9 +1,10 @@
-require File.dirname(__FILE__) + "/r_widget_listener"
-require File.dirname(__FILE__) + "/r_runnable"
+require_relative "r_widget_listener"
+require_relative "r_runnable"
 
 class RWidget
-  require File.dirname(__FILE__) + "/r_widget_packages"
-
+  include_package 'org.eclipse.swt'
+  include_package 'org.eclipse.swt.widgets'
+  include_package 'org.eclipse.swt.layout'
   include Parent
 
   attr_reader :widget

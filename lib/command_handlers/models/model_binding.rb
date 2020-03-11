@@ -1,7 +1,9 @@
+require_relative 'observable'
 require_relative 'observer'
 require_relative 'block_observer'
 
 class ModelBinding
+  include Observable
   include Observer
 
   attr_reader :property_type, :binding_options
@@ -110,7 +112,6 @@ class ModelBinding
     elsif nested_property?
       add_nested_observers(observer)
     else
-      model.extend(ObservableModel) unless model.is_a?(ObservableModel)
       observer.observe(model, property_name)
       observer.add_dependent([self, nil] => [observer, model, property_name])
     end
@@ -124,7 +125,6 @@ class ModelBinding
     elsif nested_property?
       nested_property_observers_for(observer).clear
     else
-      model.extend(ObservableModel) unless model.is_a?(ObservableModel)
       observer.unobserve(model, property_name)
     end
   end
@@ -155,12 +155,11 @@ class ModelBinding
       parent_property_name = nil if parent_property_name.to_s.start_with?('[')
       unless model.nil?
         if property_indexed?(property_name)
-          model.extend(ObservableArray) unless model.is_a?(ObservableArray)
-          nested_property_observer.observe(model) unless model.has_observer?(nested_property_observer)
+          # TODO figure out a way to deal with this more uniformly
+          nested_property_observer.observe(model)
           parent_observer.add_dependent([parent_model, parent_property_name] => [nested_property_observer, model, nil])
         else
-          model.extend(ObservableModel) unless model.is_a?(ObservableModel)
-          nested_property_observer.observe(model, property_name) unless model.has_observer?(nested_property_observer, property_name)
+          nested_property_observer.observe(model, property_name)
           parent_observer.add_dependent([parent_model, parent_property_name] => [nested_property_observer, model, property_name])
         end
       end

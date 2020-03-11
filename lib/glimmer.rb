@@ -7,13 +7,20 @@ require "rubygems"
 require "facets"
 require "logger"
 require "java"
-require File.dirname(__FILE__) + "/string"
-require File.dirname(__FILE__) + "/symbol"
-require File.dirname(__FILE__) + "/parent"
+require_relative "string"
+require_relative "symbol"
+require_relative "parent"
+require_relative "swt_packages"
 
 module Glimmer
-
-  include_package 'org.eclipse.swt'
+   #TODO make it configurable to include or not include
+  include SwtPackages
+  def self.included(klass)
+    klass.include SwtPackages
+  end
+  def self.extended(klass)
+    klass.include SwtPackages
+  end
 
   @@parent_stack = []
   @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}

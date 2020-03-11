@@ -1,9 +1,11 @@
-require File.dirname(__FILE__) + "/observable_array"
-require File.dirname(__FILE__) + "/observable_model"
-require File.dirname(__FILE__) + "/observer"
+require_relative 'observable_array'
+require_relative 'observable_model'
+require_relative 'observable'
+require_relative 'observer'
 
 class TableItemsBinding
   include Glimmer
+  include Observable
   include Observer
   include_package 'org.eclipse.swt'
   include_package 'org.eclipse.swt.widgets'
@@ -14,7 +16,6 @@ class TableItemsBinding
     @column_properties = column_properties
     update(@model_binding.evaluate_property)
     model = model_binding.base_model
-    model.extend(ObservableModel) unless model.is_a?(ObservableModel)
     observe(model, model_binding.property_name_expression)
     add_contents(@table) {
       on_widget_disposed { |dispose_event|
@@ -24,7 +25,6 @@ class TableItemsBinding
   end
   def update(model_collection=nil)
     if model_collection and model_collection.is_a?(Array)
-      model_collection.extend(ObservableArray) unless model_collection.is_a?(ObservableArray)
       observe(model_collection, @column_properties)
       @model_collection = model_collection
     end

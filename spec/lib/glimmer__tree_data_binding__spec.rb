@@ -9,31 +9,38 @@ describe "Glimmer Tree Data Binding" do
 
   before do
     dsl :swt
+
+    class Person
+      attr_accessor :name, :age, :adult, :people
+    end
+
+    class Manager < Person
+      def initialize
+        @people = []
+      end
+
+      attr_accessor :people
+    end
+
+    class Company
+      def initialize
+        @owner = []
+      end
+
+      attr_accessor :owner
+    end
   end
 
 	after do
   	@target.display.dispose if @target && @target.display
+    %w[
+      Person
+      Manager
+      Company
+    ].each do |constant|
+      Object.send(:remove_const, constant) if Object.const_defined?(constant)
+    end
 	end
-
-  class Person
-    attr_accessor :name, :age, :adult, :people
-  end
-
-  class Manager < Person
-    def initialize
-      @people = []
-    end
-
-    attr_accessor :people
-  end
-
-  class Company
-    def initialize
-      @owner = []
-    end
-
-    attr_accessor :owner
-  end
 
   it "data binds text widget to a string property" do
     person1 = Person.new

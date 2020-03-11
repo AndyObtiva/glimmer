@@ -44,9 +44,6 @@ end
 
 #Login screen
 class Login
-  include_package 'org.eclipse.swt'
-  include_package 'org.eclipse.swt.layout'
-
   include Glimmer
 
   def launch

@@ -7,10 +7,10 @@ module ObservableArray
   include Observable
 
   def add_observer(observer, element_properties=nil)
+    return observer if has_observer?(observer) && element_properties.nil?
     property_observer_list << observer
     [element_properties].flatten.compact.each do |property|
       each do |element|
-        element.extend(ObservableModel) unless element.is_a?(ObservableModel)
         observer.observe(element, property)
       end
     end
@@ -21,7 +21,6 @@ module ObservableArray
     property_observer_list.delete(observer)
     [element_properties].flatten.compact.each do |property|
       each do |element|
-        element.extend(ObservableModel) unless element.is_a?(ObservableModel)
         observer.unobserve(element, property)
       end
     end

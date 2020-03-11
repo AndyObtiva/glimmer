@@ -1,16 +1,7 @@
 require_relative "contact_manager_presenter"
 
-class RWidget
-  include_package 'org.eclipse.jface.viewers'
-end
-
 class ContactManager
   extend Glimmer
-
-  include_package 'org.eclipse.swt'
-  include_package 'org.eclipse.swt.widgets'
-  include_package 'org.eclipse.swt.layout'
-  include_package 'org.eclipse.jface.viewers'
 
   contact_manager_presenter = ContactManagerPresenter.new
 

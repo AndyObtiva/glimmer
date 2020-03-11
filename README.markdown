@@ -66,14 +66,14 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.3.1
+jgem install glimmer -v 0.3.2
 ```
 
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.3.1'
+gem 'glimmer', '~> 0.3.2'
 ```
 
 And, then run:
@@ -232,6 +232,9 @@ These features have been suggested. You might see them in a future version of Gl
 a new component and extend the DSL with it
 - **Nested indexed property data binding**: a complementary feature to nested property data binding that binds to a collection element by index (e.g. `bind(user, 'addresses[1].street')`)
 - **bind_collection**: an iterator that enables spawning widgets based on a variable collection (e.g. `bind_collection('user.addresses') { |address| address_widget {...} }` spawns 3 `AddressWidget`s if `user.addresses` is set with 3 addresses; and replaces with 2 `AddressWidget`s if `user.addresses` is reset with 2 addresses only). Needs further thought on naming and functionality.
+- Automatic relayout of "glimmer components" when disposing one or as an option
+- Consider using Ruby Refinements for Glimmer
+
 
 ## Contributors
 

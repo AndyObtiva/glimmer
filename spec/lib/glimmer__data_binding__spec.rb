@@ -11,47 +11,62 @@ describe "Glimmer Data Binding" do
 
   before do
     dsl :swt
+
+    class Person
+      attr_accessor :name, :age, :adult
+      attr_reader :id
+
+      def initialize(id = nil)
+        @id = id
+      end
+    end
+
+    class PersonWithComputedValues
+      attr_accessor :first_name, :last_name, :year_of_birth
+      def name
+        "#{last_name}, #{first_name}"
+      end
+      def age
+        Time.now.year - year_of_birth
+      end
+    end
+
+    class PersonWithNestedComputedValues
+      class Address
+        attr_accessor :streets
+        def street_count
+          streets.count
+        end
+      end
+      attr_accessor :addresses
+    end
+
+    class Address
+      attr_accessor :street, :city, :state, :zip
+    end
+
+    class PersonWithNestedProperties
+      attr_accessor :address1, :address2
+    end
+
+    class PersonWithNestedIndexedProperties
+      attr_accessor :addresses, :names
+    end
   end
 
 	after do
   	@target.display.dispose if @target.display
+    %w[
+      Person
+      PersonWithComputedValues
+      PersonWithNestedComputedValues
+      Address
+      PersonWithNestedProperties
+      PersonWithNestedIndexedProperties
+    ].each do |constant|
+      Object.send(:remove_const, constant) if Object.const_defined?(constant)
+    end
 	end
-
-  class Person
-    attr_accessor :name, :age, :adult
-  end
-
-  class PersonWithComputedValues
-    attr_accessor :first_name, :last_name, :year_of_birth
-    def name
-      "#{last_name}, #{first_name}"
-    end
-    def age
-      Time.now.year - year_of_birth
-    end
-  end
-
-  class PersonWithNestedComputedValues
-    class Address
-      attr_accessor :streets
-      def street_count
-        streets.count
-      end
-    end
-    attr_accessor :addresses
-  end
-
-  class Address
-    attr_accessor :street, :city, :state, :zip
-  end
-
-  class PersonWithNestedProperties
-    attr_accessor :address1, :address2
-  end
-
-  class PersonWithNestedIndexedProperties
-    attr_accessor :addresses, :names
-  end
 
   it "tests text widget data binding string property" do
     person = Person.new
@@ -96,21 +111,25 @@ describe "Glimmer Data Binding" do
   end
 
   it "tests label widget data binding string property" do
-    person = Person.new
+    person = Person.new(839728)
     person.name = "Bruce Ting"
 
     @target = shell {
       composite {
-        @label = label {
+        @label1 = label {
+          text bind(person, :id)
+        }
+        @label2 = label {
           text bind(person, :name)
         }
       }
     }
 
-    expect(@label.widget.getText).to eq("Bruce Ting")
+    expect(@label1.widget.getText).to eq("839728")
+    expect(@label2.widget.getText).to eq("Bruce Ting")
 
     person.name = "Lady Butterfly"
-    expect(@label.widget.getText).to eq("Lady Butterfly")
+    expect(@label2.widget.getText).to eq("Lady Butterfly")
   end
 
   it "tests label widget computed value data binding string property" do

@@ -11,36 +11,37 @@ describe "Glimmer List Data Binding" do
 
   before do
     dsl :swt
+
+    class Person
+      attr_accessor :country, :country_options
+      attr_accessor :provinces, :provinces_options
+
+      def initialize
+        self.country_options=[
+          "",
+          "Canada",
+          "US",
+          "Mexico"
+        ]
+        self.provinces_options=[
+          "",
+          "Quebec",
+          "Ontario",
+          "Manitoba",
+          "Saskatchewan",
+          "Alberta",
+          "British Columbia",
+          "Nova Skotia",
+          "Newfoundland"
+        ]
+      end
+    end
   end
 
 	after do
   	@target.display.dispose if @target.display
+    Object.send(:remove_const, :Person) if Object.const_defined?(:Person)
 	end
-
-  class Person
-    attr_accessor :country, :country_options
-    attr_accessor :provinces, :provinces_options
-
-    def initialize
-      self.country_options=[
-        "",
-        "Canada",
-        "US",
-        "Mexico"
-      ]
-      self.provinces_options=[
-        "",
-        "Quebec",
-        "Ontario",
-        "Manitoba",
-        "Saskatchewan",
-        "Alberta",
-        "British Columbia",
-        "Nova Skotia",
-        "Newfoundland"
-      ]
-    end
-  end
 
   it "tests single selection property" do
     person = Person.new
