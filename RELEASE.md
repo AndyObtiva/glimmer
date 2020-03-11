@@ -1,5 +1,8 @@
 # Release Notes
 
+** 0.3.1 **
+- Fixed issue related to unnecessary tracking of parents in Observer
+
 ** 0.3.0 **
 - Automatic cleanup of observers upon updating values in data-binding (nested/indexed) or disposing a widget
 - Change of APIs whereby Observer class is responsible for registering observers with observables on properties

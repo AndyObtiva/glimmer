@@ -22,14 +22,6 @@ module Observer
     dependents[registration] ||= Set.new
   end
 
-  def parents
-    @parents ||= Hash.new
-  end
-
-  def parents_for(registration)
-    parents[registration] ||= Set.new
-  end
-
   # registers observer in an observable on a property (optional)
   # observer maintains registration list to unregister later
   def register(observable, property = nil)
@@ -74,14 +66,12 @@ module Observer
     observable, property = registration = parent_to_dependent_hash.keys.first
     dependent_observer, dependent_observable, dependent_property = dependent = parent_to_dependent_hash.values.first
     dependents_for(registration) << dependent
-    dependent_observer.parents_for([dependent_observable, dependent_property]) << ([self] + registration)
   end
 
   def remove_dependent(parent_to_dependent_hash)
     observable, property = registration = parent_to_dependent_hash.keys.first
     dependent_observer, dependent_observable, dependent_property = dependent = parent_to_dependent_hash.values.first
     dependents_for(registration).delete(dependent)
-    dependent_observer.parents_for([dependent_observable, dependent_property]).delete([self] + registration)
   end
 
   def update(changed_value)
