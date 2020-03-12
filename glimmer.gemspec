@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["AndyMaleh".freeze]
-  s.date = "2020-03-11"
+  s.date = "2020-03-12"
   s.description = "JRuby Desktop UI DSL + Data-Binding library that enables easy and efficient authoring of user-interfaces using the robust platform-independent Eclipse SWT library".freeze
   s.email = "andy.am@gmail.com".freeze
   s.executables = ["glimmer".freeze, "girb".freeze]
@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
     "lib/command_handler_chain_link.rb",
     "lib/command_handlers.rb",
     "lib/command_handlers/bind_command_handler.rb",
+    "lib/command_handlers/color_command_handler.rb",
     "lib/command_handlers/combo_selection_data_binding_command_handler.rb",
     "lib/command_handlers/data_binding_command_handler.rb",
     "lib/command_handlers/list_selection_data_binding_command_handler.rb",
@@ -37,6 +38,7 @@ Gem::Specification.new do |s|
     "lib/command_handlers/models/observable_array.rb",
     "lib/command_handlers/models/observable_model.rb",
     "lib/command_handlers/models/observer.rb",
+    "lib/command_handlers/models/r_color.rb",
     "lib/command_handlers/models/r_runnable.rb",
     "lib/command_handlers/models/r_shell.rb",
     "lib/command_handlers/models/r_tab_item_composite.rb",
