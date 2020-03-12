@@ -102,14 +102,14 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.3.3
+jgem install glimmer -v 0.3.4
 ```
 
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.3.3'
+gem 'glimmer', '~> 0.3.4'
 ```
 
 And, then run:
@@ -337,6 +337,23 @@ https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/guide/swt_wi
 Here is a list of SWT style bits:
 
 https://wiki.eclipse.org/SWT_Widget_Style_Bits
+
+## SWT Packages
+
+Glimmer automatically imports all SWT Java packages upon adding `include Glimmer` to a class or module.
+
+Still, if you'd like to import manually elsewhere, you may add the following lines to your code:
+
+```ruby
+include_package 'org.eclipse.swt'
+include_package 'org.eclipse.swt.widgets'
+include_package 'org.eclipse.swt.layout'
+include_package 'org.eclipse.swt.graphics'
+```
+
+This allows you to call Java SWT classes from Ruby without indicating the package explicitly.
+
+For example, `org.eclipse.swt.graphics.Color` becomes `Color`
 
 ## Girb (Glimmer irb)
 

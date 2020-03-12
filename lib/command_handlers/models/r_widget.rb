@@ -30,6 +30,12 @@ class RWidget
     "group" => Proc.new {|group| group.setLayout(GridLayout.new) },
   }
 
+  @@property_type_converters = {
+    :text => Proc.new { |value| value.to_s },
+    :items => Proc.new { |value| value.to_java :string},
+    :visible => Proc.new { |value| !!value},
+  }
+
   #styles is a comma separate list of symbols representing SWT styles in lower case
   def initialize(underscored_widget_name, parent, styles, &contents)
     @widget = underscored_widget_name.swt_widget.new(parent, style(underscored_widget_name, styles))
@@ -41,11 +47,24 @@ class RWidget
   end
 
   def set_attribute(attribute_name, *args)
+    apply_property_type_converters(attribute_name, args)    
+    @widget.send(attribute_setter(attribute_name), *args)
+  end
+
+  def apply_property_type_converters(attribute_name, args)
+    if args.count == 1
+      value = args.first
+      converter = @@property_type_converters[attribute_name.to_sym]
+      args[0] = converter.call(value) if converter
+    end
     if args.count == 1 && args.first.is_a?(Symbol) && args.first.to_s.start_with?('color_')
       standard_color = args.first
       args[0] = RColor.for(widget.getDisplay, standard_color)
+    elsif args.count == 1 && args.first.is_a?(RColor)
+      r_color = args.first
+      r_color.display = widget.display if r_color.display.nil? || r_color.display != widget.display
+      args[0] = r_color.color
     end
-    @widget.send(attribute_setter(attribute_name), *args)
   end
 
   def self.widget_exists?(underscored_widget_name)

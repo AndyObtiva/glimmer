@@ -3,8 +3,6 @@ require "spec_helper"
 describe "Glimmer List Data Binding" do
   include Glimmer
 
-  SWT = org.eclipse.swt.SWT unless Object.const_defined?(:SWT)
-
   before do
     dsl :swt
 
@@ -53,7 +51,7 @@ describe "Glimmer List Data Binding" do
     expect(@list.widget.selection.to_a).to eq([])
 
     @list.widget.select(1)
-    @list.widget.notifyListeners(SWT::Selection, nil)
+    @list.widget.notifyListeners(org.eclipse.swt.SWT::Selection, nil)
     expect(person.country).to eq("Canada")
 
     person.country_options << "France"
@@ -91,7 +89,7 @@ describe "Glimmer List Data Binding" do
     expect(@list.widget.selection.to_a).to eq([""])
 
     @list.widget.select(2)
-    @list.widget.notifyListeners(SWT::Selection, nil)
+    @list.widget.notifyListeners(org.eclipse.swt.SWT::Selection, nil)
     expect(person.country).to eq("US")
   end
 
@@ -110,7 +108,7 @@ describe "Glimmer List Data Binding" do
     expect(@list.widget.selection.to_a).to eq(["Canada"])
 
     @list.widget.select(2)
-    @list.widget.notifyListeners(SWT::Selection, nil)
+    @list.widget.notifyListeners(org.eclipse.swt.SWT::Selection, nil)
     expect(person.country).to eq("US")
 
     person.country_options << "France"
@@ -161,11 +159,11 @@ describe "Glimmer List Data Binding" do
     expect(@list.widget.selection.to_a).to eq([])
 
     @list.widget.select(1)
-    @list.widget.notifyListeners(SWT::Selection, nil)
+    @list.widget.notifyListeners(org.eclipse.swt.SWT::Selection, nil)
     expect(person.provinces).to eq(["Quebec"])
 
     @list.widget.select(2)
-    @list.widget.notifyListeners(SWT::Selection, nil)
+    @list.widget.notifyListeners(org.eclipse.swt.SWT::Selection, nil)
     expect(person.provinces).to eq(["Quebec", "Ontario"])
 
     person.provinces=["Ontario", "Manitoba", "Alberta"]
@@ -197,11 +195,11 @@ describe "Glimmer List Data Binding" do
     expect(@list.widget.selection.to_a).to eq([])
 
     @list.widget.select(1)
-    @list.widget.notifyListeners(SWT::Selection, nil)
+    @list.widget.notifyListeners(org.eclipse.swt.SWT::Selection, nil)
     expect(person.provinces).to eq(["Quebec"])
 
     @list.widget.select(2)
-    @list.widget.notifyListeners(SWT::Selection, nil)
+    @list.widget.notifyListeners(org.eclipse.swt.SWT::Selection, nil)
     expect(person.provinces).to eq(["Quebec", "Ontario"])
 
     person.provinces=["Ontario", "Manitoba", "Alberta"]

@@ -5,19 +5,20 @@ describe "Glimmer Combo Data Binding" do
 
   before do
     dsl :swt
+
+    class Person
+      attr_accessor :country, :country_options
+
+      def initialize
+        self.country_options=["", "Canada", "US", "Mexico"]
+      end
+    end
   end
 
 	after do
   	@target.display.dispose if @target.display
+    Object.send(:remove_const, :Person) if Object.const_defined?(:Person)
 	end
-
-  class Person
-    attr_accessor :country, :country_options
-
-    def initialize
-      self.country_options=["", "Canada", "US", "Mexico"]
-    end
-  end
 
   it "tests data binding selection property" do
     person = Person.new
@@ -53,7 +54,7 @@ describe "Glimmer Combo Data Binding" do
     expect(@combo.widget.text).to eq("")
 
     @combo.widget.select(2)
-    @combo.widget.notifyListeners(SWT::Selection, nil)
+    @combo.widget.notifyListeners(org.eclipse.swt.SWT::Selection, nil)
     expect(person.country).to eq("US")
 
     person.country = "Canada"
@@ -103,7 +104,7 @@ describe "Glimmer Combo Data Binding" do
     expect(@combo.widget.text).to eq("")
 
     @combo.widget.select(8)
-    @combo.widget.notifyListeners(SWT::Selection, nil)
+    @combo.widget.notifyListeners(org.eclipse.swt.SWT::Selection, nil)
     expect(person.country).to eq("Australia")
 
     person.country = "Canada"

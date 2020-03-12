@@ -5,15 +5,16 @@ describe "Glimmer Listeners" do
 
   before do
     dsl :swt
+
+    class Person
+      attr_accessor :name, :age, :adult
+    end
   end
 
 	after do
   	@target.display.dispose if @target.display
+    Object.send(:remove_const, :Person) if Object.const_defined?(:Person)
 	end
-
-  class Person
-    attr_accessor :name, :age, :adult
-  end
 
   it "tests text widget verify listener" do
     @target = shell {
@@ -49,7 +50,7 @@ describe "Glimmer Listeners" do
     }
     expect(person.name).to eq("Bruce Ting")
     @button.widget.setSelection(true)
-    @button.widget.notifyListeners(SWT::Selection, nil)
+    @button.widget.notifyListeners(org.eclipse.swt.SWT::Selection, nil)
     expect(person.name).to eq("Bruce Lao")
   end
 

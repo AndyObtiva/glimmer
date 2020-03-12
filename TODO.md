@@ -10,3 +10,4 @@ Here is a list of tasks to do (please delete once done):
 * Extract ListenerParent into its own file from WidgetListenerCommandHandler
 * Nested databinding support
 * Enhance XML DSL support (special characters, CDATA, escaped characters (#, {, }, .))
+* Verify nested data binding works with tables/trees/combos

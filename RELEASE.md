@@ -1,5 +1,8 @@
 # Release Notes
 
+** 0.3.4 **
+- Fixed color support/property converter support to work both in data-binding and in static property setting
+
 ** 0.3.3 **
 - Added color support to Glimmer DSL (rgb, rgba, and :color_*)
 

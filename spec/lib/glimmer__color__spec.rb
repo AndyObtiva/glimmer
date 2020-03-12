@@ -65,4 +65,69 @@ describe "Glimmer Color" do
       expect(color.getAlpha).to eq(expected_color.getAlpha)
     end
   end
+
+  it "tests label with RGBA background color utilizing existing display" do
+    @target = shell
+    display = @target.display
+    @background = rgb(display, 4, 40, 244, 100)
+    @target = shell(display) {
+      @label = label {
+        background @background
+      }
+    }
+
+    color = @label.widget.getBackground
+    expect(color.getRed).to eq(4)
+    expect(color.getGreen).to eq(40)
+    expect(color.getBlue).to eq(244)
+    expect(color.getAlpha).to eq(100)
+  end
+
+  it "tests label with RGB background color utilizing existing display" do
+    @target = shell
+    display = @target.display
+    @background = rgb(display, 4, 40, 244)
+    @target = shell(display) {
+      @label = label {
+        background @background
+      }
+    }
+
+    color = @label.widget.getBackground
+    expect(color.getRed).to eq(4)
+    expect(color.getGreen).to eq(40)
+    expect(color.getBlue).to eq(244)
+  end
+
+
+  it "tests label with RGBA background color without a display nor a parent" do
+    @background = rgba(4, 40, 244, 100)
+    @target = shell {
+      @label = label {
+        background @background
+      }
+    }
+
+    color = @label.widget.getBackground
+    expect(color.getRed).to eq(4)
+    expect(color.getGreen).to eq(40)
+    expect(color.getBlue).to eq(244)
+    expect(color.getAlpha).to eq(100)
+  end
+
+  it "tests label with RGB background color without a display nor a parent" do
+    @background = rgba(4, 40, 244)
+    @target = shell {
+      @label = label {
+        background @background
+      }
+    }
+
+    color = @label.widget.getBackground
+    expect(color.getRed).to eq(4)
+    expect(color.getGreen).to eq(40)
+    expect(color.getBlue).to eq(244)
+  end
+
+  #TODO support data binding converting of symbols to color for color properties like background and foreground
 end
