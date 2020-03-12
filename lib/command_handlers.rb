@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + "/command_handler_chain_factory"
+require File.dirname(__FILE__) + "/command_handlers/color_command_handler"
 require File.dirname(__FILE__) + "/command_handlers/shell_command_handler"
 require File.dirname(__FILE__) + "/command_handlers/widget_listener_command_handler"
 require File.dirname(__FILE__) + "/command_handlers/bind_command_handler"
@@ -26,6 +27,7 @@ CommandHandlerChainFactory.def_dsl(:swt,
   TableItemsDataBindingCommandHandler.new,
   TableColumnPropertiesDataBindingCommandHandler.new,
   DataBindingCommandHandler.new,
+  ColorCommandHandler.new,
   WidgetMethodCommandHandler.new,
   WidgetCommandHandler.new
 )

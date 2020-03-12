@@ -40,6 +40,11 @@ class RWidget
   end
 
   def set_attribute(attribute_name, *args)
+    if args.count == 1 && args.first.is_a?(Symbol) && args.first.to_s.start_with?('color_')
+      standard_color = args.first
+      standard_color_swt_constant = SWT.const_get(standard_color.to_s.upcase.to_sym)
+      args[0] = widget.display.getSystemColor(standard_color_swt_constant)
+    end
     @widget.send(attribute_setter(attribute_name), *args)
   end
 

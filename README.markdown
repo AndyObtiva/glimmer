@@ -154,34 +154,51 @@ Other widget examples:
 
 ### Widget Styles
 
-SWT widgets receive SWT bit styles in their constructor as per this guide:
+SWT widgets receive `SWT` styles in their constructor as per this guide:
 
 https://wiki.eclipse.org/SWT_Widget_Style_Bits
 
-Glimmer DSL facilitates that by passing uppercased constants namespaced under `SWT` as widget method arguments (i.e. inside widget `()` parentheses. See example below).
+Glimmer DSL facilitates that by passing symbols representing `SWT` constants as widget method arguments (i.e. inside widget `()` parentheses. See example below) in lower case version (e.g. `SWT::MULTI` becomes `:multi`).
 
-These style bits customize widget look, feel, and behavior.
+These styles customize widget look, feel, and behavior.
 
 Example:
 ```ruby
-list(SWT::MULTI) { # SWT style bits go inside ()
-  selection bind(person, :provinces)
+list(:multi) { # SWT styles go inside ()
+  # ...
 }
 ```
 
-Passing `SWT::MULTI` to `list` widget enables list element multi-selection. Passing `SWT::BORDER` to `text` widget ensure it has a border.
-
-Glimmer ships with these SWT style bit smart defaults so you wouldn't have to set them yourself most of the time (albeit you can always override them):
+Passing `:multi` to `list` widget enables list element multi-selection.
 
 ```ruby
-  "text" => SWT::BORDER,
-  "table" => SWT::BORDER,
-  "spinner" => SWT::BORDER,
-  "list" => SWT::BORDER | SWT::V_SCROLL,
-  "button" => SWT::PUSH,
+composite(:border) { # SWT styles go inside ()
+  # ...
+}
 ```
 
-Notice how list takes 2 style bits. Since they are bits, they can be "or"ed together using the Ruby `|` operator. That's how SWT expects them to be passed.
+Passing `:border` to `composite` widget ensures it has a border.
+
+When you need to pass in **multiple SWT styles**, simply separate by commas.
+
+Example:
+```ruby
+text(:center, :border) { # Multiple SWT styles separated by comma
+  # ...
+}
+```
+
+Glimmer ships with SWT style **smart defaults** so you wouldn't have to set them yourself most of the time (albeit you can always override them):
+
+- `text(:border)`
+- `table(:border)`
+- `spinner(:border)`
+- `list(:border, :v_scroll)`
+- `button(:push)`
+
+You may check out all available `SWT` styles here:
+
+https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
 
 ### Widget Properties
 
@@ -207,6 +224,36 @@ button {
 ```
 
 In the above example, the `text` widget `enabled` property was data-bound to `#empty` method on `@tic_tac_toe_board.box(row, column)` (learn more about data-binding below)
+
+### Color
+
+Color makes up a subset of widget properties. SWT accepts color objects created with RGB (Red Green Blue) or RGBA (Red Green Blue Alpha). Glimmer supports constructing color objects using the `rgb` and `rgba` DSL methods.
+
+Example:
+
+```ruby
+label {
+  background rgb(144, 240, 244)
+  foreground rgba(38, 92, 232, 255)
+}
+```
+
+SWT also supports all standard colors available as constants under the `SWT` namespace (e.g. `SWT::COLOR_BLUE`)
+
+Glimmer accepts these constants as Ruby symbols prefixed by `color_`.
+
+Example:
+
+```ruby
+label {
+  background :color_white
+  foreground :color_black
+}
+```
+
+You may check out all available standard colors in `SWT` over here:
+
+https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
 
 ### Data-Binding
 
@@ -353,11 +400,17 @@ These features have been suggested. You might see them in a future version of Gl
 - Glimmer Application: provide a standard structure for building a Glimmer app
 - Glimmer Component: Glimmer already supports components by externalizing to objects, but it would be good if there is a module to include so Glimmer would automatically register
 a new component and extend the DSL with it
+- Glimmer Wizard: provide a standard structure for building a Glimmer wizard (multi-step/multi-screen process)
 - bind_collection: an iterator that enables spawning widgets based on a variable collection (e.g. `bind_collection('user.addresses') { |address| address_widget {...} }` spawns 3 `AddressWidget`s if `user.addresses` is set with 3 addresses; and replaces with 2 `AddressWidget`s if `user.addresses` is reset with 2 addresses only). Needs further thought on naming and functionality.
 - Automatic relayout of "glimmer components" when disposing one or as an option
 - Consider using Ruby Refinements for Glimmer
-- Add 'color' to Glimmer DSL to build color objects easily
-
+- Add 'font' to Glimmer DSL to build font objects easily
+- Add grid layout support to Glimmer DSL to layout grid components easily
+- Add rerendering support to Glimmer to rerender any widget easily
+- Avoid disposing display when disposing a shell to allow recycling
+- Provide a display builder method to use independently of shell
+- Supported a single computed data binding as a string (not array)
+- Disallow use of SWT::CONSTANTs with ORing since it's not intuitive at all
 
 ## Contributors
 
