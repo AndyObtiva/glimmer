@@ -1,5 +1,6 @@
 require_relative "r_widget_listener"
 require_relative "r_runnable"
+require_relative "r_color"
 
 class RWidget
   include_package 'org.eclipse.swt'
@@ -42,8 +43,7 @@ class RWidget
   def set_attribute(attribute_name, *args)
     if args.count == 1 && args.first.is_a?(Symbol) && args.first.to_s.start_with?('color_')
       standard_color = args.first
-      standard_color_swt_constant = SWT.const_get(standard_color.to_s.upcase.to_sym)
-      args[0] = widget.display.getSystemColor(standard_color_swt_constant)
+      args[0] = RColor.for(widget.getDisplay, standard_color)
     end
     @widget.send(attribute_setter(attribute_name), *args)
   end

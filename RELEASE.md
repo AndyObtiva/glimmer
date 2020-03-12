@@ -1,5 +1,8 @@
 # Release Notes
 
+** 0.3.3 **
+- Added color support to Glimmer DSL (rgb, rgba, and :color_*)
+
 ** 0.3.2 **
 - Automatically import SWT packages when including/extending Glimmer
 - Automatically enhance objects as ObservableArray or ObservableModel when observing them

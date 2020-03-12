@@ -1,5 +1,5 @@
-require File.dirname(__FILE__) + "/../command_handler"
-require File.dirname(__FILE__) + "/models/r_color"
+require_relative '../command_handler'
+require_relative 'models/r_color'
 
 class ColorCommandHandler
   include CommandHandler
@@ -11,7 +11,6 @@ class ColorCommandHandler
   end
 
   def do_handle(parent, command_symbol, *args, &block)
-    RColor.new(parent.display, *args).color
+    RColor.new(parent.widget.display, *args).color
   end
-
 end
