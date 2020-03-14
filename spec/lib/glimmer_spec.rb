@@ -1,46 +1,28 @@
 require "spec_helper"
 
+java_import 'org.eclipse.swt.widgets.Shell'
+java_import 'org.eclipse.swt.widgets.Composite'
+java_import 'org.eclipse.swt.widgets.Text'
+java_import 'org.eclipse.swt.widgets.Spinner'
+java_import 'org.eclipse.swt.widgets.List'
+java_import 'org.eclipse.swt.widgets.Button'
+java_import 'org.eclipse.swt.widgets.Group'
+java_import 'org.eclipse.swt.layout.GridLayout'
+java_import 'org.eclipse.swt.layout.FillLayout'
+java_import 'org.eclipse.swt.layout.RowLayout'
+java_import 'org.eclipse.swt.graphics.Rectangle'
+java_import 'org.eclipse.swt.graphics.Point'
+
 describe Glimmer do
   include Glimmer
 
   before do
     @target = nil
     dsl :swt
-
-    Shell = org.eclipse.swt.widgets.Shell unless Object.const_defined?(:Shell)
-    Composite = org.eclipse.swt.widgets.Composite unless Object.const_defined?(:Composite)
-    Text = org.eclipse.swt.widgets.Text unless Object.const_defined?(:Text)
-    Spinner = org.eclipse.swt.widgets.Spinner unless Object.const_defined?(:Spinner)
-    List = org.eclipse.swt.widgets.List unless Object.const_defined?(:List)
-    Button = org.eclipse.swt.widgets.Button unless Object.const_defined?(:Button)
-    Group = org.eclipse.swt.widgets.Group unless Object.const_defined?(:Group)
-
-    GridLayout = org.eclipse.swt.layout.GridLayout unless Object.const_defined?(:GridLayout)
-    FillLayout = org.eclipse.swt.layout.FillLayout unless Object.const_defined?(:FillLayout)
-    RowLayout = org.eclipse.swt.layout.RowLayout unless Object.const_defined?(:RowLayout)
-
-    Rectangle = org.eclipse.swt.graphics.Rectangle unless Object.const_defined?(:Rectangle)
-    Point = org.eclipse.swt.graphics.Point unless Object.const_defined?(:Point)
   end
 
 	after do
 		@target.display.dispose if @target.display
-    %w[
-      Shell
-      Composite
-      Text
-      Spinner
-      List
-      Button
-      Group
-      GridLayout
-      FillLayout
-      RowLayout
-      Rectangle
-      Point
-    ].each do |constant|
-      Object.send(:remove_const, constant) if Object.const_defined?(constant)
-    end
 	end
 
   it "tests shell_with_default_layout" do

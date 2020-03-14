@@ -1,5 +1,8 @@
 require "spec_helper"
 
+java_import 'org.eclipse.swt.graphics.Font'
+java_import 'org.eclipse.swt.graphics.FontData'
+
 describe "Glimmer Color" do
   include Glimmer
 
@@ -40,7 +43,7 @@ describe "Glimmer Color" do
   it "tests label with specified font style as SWT constant" do
     @target = shell {
       @label = label {
-        font style: org.eclipse.swt.SWT::BOLD
+        font style: RSwt[:bold]
       }
     }
 
@@ -52,8 +55,8 @@ describe "Glimmer Color" do
   it "tests label with specified font as SWT object" do
     @target = shell
     display = @target.display
-    font_datum = org.eclipse.swt.graphics.FontData.new('Arial', 36, RSwt[:normal])
-    @font = org.eclipse.swt.graphics.Font.new(display, font_datum);
+    font_datum = FontData.new('Arial', 36, RSwt[:normal])
+    @font = Font.new(display, font_datum);
     add_contents(@target) {
       @label = label {
         font @font

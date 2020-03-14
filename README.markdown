@@ -458,9 +458,9 @@ a new component and extend the DSL with it
 - Avoid disposing display when disposing a shell to allow recycling
 - Provide a display builder method to use independently of shell
 - Supported a single computed data binding as a string (not array)
-- Disallow use of SWT::CONSTANTs with ORing since it's not intuitive at all
 - Support data binding translator option via a block
 - Center windows upon launching
+- Add TruffleRuby support
 
 ## Contributors
 

@@ -6,7 +6,7 @@ describe "Glimmer Table Data Binding" do
   before do
     dsl :swt
 
-    class Group
+    class PersonGroup
       attr_accessor :people
 
       def initialize
@@ -21,7 +21,7 @@ describe "Glimmer Table Data Binding" do
 
 	after do
   	@target.display.dispose if @target.display
-    Object.send(:remove_const, :Group) if Object.const_defined?(:Group)
+    Object.send(:remove_const, :PersonGroup) if Object.const_defined?(:PersonGroup)
     Object.send(:remove_const, :Person) if Object.const_defined?(:Person)
 	end
 
@@ -36,7 +36,7 @@ describe "Glimmer Table Data Binding" do
     person2.age = 17
     person2.adult = false
 
-    group = Group.new
+    group = PersonGroup.new
     group.people << person1
     group.people << person2
 
