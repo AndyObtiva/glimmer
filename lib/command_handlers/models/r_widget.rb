@@ -1,11 +1,13 @@
 require_relative "r_widget_listener"
 require_relative "r_runnable"
 require_relative "r_color"
+require_relative "r_font"
 
 class RWidget
   include_package 'org.eclipse.swt'
   include_package 'org.eclipse.swt.widgets'
   include_package 'org.eclipse.swt.layout'
+  include_package 'org.eclipse.swt.graphics'
   include Parent
 
   attr_reader :widget
@@ -30,12 +32,6 @@ class RWidget
     "group" => Proc.new {|group| group.setLayout(GridLayout.new) },
   }
 
-  @@property_type_converters = {
-    :text => Proc.new { |value| value.to_s },
-    :items => Proc.new { |value| value.to_java :string},
-    :visible => Proc.new { |value| !!value},
-  }
-
   #styles is a comma separate list of symbols representing SWT styles in lower case
   def initialize(underscored_widget_name, parent, styles, &contents)
     @widget = underscored_widget_name.swt_widget.new(parent, style(underscored_widget_name, styles))
@@ -47,14 +43,28 @@ class RWidget
   end
 
   def set_attribute(attribute_name, *args)
-    apply_property_type_converters(attribute_name, args)    
+    apply_property_type_converters(attribute_name, args)
     @widget.send(attribute_setter(attribute_name), *args)
+  end
+
+  def property_type_converters
+    @property_type_converters ||= {
+      :text => Proc.new { |value| value.to_s },
+      :items => Proc.new { |value| value.to_java :string},
+      :visible => Proc.new { |value| !!value},
+      :font => Proc.new do |value|
+        if value.is_a?(Hash)
+          font_properties = value
+          RFont.for(self).font(font_properties)
+        end
+      end,
+    }
   end
 
   def apply_property_type_converters(attribute_name, args)
     if args.count == 1
       value = args.first
-      converter = @@property_type_converters[attribute_name.to_sym]
+      converter = property_type_converters[attribute_name.to_sym]
       args[0] = converter.call(value) if converter
     end
     if args.count == 1 && args.first.is_a?(Symbol) && args.first.to_s.start_with?('color_')

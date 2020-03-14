@@ -121,7 +121,7 @@ class ModelBinding
       @computed_model_bindings.each do |computed_model_binding|
         computed_observer_for(observer).unobserve(computed_model_binding)
       end
-      @computed_observer_collection[observer] = nil
+      @computed_observer_collection.delete(observer)
     elsif nested_property?
       nested_property_observers_for(observer).clear
     else

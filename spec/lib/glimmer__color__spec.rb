@@ -128,6 +128,4 @@ describe "Glimmer Color" do
     expect(color.getGreen).to eq(40)
     expect(color.getBlue).to eq(244)
   end
-
-  #TODO support data binding converting of symbols to color for color properties like background and foreground
 end
