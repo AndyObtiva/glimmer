@@ -2,6 +2,7 @@ require_relative "r_widget_listener"
 require_relative "r_runnable"
 require_relative "r_color"
 require_relative "r_font"
+require_relative "r_swt"
 
 class RWidget
   include_package 'org.eclipse.swt'
@@ -14,11 +15,11 @@ class RWidget
 
   #TODO externalize
   @@default_styles = {
-    "text" => SWT::BORDER,
-    "table" => SWT::BORDER,
-    "spinner" => SWT::BORDER,
-    "list" => SWT::BORDER | SWT::V_SCROLL,
-    "button" => SWT::PUSH,
+    "text" => RSwt[:border],
+    "table" => RSwt[:border],
+    "spinner" => RSwt[:border],
+    "list" => RSwt[:border, :v_scroll],
+    "button" => RSwt[:push],
   }
 
   #TODO externalize
@@ -56,6 +57,8 @@ class RWidget
         if value.is_a?(Hash)
           font_properties = value
           RFont.for(self).font(font_properties)
+        else
+          value
         end
       end,
     }
@@ -158,27 +161,19 @@ class RWidget
   end
 
   def has_style?(style)
-    (widget.style & style.swt_constant) == style.swt_constant
+    (widget.style & RSwt[style]) == RSwt[style]
   end
 
   private
 
   def style(underscored_widget_name, styles)
-    styles.empty? ? default_style(underscored_widget_name) : swt_style(styles)
+    styles.empty? ? default_style(underscored_widget_name) : RSwt[*styles]
   end
 
   def default_style(underscored_widget_name)
     style = @@default_styles[underscored_widget_name] if @@default_styles[underscored_widget_name]
-    style = SWT::NONE unless style
+    style = RSwt[:none] unless style
     style
-  end
-
-  def swt_style(styles)
-    swt_styles(styles).inject(0) { |combined_style, style| combined_style | style }
-  end
-
-  def swt_styles(styles)
-    styles.map(&:swt_constant)
   end
 
   def attribute_setter(attribute_name)

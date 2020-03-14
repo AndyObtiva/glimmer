@@ -1,5 +1,9 @@
 # Release Notes
 
+** 0.3.5 **
+- Added font support to Glimmer DSL via name/height/style hash
+- Added RSwt to easily build SWT constants (e.g. RSwt[:border] is SWT::BORDER )
+
 ** 0.3.4 **
 - Fixed color support/property converter support to work both in data-binding and in static property setting
 

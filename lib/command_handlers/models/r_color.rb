@@ -1,3 +1,5 @@
+require_relative 'r_swt'
+
 class RColor
   attr_reader :display, :red, :green, :blue, :alpha
 
@@ -7,8 +9,7 @@ class RColor
     include_package 'org.eclipse.swt'
 
     def for(display, standard_color)
-      standard_color_swt_constant = SWT.const_get(standard_color.to_s.upcase.to_sym)
-      display.getSystemColor(standard_color_swt_constant)
+      display.getSystemColor(RSwt[standard_color])
     end
   end
 

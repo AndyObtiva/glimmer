@@ -42,7 +42,7 @@ shell {
     (1..3).each { |row|
       (1..3).each { |column|
         button {
-          layout_data GridData.new(:fill.swt_constant, :fill.swt_constant, true, true)
+          layout_data GridData.new(RSwt[:fill], RSwt[:fill], true, true)
           text        bind(@tic_tac_toe_board.box(row, column), :sign)
           enabled     bind(@tic_tac_toe_board.box(row, column), :empty)
           on_widget_selected {
@@ -102,14 +102,14 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.3.4
+jgem install glimmer -v 0.3.5
 ```
 
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.3.4'
+gem 'glimmer', '~> 0.3.5'
 ```
 
 And, then run:
@@ -200,6 +200,12 @@ You may check out all available `SWT` styles here:
 
 https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
 
+**Final Note** (advanced case outside of standard Glimmer DSL):
+
+When building a widget-related SWT object manually (e.g. `GridData.new(...)`), you are expected to use `SWT::CONSTANT` directly or BIT-OR a few SWT constants together like `SWT::BORDER | SWT::V_SCROLL`.
+
+Glimmer facilitates that with `RSwt` class by allowing you to pass multiple styles as an argument array of symbols instead of dealing with BIT-OR. For example: `RSwt[:border, :v_scroll]`
+
 ### Widget Properties
 
 Widget properties such as value, enablement, and layout details are set within the widget block using methods matching SWT widget property names in lower snakecase. You may refer to SWT widget guide for details on available widget properties:
@@ -225,9 +231,9 @@ button {
 
 In the above example, the `text` widget `enabled` property was data-bound to `#empty` method on `@tic_tac_toe_board.box(row, column)` (learn more about data-binding below)
 
-### Color
+### Colors
 
-Color makes up a subset of widget properties. SWT accepts color objects created with RGB (Red Green Blue) or RGBA (Red Green Blue Alpha). Glimmer supports constructing color objects using the `rgb` and `rgba` DSL methods.
+Colors make up a subset of widget properties. SWT accepts color objects created with RGB (Red Green Blue) or RGBA (Red Green Blue Alpha). Glimmer supports constructing color objects using the `rgb` and `rgba` DSL methods.
 
 Example:
 
@@ -254,6 +260,31 @@ label {
 You may check out all available standard colors in `SWT` over here:
 
 https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
+
+### Fonts
+
+Fonts are represented in Glimmer as a hash of name, height, and style keys.
+
+The style can be one (or more) of 3 values: `:normal`, `:bold`, and `:italic`
+
+Example:
+
+```ruby
+label {
+  font name: 'Arial', height: 36, style: :normal
+}
+```
+
+Keys are optional, so some of them may be left off.
+When passing multiple styles, they are included in an array.
+
+Example:
+
+```ruby
+label {
+  font style: [:bold, :italic]
+}
+```
 
 ### Data-Binding
 
@@ -429,6 +460,7 @@ a new component and extend the DSL with it
 - Supported a single computed data binding as a string (not array)
 - Disallow use of SWT::CONSTANTs with ORing since it's not intuitive at all
 - Support data binding translator option via a block
+- Center windows upon launching
 
 ## Contributors
 

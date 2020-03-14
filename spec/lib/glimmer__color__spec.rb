@@ -57,7 +57,7 @@ describe "Glimmer Color" do
       }
 
       color = @label.widget.getBackground
-      swt_color_constant = org.eclipse.swt.SWT.const_get(standard_color.to_s.upcase.to_sym)
+      swt_color_constant = RSwt[standard_color]
       expected_color = @target.display.getSystemColor(swt_color_constant)
       expect(color.getRed).to eq(expected_color.getRed)
       expect(color.getGreen).to eq(expected_color.getGreen)

@@ -22,7 +22,7 @@ describe "Glimmer Color" do
     font_datum = font_data.first
     expect(font_datum.getName).to eq('Arial')
     expect(font_datum.getHeight).to eq(36)
-    expect(font_datum.getStyle).to eq(org.eclipse.swt.SWT::NORMAL)
+    expect(font_datum.getStyle).to eq(RSwt[:normal])
   end
 
   it "tests label with specified font styles (multiple)" do
@@ -34,6 +34,36 @@ describe "Glimmer Color" do
 
     font_data = @label.widget.getFont.getFontData
     font_datum = font_data.first
-    expect(font_datum.getStyle).to eq(org.eclipse.swt.SWT::BOLD | org.eclipse.swt.SWT::ITALIC)
+    expect(font_datum.getStyle).to eq(RSwt[:bold, :italic])
+  end
+
+  it "tests label with specified font style as SWT constant" do
+    @target = shell {
+      @label = label {
+        font style: org.eclipse.swt.SWT::BOLD
+      }
+    }
+
+    font_data = @label.widget.getFont.getFontData
+    font_datum = font_data.first
+    expect(font_datum.getStyle).to eq(RSwt[:bold])
+  end
+
+  it "tests label with specified font as SWT object" do
+    @target = shell
+    display = @target.display
+    font_datum = org.eclipse.swt.graphics.FontData.new('Arial', 36, RSwt[:normal])
+    @font = org.eclipse.swt.graphics.Font.new(display, font_datum);
+    add_contents(@target) {
+      @label = label {
+        font @font
+      }
+    }
+
+    font_data = @label.widget.getFont.getFontData
+    font_datum = font_data.first
+    expect(font_datum.getName).to eq('Arial')
+    expect(font_datum.getHeight).to eq(36)
+    expect(font_datum.getStyle).to eq(RSwt[:normal])
   end
 end

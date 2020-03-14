@@ -50,7 +50,7 @@ class RFont
   end
 
   def font(font_properties)
-    font_properties[:style] = RSwt.for(*font_properties[:style])
+    font_properties[:style] = RSwt[*font_properties[:style]]
     font_data_args = [:name, :height, :style].map do |font_property_name|
       font_properties[font_property_name] || send(font_property_name)
     end

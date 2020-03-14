@@ -184,7 +184,7 @@ describe "Glimmer Data Binding" do
     expect(@check_box.widget.getSelection).to eq(false)
 
     @check_box.widget.setSelection(true)
-    @check_box.widget.notifyListeners(org.eclipse.swt.SWT::Selection, nil)
+    @check_box.widget.notifyListeners(RSwt[:selection], nil)
     expect(person.adult).to eq(true)
   end
 
@@ -206,7 +206,7 @@ describe "Glimmer Data Binding" do
     expect(@radio.widget.getSelection).to eq(false)
 
     @radio.widget.setSelection(true)
-    @radio.widget.notifyListeners(org.eclipse.swt.SWT::Selection, nil)
+    @radio.widget.notifyListeners(RSwt[:selection], nil)
     expect(person.adult).to eq(true)
   end
 
@@ -228,7 +228,7 @@ describe "Glimmer Data Binding" do
     expect(@spinner.widget.getSelection).to eq(20)
 
     @spinner.widget.setSelection(34)
-    @spinner.widget.notifyListeners(org.eclipse.swt.SWT::Selection, nil)
+    @spinner.widget.notifyListeners(RSwt[:selection], nil)
     expect(person.age).to eq(34)
   end
 
@@ -315,7 +315,7 @@ describe "Glimmer Data Binding" do
     expect(person.age).to eq(30)
 
     @check_box.widget.setSelection(true)
-    @check_box.widget.notifyListeners(org.eclipse.swt.SWT::Selection, nil)
+    @check_box.widget.notifyListeners(RSwt[:selection], nil)
     expect(person.adult).to eq(true)
   end
 
