@@ -1,6 +1,5 @@
 require_relative 'observable'
 require_relative 'observer'
-require_relative 'block_observer'
 
 class ModelBinding
   include Observable
@@ -87,10 +86,10 @@ class ModelBinding
     unless @nested_property_observers_collection.has_key?(observer)
       @nested_property_observers_collection[observer] = nested_property_names.reduce({}) do |output, property_name|
         output.merge(
-          property_name => BlockObserver.new do |changed_value|
+          property_name => Observer.proc do |new_value|
             # Ensure reattaching observers when a higher level nested property is updated (e.g. person.address changes reattaches person.address.street observer)
             add_observer(observer)
-            observer.update(evaluate_property)
+            observer.call(evaluate_property)
           end
         )
       end
@@ -131,8 +130,8 @@ class ModelBinding
   def computed_observer_for(observer)
     @computed_observer_collection ||= {}
     unless @computed_observer_collection.has_key?(observer)
-      @computed_observer_collection[observer] = BlockObserver.new do |changed_value|
-        observer.update(evaluate_property)
+      @computed_observer_collection[observer] = Observer.proc do |new_value|
+        observer.call(evaluate_property)
       end
     end
     @computed_observer_collection[observer]
@@ -165,7 +164,7 @@ class ModelBinding
       end
     end
   end
-  def update(value)
+  def call(value)
     return if model.nil?
     converted_value = @@property_type_converters[@property_type].call(value)
     invoke_property_writer(model, "#{property_name}=", converted_value) unless evaluate_property == converted_value

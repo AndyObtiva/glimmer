@@ -14,7 +14,7 @@ class TableItemsBinding
     @table = parent
     @model_binding = model_binding
     @column_properties = column_properties
-    update(@model_binding.evaluate_property)
+    call(@model_binding.evaluate_property)
     model = model_binding.base_model
     observe(model, model_binding.property_name_expression)
     add_contents(@table) {
@@ -23,7 +23,7 @@ class TableItemsBinding
       }
     }
   end
-  def update(model_collection=nil)
+  def call(model_collection=nil)
     if model_collection and model_collection.is_a?(Array)
       observe(model_collection, @column_properties)
       @model_collection = model_collection

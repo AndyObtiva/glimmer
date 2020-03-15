@@ -34,7 +34,7 @@ class ListSelectionBinding
       }
     }
   end
-  def update(value)
+  def call(value)
     @@property_type_updaters[@property_type].call(@widget, value) unless evaluate_property == value
   end
   def evaluate_property

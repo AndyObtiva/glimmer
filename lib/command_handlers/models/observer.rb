@@ -3,7 +3,32 @@ require 'set'
 # Mixin representing Observer trait from Observer Design Pattern
 # Allows classes to include without interfering with their
 # inheritance hierarchy.
+#
+# Includes a default implementation that can receive an observer block
+# Example: Observer.proc {|new_value| puts new_value}
+# Subclasses may override
 module Observer
+  # Observer Proc default implementation that takes an observer block to process updates
+  # via call method
+  class Proc
+    include Observer
+
+    def initialize(&observer_block)
+      @observer_block = observer_block
+    end
+
+    # Called by observables once updates occur sending in the new_value if any
+    def call(new_value=nil)
+      @observer_block.call(new_value)
+    end
+  end
+
+  class << self
+    def proc(&observer_block)
+      Proc.new(&observer_block)
+    end
+  end
+
   def registrations
     @registrations ||= Set.new
   end
@@ -82,7 +107,7 @@ module Observer
     dependents_for(registration).delete(dependent)
   end
 
-  def update(changed_value)
+  def call(new_value)
     raise 'Not implemented!'
   end
 end

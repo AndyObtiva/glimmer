@@ -17,7 +17,7 @@ class WidgetBinding
       }
     }
   end
-  def update(value)
+  def call(value)
     converted_value = translated_value = @translator.call(value)
     @widget.set_attribute(@property, converted_value) unless evaluate_property == converted_value
   end

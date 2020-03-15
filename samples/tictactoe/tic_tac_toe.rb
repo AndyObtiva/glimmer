@@ -28,7 +28,7 @@ class TicTacToe
     observe(@tic_tac_toe_board, "game_status")
   end
 
-  def update(game_status)
+  def call(game_status)
     display_win_message if game_status == TicTacToeBoard::WIN
     display_draw_message if game_status == TicTacToeBoard::DRAW
   end

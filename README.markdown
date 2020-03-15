@@ -102,14 +102,14 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.3.5
+jgem install glimmer -v 0.4.0
 ```
 
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.3.5'
+gem 'glimmer', '~> 0.4.0'
 ```
 
 And, then run:
@@ -198,7 +198,7 @@ Glimmer ships with SWT style **smart defaults** so you wouldn't have to set them
 
 You may check out all available `SWT` styles here:
 
-https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
+https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
 
 **Final Note** (advanced case outside of standard Glimmer DSL):
 
@@ -257,9 +257,9 @@ label {
 }
 ```
 
-You may check out all available standard colors in `SWT` over here:
+You may check out all available standard colors in `SWT` over here (having `COLOR_` prefix):
 
-https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
+https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
 
 ### Fonts
 
@@ -314,36 +314,69 @@ You may learn more about Glimmer's syntax by reading the Eclipse Zone Tutorial m
 
 Glimmer comes with `Observer` module, which is used internally for data-binding, but can also be used externally for custom use of the Observer Pattern.
 
-In summary, the class that needs to observe an object, must include Observer and implement `#update(changed_value)` method. The class to be observed doesn't need to do anything. It will automatically be enhanced by Glimmer for observation.
+In summary, the class that needs to observe an object, must include Observer and implement `#call(new_value)` method. The class to be observed doesn't need to do anything. It will automatically be enhanced by Glimmer for observation.
+
+To register observer, one has to call the `#observe` method and pass in the observable and the property(ies) to observe.
+
+```ruby
+class TicTacToe
+  include Glimmer
+  include Observer
+
+  def initialize
+    # ...
+    observe(@tic_tac_toe_board, "game_status")
+  end
+
+  def call(game_status)
+    display_win_message if game_status == TicTacToeBoard::WIN
+    display_draw_message if game_status == TicTacToeBoard::DRAW
+  end
+  # ...
+end
+```
+
+Alternatively, one can use a default Observer::Proc implementation via Observer#proc method:
+```ruby
+observer = Observer.proc { |new_value| puts new_value }
+observer.observe(@tic_tac_toe_board, "game_status")
+```
 
 Observers can be a good mechanism for displaying dialog messages with Glimmer (using SWT's `MessageBox`).
 
-Look at `samples/tictactoe/tic_tac_toe.rb` for an `Observer` dialog message example.
+Look at `samples/tictactoe/tic_tac_toe.rb` for an `Observer` dialog message example (sample below).
 
 ```ruby
-observe(@tic_tac_toe_board, "game_status")
-```
+class TicTacToe
+  include Glimmer
+  include Observer
 
-```ruby
-def update(game_status)
-  display_win_message if game_status == TicTacToeBoard::WIN
-  display_draw_message if game_status == TicTacToeBoard::DRAW
-end
+  def initialize
+    # ...
+    observe(@tic_tac_toe_board, "game_status")
+  end
 
-def display_win_message
-  display_game_over_message("Player #{@tic_tac_toe_board.winning_sign} has won!")
-end
+  def call(game_status)
+    display_win_message if game_status == TicTacToeBoard::WIN
+    display_draw_message if game_status == TicTacToeBoard::DRAW
+  end
 
-def display_draw_message
-  display_game_over_message("Draw!")
-end
+  def display_win_message
+    display_game_over_message("Player #{@tic_tac_toe_board.winning_sign} has won!")
+  end
 
-def display_game_over_message(message)
-  message_box = MessageBox.new(@shell.widget)
-  message_box.setText("Game Over")
-  message_box.setMessage(message)
-  message_box.open
-  @tic_tac_toe_board.reset
+  def display_draw_message
+    display_game_over_message("Draw!")
+  end
+
+  def display_game_over_message(message)
+    message_box = MessageBox.new(@shell.widget)
+    message_box.setText("Game Over")
+    message_box.setMessage(message)
+    message_box.open
+    @tic_tac_toe_board.reset
+  end
+  # ...
 end
 ```
 
@@ -361,6 +394,10 @@ glimmer samples/hello_world.rb
 
 https://www.eclipse.org/swt/docs.php
 
+Here is the SWT API:
+
+https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/index.html
+
 Here is a list of SWT widgets:
 
 https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/guide/swt_widgets_controls.htm?cp=2_0_7_0_0
@@ -373,7 +410,7 @@ https://wiki.eclipse.org/SWT_Widget_Style_Bits
 
 Glimmer automatically imports all SWT Java packages upon adding `include Glimmer` to a class or module.
 
-Still, if you'd like to import manually elsewhere, you may add the following lines to your code:
+Still, if you'd like to import manually elsewhere, you may add the following lines to your code import a SWT Java package using `include_package`:
 
 ```ruby
 include_package 'org.eclipse.swt'
@@ -382,9 +419,15 @@ include_package 'org.eclipse.swt.layout'
 include_package 'org.eclipse.swt.graphics'
 ```
 
-This allows you to call Java SWT classes from Ruby without indicating the package explicitly.
+Or only import a specific SWT Java class using `java_import`:
 
-For example, `org.eclipse.swt.graphics.Color` becomes `Color`
+```ruby
+java_import 'org.eclipse.swt.SWT'
+```
+
+This allows you to call SWT Java classes from Ruby without mentioning package namespaces.
+
+For example, after imports, `org.eclipse.swt.graphics.Color` can be referred to by just `Color`
 
 ## Girb (Glimmer irb)
 
@@ -461,6 +504,8 @@ a new component and extend the DSL with it
 - Support data binding translator option via a block
 - Center windows upon launching
 - Add TruffleRuby support
+- Make Shell automatically use last instantiated Display if not disposed
+- Allow ability to instantiate Display independently of Shell
 
 ## Contributors
 

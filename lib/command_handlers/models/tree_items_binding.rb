@@ -14,7 +14,7 @@ class TreeItemsBinding
     @tree = parent
     @model_binding = model_binding
     @tree_properties = [tree_properties].flatten.first.to_h
-    update(@model_binding.evaluate_property)
+    call(@model_binding.evaluate_property)
     model = model_binding.base_model
     observe(model, model_binding.property_name_expression)
     add_contents(@tree) {
@@ -23,7 +23,7 @@ class TreeItemsBinding
       }
     }
   end
-  def update(model_tree_root_node=nil)
+  def call(model_tree_root_node=nil)
     if model_tree_root_node and model_tree_root_node.respond_to?(@tree_properties[:children])
       observe(model_tree_root_node, @tree_properties[:text])
       observe(model_tree_root_node, @tree_properties[:children])

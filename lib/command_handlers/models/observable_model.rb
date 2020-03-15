@@ -7,13 +7,13 @@ require_relative 'observer'
 module ObservableModel
   include Observable
 
-  class Updater
+  class Notifier
     include Observer
     def initialize(observable_model, property_name)
       @observable_model = observable_model
       @property_name = property_name
     end
-    def update(changed_value=nil)
+    def call(new_value=nil)
       @observable_model.notify_observers(@property_name)
     end
   end
@@ -48,7 +48,7 @@ module ObservableModel
   end
 
   def notify_observers(property_name)
-    property_observer_list(property_name).each {|observer| observer.update(send(property_name))}
+    property_observer_list(property_name).each {|observer| observer.call(send(property_name))}
   end
   #TODO upon updating values, make sure dependent observers are cleared (not added as dependents here)
 
@@ -96,7 +96,7 @@ module ObservableModel
   def array_object_observer_for(property_name)
     @array_object_observers ||= {}
     unless @array_object_observers.has_key?(property_name)
-      @array_object_observers[property_name] = ObservableModel::Updater.new(self, property_name)
+      @array_object_observers[property_name] = ObservableModel::Notifier.new(self, property_name)
     end
     @array_object_observers[property_name]
   end

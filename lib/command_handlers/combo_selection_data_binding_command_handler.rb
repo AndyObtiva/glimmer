@@ -20,17 +20,17 @@ class ComboSelectionDataBindingCommandHandler
   def do_handle(parent, command_symbol, *args, &block)
     model_binding = args[0]
     widget_binding = WidgetBinding.new(parent, "items")
-    widget_binding.update(model_binding.evaluate_options_property)
+    widget_binding.call(model_binding.evaluate_options_property)
     model = model_binding.base_model
     widget_binding.observe(model, model_binding.options_property_name)
 
     widget_binding = WidgetBinding.new(parent, "text")
-    widget_binding.update(model_binding.evaluate_property)
+    widget_binding.call(model_binding.evaluate_property)
     widget_binding.observe(model, model_binding.property_name_expression)
 
     add_contents(parent) {
       on_widget_selected {
-        model_binding.update(widget_binding.evaluate_property)
+        model_binding.call(widget_binding.evaluate_property)
       }
     }
   end

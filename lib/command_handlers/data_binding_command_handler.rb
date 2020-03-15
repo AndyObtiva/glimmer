@@ -22,7 +22,7 @@ class DataBindingCommandHandler
       :text => Proc.new do |rwidget, model_binding|
         add_contents(rwidget) {
           on_modify_text { |modify_event|
-            model_binding.update(rwidget.widget.getText)
+            model_binding.call(rwidget.widget.getText)
           }
         }
         end,
@@ -31,7 +31,7 @@ class DataBindingCommandHandler
         :selection => Proc.new do |rwidget, model_binding|
           add_contents(rwidget) {
             on_widget_selected { |selection_event|
-              model_binding.update(rwidget.widget.getSelection)
+              model_binding.call(rwidget.widget.getSelection)
             }
           }
         end
@@ -40,7 +40,7 @@ class DataBindingCommandHandler
         :selection => Proc.new do |rwidget, model_binding|
           add_contents(rwidget) {
             on_widget_selected { |selection_event|
-              model_binding.update(rwidget.widget.getSelection)
+              model_binding.call(rwidget.widget.getSelection)
             }
           }
         end
@@ -57,7 +57,7 @@ class DataBindingCommandHandler
       model_binding = args[0]
       widget_binding_parameters = [parent, command_symbol.to_s]
       widget_binding = WidgetBinding.new(*widget_binding_parameters)
-      widget_binding.update(model_binding.evaluate_property)
+      widget_binding.call(model_binding.evaluate_property)
       widget_binding.observe(model_binding)
       widget_data_binder_map = @@widget_data_binders[parent.widget.class]
       widget_data_binder = widget_data_binder_map[command_symbol.to_s.to_sym] if widget_data_binder_map

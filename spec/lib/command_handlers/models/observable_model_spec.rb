@@ -8,7 +8,7 @@ describe ObservableModel do
   class SpecObserver
     include Observer
     attr_reader :observed_name
-    def update(name)
+    def call(name)
       @observed_name = name
     end
   end

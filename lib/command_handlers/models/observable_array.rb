@@ -36,7 +36,7 @@ module ObservableArray
   end
 
   def notify_observers
-    property_observer_list.each {|observer| observer.update}
+    property_observer_list.each {|observer| observer.call}
   end
 
   def self.extend_object(array)
