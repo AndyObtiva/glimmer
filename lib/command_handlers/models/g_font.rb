@@ -1,40 +1,40 @@
-require_relative 'r_swt'
+require_relative 'g_swt'
 
-class RFont
+class GFont
   include_package 'org.eclipse.swt.graphics'
 
   extend Glimmer
 
-  attr_reader :r_widget
+  attr_reader :g_widget
   attr_accessor :display
 
   class << self
-    def for(r_widget)
+    def for(g_widget)
       @instances ||= {}
-      unless @instances[r_widget]
-        @instances[r_widget] = new(r_widget)
-        add_contents(r_widget) {
+      unless @instances[g_widget]
+        @instances[g_widget] = new(g_widget)
+        add_contents(g_widget) {
           on_widget_disposed { |dispose_event|
-            @instances.delete(r_widget)
+            @instances.delete(g_widget)
           }
         }
       end
-      @instances[r_widget]
+      @instances[g_widget]
     end
   end
 
-  def initialize(r_widget, display = nil)
-    @r_widget = r_widget
-    @display = display || @r_widget.widget.display
+  def initialize(g_widget, display = nil)
+    @g_widget = g_widget
+    @display = display || @g_widget.widget.display
   end
 
-  def r_widget=(a_widget)
-    @r_widget = a_widget
+  def g_widget=(a_widget)
+    @g_widget = a_widget
     @font_datum = nil
   end
 
   def font_datum
-    @font_datum ||= @r_widget.widget.getFont.getFontData[0]
+    @font_datum ||= @g_widget.widget.getFont.getFontData[0]
   end
 
   def name
@@ -50,7 +50,7 @@ class RFont
   end
 
   def font(font_properties)
-    font_properties[:style] = RSwt[*font_properties[:style]]
+    font_properties[:style] = GSwt[*font_properties[:style]]
     font_data_args = [:name, :height, :style].map do |font_property_name|
       font_properties[font_property_name] || send(font_property_name)
     end

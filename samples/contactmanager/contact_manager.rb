@@ -25,7 +25,7 @@ class ContactManager
       }
 
       table {
-        layout_data GridData.new(RSwt[:fill], RSwt[:fill], true, true)
+        layout_data GridData.new(GSwt[:fill], GSwt[:fill], true, true)
         table_column {
           text "First Name"
           width 80

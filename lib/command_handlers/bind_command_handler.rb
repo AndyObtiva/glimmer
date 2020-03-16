@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + "/../command_handler"
-require File.dirname(__FILE__) + "/models/r_widget"
+require File.dirname(__FILE__) + "/models/g_widget"
 require File.dirname(__FILE__) + "/models/model_binding"
 
 # Responsible for setting up the return value of the bind keyword (command symbol)
@@ -13,7 +13,7 @@ class BindCommandHandler
 
   def can_handle?(parent, command_symbol, *args, &block)
     (
-      parent.is_a?(RWidget) and
+      parent.is_a?(GWidget) and
       command_symbol.to_s == "bind" and
       (
         (

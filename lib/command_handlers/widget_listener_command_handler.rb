@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + "/../command_handler"
-require File.dirname(__FILE__) + "/models/r_widget"
+require File.dirname(__FILE__) + "/models/g_widget"
 
 class WidgetListenerCommandHandler
   include CommandHandler
@@ -7,8 +7,8 @@ class WidgetListenerCommandHandler
   include_package 'org.eclipse.swt.widgets'
 
   def can_handle?(parent, command_symbol, *args, &block)
-    Glimmer.logger.debug "parent is a widget: " + (parent.is_a?(RWidget)).to_s
-    return unless parent.is_a?(RWidget)
+    Glimmer.logger.debug "parent is a widget: " + (parent.is_a?(GWidget)).to_s
+    return unless parent.is_a?(GWidget)
     Glimmer.logger.debug "on listener?: " + (command_symbol.to_s[0,3] == "on_").to_s
     return unless command_symbol.to_s[0,3] == "on_"
     Glimmer.logger.debug "command symbol is longer than 3: " + (command_symbol.to_s.length > 3).to_s

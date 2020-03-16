@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe RWidget do
+describe GWidget do
   include Glimmer
 
   before do

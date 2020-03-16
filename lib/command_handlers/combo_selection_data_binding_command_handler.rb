@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + "/../command_handler"
-require File.dirname(__FILE__) + "/models/r_widget"
+require File.dirname(__FILE__) + "/models/g_widget"
 
 class ComboSelectionDataBindingCommandHandler
   include CommandHandler
@@ -8,7 +8,7 @@ class ComboSelectionDataBindingCommandHandler
   include_package 'org.eclipse.swt.widgets'
 
   def can_handle?(parent, command_symbol, *args, &block)
-    parent.is_a?(RWidget) and
+    parent.is_a?(GWidget) and
     parent.widget.is_a?(Combo) and
     command_symbol.to_s == "selection" and
     args.size == 1 and

@@ -1,4 +1,4 @@
-class RWidgetListener
+class GWidgetListener
   
   attr_reader :listener
   

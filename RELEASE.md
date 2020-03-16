@@ -4,10 +4,13 @@
 - Changed `BlockObserver` into `Observer::Proc`
 - Added `Observer#proc` to create simple block-based observers.
 - Updated Observer API renaming `#update` to `#call`
+- Renamed `R` prefixed classes (i.e. Ruby) to `G` prefixed classes (i.e. Glimmer) (e.g. `GWidget` becomes `GWidget`)
+- Namespaced all of Glimmer's classes and modules under `Glimmer`
+- Added `display` Glimmer DSL keyword to instantiate an SWT Display
 
 ** 0.3.5 **
 - Added font support to Glimmer DSL via name/height/style hash
-- Added RSwt to easily build SWT constants (e.g. RSwt[:border] is SWT::BORDER )
+- Added GSwt to easily build SWT constants (e.g. GSwt[:border] is SWT::BORDER )
 
 ** 0.3.4 **
 - Fixed color support/property converter support to work both in data-binding and in static property setting

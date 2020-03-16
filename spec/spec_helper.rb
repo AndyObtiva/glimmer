@@ -118,6 +118,6 @@ RSpec.configure do |config|
 end
 RSpec::Matchers.define :have_style do |style|
   match do |widget|
-    expect(widget.getStyle & RSwt[style]).to eq(RSwt[style])
+    expect(widget.getStyle & GSwt[style]).to eq(GSwt[style])
   end
 end

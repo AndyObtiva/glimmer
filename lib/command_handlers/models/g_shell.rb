@@ -1,6 +1,6 @@
-require_relative 'r_widget'
+require_relative 'g_widget'
 
-class RShell < RWidget
+class GShell < GWidget
   include_package 'org.eclipse.swt.layout'
   include_package 'org.eclipse.swt.widgets'
 

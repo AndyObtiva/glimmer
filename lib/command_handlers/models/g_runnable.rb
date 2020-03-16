@@ -1,4 +1,4 @@
-class RRunnable
+class GRunnable
   include java.lang.Runnable
   
   def initialize(&block)

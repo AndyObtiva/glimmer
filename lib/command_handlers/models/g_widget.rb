@@ -1,10 +1,10 @@
-require_relative "r_widget_listener"
-require_relative "r_runnable"
-require_relative "r_color"
-require_relative "r_font"
-require_relative "r_swt"
+require_relative 'g_widget_listener'
+require_relative 'g_runnable'
+require_relative 'g_color'
+require_relative 'g_font'
+require_relative 'g_swt'
 
-class RWidget
+class GWidget
   include_package 'org.eclipse.swt'
   include_package 'org.eclipse.swt.widgets'
   include_package 'org.eclipse.swt.layout'
@@ -15,11 +15,11 @@ class RWidget
 
   #TODO externalize
   @@default_styles = {
-    "text" => RSwt[:border],
-    "table" => RSwt[:border],
-    "spinner" => RSwt[:border],
-    "list" => RSwt[:border, :v_scroll],
-    "button" => RSwt[:push],
+    "text" => GSwt[:border],
+    "table" => GSwt[:border],
+    "spinner" => GSwt[:border],
+    "list" => GSwt[:border, :v_scroll],
+    "button" => GSwt[:push],
   }
 
   #TODO externalize
@@ -56,7 +56,7 @@ class RWidget
       :font => Proc.new do |value|
         if value.is_a?(Hash)
           font_properties = value
-          RFont.for(self).font(font_properties)
+          GFont.for(self).font(font_properties)
         else
           value
         end
@@ -72,11 +72,11 @@ class RWidget
     end
     if args.count == 1 && args.first.is_a?(Symbol) && args.first.to_s.start_with?('color_')
       standard_color = args.first
-      args[0] = RColor.for(widget.getDisplay, standard_color)
-    elsif args.count == 1 && args.first.is_a?(RColor)
-      r_color = args.first
-      r_color.display = widget.display if r_color.display.nil? || r_color.display != widget.display
-      args[0] = r_color.color
+      args[0] = GColor.for(widget.getDisplay, standard_color)
+    elsif args.count == 1 && args.first.is_a?(GColor)
+      g_color = args.first
+      g_color.display = widget.display if g_color.display.nil? || g_color.display != widget.display
+      args[0] = g_color.color
     end
   end
 
@@ -140,7 +140,7 @@ class RWidget
               listener.block=block
               eval "def listener.#{listener_method.getName}(event) @block.call(event) if @block end"
               @widget.send(widget_method.getName, listener)
-              return RWidgetListener.new(listener)
+              return GWidgetListener.new(listener)
             end
           end
         end
@@ -153,26 +153,26 @@ class RWidget
   end
 
   def async_exec(&block)
-    @widget.getDisplay.asyncExec(RRunnable.new(&block))
+    @widget.getDisplay.asyncExec(GRunnable.new(&block))
   end
 
   def sync_exec(&block)
-    @widget.getDisplay.syncExec(RRunnable.new(&block))
+    @widget.getDisplay.syncExec(GRunnable.new(&block))
   end
 
   def has_style?(style)
-    (widget.style & RSwt[style]) == RSwt[style]
+    (widget.style & GSwt[style]) == GSwt[style]
   end
 
   private
 
   def style(underscored_widget_name, styles)
-    styles.empty? ? default_style(underscored_widget_name) : RSwt[*styles]
+    styles.empty? ? default_style(underscored_widget_name) : GSwt[*styles]
   end
 
   def default_style(underscored_widget_name)
     style = @@default_styles[underscored_widget_name] if @@default_styles[underscored_widget_name]
-    style = RSwt[:none] unless style
+    style = GSwt[:none] unless style
     style
   end
 

@@ -54,7 +54,7 @@ describe "Glimmer Combo Data Binding" do
     expect(@combo.widget.text).to eq("")
 
     @combo.widget.select(2)
-    @combo.widget.notifyListeners(RSwt[:selection], nil)
+    @combo.widget.notifyListeners(GSwt[:selection], nil)
     expect(person.country).to eq("US")
 
     person.country = "Canada"
@@ -104,7 +104,7 @@ describe "Glimmer Combo Data Binding" do
     expect(@combo.widget.text).to eq("")
 
     @combo.widget.select(8)
-    @combo.widget.notifyListeners(RSwt[:selection], nil)
+    @combo.widget.notifyListeners(GSwt[:selection], nil)
     expect(person.country).to eq("Australia")
 
     person.country = "Canada"

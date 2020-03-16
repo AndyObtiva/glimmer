@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + "/../command_handler"
-require File.dirname(__FILE__) + "/models/r_shell"
+require File.dirname(__FILE__) + "/models/g_shell"
 
 class ShellCommandHandler
   include CommandHandler
@@ -9,7 +9,7 @@ class ShellCommandHandler
   end
 
   def do_handle(parent, command_symbol, *args, &block)
-    RShell.send(:new, *args)
+    GShell.send(:new, *args)
   end
 
 end

@@ -1,5 +1,5 @@
 require_relative '../command_handler'
-require_relative 'models/r_color'
+require_relative 'models/g_color'
 
 class ColorCommandHandler
   include CommandHandler
@@ -14,11 +14,11 @@ class ColorCommandHandler
   def do_handle(parent, command_symbol, *args, &block)
     if args.first.is_a?(Display)
       display = args.delete_at(0)
-    elsif parent.is_a?(RWidget)
+    elsif parent.is_a?(GWidget)
       display = parent.widget.display
     else
       display = nil
     end
-    RColor.new(display, *args)
+    GColor.new(display, *args)
   end
 end

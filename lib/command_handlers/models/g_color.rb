@@ -1,6 +1,6 @@
-require_relative 'r_swt'
+require_relative 'g_swt'
 
-class RColor
+class GColor
   attr_reader :display, :red, :green, :blue, :alpha
 
   include_package 'org.eclipse.swt.graphics'
@@ -9,7 +9,7 @@ class RColor
     include_package 'org.eclipse.swt'
 
     def for(display, standard_color)
-      display.getSystemColor(RSwt[standard_color])
+      display.getSystemColor(GSwt[standard_color])
     end
   end
 

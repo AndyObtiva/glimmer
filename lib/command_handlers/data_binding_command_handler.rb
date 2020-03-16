@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + "/../command_handler"
-require File.dirname(__FILE__) + "/models/r_widget"
+require File.dirname(__FILE__) + "/models/g_widget"
 require File.dirname(__FILE__) + "/models/observable_model"
 require File.dirname(__FILE__) + "/models/model_binding"
 require File.dirname(__FILE__) + "/models/widget_binding"
@@ -19,28 +19,28 @@ class DataBindingCommandHandler
 
   @@widget_data_binders = {
     Java::OrgEclipseSwtWidgets::Text => {
-      :text => Proc.new do |rwidget, model_binding|
-        add_contents(rwidget) {
+      :text => Proc.new do |g_widget, model_binding|
+        add_contents(g_widget) {
           on_modify_text { |modify_event|
-            model_binding.call(rwidget.widget.getText)
+            model_binding.call(g_widget.widget.getText)
           }
         }
         end,
       },
       Java::OrgEclipseSwtWidgets::Button => {
-        :selection => Proc.new do |rwidget, model_binding|
-          add_contents(rwidget) {
+        :selection => Proc.new do |g_widget, model_binding|
+          add_contents(g_widget) {
             on_widget_selected { |selection_event|
-              model_binding.call(rwidget.widget.getSelection)
+              model_binding.call(g_widget.widget.getSelection)
             }
           }
         end
       },
       Java::OrgEclipseSwtWidgets::Spinner => {
-        :selection => Proc.new do |rwidget, model_binding|
-          add_contents(rwidget) {
+        :selection => Proc.new do |g_widget, model_binding|
+          add_contents(g_widget) {
             on_widget_selected { |selection_event|
-              model_binding.call(rwidget.widget.getSelection)
+              model_binding.call(g_widget.widget.getSelection)
             }
           }
         end
@@ -48,7 +48,7 @@ class DataBindingCommandHandler
     }
 
     def can_handle?(parent, command_symbol, *args, &block)
-      (parent.is_a?(RWidget) and
+      (parent.is_a?(GWidget) and
        args.size == 1 and
        args[0].is_a?(ModelBinding))
     end

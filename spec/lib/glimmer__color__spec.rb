@@ -57,7 +57,7 @@ describe "Glimmer Color" do
       }
 
       color = @label.widget.getBackground
-      swt_color_constant = RSwt[standard_color]
+      swt_color_constant = GSwt[standard_color]
       expected_color = @target.display.getSystemColor(swt_color_constant)
       expect(color.getRed).to eq(expected_color.getRed)
       expect(color.getGreen).to eq(expected_color.getGreen)

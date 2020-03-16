@@ -1,7 +1,7 @@
-require File.dirname(__FILE__) + "/r_widget_listener"
-require File.dirname(__FILE__) + "/r_runnable"
+require File.dirname(__FILE__) + "/g_widget_listener"
+require File.dirname(__FILE__) + "/g_runnable"
 
-class RTabItemComposite < RWidget
+class GTabItemComposite < GWidget
   include_package 'org.eclipse.swt.widgets'
   
   attr_reader :tab_item
