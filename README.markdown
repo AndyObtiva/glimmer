@@ -507,6 +507,20 @@ a new component and extend the DSL with it
 - Make Shell automatically use last instantiated Display if not disposed
 - Allow ability to instantiate Display independently of Shell
 
+## Release Notes
+
+[RELEASE.md](https://github.com/AndyObtiva/glimmer/blob/master/RELEASE.md)
+
+## Contributing
+
+- Clone repo
+- Setup pre-requisites (installing JRuby via RVM on the Mac)
+- cd into project again to activiate RVM glimmer gemset
+- gem install bundler
+- bundle
+- rake # runs specs (ensure they finish successfully)
+- rake install # builds/installs glimmer gem to be able to run samples via (glimmer samples/**)
+
 ## Contributors
 
 * Andy Maleh (Founder)
