@@ -42,7 +42,7 @@ shell {
     (1..3).each { |row|
       (1..3).each { |column|
         button {
-          layout_data GridData.new(GSwt[:fill], GSwt[:fill], true, true)
+          layout_data GridData.new(GSWT[:fill], GSWT[:fill], true, true)
           text        bind(@tic_tac_toe_board.box(row, column), :sign)
           enabled     bind(@tic_tac_toe_board.box(row, column), :empty)
           on_widget_selected {
@@ -204,7 +204,7 @@ https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/
 
 When building a widget-related SWT object manually (e.g. `GridData.new(...)`), you are expected to use `SWT::CONSTANT` directly or BIT-OR a few SWT constants together like `SWT::BORDER | SWT::V_SCROLL`.
 
-Glimmer facilitates that with `GSwt` class by allowing you to pass multiple styles as an argument array of symbols instead of dealing with BIT-OR. For example: `GSwt[:border, :v_scroll]`
+Glimmer facilitates that with `GSWT` class by allowing you to pass multiple styles as an argument array of symbols instead of dealing with BIT-OR. For example: `GSWT[:border, :v_scroll]`
 
 ### Widget Properties
 

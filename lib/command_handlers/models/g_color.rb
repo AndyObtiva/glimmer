@@ -9,7 +9,7 @@ class GColor
     include_package 'org.eclipse.swt'
 
     def for(display, standard_color)
-      display.getSystemColor(GSwt[standard_color])
+      display.getSystemColor(GSWT[standard_color])
     end
   end
 

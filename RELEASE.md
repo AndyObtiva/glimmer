@@ -10,7 +10,7 @@
 
 ## 0.3.5
 - Added font support to Glimmer DSL via name/height/style hash
-- Added GSwt to easily build SWT constants (e.g. GSwt[:border] is SWT::BORDER )
+- Added GSWT to easily build SWT constants (e.g. GSWT[:border] is SWT::BORDER )
 
 ## 0.3.4
 - Fixed color support/property converter support to work both in data-binding and in static property setting

@@ -15,11 +15,11 @@ class GWidget
 
   #TODO externalize
   @@default_styles = {
-    "text" => GSwt[:border],
-    "table" => GSwt[:border],
-    "spinner" => GSwt[:border],
-    "list" => GSwt[:border, :v_scroll],
-    "button" => GSwt[:push],
+    "text" => GSWT[:border],
+    "table" => GSWT[:border],
+    "spinner" => GSWT[:border],
+    "list" => GSWT[:border, :v_scroll],
+    "button" => GSWT[:push],
   }
 
   #TODO externalize
@@ -161,18 +161,18 @@ class GWidget
   end
 
   def has_style?(style)
-    (widget.style & GSwt[style]) == GSwt[style]
+    (widget.style & GSWT[style]) == GSWT[style]
   end
 
   private
 
   def style(underscored_widget_name, styles)
-    styles.empty? ? default_style(underscored_widget_name) : GSwt[*styles]
+    styles.empty? ? default_style(underscored_widget_name) : GSWT[*styles]
   end
 
   def default_style(underscored_widget_name)
     style = @@default_styles[underscored_widget_name] if @@default_styles[underscored_widget_name]
-    style = GSwt[:none] unless style
+    style = GSWT[:none] unless style
     style
   end
 

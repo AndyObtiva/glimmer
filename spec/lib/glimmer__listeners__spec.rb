@@ -50,7 +50,7 @@ describe "Glimmer Listeners" do
     }
     expect(person.name).to eq("Bruce Ting")
     @button.widget.setSelection(true)
-    @button.widget.notifyListeners(GSwt[:selection], nil)
+    @button.widget.notifyListeners(GSWT[:selection], nil)
     expect(person.name).to eq("Bruce Lao")
   end
 

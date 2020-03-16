@@ -1,4 +1,4 @@
-class GSwt
+class GSWT
   class << self
     java_import 'org.eclipse.swt.SWT'
 

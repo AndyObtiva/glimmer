@@ -36,7 +36,7 @@ class TreeItemsBinding
     populate_tree_node(model_tree_root_node, parent.widget, tree_properties)
   end
   def populate_tree_node(model_tree_node, parent, tree_properties)
-    table_item = TreeItem.new(parent, GSwt[:none])
+    table_item = TreeItem.new(parent, GSWT[:none])
     table_item.setText((model_tree_node && model_tree_node.send(tree_properties[:text])).to_s)
       [model_tree_node && model_tree_node.send(tree_properties[:children])].flatten.to_a.compact.each do |child|
       observe(child, @tree_properties[:text])
