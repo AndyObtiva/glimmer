@@ -36,7 +36,7 @@ module Glimmer
 
     #styles is a comma separate list of symbols representing SWT styles in lower case
     def initialize(underscored_widget_name, parent, styles, &contents)
-      @widget = underscored_widget_name.swt_widget.new(parent, style(underscored_widget_name, styles))
+      @widget = self.class.swt_widget_class_for(underscored_widget_name).new(parent, style(underscored_widget_name, styles))
       @@default_initializers[underscored_widget_name].call(@widget) if @@default_initializers[underscored_widget_name]
     end
 
@@ -71,7 +71,7 @@ module Glimmer
         converter = property_type_converters[attribute_name.to_sym]
         args[0] = converter.call(value) if converter
       end
-      if args.count == 1 && args.first.is_a?(Symbol) && args.first.to_s.start_with?('color_')
+      if args.count == 1 && (args.first.is_a?(Symbol) || args.first.is_a?(String)) && args.first.to_s.start_with?('color_')
         standard_color = args.first
         args[0] = GColor.for(widget.getDisplay, standard_color)
       elsif args.count == 1 && args.first.is_a?(GColor)
@@ -83,11 +83,21 @@ module Glimmer
 
     def self.widget_exists?(underscored_widget_name)
       begin
-        eval underscored_widget_name.camelcase(:upper)
+        swt_widget_class_for(underscored_widget_name)
         true
       rescue NameError
         false
       end
+    end
+
+    # This supports widgets in and out of basic SWT
+    def self.swt_widget_class_for(underscored_widget_name)
+      swt_widget_name = underscored_widget_name.camelcase(:upper)
+      swt_widget_class = eval(swt_widget_name)
+      unless swt_widget_class.ancestors.include?(org.eclipse.swt.widgets.Widget)
+        raise NameError, "Class #{swt_widget_class} matching #{underscored_widget_name} is not a subclass of org.eclipse.swt.widgets.Widget"
+      end
+      swt_widget_class
     end
 
     def widget_listener_exists?(underscored_listener_name)

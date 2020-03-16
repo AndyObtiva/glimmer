@@ -6,8 +6,9 @@
 - Updated Observer API renaming `#update` to `#call`
 - Renamed `R` prefixed classes (i.e. Ruby) to `G` prefixed classes (i.e. Glimmer) (e.g. `GWidget` becomes `GWidget`)
 - Namespaced all of Glimmer's classes and modules under `Glimmer`
-TODO- Added `display` Glimmer DSL keyword to instantiate an SWT Display
-TODO- Removed `String` and `Symbol` monkey-patching
+- Added `display` Glimmer DSL keyword to instantiate an SWT Display
+- Removed `String` and `Symbol` monkey-patching
+- Accept standard color value passed to widget color properties as `String` or `Symbol`
 
 ## 0.3.5
 - Added font support to Glimmer DSL via name/height/style hash

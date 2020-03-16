@@ -43,15 +43,15 @@ module Glimmer
     end
 
     # Standard colors: not an exhaustive list. Sample taken from here: https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
-    %i[
-      color_black
-      color_blue
-      color_cyan
-      color_green
-      color_magenta
-      color_red
-      color_white
-      color_yellow
+    [
+      :color_black,
+      :color_blue,
+      :color_cyan,
+      :color_green,
+      'color_magenta',
+      'color_red',
+      'color_white',
+      'color_yellow',
     ].each do |standard_color|
       it "tests label with standard #{standard_color} background color passed as a Ruby symbol" do
         @target = shell {

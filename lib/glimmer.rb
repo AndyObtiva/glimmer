@@ -7,8 +7,6 @@ require "rubygems"
 require "facets"
 require "logger"
 require "java"
-require_relative "string"
-require_relative "symbol"
 require_relative "glimmer/parent"
 require_relative "glimmer/swt_packages"
 
