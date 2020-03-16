@@ -4,27 +4,28 @@ require File.dirname(__FILE__) + "/models/observable_model"
 require File.dirname(__FILE__) + "/models/model_binding"
 require File.dirname(__FILE__) + "/models/widget_binding"
 
-# Responsible for wiring two-way data-binding for text and selection properties
-# on Text, Button, and Spinner widgets.
-# Does so by using the output of the bind(model, property) command in the form
-# of a ModelBinding, which is then connected to an anonymous widget observer
-# (aka widget_data_binder as per widget_data_binders array)
-#
-# Depends on BindCommandHandler
-class DataBindingCommandHandler
-  extend Glimmer
-  include CommandHandler
+module Glimmer
+  # Responsible for wiring two-way data-binding for text and selection properties
+  # on Text, Button, and Spinner widgets.
+  # Does so by using the output of the bind(model, property) command in the form
+  # of a ModelBinding, which is then connected to an anonymous widget observer
+  # (aka widget_data_binder as per widget_data_binders array)
+  #
+  # Depends on BindCommandHandler
+  class DataBindingCommandHandler
+    extend Glimmer
+    include CommandHandler
 
-  include_package 'org.eclipse.swt.widgets'
+    include_package 'org.eclipse.swt.widgets'
 
-  @@widget_data_binders = {
-    Java::OrgEclipseSwtWidgets::Text => {
-      :text => Proc.new do |g_widget, model_binding|
-        add_contents(g_widget) {
-          on_modify_text { |modify_event|
-            model_binding.call(g_widget.widget.getText)
+    @@widget_data_binders = {
+      Java::OrgEclipseSwtWidgets::Text => {
+        :text => Proc.new do |g_widget, model_binding|
+          add_contents(g_widget) {
+            on_modify_text { |modify_event|
+              model_binding.call(g_widget.widget.getText)
+            }
           }
-        }
         end,
       },
       Java::OrgEclipseSwtWidgets::Button => {
@@ -49,8 +50,8 @@ class DataBindingCommandHandler
 
     def can_handle?(parent, command_symbol, *args, &block)
       (parent.is_a?(GWidget) and
-       args.size == 1 and
-       args[0].is_a?(ModelBinding))
+      args.size == 1 and
+      args[0].is_a?(ModelBinding))
     end
 
     def do_handle(parent, command_symbol, *args, &block)
@@ -65,3 +66,4 @@ class DataBindingCommandHandler
     end
 
   end
+end

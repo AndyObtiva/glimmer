@@ -1,5 +1,7 @@
-module Parent
-  def process_block(block)
-    raise "must be implemented by a class"
+module Glimmer
+  module Parent
+    def process_block(block)
+      raise "must be implemented by a class"
+    end
   end
 end

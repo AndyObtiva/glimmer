@@ -14,20 +14,22 @@ require_relative "command_handlers/data_binding_command_handler"
 require_relative "command_handlers/widget_method_command_handler"
 require_relative "command_handlers/widget_command_handler"
 
-# edit to add more command handlers and extend Glimmer
-CommandHandlerChainFactory.def_dsl(:swt,
-  ShellCommandHandler.new,
-  WidgetListenerCommandHandler.new,
-  BindCommandHandler.new,
-  TabItemCommandHandler.new,
-  ComboSelectionDataBindingCommandHandler.new,
-  ListSelectionDataBindingCommandHandler.new,
-  TreeItemsDataBindingCommandHandler.new,
-  TreePropertiesDataBindingCommandHandler.new,
-  TableItemsDataBindingCommandHandler.new,
-  TableColumnPropertiesDataBindingCommandHandler.new,
-  DataBindingCommandHandler.new,
-  ColorCommandHandler.new,
-  WidgetMethodCommandHandler.new,
-  WidgetCommandHandler.new
-)
+module Glimmer  
+  # edit to add more command handlers and extend Glimmer
+  CommandHandlerChainFactory.def_dsl(:swt,
+    ShellCommandHandler.new,
+    WidgetListenerCommandHandler.new,
+    BindCommandHandler.new,
+    TabItemCommandHandler.new,
+    ComboSelectionDataBindingCommandHandler.new,
+    ListSelectionDataBindingCommandHandler.new,
+    TreeItemsDataBindingCommandHandler.new,
+    TreePropertiesDataBindingCommandHandler.new,
+    TableItemsDataBindingCommandHandler.new,
+    TableColumnPropertiesDataBindingCommandHandler.new,
+    DataBindingCommandHandler.new,
+    ColorCommandHandler.new,
+    WidgetMethodCommandHandler.new,
+    WidgetCommandHandler.new
+  )
+end

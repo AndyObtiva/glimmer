@@ -7,6 +7,7 @@
 - Renamed `R` prefixed classes (i.e. Ruby) to `G` prefixed classes (i.e. Glimmer) (e.g. `GWidget` becomes `GWidget`)
 - Namespaced all of Glimmer's classes and modules under `Glimmer`
 - Added `display` Glimmer DSL keyword to instantiate an SWT Display
+- Removed `String` monkey-patching
 
 ## 0.3.5
 - Added font support to Glimmer DSL via name/height/style hash

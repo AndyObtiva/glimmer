@@ -9,8 +9,8 @@ require "logger"
 require "java"
 require_relative "string"
 require_relative "symbol"
-require_relative "parent"
-require_relative "swt_packages"
+require_relative "glimmer/parent"
+require_relative "glimmer/swt_packages"
 
 module Glimmer
    #TODO make it configurable to include or not include
@@ -63,5 +63,5 @@ module Glimmer
 end
 
 # Command handlers may rely on Glimmer, so this is put here to avoid an infinite loop.
-require File.dirname(__FILE__) + "/xml_command_handlers"
-require File.dirname(__FILE__) + "/command_handlers"
+require File.dirname(__FILE__) + "/glimmer/xml_command_handlers"
+require File.dirname(__FILE__) + "/glimmer/command_handlers"
