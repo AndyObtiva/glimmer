@@ -165,6 +165,10 @@ module Glimmer
       (widget.style & GSWT[style]) == GSWT[style]
     end
 
+    def dispose
+      @widget.dispose
+    end
+
     private
 
     def style(underscored_widget_name, styles)

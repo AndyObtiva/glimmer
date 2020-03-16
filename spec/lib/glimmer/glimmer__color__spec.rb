@@ -5,11 +5,14 @@ module Glimmer
     include Glimmer
 
     before do
+      @rspec_display_method = method(:display)
+      self.class.send(:undef_method, :display)
       dsl :swt
     end
 
     after do
       @target.display.dispose if @target.display
+      self.class.send(:define_method, :display, @rspec_display_method)
     end
 
     it "tests label with RGBAlpha background color" do
@@ -68,10 +71,9 @@ module Glimmer
     end
 
     it "tests label with RGBA background color utilizing existing display" do
-      @target = shell
-      display = @target.display
-      @background = rgb(display, 4, 40, 244, 100)
-      @target = shell(display) {
+      @display = display
+      @background = rgba(@display.display, 4, 40, 244, 100)
+      @target = shell {
         @label = label {
           background @background
         }
@@ -85,10 +87,9 @@ module Glimmer
     end
 
     it "tests label with RGB background color utilizing existing display" do
-      @target = shell
-      display = @target.display
-      @background = rgb(display, 4, 40, 244)
-      @target = shell(display) {
+      @display = display
+      @background = rgb(@display.display, 4, 40, 244)
+      @target = shell {
         @label = label {
           background @background
         }

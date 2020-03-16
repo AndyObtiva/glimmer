@@ -521,6 +521,9 @@ a new component and extend the DSL with it
 - rake # runs specs (ensure they finish successfully)
 - rake install # builds/installs glimmer gem to be able to run samples via (glimmer samples/**)
 
+To run a specific spec, run:
+`rake SPEC=spec_file_path`
+
 ## Contributors
 
 * Andy Maleh (Founder)

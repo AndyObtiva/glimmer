@@ -3,6 +3,7 @@ Coveralls.wear!
 require 'bundler'
 require 'puts_debuggerer'
 require_relative '../lib/glimmer'
+# Glimmer.logger.level = Logger::DEBUG
 begin
   Bundler.require(:default, :development)
 rescue Bundler::BundlerError => e

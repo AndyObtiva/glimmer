@@ -8,11 +8,14 @@ module Glimmer
     include Glimmer
 
     before do
+      @rspec_display_method = method(:display)
+      self.class.send(:undef_method, :display)
       dsl :swt
     end
 
     after do
       @target.display.dispose if @target.display
+      self.class.send(:define_method, :display, @rspec_display_method)
     end
 
     it "tests label with specified font name, height, and style" do
@@ -54,11 +57,10 @@ module Glimmer
     end
 
     it "tests label with specified font as SWT object" do
-      @target = shell
-      display = @target.display
+      @display = display
       font_datum = FontData.new('Arial', 36, GSWT[:normal])
-      @font = Font.new(display, font_datum);
-      add_contents(@target) {
+      @font = Font.new(@display.display, font_datum);
+      @target = shell {
         @label = label {
           font @font
         }

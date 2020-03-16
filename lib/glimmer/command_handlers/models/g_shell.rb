@@ -1,4 +1,5 @@
 require_relative 'g_widget'
+require_relative 'g_display'
 
 module Glimmer
   class GShell < GWidget
@@ -7,7 +8,7 @@ module Glimmer
 
     attr_reader :display
 
-    def initialize(display = Display.new)
+    def initialize(display = GDisplay.instance.display)
       @display = display
       @widget = Shell.new(@display)
       @widget.setLayout(FillLayout.new)

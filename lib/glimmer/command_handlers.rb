@@ -1,5 +1,6 @@
 require_relative "command_handler_chain_factory"
 require_relative "command_handlers/color_command_handler"
+require_relative "command_handlers/display_command_handler"
 require_relative "command_handlers/shell_command_handler"
 require_relative "command_handlers/widget_listener_command_handler"
 require_relative "command_handlers/bind_command_handler"
@@ -14,9 +15,10 @@ require_relative "command_handlers/data_binding_command_handler"
 require_relative "command_handlers/widget_method_command_handler"
 require_relative "command_handlers/widget_command_handler"
 
-module Glimmer  
+module Glimmer
   # edit to add more command handlers and extend Glimmer
   CommandHandlerChainFactory.def_dsl(:swt,
+    DisplayCommandHandler.new,
     ShellCommandHandler.new,
     WidgetListenerCommandHandler.new,
     BindCommandHandler.new,
