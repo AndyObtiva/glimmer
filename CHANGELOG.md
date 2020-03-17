@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.1
+- SWT Layout DSL support
+- SWT Layout Data DSL support
+
 ## 0.4.0
 - Changed `BlockObserver` into `Observer::Proc`
 - Added `Observer#proc` to create simple block-based observers.
