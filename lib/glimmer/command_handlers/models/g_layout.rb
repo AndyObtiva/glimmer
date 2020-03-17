@@ -34,6 +34,7 @@ module Glimmer
     def initialize(underscored_layout_name, composite, args)
       @underscored_layout_name = underscored_layout_name
       @composite = composite
+      args = args.map {|arg| GSWT.constant(arg) if GSWT.has_constant?(arg)}
       @layout = self.class.swt_layout_class_for(underscored_layout_name).new(*args)
       @composite.setLayout(@layout)
     end
@@ -54,7 +55,7 @@ module Glimmer
     def apply_property_type_converters(attribute_name, args)
       if args.count == 1 && (args.first.is_a?(Symbol) || args.first.is_a?(String)) && GSWT.has_constant?(args.first.to_sym)
         swt_constant_symbol = args.first.to_sym
-        args[0] = GSWT[swt_constant_symbol]
+        args[0] = GSWT.constant(swt_constant_symbol)
       end
     end
 
