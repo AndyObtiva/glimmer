@@ -17,6 +17,12 @@ module Glimmer
         swt_constant_symbol = SWT.constants.find {|c| c.to_s.upcase == swt_constant_symbol.to_s}
         SWT.const_get(swt_constant_symbol)
       end
+
+      def has_constant?(symbol)
+        !!constant(symbol)
+      rescue
+        false
+      end
     end
   end
 end

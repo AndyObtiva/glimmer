@@ -2,6 +2,7 @@ require_relative "command_handler_chain_factory"
 require_relative "command_handlers/color_command_handler"
 require_relative "command_handlers/display_command_handler"
 require_relative "command_handlers/shell_command_handler"
+require_relative "command_handlers/layout_command_handler"
 require_relative "command_handlers/widget_listener_command_handler"
 require_relative "command_handlers/bind_command_handler"
 require_relative "command_handlers/tab_item_command_handler"
@@ -12,7 +13,7 @@ require_relative "command_handlers/tree_properties_data_binding_command_handler"
 require_relative "command_handlers/table_items_data_binding_command_handler"
 require_relative "command_handlers/table_column_properties_data_binding_command_handler"
 require_relative "command_handlers/data_binding_command_handler"
-require_relative "command_handlers/widget_method_command_handler"
+require_relative "command_handlers/property_command_handler"
 require_relative "command_handlers/widget_command_handler"
 
 module Glimmer
@@ -20,6 +21,7 @@ module Glimmer
   CommandHandlerChainFactory.def_dsl(:swt,
     DisplayCommandHandler.new,
     ShellCommandHandler.new,
+    LayoutCommandHandler.new,
     WidgetListenerCommandHandler.new,
     BindCommandHandler.new,
     TabItemCommandHandler.new,
@@ -31,7 +33,7 @@ module Glimmer
     TableColumnPropertiesDataBindingCommandHandler.new,
     DataBindingCommandHandler.new,
     ColorCommandHandler.new,
-    WidgetMethodCommandHandler.new,
+    PropertyCommandHandler.new,
     WidgetCommandHandler.new
   )
 end

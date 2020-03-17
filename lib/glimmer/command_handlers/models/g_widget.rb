@@ -3,6 +3,7 @@ require_relative 'g_runnable'
 require_relative 'g_color'
 require_relative 'g_font'
 require_relative 'g_swt'
+require_relative '../../parent'
 
 module Glimmer
   class GWidget
