@@ -11,6 +11,8 @@ module Glimmer
     attr_reader :layout
 
     class << self
+      include_package 'org.eclipse.swt.layout'
+
       def layout_exists?(underscored_layout_name)
         begin
           swt_layout_class_for(underscored_layout_name)
@@ -28,13 +30,16 @@ module Glimmer
           raise NameError, "Class #{swt_layout_class} matching #{underscored_layout_name} is not a subclass of org.eclipse.swt.widgets.Layout"
         end
         swt_layout_class
+      rescue => e
+        Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"
+        raise e
       end
     end
 
     def initialize(underscored_layout_name, composite, args)
       @underscored_layout_name = underscored_layout_name
       @composite = composite
-      args = args.map {|arg| GSWT.constant(arg) if GSWT.has_constant?(arg)}
+      args = args.map {|arg| GSWT.constant(arg)}
       @layout = self.class.swt_layout_class_for(underscored_layout_name).new(*args)
       @composite.setLayout(@layout)
     end
@@ -53,9 +58,8 @@ module Glimmer
     end
 
     def apply_property_type_converters(attribute_name, args)
-      if args.count == 1 && (args.first.is_a?(Symbol) || args.first.is_a?(String)) && GSWT.has_constant?(args.first.to_sym)
-        swt_constant_symbol = args.first.to_sym
-        args[0] = GSWT.constant(swt_constant_symbol)
+      if args.count == 1 && GSWT.has_constant?(args.first)
+        args[0] = GSWT.constant(args.first)
       end
     end
 

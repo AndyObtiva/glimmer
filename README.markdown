@@ -231,6 +231,118 @@ button {
 
 In the above example, the `text` widget `enabled` property was data-bound to `#empty` method on `@tic_tac_toe_board.box(row, column)` (learn more about data-binding below)
 
+### Layouts
+
+Glimmer lays widgets out visually using SWT layouts, which can only be set on composite widget and subclasses.
+
+The most common SWT layouts are:
+- `FillLayout`: lays widgets out in equal proportion horizontally or vertically with spacing/margin options
+- `RowLayout`: lays widgets out horizontally or vertically in varying proportions with advanced spacing/margin/justify options
+- `GridLayout`(**default**): lays widgets out in a grid with advanced spacing/margin/alignment/indentation options. This is the **default** layout in Glimmer. It is important to master.
+
+In Glimmer DSL, just like widgets, layouts can be specified with lowercase underscored names followed by a block containing properties (e.g. `RowLayout` is `row_layout`).
+
+Example:
+
+```ruby
+composite {
+  row_layout {
+    wrap true
+    pack false
+    justify true
+    type :vertical
+    margin_left 1
+    margin_top 2
+    margin_right 3
+    margin_bottom 4
+    spacing 5
+  }
+  # ... widgets follow
+}
+```
+
+Alternatively, a layout may be constructed by following the SWT API for the layout object. For example, a `RowLayout` can be constructed by passing it an SWT style constant.
+
+```ruby
+composite {
+  row_layout(:horizontal)
+  # ... widgets follow
+}
+```
+
+Check out the samples directory for more advanced examples of layouts in Glimmer.
+
+**Defaults**:
+
+Glimmer composites always come with grid_layout by default, but you can still specify explicitly if you'd like to set specific properties on it.
+
+Glimmer shell always comes containing one composite by default that wraps around specified shell content. That specific composite (the one directly under shell) has fill_layout with :horizontal type.
+
+This is a great guide for learning more about SWT layouts:
+
+https://www.eclipse.org/articles/Article-Understanding-Layouts/Understanding-Layouts.htm
+
+Also, for a reference, check the SWT API:
+
+https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/index.html
+
+### Layout Data
+
+Layouts organize widgets following common rules for all widgets directly under a composite. But, what if a specific widget needs its own rules. That's where layout data comes into play.
+
+By convention, SWT layouts expect widgets to set layout data with a class matching their class name with the word "Data" replacing "Layout":
+- `GridLayout` on a composite demands `GridData` on contained widgets
+- `RowLayout` on a composite demands `RowData` on contained widgets
+
+Not all layouts support layout data to further customize widget layouts. For example, `FillLayout` supports no layout data.
+
+Unlike widgets and layouts in Glimmer DSL, layout data is simply specified with `layout_data` keyword nested inside a widget block body, and followed by arguments and/or a block of its own properties. Glimmer automatically deduces layout data class name by convention as per rule above, with the assumption that the layout data class lives under the same exact Java package as the layout (one can set custom layout data that breaks convention if needed in rare cases. See code below for an example)
+
+Examples:
+
+```ruby
+composite {
+  row_layout(:horizontal)
+  label {
+    layout_data { # followed by properties
+      width 50
+      height 30
+    }
+  }
+  # ... more widgets follow
+}
+```
+
+```ruby
+composite {
+  grid_layout(3, false) # grid layout with 3 columns not of equal width
+  label {
+    # layout data followed by arguments passed to SWT constructor
+    layout_data(GSWT[:fill], GSWT[:end], true, false)
+  }
+}
+```
+
+```ruby
+composite {
+  grid_layout(3, false) # grid layout with 3 columns not of equal width
+  label {
+    # layout data set explicitly via an object (helps in rare cases that break convention)
+    layout_data GridData.new(GSWT[:fill], GSWT[:end], true, false)
+  }
+}
+```
+
+**NOTE**: Layout data must never be reused between widgets. Always specify or clone again for every widget.
+
+This is a great guide for learning more about SWT layouts:
+
+https://www.eclipse.org/articles/Article-Understanding-Layouts/Understanding-Layouts.htm
+
+Also, for a reference, check the SWT API:
+
+https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/index.html
+
 ### Colors
 
 Colors make up a subset of widget properties. SWT accepts color objects created with RGB (Red Green Blue) or RGBA (Red Green Blue Alpha). Glimmer supports constructing color objects using the `rgb` and `rgba` DSL methods.

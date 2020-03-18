@@ -10,7 +10,7 @@ module Glimmer
       end
 
       def constant(symbol)
-        return symbol if symbol.is_a?(Integer)
+        return symbol unless symbol.is_a?(Symbol) || symbol.is_a?(String)
         swt_constant_symbol = symbol.to_s.upcase.to_sym
         SWT.const_get(swt_constant_symbol)
       rescue
@@ -19,6 +19,7 @@ module Glimmer
       end
 
       def has_constant?(symbol)
+        return false unless symbol.is_a?(Symbol) || symbol.is_a?(String)
         !!constant(symbol)
       rescue
         false

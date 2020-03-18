@@ -3,6 +3,7 @@ require_relative "command_handlers/color_command_handler"
 require_relative "command_handlers/display_command_handler"
 require_relative "command_handlers/shell_command_handler"
 require_relative "command_handlers/layout_command_handler"
+require_relative "command_handlers/layout_data_command_handler"
 require_relative "command_handlers/widget_listener_command_handler"
 require_relative "command_handlers/bind_command_handler"
 require_relative "command_handlers/tab_item_command_handler"
@@ -21,6 +22,7 @@ module Glimmer
   CommandHandlerChainFactory.def_dsl(:swt,
     DisplayCommandHandler.new,
     ShellCommandHandler.new,
+    LayoutDataCommandHandler.new,
     LayoutCommandHandler.new,
     WidgetListenerCommandHandler.new,
     BindCommandHandler.new,
