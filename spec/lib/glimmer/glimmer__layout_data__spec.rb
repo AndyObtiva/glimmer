@@ -159,7 +159,7 @@ module Glimmer
           composite {
             # grid_layout # default layout
             @label = label {
-              layout_data GSWT[:fill], GSWT[:end], true, false
+              layout_data :fill, :end, true, false
             }
           }
         }

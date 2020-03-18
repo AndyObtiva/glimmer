@@ -19,8 +19,6 @@ a new component and extend the DSL with it
 - Support data binding translator option via a block
 - Center windows upon launching
 - Add TruffleRuby support
-- Make Shell automatically use last instantiated Display if not disposed
-- Allow ability to instantiate Display independently of Shell
 - Good error message for bad font style (not normal, bold, italic)
 
 ## Technical Tasks
@@ -33,3 +31,4 @@ a new component and extend the DSL with it
 - Extract ListenerParent into its own file from WidgetListenerCommandHandler
 - Enhance XML DSL support (special characters, CDATA, escaped characters (#, {, }, .))
 - Verify nested data binding works with tables/trees/combos
+- Build a sample demonstrating how to use Glimmer from Java only for the View layer in a desktop MVC SWT app

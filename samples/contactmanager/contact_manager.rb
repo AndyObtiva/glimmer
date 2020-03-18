@@ -28,7 +28,7 @@ class ContactManager
         }
 
         table {
-          layout_data GSWT[:fill], GSWT[:fill], true, true
+          layout_data :fill, :fill, true, true
           table_column {
             text "First Name"
             width 80

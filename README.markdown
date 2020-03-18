@@ -42,7 +42,7 @@ shell {
     (1..3).each { |row|
       (1..3).each { |column|
         button {
-          layout_data GSWT[:fill], GSWT[:fill], true, true
+          layout_data :fill, :fill, true, true
           text        bind(@tic_tac_toe_board[row, column], :sign)
           enabled     bind(@tic_tac_toe_board[row, column], :empty)
           on_widget_selected {
@@ -240,7 +240,7 @@ The most common SWT layouts are:
 - `RowLayout`: lays widgets out horizontally or vertically in varying proportions with advanced spacing/margin/justify options
 - `GridLayout`(**default**): lays widgets out in a grid with advanced spacing/margin/alignment/indentation options. This is the **default** layout in Glimmer. It is important to master.
 
-In Glimmer DSL, just like widgets, layouts can be specified with lowercase underscored names followed by a block containing properties (e.g. `RowLayout` is `row_layout`).
+In Glimmer DSL, just like widgets, layouts can be specified with lowercase underscored names followed by a block containing properties, also lowercase underscored names (e.g. `RowLayout` is `row_layout`).
 
 Example:
 
@@ -261,7 +261,7 @@ composite {
 }
 ```
 
-Alternatively, a layout may be constructed by following the SWT API for the layout object. For example, a `RowLayout` can be constructed by passing it an SWT style constant.
+Alternatively, a layout may be constructed by following the SWT API for the layout object. For example, a `RowLayout` can be constructed by passing it an SWT style constant (Glimmer automatically accepts symbols (e.g. `:horizontal`) for SWT style arguments like `SWT::HORIZONTAL`.)
 
 ```ruby
 composite {
@@ -325,7 +325,11 @@ By convention, SWT layouts expect widgets to set layout data with a class matchi
 
 Not all layouts support layout data to further customize widget layouts. For example, `FillLayout` supports no layout data.
 
-Unlike widgets and layouts in Glimmer DSL, layout data is simply specified with `layout_data` keyword nested inside a widget block body, and followed by arguments and/or a block of its own properties. Glimmer automatically deduces layout data class name by convention as per rule above, with the assumption that the layout data class lives under the same exact Java package as the layout (one can set custom layout data that breaks convention if needed in rare cases. See code below for an example)
+Unlike widgets and layouts in Glimmer DSL, layout data is simply specified with `layout_data` keyword nested inside a widget block body, and followed by arguments and/or a block of its own properties (lowercase underscored names).
+
+Glimmer automatically deduces layout data class name by convention as per rule above, with the assumption that the layout data class lives under the same exact Java package as the layout (one can set custom layout data that breaks convention if needed in rare cases. See code below for an example)
+
+Glimmer also automatically accepts symbols (e.g. `:fill`) for SWT style arguments like `SWT::FILL`.
 
 Examples:
 
