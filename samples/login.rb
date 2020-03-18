@@ -51,7 +51,7 @@ class Login
     @shell = shell {
       text "Login"
       composite {
-        layout GridLayout.new(2, false) #two columns with differing widths
+        grid_layout 2, false #two columns with differing widths
 
         label { text "Username:" } # goes in column 1
         text {                     # goes in column 2

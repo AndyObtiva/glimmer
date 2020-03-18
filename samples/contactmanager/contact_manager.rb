@@ -12,7 +12,7 @@ class ContactManager
       text "Contact Manager"
       composite {
         composite {
-          layout GridLayout.new(2, false)
+          grid_layout 2, false
           label {text "First &Name: "}
           text {
             text bind(@contact_manager_presenter, :first_name)
@@ -28,7 +28,7 @@ class ContactManager
         }
 
         table {
-          layout_data GridData.new(GSWT[:fill], GSWT[:fill], true, true)
+          layout_data GSWT[:fill], GSWT[:fill], true, true
           table_column {
             text "First Name"
             width 80
@@ -45,7 +45,7 @@ class ContactManager
           column_properties(:first_name, :last_name, :email)
         }
         composite {
-          layout GridLayout.new(2, false)
+          grid_layout 2, false
           button {
             text "&List"
             on_widget_selected {

@@ -38,13 +38,13 @@ Glimmer code (from `samples/tictactoe/tic_tac_toe.rb`):
 shell {
   text "Tic-Tac-Toe"
   composite {
-    layout GridLayout.new(3,true)
+    grid_layout 3, true
     (1..3).each { |row|
       (1..3).each { |column|
         button {
-          layout_data GridData.new(GSWT[:fill], GSWT[:fill], true, true)
-          text        bind(@tic_tac_toe_board.box(row, column), :sign)
-          enabled     bind(@tic_tac_toe_board.box(row, column), :empty)
+          layout_data GSWT[:fill], GSWT[:fill], true, true
+          text        bind(@tic_tac_toe_board[row, column], :sign)
+          enabled     bind(@tic_tac_toe_board[row, column], :empty)
           on_widget_selected {
             @tic_tac_toe_board.mark_box(row, column)
           }
@@ -265,8 +265,37 @@ Alternatively, a layout may be constructed by following the SWT API for the layo
 
 ```ruby
 composite {
-  row_layout(:horizontal)
+  row_layout :horizontal
   # ... widgets follow
+}
+```
+
+Here is a more sophisticated examples taken from [hello_computed.rb](https://github.com/AndyObtiva/glimmer/blob/master/samples/hellocomputed/hello_computed.rb) sample:
+```ruby
+composite {
+  grid_layout {
+    num_columns 2
+    make_columns_equal_width true
+    horizontal_spacing 20
+    vertical_spacing 10
+  }
+  label {text "First &Name: "}
+  text {
+    text bind(@contact, :first_name)
+    layout_data {
+      horizontalAlignment :fill
+      grabExcessHorizontalSpace true
+    }
+  }
+  label {text "&Last Name: "}
+  text {
+    text bind(@contact, :last_name)
+    layout_data {
+      horizontalAlignment :fill
+      grabExcessHorizontalSpace true
+    }
+  }
+  # ... more widgets follow
 }
 ```
 
@@ -302,7 +331,7 @@ Examples:
 
 ```ruby
 composite {
-  row_layout(:horizontal)
+  row_layout :horizontal
   label {
     layout_data { # followed by properties
       width 50
@@ -315,7 +344,7 @@ composite {
 
 ```ruby
 composite {
-  grid_layout(3, false) # grid layout with 3 columns not of equal width
+  grid_layout 3, false # grid layout with 3 columns not of equal width
   label {
     # layout data followed by arguments passed to SWT constructor
     layout_data(GSWT[:fill], GSWT[:end], true, false)
@@ -325,7 +354,7 @@ composite {
 
 ```ruby
 composite {
-  grid_layout(3, false) # grid layout with 3 columns not of equal width
+  grid_layout 3, false # grid layout with 3 columns not of equal width
   label {
     # layout data set explicitly via an object (helps in rare cases that break convention)
     layout_data GridData.new(GSWT[:fill], GSWT[:end], true, false)
@@ -437,7 +466,7 @@ class TicTacToe
 
   def initialize
     # ...
-    observe(@tic_tac_toe_board, "game_status")
+    observe(@tic_tac_toe_board, :game_status)
   end
 
   def call(game_status)
@@ -451,7 +480,7 @@ end
 Alternatively, one can use a default Observer::Proc implementation via Observer#proc method:
 ```ruby
 observer = Observer.proc { |new_value| puts new_value }
-observer.observe(@tic_tac_toe_board, "game_status")
+observer.observe(@tic_tac_toe_board, :game_status)
 ```
 
 Observers can be a good mechanism for displaying dialog messages with Glimmer (using SWT's `MessageBox`).
@@ -465,7 +494,7 @@ class TicTacToe
 
   def initialize
     # ...
-    observe(@tic_tac_toe_board, "game_status")
+    observe(@tic_tac_toe_board, :game_status)
   end
 
   def call(game_status)
@@ -494,13 +523,17 @@ end
 
 ## Samples
 
-Check the "samples" folder for examples on how to write Glimmer applications. To run them, make sure to install the `glimmer` gem first and then use the `glimmer` command.
+Check the "[samples](https://github.com/AndyObtiva/glimmer/tree/master/samples)" folder for examples on how to write Glimmer applications. To run a sample, make sure to install the `glimmer` gem first and then use the `glimmer` command to run it (alternatively, you may clone the repo, follow contributing instructions, and run `rake install` to install the gem before running `glimmer` command).
 
 Example:
 
 ```
 glimmer samples/hello_world.rb
 ```
+
+Here is also a more elaborate project (educational game) built with Glimmer:
+
+[Math Bowling](https://github.com/AndyObtiva/MathBowling)
 
 ## SWT Reference
 

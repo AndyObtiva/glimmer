@@ -10,13 +10,13 @@ class TicTacToe
     @shell = shell {
       text "Tic-Tac-Toe"
       composite {
-        layout GridLayout.new(3,true)
+        grid_layout 3, true
         (1..3).each { |row|
           (1..3).each { |column|
             button {
-              layout_data GridData.new(GSWT[:fill], GSWT[:fill], true, true)
-              text        bind(@tic_tac_toe_board.box(row, column), :sign)
-              enabled     bind(@tic_tac_toe_board.box(row, column), :empty)
+              layout_data GSWT[:fill], GSWT[:fill], true, true
+              text        bind(@tic_tac_toe_board[row, column], :sign)
+              enabled     bind(@tic_tac_toe_board[row, column], :empty)
               on_widget_selected {
                 @tic_tac_toe_board.mark_box(row, column)
               }
@@ -25,7 +25,7 @@ class TicTacToe
         }
       }
     }
-    observe(@tic_tac_toe_board, "game_status")
+    observe(@tic_tac_toe_board, :game_status)
   end
 
   def call(game_status)

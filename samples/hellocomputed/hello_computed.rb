@@ -15,50 +15,50 @@ class HelloComputed
     shell {
       text "Hello Computed"
       composite {
-        layout (
-          GridLayout.new(2, true).tap {|layout|
-            layout.horizontalSpacing = 20
-            layout.verticalSpacing = 10
-          }
-        )
+        grid_layout {
+          num_columns 2
+          make_columns_equal_width true
+          horizontal_spacing 20
+          vertical_spacing 10
+        }
         label {text "First &Name: "}
         text {
           text bind(@contact, :first_name)
-          layoutData GridData.new.tap { |data|
-            data.horizontalAlignment = GridData::FILL
-            data.grabExcessHorizontalSpace = true
+          layout_data {
+            horizontalAlignment :fill
+            grabExcessHorizontalSpace true
           }
         }
         label {text "&Last Name: "}
         text {
           text bind(@contact, :last_name)
-          layoutData GridData.new.tap { |data|
-            data.horizontalAlignment = GridData::FILL
-            data.grabExcessHorizontalSpace = true
+          layout_data {
+            horizontalAlignment :fill
+            grabExcessHorizontalSpace true
           }
         }
         label {text "&Year of Birth: "}
         text {
           text bind(@contact, :year_of_birth)
-          layoutData GridData.new.tap { |data|
-            data.horizontalAlignment = GridData::FILL
-            data.grabExcessHorizontalSpace = true
+          layout_data {
+            horizontalAlignment :fill
+            grabExcessHorizontalSpace true
           }
         }
         label {text "Name: "}
         label {
           text bind(@contact, :name, computed_by: [:first_name, :last_name])
-          layoutData GridData.new.tap { |data|
-            data.horizontalAlignment = GridData::FILL
-            data.grabExcessHorizontalSpace = true
+          layout_data {
+            horizontalAlignment :fill
+            grabExcessHorizontalSpace true
           }
         }
         label {text "Age: "}
         label {
           text bind(@contact, :age, :fixnum, computed_by: [:year_of_birth])
-          layoutData GridData.new.tap { |data|
-            data.horizontalAlignment = GridData::FILL
-            data.grabExcessHorizontalSpace = true
+          layout_data {
+            horizontalAlignment :fill
+            grabExcessHorizontalSpace true
           }
         }
       }

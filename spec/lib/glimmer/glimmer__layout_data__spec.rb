@@ -45,7 +45,7 @@ module Glimmer
           composite {
             row_layout(:horizontal)
             @label = label {
-              layout_data(50, 30)
+              layout_data 50, 30
             }
           }
         }
@@ -63,7 +63,7 @@ module Glimmer
           composite {
             row_layout(:horizontal)
             @label = label {
-              layout_data(@point)
+              layout_data @point
             }
           }
         }
@@ -142,7 +142,7 @@ module Glimmer
           composite {
             # grid_layout # default layout
             @label = label {
-              layout_data(50, 30)
+              layout_data 50, 30
             }
           }
         }
@@ -159,7 +159,7 @@ module Glimmer
           composite {
             # grid_layout # default layout
             @label = label {
-              layout_data(GSWT[:fill], GSWT[:end], true, false)
+              layout_data GSWT[:fill], GSWT[:end], true, false
             }
           }
         }
@@ -178,7 +178,7 @@ module Glimmer
           composite {
             # grid_layout # default layout
             @label = label {
-              layout_data(GSWT[:fill], GSWT[:end], true, false, 15, 25)
+              layout_data GSWT[:fill], GSWT[:end], true, false, 15, 25
             }
           }
         }

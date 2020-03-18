@@ -9,44 +9,44 @@ describe TicTacToeBoard do
   end
 
   it "tests mark_center_x" do
-    expect(@board.box(2, 2).sign).to eq("")
+    expect(@board[2, 2].sign).to eq("")
     @board.mark_box(2, 2)
-    expect(@board.box(2, 2).empty).to be_false
-    expect(@board.box(2, 2).sign).to eq("X")
-    expect(@board.box(1, 1).empty).to be_true
-    expect(@board.box(1, 2).empty).to be_true
-    expect(@board.box(1, 3).empty).to be_true
-    expect(@board.box(2, 1).empty).to be_true
-    expect(@board.box(2, 3).empty).to be_true
-    expect(@board.box(3, 1).empty).to be_true
-    expect(@board.box(3, 2).empty).to be_true
-    expect(@board.box(3, 3).empty).to be_true
+    expect(@board[2, 2].empty).to be_false
+    expect(@board[2, 2].sign).to eq("X")
+    expect(@board[1, 1].empty).to be_true
+    expect(@board[1, 2].empty).to be_true
+    expect(@board[1, 3].empty).to be_true
+    expect(@board[2, 1].empty).to be_true
+    expect(@board[2, 3].empty).to be_true
+    expect(@board[3, 1].empty).to be_true
+    expect(@board[3, 2].empty).to be_true
+    expect(@board[3, 3].empty).to be_true
   end
 
   it "tests mark_center_x_top_center_o_bottom_right_x" do
     @board.mark_box(2, 2)
     @board.mark_box(1, 2)
     @board.mark_box(3, 3)
-    expect(@board.box(2, 2).empty).to be_false
-    expect(@board.box(1, 2).empty).to be_false
-    expect(@board.box(3, 3).empty).to be_false
-    expect(@board.box(2, 2).sign).to eq("X")
-    expect(@board.box(1, 2).sign).to eq("O")
-    expect(@board.box(3, 3).sign).to eq("X")
+    expect(@board[2, 2].empty).to be_false
+    expect(@board[1, 2].empty).to be_false
+    expect(@board[3, 3].empty).to be_false
+    expect(@board[2, 2].sign).to eq("X")
+    expect(@board[1, 2].sign).to eq("O")
+    expect(@board[3, 3].sign).to eq("X")
   end
 
   it "tests top_center_not_marked" do
-    expect(@board.box(1, 2).empty).to be_true
+    expect(@board[1, 2].empty).to be_true
   end
 
   it "tests top_right_marked" do
     @board.mark_box(1, 3)
-    expect(@board.box(1, 3).empty).to be_false
+    expect(@board[1, 3].empty).to be_false
   end
 
   it "tests lower_right_marked" do
     @board.mark_box(3, 3)
-    expect(@board.box(3, 3).empty).to be_false
+    expect(@board[3, 3].empty).to be_false
   end
 
   it "tests game_over_false" do
@@ -57,15 +57,15 @@ describe TicTacToeBoard do
 
   it "tests game_over_X_wins_top_row_across" do
     @board.mark_box(1, 1)
-    expect(@board.box(1, 1).sign).to eq("X")
+    expect(@board[1, 1].sign).to eq("X")
     @board.mark_box(2, 1)
-    expect(@board.box(2, 1).sign).to eq("O")
+    expect(@board[2, 1].sign).to eq("O")
     @board.mark_box(1, 2)
-    expect(@board.box(1, 2).sign).to eq("X")
+    expect(@board[1, 2].sign).to eq("X")
     @board.mark_box(2, 2)
-    expect(@board.box(2, 2).sign).to eq("O")
+    expect(@board[2, 2].sign).to eq("O")
     @board.mark_box(1, 3)
-    expect(@board.box(1, 3).sign).to eq("X")
+    expect(@board[1, 3].sign).to eq("X")
     expect(@board.game_over?).to be_true
     expect(@board.winning_sign).to eq("X")
     expect(@board.game_status).to eq(TicTacToeBoard::WIN)

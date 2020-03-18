@@ -87,7 +87,7 @@ module Glimmer
       it "sets RowLayout with one SWT constructor argument" do
         @target = shell {
           @composite = composite {
-            row_layout(:horizontal)
+            row_layout :horizontal
           }
         }
 
@@ -135,7 +135,7 @@ module Glimmer
       it "sets GridLayout with one SWT constructor argument" do
         @target = shell {
           @composite = composite {
-            grid_layout(8, true)
+            grid_layout 8, true
           }
         }
 

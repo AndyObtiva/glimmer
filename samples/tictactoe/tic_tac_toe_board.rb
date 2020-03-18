@@ -40,7 +40,7 @@ class TicTacToeBoard
 
   #row and column numbers are 1-based
   def mark_box(row, column)
-    box(row, column).mark_box(current_sign)
+    self[row, column].mark_box(current_sign)
     game_over? #updates winning sign
   end
 
@@ -48,7 +48,7 @@ class TicTacToeBoard
     @current_sign = @sign_state_machine[@current_sign]
   end
 
-  def box(row, column)
+  def [](row, column)
     @grid[row-1][column-1]
   end
 
@@ -65,7 +65,7 @@ class TicTacToeBoard
   def reset
     (1..3).each do |row|
       (1..3).each do |column|
-        box(row, column).reset
+        self[row, column].reset
       end
     end
     @winning_sign = TicTacToeBox::EMPTY
@@ -86,7 +86,7 @@ class TicTacToeBoard
   def row_win?
     (1..3).each do |row|
       if row_has_same_sign(row)
-        @winning_sign = box(row, 1).sign
+        @winning_sign = self[row, 1].sign
         return true
       end
     end
@@ -96,7 +96,7 @@ class TicTacToeBoard
   def column_win?
     (1..3).each do |column|
       if column_has_same_sign(column)
-        @winning_sign = box(1, column).sign
+        @winning_sign = self[1, column].sign
         return true
       end
     end
@@ -105,12 +105,12 @@ class TicTacToeBoard
 
   #needs refactoring if we ever decide to make the board size dynamic
   def diagonal_win?
-    if (box(1,1).sign == box(2,2).sign) and (box(2,2).sign == box(3,3).sign) and box(1,1).marked
-      @winning_sign = box(1,1).sign
+    if (self[1, 1].sign == self[2, 2].sign) and (self[2, 2].sign == self[3, 3].sign) and self[1, 1].marked
+      @winning_sign = self[1, 1].sign
       return true
     end
-    if (box(3,1).sign == box(2,2).sign) and (box(2,2).sign == box(1,3).sign) and box(3,1).marked
-      @winning_sign = box(3,1).sign
+    if (self[3, 1].sign == self[2, 2].sign) and (self[2, 2].sign == self[1, 3].sign) and self[3, 1].marked
+      @winning_sign = self[3, 1].sign
       return true
     end
     false
@@ -120,7 +120,7 @@ class TicTacToeBoard
     @board_full = true
     3.times do |x|
       3.times do |y|
-        @board_full = false if box(x, y).empty
+        @board_full = false if self[x, y].empty
       end
     end
     self.game_status = DRAW if @board_full
@@ -128,19 +128,19 @@ class TicTacToeBoard
   end
 
   def row_has_same_sign(number)
-    row_sign = box(number, 1).sign
+    row_sign = self[number, 1].sign
     [2, 3].each do |column|
-      return false unless row_sign == (box(number, column).sign)
+      return false unless row_sign == (self[number, column].sign)
     end
-    true if box(number, 1).marked
+    true if self[number, 1].marked
   end
 
   def column_has_same_sign(number)
-    column_sign = box(1, number).sign
+    column_sign = self[1, number].sign
     [2, 3].each do |row|
-      return false unless column_sign == (box(row, number).sign)
+      return false unless column_sign == (self[row, number].sign)
     end
-    true if box(1, number).marked
+    true if self[1, number].marked
   end
 
 end
