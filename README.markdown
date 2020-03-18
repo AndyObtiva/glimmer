@@ -410,7 +410,7 @@ https://wiki.eclipse.org/SWT_Widget_Style_Bits
 
 Glimmer automatically imports all SWT Java packages upon adding `include Glimmer` to a class or module.
 
-Still, if you'd like to import manually elsewhere, you may add the following lines to your code import a SWT Java package using `include_package`:
+Still, if you'd like to import manually elsewhere, you may add the following lines to your code (in the class or module body) to import SWT Java packages using `include_package`:
 
 ```ruby
 include_package 'org.eclipse.swt'
@@ -419,7 +419,7 @@ include_package 'org.eclipse.swt.layout'
 include_package 'org.eclipse.swt.graphics'
 ```
 
-Or only import a specific SWT Java class using `java_import`:
+To import a specific SWT Java class using `java_import`, add the following:
 
 ```ruby
 java_import 'org.eclipse.swt.SWT'
@@ -427,7 +427,7 @@ java_import 'org.eclipse.swt.SWT'
 
 This allows you to call SWT Java classes from Ruby without mentioning package namespaces.
 
-For example, after imports, `org.eclipse.swt.graphics.Color` can be referred to by just `Color`
+For example, after imports, `org.eclipse.swt.graphics.Color` can be referenced by just `Color`
 
 ## Girb (Glimmer irb)
 
