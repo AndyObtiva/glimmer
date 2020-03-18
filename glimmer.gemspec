@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["AndyMaleh".freeze]
-  s.date = "2020-03-16"
+  s.date = "2020-03-18"
   s.description = "JRuby Desktop UI DSL + Data-Binding library that enables easy and efficient authoring of user-interfaces using the robust platform-independent Eclipse SWT library".freeze
   s.email = "andy.am@gmail.com".freeze
   s.executables = ["glimmer".freeze, "girb".freeze]
@@ -32,10 +32,14 @@ Gem::Specification.new do |s|
     "lib/glimmer/command_handlers/combo_selection_data_binding_command_handler.rb",
     "lib/glimmer/command_handlers/data_binding_command_handler.rb",
     "lib/glimmer/command_handlers/display_command_handler.rb",
+    "lib/glimmer/command_handlers/layout_command_handler.rb",
+    "lib/glimmer/command_handlers/layout_data_command_handler.rb",
     "lib/glimmer/command_handlers/list_selection_data_binding_command_handler.rb",
     "lib/glimmer/command_handlers/models/g_color.rb",
     "lib/glimmer/command_handlers/models/g_display.rb",
     "lib/glimmer/command_handlers/models/g_font.rb",
+    "lib/glimmer/command_handlers/models/g_layout.rb",
+    "lib/glimmer/command_handlers/models/g_layout_data.rb",
     "lib/glimmer/command_handlers/models/g_runnable.rb",
     "lib/glimmer/command_handlers/models/g_shell.rb",
     "lib/glimmer/command_handlers/models/g_swt.rb",
@@ -51,6 +55,7 @@ Gem::Specification.new do |s|
     "lib/glimmer/command_handlers/models/table_items_binding.rb",
     "lib/glimmer/command_handlers/models/tree_items_binding.rb",
     "lib/glimmer/command_handlers/models/widget_binding.rb",
+    "lib/glimmer/command_handlers/property_command_handler.rb",
     "lib/glimmer/command_handlers/shell_command_handler.rb",
     "lib/glimmer/command_handlers/tab_item_command_handler.rb",
     "lib/glimmer/command_handlers/table_column_properties_data_binding_command_handler.rb",
@@ -59,7 +64,6 @@ Gem::Specification.new do |s|
     "lib/glimmer/command_handlers/tree_properties_data_binding_command_handler.rb",
     "lib/glimmer/command_handlers/widget_command_handler.rb",
     "lib/glimmer/command_handlers/widget_listener_command_handler.rb",
-    "lib/glimmer/command_handlers/widget_method_command_handler.rb",
     "lib/glimmer/parent.rb",
     "lib/glimmer/shine.rb",
     "lib/glimmer/swt_packages.rb",
