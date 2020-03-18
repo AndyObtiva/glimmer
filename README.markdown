@@ -490,22 +490,13 @@ These features have been suggested. You might see them in a future version of Gl
 
 [TODO.md](https://github.com/AndyObtiva/glimmer/blob/master/TODO.md)
 
-## Release Notes
+## Change Log
 
-[RELEASE.md](https://github.com/AndyObtiva/glimmer/blob/master/RELEASE.md)
+[CHANGELOG.md](https://github.com/AndyObtiva/glimmer/blob/master/CHANGELOG.md)
 
 ## Contributing
 
-- Clone repo
-- Setup pre-requisites (installing JRuby via RVM on the Mac)
-- cd into project again to activiate RVM glimmer gemset
-- gem install bundler
-- bundle
-- rake # runs specs (ensure they finish successfully)
-- rake install # builds/installs glimmer gem to be able to run samples via (glimmer samples/**)
-
-To run a specific spec, run:
-`rake SPEC=spec_file_path`
+[CONTRIBUTING.md](https://github.com/AndyObtiva/glimmer/blob/master/CONTRIBUTING.md)
 
 ## Contributors
 
