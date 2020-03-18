@@ -481,7 +481,7 @@ class TicTacToe
 end
 ```
 
-Alternatively, one can use a default Observer::Proc implementation via Observer#proc method:
+Alternatively, one can use a default Observer::Proc implementation via Observer.proc method:
 ```ruby
 observer = Observer.proc { |new_value| puts new_value }
 observer.observe(@tic_tac_toe_board, :game_status)
