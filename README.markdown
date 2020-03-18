@@ -350,7 +350,7 @@ composite {
 composite {
   grid_layout 3, false # grid layout with 3 columns not of equal width
   label {
-    # layout data followed by arguments passed to SWT constructor
+    # layout data followed by arguments passed to SWT GridData constructor
     layout_data :fill, :end, true, false
   }
 }
