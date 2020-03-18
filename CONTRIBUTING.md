@@ -3,7 +3,7 @@
 ## Pre-requisites
 
 - MacOS
-- Other pre-requisites mentioned in README.md
+- Other pre-requisites mentioned in [README.md](https://github.com/AndyObtiva/glimmer/tree/master#pre-requisites)
 
 ## Machine Setup
 
