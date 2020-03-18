@@ -4,7 +4,7 @@
 - Changed `BlockObserver` into `Observer::Proc`
 - Added `Observer#proc` to create simple block-based observers.
 - Updated Observer API renaming `#update` to `#call`
-- Renamed `R` prefixed classes (i.e. Ruby) to `G` prefixed classes (i.e. Glimmer) (e.g. `GWidget` becomes `GWidget`)
+- Renamed `R` prefixed classes (i.e. Ruby) to `G` prefixed classes (i.e. Glimmer) (e.g. `RWidget` becomes `GWidget`)
 - Namespaced all of Glimmer's classes and modules under `Glimmer`
 - Added `display` Glimmer DSL keyword to instantiate an SWT Display
 - Removed `String` and `Symbol` monkey-patching
