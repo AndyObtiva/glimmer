@@ -1,4 +1,4 @@
-# Release Notes
+# Change Log
 
 ## 0.4.0
 - Changed `BlockObserver` into `Observer::Proc`
