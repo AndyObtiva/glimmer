@@ -39,7 +39,7 @@ module Glimmer
     def initialize(underscored_layout_name, composite, args)
       @underscored_layout_name = underscored_layout_name
       @composite = composite
-      args = args.map {|arg| GSWT.constant(arg)}
+      args = GSWT.constantify_args(args)
       @layout = self.class.swt_layout_class_for(underscored_layout_name).new(*args)
       @composite.setLayout(@layout)
     end

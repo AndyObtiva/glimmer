@@ -9,17 +9,8 @@ a new component and extend the DSL with it
 - Glimmer Wizard: provide a standard structure for building a Glimmer wizard (multi-step/multi-screen process)
 - bind_collection: an iterator that enables spawning widgets based on a variable collection (e.g. `bind_collection('user.addresses') { |address| address_widget {...} }` spawns 3 `AddressWidget`s if `user.addresses` is set with 3 addresses; and replaces with 2 `AddressWidget`s if `user.addresses` is reset with 2 addresses only). Needs further thought on naming and functionality.
 - Automatic relayout of "glimmer components" when disposing one or as an option
-- Consider using Ruby Refinements for Glimmer
-- Add 'font' to Glimmer DSL to build font objects easily
-- Add grid layout support to Glimmer DSL to layout grid components easily
-- Add rerendering support to Glimmer to rerender any widget easily
-- Avoid disposing display when disposing a shell to allow recycling
-- Provide a display builder method to use independently of shell
-- Supported a single computed data binding as a string (not array)
-- Support data binding translator option via a block
-- Center windows upon launching
+- Consider easy rerendering support for Glimmer upon processing events
 - Add TruffleRuby support
-- Good error message for bad font style (not normal, bold, italic)
 
 ## Technical Tasks
 
@@ -32,3 +23,7 @@ a new component and extend the DSL with it
 - Enhance XML DSL support (special characters, CDATA, escaped characters (#, {, }, .))
 - Verify nested data binding works with tables/trees/combos
 - Build a sample demonstrating how to use Glimmer from Java only for the View layer in a desktop MVC SWT app
+- Good error message for bad font style (not normal, bold, italic)
+- Support a single computed data binding as a string (not array)
+- Support data binding translator option via a block
+- Consider using Ruby Refinements for Glimmer

@@ -12,7 +12,7 @@ module Glimmer
 
     def initialize(widget, args)
       @widget = widget
-      args = args.map {|arg| GSWT.constant(arg)}
+      args = GSWT.constantify_args(args)
       begin
         @layout_data = swt_layout_data_class.new(*args)
       rescue => e

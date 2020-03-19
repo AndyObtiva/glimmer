@@ -35,6 +35,7 @@ module Glimmer
     return return_value
   end
 
+  # TODO come up with a better public name for this and put on gwidgets directly
   def self.add_contents(parent, &block)
     @@parent_stack.push(parent) if parent.is_a?(Parent)
     @@parent_stack.last.process_block(block) if block and @@parent_stack.last

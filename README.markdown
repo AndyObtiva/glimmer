@@ -102,14 +102,14 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.4.1
+jgem install glimmer -v 0.4.2
 ```
 
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.4.1'
+gem 'glimmer', '~> 0.4.2'
 ```
 
 And, then run:
@@ -141,7 +141,7 @@ Glimmer UIs (user interfaces) are modeled with widgets (wrappers around the SWT 
 
 In Glimmer DSL, widgets are declared with lowercase underscored naming (you may look at usage examples in the `samples` directory).
 
-The `shell` widget is always the outermost widget containing all others in a desktop windowed application.
+The `shell` widget is always the outermost widget containing all others in a desktop windowed application. It is centered upon initial display and has a minimum width of 130 (can be re-centered when needed with `@shell.center` method)
 
 Other widget examples:
 - `button`: wrapper for `org.eclipse.swt.widgets.Button`
@@ -172,6 +172,15 @@ list(:multi) { # SWT styles go inside ()
 Passing `:multi` to `list` widget enables list element multi-selection.
 
 ```ruby
+shell(:no_resize) {
+  # ...
+}
+```
+
+Passing `:no_resize` to `shell` creates an unresizable window shell.
+
+
+```ruby
 composite(:border) { # SWT styles go inside ()
   # ...
 }
@@ -200,11 +209,20 @@ You may check out all available `SWT` styles here:
 
 https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
 
-**Final Note** (advanced case outside of standard Glimmer DSL):
+**Note** (advanced case outside of standard Glimmer DSL):
 
 When building a widget-related SWT object manually (e.g. `GridData.new(...)`), you are expected to use `SWT::CONSTANT` directly or BIT-OR a few SWT constants together like `SWT::BORDER | SWT::V_SCROLL`.
 
 Glimmer facilitates that with `GSWT` class by allowing you to pass multiple styles as an argument array of symbols instead of dealing with BIT-OR. For example: `GSWT[:border, :v_scroll]`
+
+**Unresizable Window**
+
+SWT Shell widget by default is resizable. To make it not resizable, one must pass a complicated style bit concoction `GSWT[:shell_trim] & (~GSWT[:resize])`.
+
+Glimmer makes this easier by alternatively offering `:no_resize` style, which is extra to SWT default styles, added for convenience. This makes declaring an unresizable window as easy as:
+```ruby
+shell(:no_resize)
+```
 
 ### Widget Properties
 
@@ -236,9 +254,9 @@ In the above example, the `text` widget `enabled` property was data-bound to `#e
 Glimmer lays widgets out visually using SWT layouts, which can only be set on composite widget and subclasses.
 
 The most common SWT layouts are:
-- `FillLayout`: lays widgets out in equal proportion horizontally or vertically with spacing/margin options
+- `FillLayout`: lays widgets out in equal proportion horizontally or vertically with spacing/margin options. This is the ***default*** layout for ***shell*** (with `:horizontal` option) in Glimmer.
 - `RowLayout`: lays widgets out horizontally or vertically in varying proportions with advanced spacing/margin/justify options
-- `GridLayout`(**default**): lays widgets out in a grid with advanced spacing/margin/alignment/indentation options. This is the **default** layout in Glimmer. It is important to master.
+- `GridLayout`: lays widgets out in a grid with advanced spacing/margin/alignment/indentation options. This is the **default** layout for **composite** in Glimmer. It is important to master.
 
 In Glimmer DSL, just like widgets, layouts can be specified with lowercase underscored names followed by a block containing properties, also lowercase underscored names (e.g. `RowLayout` is `row_layout`).
 

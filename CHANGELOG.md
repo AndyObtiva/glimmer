@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.4.2
+- Center window upon launching
+- Set window minimum width (130) upon launching
+- Support Shell constructor arguments
+- Provide an easy way to make windows unresizable
+
 ## 0.4.1
 - SWT Layout DSL support
 - SWT Layout Data DSL support

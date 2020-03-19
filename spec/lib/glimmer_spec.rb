@@ -17,15 +17,19 @@ describe Glimmer do
   include Glimmer
 
   before do
+    @rspec_display_method = method(:display)
+    self.class.send(:undef_method, :display)
     @target = nil
     dsl :swt
   end
 
 	after do
 		@target.display.dispose if @target.display
+    self.class.send(:define_method, :display, @rspec_display_method)
 	end
 
-  it "tests shell_with_default_layout" do
+  it "tests shell with no args having default layout and singleton display instance" do
+    @display = Glimmer::GDisplay.instance.display
     @target = shell
 
     expect(@target).to_not be_nil
@@ -33,6 +37,93 @@ describe Glimmer do
     expect(@target.widget).to be_instance_of(Shell)
     expect(@target.widget.getLayout).to_not be_nil
     expect(@target.widget.getLayout).to be_instance_of(FillLayout)
+    expect(@target.has_style?(:shell_trim)).to eq(true)
+    expect(@target.display).to eq(@display)
+  end
+
+  it "tests shell with one arg of unresizable style bit combination" do
+    @display = display.display #alternative syntax to grab default display instance
+    @target = shell(Glimmer::GSWT[:shell_trim] & (~Glimmer::GSWT[:resize]))
+
+    expect(@target).to_not be_nil
+    expect(@target.widget).to_not be_nil
+    expect(@target.widget).to be_instance_of(Shell)
+    expect(@target.has_style?(:close)).to eq(true)
+    expect(@target.has_style?(:title)).to eq(true)
+    expect(@target.has_style?(:min)).to eq(true)
+    expect(@target.has_style?(:max)).to eq(true)
+    expect(@target.has_style?(:resize)).to eq(false)
+    expect(@target.display).to eq(@display)
+  end
+
+  it "tests shell with one arg of convenience no_resize style bit" do
+    @target = shell(:no_resize)
+
+    expect(@target).to_not be_nil
+    expect(@target.widget).to_not be_nil
+    expect(@target.widget).to be_instance_of(Shell)
+    expect(@target.has_style?(:close)).to eq(true)
+    expect(@target.has_style?(:title)).to eq(true)
+    expect(@target.has_style?(:min)).to eq(true)
+    expect(@target.has_style?(:max)).to eq(true)
+    expect(@target.has_style?(:resize)).to eq(false)
+  end
+
+  it "tests shell with one arg of display" do
+    @display = Glimmer::GDisplay.instance.display
+    @target = shell(@display)
+
+    expect(@target).to_not be_nil
+    expect(@target.widget).to_not be_nil
+    expect(@target.widget).to be_instance_of(Shell)
+    expect(@target.widget.getLayout).to_not be_nil
+    expect(@target.widget.getLayout).to be_instance_of(FillLayout)
+    expect(@target.has_style?(:shell_trim)).to eq(true)
+    expect(@target.display).to eq(@display)
+  end
+
+  it "tests shell with two args of display and style bit" do
+    @display = Glimmer::GDisplay.instance.display
+    @target = shell(@display, :title)
+
+    expect(@target).to_not be_nil
+    expect(@target.widget).to_not be_nil
+    expect(@target.widget).to be_instance_of(Shell)
+    expect(@target.widget.getLayout).to_not be_nil
+    expect(@target.widget.getLayout).to be_instance_of(FillLayout)
+    expect(@target.display).to eq(@display)
+    expect(@target.has_style?(:close)).to eq(false)
+    expect(@target.has_style?(:title)).to eq(true)
+    expect(@target.has_style?(:min)).to eq(false)
+    expect(@target.has_style?(:max)).to eq(false)
+    expect(@target.has_style?(:resize)).to eq(false)
+  end
+
+  it "tests shell with one arg of parent shell" do
+    @target = shell
+    @dialog_shell = shell(@target.widget)
+
+    expect(@dialog_shell).to_not be_nil
+    expect(@dialog_shell.widget).to_not be_nil
+    expect(@dialog_shell.widget).to be_instance_of(Shell)
+    expect(@dialog_shell.widget.getLayout).to_not be_nil
+    expect(@dialog_shell.widget.getLayout).to be_instance_of(FillLayout)
+    expect(@dialog_shell.display).to eq(@target.display)
+    expect(@dialog_shell.has_style?(:dialog_trim)).to eq(true)
+  end
+
+  it "tests shell with two args of parent shell and style bit" do
+    @target = shell
+    @dialog_shell = shell(@target.widget, :title)
+
+    expect(@dialog_shell).to_not be_nil
+    expect(@dialog_shell.widget).to_not be_nil
+    expect(@dialog_shell.widget).to be_instance_of(Shell)
+    expect(@dialog_shell.widget.getLayout).to_not be_nil
+    expect(@dialog_shell.widget.getLayout).to be_instance_of(FillLayout)
+    expect(@dialog_shell.display).to eq(@target.display)
+    expect(@dialog_shell.has_style?(:dialog_trim)).to eq(false)
+    expect(@dialog_shell.has_style?(:title)).to eq(true)
   end
 
   it "tests shell_with_title_and_layout" do

@@ -41,6 +41,10 @@ module Glimmer
       @@default_initializers[underscored_widget_name].call(@widget) if @@default_initializers[underscored_widget_name]
     end
 
+    def has_style?(swt_style)
+      pd(pd(@widget.getStyle) & swt_style) == pd(swt_style)
+    end
+
     def has_attribute?(attribute_name, *args)
       @widget.respond_to?(attribute_setter(attribute_name), args)
     end

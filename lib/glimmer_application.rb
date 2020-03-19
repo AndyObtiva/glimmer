@@ -11,6 +11,8 @@ the glimmer ruby gem and SWT jar dependency.
 Example: glimmer hello_world.rb
 This runs the Glimmer application hello_world.rb
   MULTILINE
+  GLIMMER_LIB_LOCAL = File.expand_path(File.join(__FILE__, '..', 'glimmer.rb'))
+  GLIMMER_LIB_GEM = 'glimmer'
 
   class << self
     def platform_os
@@ -29,13 +31,29 @@ This runs the Glimmer application hello_world.rb
       "#{jruby_os_specific_options} -J-classpath \"#{swt_jar_file}\""
     end
 
-    def launch(application)
-      system "jruby #{jruby_command_options} -r glimmer -S #{application}"
+    def launch(application, dev_mode = false)
+      glimmer_lib = GLIMMER_LIB_GEM
+      if dev_mode
+        glimmer_lib = GLIMMER_LIB_LOCAL
+      else
+        begin
+          # ensure availability of gem or otherwise assume local library in development
+          require 'glimmer'
+        rescue LoadError
+          glimmer_lib = GLIMMER_LIB_LOCAL
+          dev_mode = true
+        end
+      end
+      if dev_mode
+        puts "[DEVELOPMENT MODE] (#{glimmer_lib})"
+      end
+      system "jruby #{jruby_command_options} -r #{glimmer_lib} -S #{application}"
     end
   end
 
-  def initialize(application_path)
-    @application_path = application_path
+  def initialize(options)
+    @dev_mode = !!options.delete('--dev')
+    @application_path = options.first
   end
 
   def start
@@ -47,8 +65,8 @@ This runs the Glimmer application hello_world.rb
   end
 
   def launch_application
-    puts "Launching Glimmer Application: #{@application_path}"
-    self.class.launch(@application_path)
+    puts "Launching Glimmer Application: #{@application_path}" unless @application_path == 'irb'
+    self.class.launch(@application_path, @dev_mode)
   end
 
   def display_usage

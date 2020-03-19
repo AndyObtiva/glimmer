@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 
 require_relative File.join('..', 'lib', 'glimmer_application')
-GlimmerApplication.new(ARGV.first).start
+GlimmerApplication.new(ARGV).start

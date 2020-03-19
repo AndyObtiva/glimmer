@@ -13,6 +13,18 @@ module Glimmer
         expect(GSWT.constant(:selection)).to eq(SWT::Selection)
       end
 
+      it 'returns SWT constant value for symbol representing an SWT constant that is not all caps when not specified in lower case' do
+        expect(GSWT.constant(:Resize)).to eq(SWT::Resize)
+      end
+
+      it 'returns SWT constant value for symbol representing an SWT constant that is all caps when specified in lower case' do
+        expect(GSWT.constant(:resize)).to eq(SWT::RESIZE)
+      end
+
+      it 'returns SWT constant value for symbol representing an extra SWT constant added in Glimmer for convenience' do
+        expect(GSWT.constant(:no_resize)).to eq(GSWT[:shell_trim] & (~GSWT[:resize]))
+      end
+
       it 'returns SWT constant value for string' do
         expect(GSWT.constant('border')).to eq(SWT::BORDER)
       end
