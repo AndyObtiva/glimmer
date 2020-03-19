@@ -27,28 +27,18 @@ Otherwise, `rake` or `rake spec` runs all specs.
 
 ### glimmer command
 
-To run a glimmer sample, run local `bin/glimmer` command with `--dev` option to ensure loading glimmer library from local cloned project instead of installed gem:
+To run a glimmer sample, run local `bin/glimmer` command with `--dev` option to ensure loading glimmer library from local cloned project instead of ruby gem:
 ```
 bin/glimmer --dev samples/hello_world.rb
-```
-
-If `glimmer` gem is not installed, then you may simply run:
-```
-bin/glimmer samples/hello_world.rb
 ```
 
 It will notify you that you are in development mode.
 
 ### girb command
 
-To experiment with glimmer syntax using `girb`, run local `bin/girb` command with `--dev` option to ensure loading glimmer library from local cloned project instead of installed gem:
+To experiment with glimmer syntax using `girb`, run local `bin/girb` command with `--dev` option to ensure loading glimmer library from local cloned project instead of ruby gem:
 ```
 bin/girb --dev
-```
-
-If `glimmer` gem is not installed, then you may simply run:
-```
-bin/glimmer samples/hello_world.rb
 ```
 
 It will notify you that you are in development mode.

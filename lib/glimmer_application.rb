@@ -35,16 +35,6 @@ This runs the Glimmer application hello_world.rb
       glimmer_lib = GLIMMER_LIB_GEM
       if dev_mode
         glimmer_lib = GLIMMER_LIB_LOCAL
-      else
-        begin
-          # ensure availability of gem or otherwise assume local library in development
-          require 'glimmer'
-        rescue LoadError
-          glimmer_lib = GLIMMER_LIB_LOCAL
-          dev_mode = true
-        end
-      end
-      if dev_mode
         puts "[DEVELOPMENT MODE] (#{glimmer_lib})"
       end
       system "jruby #{jruby_command_options} -r #{glimmer_lib} -S #{application}"

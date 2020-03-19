@@ -172,15 +172,6 @@ list(:multi) { # SWT styles go inside ()
 Passing `:multi` to `list` widget enables list element multi-selection.
 
 ```ruby
-shell(:no_resize) {
-  # ...
-}
-```
-
-Passing `:no_resize` to `shell` creates an unresizable window shell.
-
-
-```ruby
 composite(:border) { # SWT styles go inside ()
   # ...
 }
@@ -214,15 +205,6 @@ https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/
 When building a widget-related SWT object manually (e.g. `GridData.new(...)`), you are expected to use `SWT::CONSTANT` directly or BIT-OR a few SWT constants together like `SWT::BORDER | SWT::V_SCROLL`.
 
 Glimmer facilitates that with `GSWT` class by allowing you to pass multiple styles as an argument array of symbols instead of dealing with BIT-OR. For example: `GSWT[:border, :v_scroll]`
-
-**Unresizable Window**
-
-SWT Shell widget by default is resizable. To make it not resizable, one must pass a complicated style bit concoction `GSWT[:shell_trim] & (~GSWT[:resize])`.
-
-Glimmer makes this easier by alternatively offering `:no_resize` style, which is extra to SWT default styles, added for convenience. This makes declaring an unresizable window as easy as:
-```ruby
-shell(:no_resize)
-```
 
 ### Widget Properties
 
