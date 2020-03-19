@@ -16,7 +16,7 @@ module Glimmer
         SWT.const_get(swt_constant_symbol)
       rescue
         begin
-          alternative_swt_constant_symbol = SWT.constants.find {|c| c.to_s.upcase == swt_constant_symbol.to_s}
+          alternative_swt_constant_symbol = SWT.constants.find {|c| c.to_s.upcase == swt_constant_symbol.to_s.upcase}
           SWT.const_get(alternative_swt_constant_symbol)
         rescue
           EXTRA_STYLES[swt_constant_symbol] || symbol
@@ -31,9 +31,20 @@ module Glimmer
       def constantify_args(args)
         args.map {|arg| constant(arg)}
       end
+
+      # Deconstructs a style integer into symbols
+      # Useful for debugging
+      def deconstruct(integer)
+        SWT.constants.reduce([]) do |found, c|
+          constant_value = SWT.const_get(c) rescue -1
+          is_found = constant_value.is_a?(Integer) && (constant_value & style) == constant_value
+          is_found ? found += [c] : found
+        end
+      end
     end
+    
     EXTRA_STYLES = {
-      NO_RESIZE: GSWT[:shell_trim] & (~GSWT[:resize])
+      NO_RESIZE: GSWT[:shell_trim] & (~GSWT[:resize]) & (~GSWT[:max])
     }
   end
 end

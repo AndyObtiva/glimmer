@@ -206,6 +206,17 @@ When building a widget-related SWT object manually (e.g. `GridData.new(...)`), y
 
 Glimmer facilitates that with `GSWT` class by allowing you to pass multiple styles as an argument array of symbols instead of dealing with BIT-OR. For example: `GSWT[:border, :v_scroll]`
 
+**Non-resizable Window**
+
+SWT Shell widget by default is resizable. To make it non-resizable, one must pass a complicated style bit concoction like `GSWT[:shell_trim] & (~GSWT[:resize]) & (~GSWT[:max])`.
+
+Glimmer makes this easier by alternatively offering `:no_resize` extra SWT style, added for convenience. This makes declaring an non-resizable window as easy as:
+```ruby
+shell(:no_resize) {
+  # ...
+}
+```
+
 ### Widget Properties
 
 Widget properties such as value, enablement, and layout details are set within the widget block using methods matching SWT widget property names in lower snakecase. You may refer to SWT widget guide for details on available widget properties:

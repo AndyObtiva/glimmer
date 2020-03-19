@@ -11,7 +11,7 @@ module Glimmer
 
     attr_reader :display
 
-    # Instantiates shell with same arguments expected by SWT Shell 
+    # Instantiates shell with same arguments expected by SWT Shell
     def initialize(*args)
       if !args.first.is_a?(Display) && !args.first.is_a?(Shell)
         @display = GDisplay.instance.display

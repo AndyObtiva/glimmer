@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.4.3
+- Provide an easy way to make windows non-resizable
+
 ## 0.4.2
 - Center window upon opening
 - Set window minimum width (130) upon opening
