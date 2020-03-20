@@ -44,6 +44,16 @@ module Glimmer
       expect(font_datum.getStyle).to eq(GSWT[:bold, :italic])
     end
 
+    it "fails with a friendly message when label is given an invalid font style" do
+      @target = shell {
+        label {
+          expect {
+            font style: :deco
+          }.to raise_error("deco is an invalid font style! Valid values are :normal, :bold, and :italic")
+        }
+      }
+    end
+
     it "tests label with specified font style as SWT constant" do
       @target = shell {
         @label = label {

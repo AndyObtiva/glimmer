@@ -5,8 +5,7 @@ Here is a list of tasks to do (please delete once done):
 ## Next
 
 - [DONE] Shorten needed :color_xyz symbols for known widget color properties to :xyz
-- Verify nested data binding works with tables/trees/combos
-- Good error message for bad font style (not normal, bold, italic)
+- [DONE] Good error message for bad font style (not normal, bold, italic)
 - Support a single computed data binding as a string (not array)
 
 
@@ -34,3 +33,4 @@ a new component and extend the DSL with it
 - Build a sample demonstrating how to use Glimmer from Java only for the View layer in a desktop MVC SWT app
 - Support data binding translator option via a block
 - Consider using Ruby Refinements for Glimmer
+- Verify nested data binding works with tables/trees/combos

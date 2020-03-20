@@ -2,6 +2,8 @@ require_relative 'g_swt'
 
 module Glimmer
   class GFont
+    ERROR_INVALID_FONT_STYLE = " is an invalid font style! Valid values are :normal, :bold, and :italic"
+    FONT_STYLES = [:normal, :bold, :italic]
     include_package 'org.eclipse.swt.graphics'
 
     extend Glimmer
@@ -51,12 +53,21 @@ module Glimmer
     end
 
     def font(font_properties)
+      detect_invalid_font_property(font_properties)
       font_properties[:style] = GSWT[*font_properties[:style]]
       font_data_args = [:name, :height, :style].map do |font_property_name|
         font_properties[font_property_name] || send(font_property_name)
       end
       font_datum = FontData.new(*font_data_args)
       Font.new(@display, font_datum)
+    end
+
+    def detect_invalid_font_property(font_properties)
+      [font_properties[:style]].flatten.select do |style|
+        style.is_a?(Symbol) || style.is_a?(String)
+      end.each do |style|
+        raise style.to_s + ERROR_INVALID_FONT_STYLE if !FONT_STYLES.include?(style.to_sym)
+      end
     end
   end
 end
