@@ -26,6 +26,14 @@ module Glimmer
 
         attr_accessor :owner
       end
+
+      class CompanyGroup
+        def initialize
+          @companies = []
+        end
+
+        attr_accessor :companies
+      end
     end
 
     after do
@@ -60,35 +68,48 @@ module Glimmer
       company = Company.new
       company.owner = manager
 
+      company_group = CompanyGroup.new
+      company_group.companies << company
+
       @target = shell {
         @tree = tree(:virtual, :border) {
           items bind(company, :owner), tree_properties(children: :people, text: :name)
         }
+        @tree_nested_indexed = tree(:virtual, :border) {
+          items bind(company_group, "companies[0].owner"), tree_properties(children: :people, text: :name)
+        }
       }
 
       expect(@tree.widget.getItems.size).to eq(1)
+      expect(@tree_nested_indexed.widget.getItems.size).to eq(1)
 
-      rootNode = @tree.widget.getItems[0]
-      expect(rootNode.getText()).to eq("Tim Harkins")
+      root_node = @tree.widget.getItems[0]
+      expect(root_node.getText()).to eq("Tim Harkins")
 
-      expect(rootNode.getItems.size).to eq(2)
-      node1 = rootNode.getItems[0]
-      node2 = rootNode.getItems[1]
+      expect(root_node.getItems.size).to eq(2)
+      node1 = root_node.getItems[0]
+      node2 = root_node.getItems[1]
       expect(node1.getText()).to eq("Bruce Ting")
       expect(node2.getText()).to eq("Julia Fang")
 
       manager.name = "Tim Lee Harkins"
 
-      rootNode = @tree.widget.getItems[0]
-      expect(rootNode.getText()).to eq("Tim Lee Harkins")
+      root_node = @tree.widget.getItems[0]
+      expect(root_node.getText()).to eq("Tim Lee Harkins")
+      root_node_nested_indexed = @tree_nested_indexed.widget.getItems[0]
+      expect(root_node_nested_indexed.getText()).to eq("Tim Lee Harkins")
 
       person1.name = "Bruce A. Ting"
       node1 = @tree.widget.getItems.first.getItems.first
       expect(node1.getText()).to eq("Bruce A. Ting")
+      node1_nested_indexed = @tree_nested_indexed.widget.getItems.first.getItems.first
+      expect(node1_nested_indexed.getText()).to eq("Bruce A. Ting")
 
       person2.name = "Julia Katherine Fang"
       node2 = @tree.widget.getItems.first.getItems.last
       expect(node2.getText()).to eq("Julia Katherine Fang")
+      node2_nested_indexed = @tree_nested_indexed.widget.getItems.first.getItems.last
+      expect(node2_nested_indexed.getText()).to eq("Julia Katherine Fang")
 
       person3 = Person.new
       person3.name = "Bob David Kennith"
@@ -98,21 +119,29 @@ module Glimmer
       manager.people << person3
       manager.people = manager.people
 
-      rootNode = @tree.widget.getItems.first
-      expect(rootNode.getItems.size).to eq(3)
-      node3 = rootNode.getItems.last
+      root_node = @tree.widget.getItems.first
+      expect(root_node.getItems.size).to eq(3)
+      node3 = root_node.getItems.last
       expect(node3.getText()).to eq("Bob David Kennith")
+      root_node_nested_indexed = @tree_nested_indexed.widget.getItems.first
+      expect(root_node_nested_indexed.getItems.size).to eq(3)
+      node3_nested_indexed = root_node_nested_indexed.getItems.last
+      expect(node3_nested_indexed.getText()).to eq("Bob David Kennith")
 
       manager.people.delete_at(0)
 
-      rootNode = @tree.widget.getItems.first
-      expect(rootNode.getItems.size).to eq(2)
-      node1 = rootNode.getItems.first
-      node2 = rootNode.getItems.last
+      root_node = @tree.widget.getItems.first
+      expect(root_node.getItems.size).to eq(2)
+      node1 = root_node.getItems.first
+      node2 = root_node.getItems.last
       expect(node1.getText()).to eq("Julia Katherine Fang")
       expect(node2.getText()).to eq("Bob David Kennith")
-
+      root_node_nested_indexed = @tree_nested_indexed.widget.getItems.first
+      expect(root_node_nested_indexed.getItems.size).to eq(2)
+      node1_nested_indexed = root_node_nested_indexed.getItems.first
+      node2_nested_indexed = root_node_nested_indexed.getItems.last
+      expect(node1_nested_indexed.getText()).to eq("Julia Katherine Fang")
+      expect(node2_nested_indexed.getText()).to eq("Bob David Kennith")
     end
-
   end
 end

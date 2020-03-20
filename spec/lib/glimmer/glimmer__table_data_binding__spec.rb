@@ -7,6 +7,14 @@ module Glimmer
     before do
       dsl :swt
 
+      class PersonCommunity
+        attr_accessor :groups
+
+        def initialize
+          @groups = []
+        end
+      end
+
       class PersonGroup
         attr_accessor :people
 
@@ -41,6 +49,9 @@ module Glimmer
       group.people << person1
       group.people << person2
 
+      community = PersonCommunity.new
+      community.groups << group
+
       @target = shell {
         @table = table {
           table_column {
@@ -57,6 +68,21 @@ module Glimmer
           }
           items bind(group, :people), column_properties(:name, :age, :adult)
         }
+        @table_nested_indexed = table {
+          table_column {
+            text "Name"
+            width 120
+          }
+          table_column {
+            text "Age"
+            width 120
+          }
+          table_column {
+            text "Adult"
+            width 120
+          }
+          items bind(community, "groups[0].people"), column_properties(:name, :age, :adult)
+        }
       }
 
       expect(@table.widget.getColumnCount).to eq(3)
@@ -69,6 +95,17 @@ module Glimmer
       expect(@table.widget.getItems[1].getText(0)).to eq("Julia Fang")
       expect(@table.widget.getItems[1].getText(1)).to eq("17")
       expect(@table.widget.getItems[1].getText(2)).to eq("false")
+
+      expect(@table_nested_indexed.widget.getColumnCount).to eq(3)
+      expect(@table_nested_indexed.widget.getItems.size).to eq(2)
+
+      expect(@table_nested_indexed.widget.getItems[0].getText(0)).to eq("Bruce Ting")
+      expect(@table_nested_indexed.widget.getItems[0].getText(1)).to eq("45")
+      expect(@table_nested_indexed.widget.getItems[0].getText(2)).to eq("true")
+
+      expect(@table_nested_indexed.widget.getItems[1].getText(0)).to eq("Julia Fang")
+      expect(@table_nested_indexed.widget.getItems[1].getText(1)).to eq("17")
+      expect(@table_nested_indexed.widget.getItems[1].getText(2)).to eq("false")
 
       person3 = Person.new
       person3.name = "Andrea Shingle"

@@ -2,6 +2,10 @@
 
 ## 0.4.3
 - Provide an easy way to make windows non-resizable
+- Shorten needed :color_xyz symbols for known widget color properties like background and foreground to :xyz
+- Friendly error message for passing a bad widget property font style (not normal, bold, italic)
+- Friendly error message for passing a bad SWT style in general
+- Support a single computed data binding as a string (not array)
 
 ## 0.4.2
 - Center window upon opening
