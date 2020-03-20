@@ -480,21 +480,24 @@ Data-binding examples:
 - `text bind(contact, :first_name)`
 - `text bind(contact, 'address.street')`
 - `text bind(contact, 'addresses[1].street')`
+- `text bind(contact, :age, computed_by: :date_of_birth)`
 - `text bind(contact, :name, computed_by: [:first_name, :last_name])`
 - `text bind(contact, 'profiles[0].name', computed_by: ['profiles[0].first_name', 'profiles[0].last_name'])`
 
-The first example binds the text property of a widget like `label` to the first name of a contact model.
+The 1st example binds the text property of a widget like `label` to the first name of a contact model.
 
-The second example binds the text property of a widget like `label` to the nested street of
+The 2nd example binds the text property of a widget like `label` to the nested street of
 the address of a contact. This is called nested property data binding.
 
-The third example binds the text property of a widget like `label` to the nested indexed address street of a contact. This is called nested indexed property data binding.
+The 3rd example binds the text property of a widget like `label` to the nested indexed address street of a contact. This is called nested indexed property data binding.
 
-The fourth example demonstrates computed value data binding whereby the value of `name` depends on changes to both `first_name` and `last_name`.
+The 4th example demonstrates computed value data binding whereby the value of `age` depends on changes to `date_of_birth`.
 
-The fifth example demonstrates nested indexed computed value data binding whereby the value of `profiles[0].name` depends on changes to both nested `profiles[0].first_name` and `profiles[0].last_name`.
+The 5th example demonstrates computed value data binding whereby the value of `name` depends on changes to both `first_name` and `last_name`.
 
-You may learn more about Glimmer's syntax by reading the Eclipse Zone Tutorial mentioned in resources and opening up the samples under the `samples` folder.
+The 6th example demonstrates nested indexed computed value data binding whereby the value of `profiles[0].name` depends on changes to both nested `profiles[0].first_name` and `profiles[0].last_name`.
+
+You may learn more about Glimmer's syntax by reading the Eclipse Zone Tutorial mentioned in resources and opening up the samples under the [samples](https://github.com/AndyObtiva/glimmer/tree/master/samples) directory.
 
 ### Observer
 
@@ -568,15 +571,21 @@ end
 
 ## Samples
 
-Check the "[samples](https://github.com/AndyObtiva/glimmer/tree/master/samples)" folder for examples on how to write Glimmer applications. To run a sample, make sure to install the `glimmer` gem first and then use the `glimmer` command to run it (alternatively, you may clone the repo, follow contributing instructions, and run `rake install` to install the gem before running `glimmer` command).
+Check the [samples](https://github.com/AndyObtiva/glimmer/tree/master/samples) directory for examples on how to write Glimmer applications. To run a sample, make sure to install the `glimmer` gem first and then use the `glimmer` command to run it (alternatively, you may clone the repo, follow [CONTRIBUTING.md](https://github.com/AndyObtiva/glimmer/blob/master/CONTRIBUTING.md) instructions, and run samples locally with development glimmer command: `bin/glimmer --dev`).
 
-Example:
+Examples:
 
 ```
-glimmer samples/hello_world.rb
+glimmer samples/hello_tab.rb
+glimmer samples/hello_combo.rb
+glimmer samples/hello_list_single_selection.rb
+glimmer samples/hello_list_multi_selection.rb
+glimmer samples/contactmanager/contact_manager.rb
 ```
 
-Here is also a more elaborate project (educational game) built with Glimmer:
+The last example (`contact_manager.rb`) is a good sample about how to build tables with Glimmer including data-binding, filtering, and sorting. It even comes with specs in `spec/samples/contactmanager/contact_manager_presenter_spec.rb` to demonstrate how Glimmer facilitates TDD (test-driven development) with the Model View Presenter pattern (a variation on MVC) by separating testable presentation logic from the view layer with data-binding.
+
+For a more elaborate project built with Glimmer, check out this educational game:
 
 [Math Bowling](https://github.com/AndyObtiva/MathBowling)
 

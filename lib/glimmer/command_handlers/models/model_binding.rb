@@ -74,10 +74,10 @@ module Glimmer
       @property_name_expression
     end
     def computed?
-      !!computed_by
+      !computed_by.empty?
     end
     def computed_by
-      @binding_options[:computed_by]
+      [@binding_options[:computed_by]].flatten.compact
     end
     def computed_binding_options
       @binding_options.reject {|k,v| k == :computed_by}

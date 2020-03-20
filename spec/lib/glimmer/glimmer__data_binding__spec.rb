@@ -156,7 +156,7 @@ module Glimmer
       @target = shell {
         composite {
           @label = label {
-            text bind(person, :age, :fixnum, computed_by: [:year_of_birth])
+            text bind(person, :age, :fixnum, computed_by: :year_of_birth)
           }
         }
       }
