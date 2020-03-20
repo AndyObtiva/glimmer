@@ -52,21 +52,35 @@ module Glimmer
       'color_red',
       'color_white',
       'color_yellow',
+      :black,
+      :blue,
+      :cyan,
+      :green,
+      'magenta',
+      'red',
+      'white',
+      'yellow',
     ].each do |standard_color|
       it "tests label with standard #{standard_color} background color passed as a Ruby symbol" do
         @target = shell {
           @label = label {
             background standard_color
+            foreground standard_color
           }
         }
 
-        color = @label.widget.getBackground
-        swt_color_constant = GSWT[standard_color]
+        background = @label.widget.getBackground
+        foreground = @label.widget.getForeground
+        swt_color_constant = GSWT['color_' + standard_color.to_s.sub(/^color_/, '')]
         expected_color = @target.display.getSystemColor(swt_color_constant)
-        expect(color.getRed).to eq(expected_color.getRed)
-        expect(color.getGreen).to eq(expected_color.getGreen)
-        expect(color.getBlue).to eq(expected_color.getBlue)
-        expect(color.getAlpha).to eq(expected_color.getAlpha)
+        expect(background.getRed).to eq(expected_color.getRed)
+        expect(background.getGreen).to eq(expected_color.getGreen)
+        expect(background.getBlue).to eq(expected_color.getBlue)
+        expect(background.getAlpha).to eq(expected_color.getAlpha)
+        expect(foreground.getRed).to eq(expected_color.getRed)
+        expect(foreground.getGreen).to eq(expected_color.getGreen)
+        expect(foreground.getBlue).to eq(expected_color.getBlue)
+        expect(foreground.getAlpha).to eq(expected_color.getAlpha)
       end
     end
 

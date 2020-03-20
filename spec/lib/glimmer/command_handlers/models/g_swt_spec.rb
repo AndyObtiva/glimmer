@@ -22,7 +22,7 @@ module Glimmer
       end
 
       it 'returns SWT constant value for symbol representing an extra SWT constant added in Glimmer for convenience' do
-        expect(GSWT.constant(:no_resize)).to eq(GSWT[:shell_trim] & (~GSWT[:resize]))
+        expect(GSWT.constant(:no_resize)).to eq(GSWT[:shell_trim] & (~GSWT[:resize]) & (~GSWT[:max]))
       end
 
       it 'returns SWT constant value for string' do

@@ -55,10 +55,20 @@ module Glimmer
     end
 
     def property_type_converters
+      color_converter = Proc.new do |value|
+        if (value.is_a?(Symbol) || value.is_a?(String))
+          color_string = value.to_s.downcase
+          color_string.start_with?('color_') ? value : "color_#{color_string}"
+        else
+          value
+        end
+      end
       @property_type_converters ||= {
         :text => Proc.new { |value| value.to_s },
         :items => Proc.new { |value| value.to_java :string},
         :visible => Proc.new { |value| !!value},
+        :background => color_converter,
+        :foreground => color_converter,
         :font => Proc.new do |value|
           if value.is_a?(Hash)
             font_properties = value

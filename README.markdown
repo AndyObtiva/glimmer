@@ -426,16 +426,20 @@ label {
 }
 ```
 
-SWT also supports all standard colors available as constants under the `SWT` namespace (e.g. `SWT::COLOR_BLUE`)
+SWT also supports standard colors available as constants under the `SWT` namespace with the `COLOR_` prefix (e.g. `SWT::COLOR_BLUE`, `SWT::COLOR_WHITE`, `SWT::COLOR_RED`)
 
-Glimmer accepts these constants as Ruby symbols prefixed by `color_`.
+Glimmer accepts these constants as lowercase Ruby symbols with or without `color_` prefix.
 
 Example:
 
 ```ruby
 label {
+  background :black
+  foreground :yellow
+}
+label {
   background :color_white
-  foreground :color_black
+  foreground :color_red
 }
 ```
 

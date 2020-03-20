@@ -65,7 +65,7 @@ describe Glimmer do
     expect(@target.has_style?(:close)).to eq(true)
     expect(@target.has_style?(:title)).to eq(true)
     expect(@target.has_style?(:min)).to eq(true)
-    expect(@target.has_style?(:max)).to eq(true)
+    expect(@target.has_style?(:max)).to eq(false)
     expect(@target.has_style?(:resize)).to eq(false)
   end
 
