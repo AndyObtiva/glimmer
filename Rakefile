@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'bundler'
 require 'os'
-require_relative 'lib/glimmer_application'
+require_relative 'lib/glimmer/launcher'
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -37,7 +37,7 @@ require 'rspec/core'
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = FileList['spec/**/*_spec.rb']
-  spec.ruby_opts = ["-Xcli.debug=true --debug #{GlimmerApplication.jruby_command_options}"]
+  spec.ruby_opts = ["-Xcli.debug=true --debug #{Glimmer::Launcher.jruby_command_options}"]
 end
 
 task :default => :spec

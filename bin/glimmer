@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
 
-require_relative File.join('..', 'lib', 'glimmer_application')
-GlimmerApplication.new(ARGV).start
+require_relative '../lib/glimmer/launcher'
+
+Glimmer::Launcher.new(ARGV).launch

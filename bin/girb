@@ -1,3 +1,5 @@
 #!/usr/bin/env ruby
-require_relative '../lib/glimmer_application'
-GlimmerApplication.new(ARGV + ['irb']).start
+
+require_relative '../lib/glimmer/launcher'
+
+Glimmer::Launcher.new(['irb'] + ARGV).launch
