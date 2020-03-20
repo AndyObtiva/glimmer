@@ -61,6 +61,12 @@ module Glimmer
           expect(GSWT[]).to eq(SWT::NONE)
         end
       end
+
+      context 'bad arguments' do
+        it 'displays a friendly error message' do
+          expect {GSWT[:bold, :beautiful]}.to raise_error("beautiful is an invalid SWT style! Please choose a style from org.eclipse.swt.SWT class constants.")
+        end
+      end
     end
   end
 end

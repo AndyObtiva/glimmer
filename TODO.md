@@ -5,7 +5,8 @@ Here is a list of tasks to do (please delete once done):
 ## Next
 
 - [DONE] Shorten needed :color_xyz symbols for known widget color properties to :xyz
-- [DONE] Good error message for bad font style (not normal, bold, italic)
+- [DONE] Friendly error message for bad font style (not normal, bold, italic)
+- [DONE] Friendly error message for bad SWT style
 - Support a single computed data binding as a string (not array)
 
 

@@ -1,14 +1,27 @@
 module Glimmer
   class GSWT
     class << self
+      ERROR_INVALID_STYLE = " is an invalid SWT style! Please choose a style from org.eclipse.swt.SWT class constants."
       java_import 'org.eclipse.swt.SWT'
 
       # Gets SWT constants as if calling SWT::CONSTANT where constant is
       # passed in as a lower case symbol
       def [](*symbols)
-        symbols.compact.reduce(0) { |output, symbol| output | constant(symbol) }
+        symbols.compact.reduce(0) do |output, symbol|
+          constant_value = constant(symbol)
+          if constant_value.is_a?(Integer)
+            output | constant(symbol)
+          else
+            raise symbol.to_s + ERROR_INVALID_STYLE
+          end
+        end
       end
 
+      # Returns SWT style integer value for passed in symbol or allows
+      # passed in object to pass through (e.g. Integer). This makes is convenient
+      # to use symbols or actual SWT style integers in Glimmer
+      # Does not raise error for invalid values. Just lets them pass as is.
+      # (look into [] operator if you want an error raised on invalid values)
       def constant(symbol)
         return symbol unless symbol.is_a?(Symbol) || symbol.is_a?(String)
         symbol_string = symbol.to_s
@@ -42,7 +55,7 @@ module Glimmer
         end
       end
     end
-    
+
     EXTRA_STYLES = {
       NO_RESIZE: GSWT[:shell_trim] & (~GSWT[:resize]) & (~GSWT[:max])
     }
