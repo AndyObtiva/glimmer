@@ -30,3 +30,4 @@ a new component and extend the DSL with it
 - Consider using Ruby Refinements for Glimmer
 - Simplify API for add_contents (putting directly on widgets)
 - Simplify API for async_exec and sync_exec (putting directly on Glimmer)
+- Restore badges for README
