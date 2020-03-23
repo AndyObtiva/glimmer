@@ -1,11 +1,13 @@
 module Glimmer
-  class NodeVisitor
-    def process_before_children
-      raise "must be implemented by a class"
-    end
+  module XML
+    class NodeVisitor
+      def process_before_children
+        raise "must be implemented by a class"
+      end
 
-    def process_after_children
-      raise "must be implemented by a class"
+      def process_after_children
+        raise "must be implemented by a class"
+      end
     end
   end
 end

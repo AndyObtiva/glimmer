@@ -2,36 +2,38 @@ require_relative 'g_swt'
 require_relative 'g_display'
 
 module Glimmer
-  class GColor
-    attr_reader :display, :red, :green, :blue, :alpha
+  module SWT
+    class GColor
+      attr_reader :display, :red, :green, :blue, :alpha
 
-    include_package 'org.eclipse.swt.graphics'
+      include_package 'org.eclipse.swt.graphics'
 
-    class << self
-      include_package 'org.eclipse.swt'
+      class << self
+        include_package 'org.eclipse.swt'
 
-      def color_for(display = nil, standard_color)
-        standard_color = "color_#{standard_color}".to_sym unless standard_color.to_s.include?('color_')
-        display ||= GDisplay.instance.display
-        display.getSystemColor(GSWT[standard_color])
+        def color_for(display = nil, standard_color)
+          standard_color = "color_#{standard_color}".to_sym unless standard_color.to_s.include?('color_')
+          display ||= GDisplay.instance.display
+          display.getSystemColor(GSWT[standard_color])
+        end
       end
-    end
 
-    def initialize(display, red, green, blue, alpha = nil)
-      @display = display
-      @red = red
-      @green = green
-      @blue = blue
-      @alpha = alpha
-    end
+      def initialize(display, red, green, blue, alpha = nil)
+        @display = display
+        @red = red
+        @green = green
+        @blue = blue
+        @alpha = alpha
+      end
 
-    def color
-      @color ||= Color.new(@display, *[@red, @green, @blue, @alpha].compact)
-    end
+      def color
+        @color ||= Color.new(@display, *[@red, @green, @blue, @alpha].compact)
+      end
 
-    def display=(a_display)
-      @display = a_display
-      @color = nil
+      def display=(a_display)
+        @display = a_display
+        @color = nil
+      end
     end
   end
 end

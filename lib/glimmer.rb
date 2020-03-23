@@ -9,7 +9,7 @@ require "super_module"
 require "logger"
 require "java"
 require_relative "glimmer/parent"
-require_relative "glimmer/swt_packages"
+require_relative "glimmer/swt_packages" #TODO move into SWT namespace
 require_relative "glimmer/swt/custom_widget"
 
 module Glimmer
@@ -64,5 +64,5 @@ module Glimmer
 end
 
 # Command handlers may rely on Glimmer, so this is put here to avoid an infinite loop.
-require File.dirname(__FILE__) + "/glimmer/xml_command_handlers"
-require File.dirname(__FILE__) + "/glimmer/command_handlers"
+require File.dirname(__FILE__) + "/glimmer/xml_command_handlers" #TODO move into namespace
+require File.dirname(__FILE__) + "/glimmer/command_handlers" #TODO move into namespace

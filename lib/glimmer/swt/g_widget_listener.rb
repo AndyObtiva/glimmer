@@ -1,11 +1,12 @@
 module Glimmer
-  class GWidgetListener
+  module SWT
+    class GWidgetListener
 
-    attr_reader :listener
+      attr_reader :listener
 
-    def initialize(listener)
-      @listener = listener
+      def initialize(listener)
+        @listener = listener
+      end      
     end
-
   end
 end

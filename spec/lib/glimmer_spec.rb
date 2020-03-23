@@ -29,7 +29,7 @@ describe Glimmer do
 	end
 
   it "tests shell with no args having default layout and singleton display instance" do
-    @display = Glimmer::GDisplay.instance.display
+    @display = Glimmer::SWT::GDisplay.instance.display
     @target = shell
 
     expect(@target).to_not be_nil
@@ -43,7 +43,7 @@ describe Glimmer do
 
   it "tests shell with one arg of unresizable style bit combination" do
     @display = display.display #alternative syntax to grab default display instance
-    @target = shell(Glimmer::GSWT[:shell_trim] & (~Glimmer::GSWT[:resize]))
+    @target = shell(Glimmer::SWT::GSWT[:shell_trim] & (~Glimmer::SWT::GSWT[:resize]))
 
     expect(@target).to_not be_nil
     expect(@target.widget).to_not be_nil
@@ -70,7 +70,7 @@ describe Glimmer do
   end
 
   it "tests shell with one arg of display" do
-    @display = Glimmer::GDisplay.instance.display
+    @display = Glimmer::SWT::GDisplay.instance.display
     @target = shell(@display)
 
     expect(@target).to_not be_nil
@@ -83,7 +83,7 @@ describe Glimmer do
   end
 
   it "tests shell with two args of display and style bit" do
-    @display = Glimmer::GDisplay.instance.display
+    @display = Glimmer::SWT::GDisplay.instance.display
     @target = shell(@display, :title)
 
     expect(@target).to_not be_nil
