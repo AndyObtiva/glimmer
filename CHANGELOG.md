@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.4
+- Glimmer Custom Widget support
+- Support --debug flag
+
 ## 0.4.3
 - Provide an easy way to make windows non-resizable
 - Shorten needed :color_xyz symbols for known widget color properties like background and foreground to :xyz

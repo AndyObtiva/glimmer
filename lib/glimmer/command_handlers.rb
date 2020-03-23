@@ -16,6 +16,7 @@ require_relative "command_handlers/table_column_properties_data_binding_command_
 require_relative "command_handlers/data_binding_command_handler"
 require_relative "command_handlers/property_command_handler"
 require_relative "command_handlers/widget_command_handler"
+require_relative "command_handlers/custom_widget_command_handler"
 
 module Glimmer
   # edit to add more command handlers and extend Glimmer
@@ -36,6 +37,7 @@ module Glimmer
     DataBindingCommandHandler.new,
     ColorCommandHandler.new,
     PropertyCommandHandler.new,
-    WidgetCommandHandler.new
+    WidgetCommandHandler.new,
+    CustomWidgetCommandHandler.new
   )
 end

@@ -56,9 +56,8 @@ module Glimmer
 
     def property_type_converters
       color_converter = Proc.new do |value|
-        if (value.is_a?(Symbol) || value.is_a?(String))
-          color_string = value.to_s.downcase
-          color_string.start_with?('color_') ? value : "color_#{color_string}"
+        if value.is_a?(Symbol) || value.is_a?(String)
+          GColor.color_for(widget.getDisplay, value)
         else
           value
         end
@@ -86,10 +85,7 @@ module Glimmer
         converter = property_type_converters[attribute_name.to_sym]
         args[0] = converter.call(value) if converter
       end
-      if args.count == 1 && (args.first.is_a?(Symbol) || args.first.is_a?(String)) && args.first.to_s.start_with?('color_')
-        standard_color = args.first
-        args[0] = GColor.for(widget.getDisplay, standard_color)
-      elsif args.count == 1 && args.first.is_a?(GColor)
+      if args.count == 1 && args.first.is_a?(GColor)
         g_color = args.first
         g_color.display = widget.display if g_color.display.nil? || g_color.display != widget.display
         args[0] = g_color.color
@@ -97,12 +93,7 @@ module Glimmer
     end
 
     def self.widget_exists?(underscored_widget_name)
-      begin
-        swt_widget_class_for(underscored_widget_name)
-        true
-      rescue NameError
-        false
-      end
+      !!swt_widget_class_for(underscored_widget_name)
     end
 
     # This supports widgets in and out of basic SWT
@@ -110,9 +101,16 @@ module Glimmer
       swt_widget_name = underscored_widget_name.camelcase(:upper)
       swt_widget_class = eval(swt_widget_name)
       unless swt_widget_class.ancestors.include?(org.eclipse.swt.widgets.Widget)
-        raise NameError, "Class #{swt_widget_class} matching #{underscored_widget_name} is not a subclass of org.eclipse.swt.widgets.Widget"
+        Glimmer.logger.debug("Class #{swt_widget_class} matching #{underscored_widget_name} is not a subclass of org.eclipse.swt.widgets.Widget")
+        return nil
       end
       swt_widget_class
+    rescue NameError => e
+      Glimmer.logger.debug("#{e.message}\n#{e.backtrace.join("\n")}")
+      nil
+    rescue => e
+      Glimmer.logger.debug("#{e.message}\n#{e.backtrace.join("\n")}")
+      nil
     end
 
     def widget_listener_exists?(underscored_listener_name)

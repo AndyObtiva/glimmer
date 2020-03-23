@@ -18,7 +18,7 @@ module Glimmer
       elsif parent.is_a?(GWidget)
         display = parent.widget.display
       else
-        display = nil
+        display = GDisplay.instance.display
       end
       GColor.new(display, *args)
     end

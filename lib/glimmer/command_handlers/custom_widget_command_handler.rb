@@ -3,20 +3,18 @@ require File.dirname(__FILE__) + "/../swt/custom_widget"
 require File.dirname(__FILE__) + "/models/g_widget"
 
 module Glimmer
-  class WidgetCommandHandler
+  class CustomWidgetCommandHandler
     include CommandHandler
-
-    include_package 'org.eclipse.swt.widgets'
 
     def can_handle?(parent, command_symbol, *args, &block)
       (parent.is_a?(GWidget) || parent.is_a?(SWT::CustomWidget)) and
-        command_symbol.to_s != "shell" and
-        GWidget.widget_exists?(command_symbol.to_s)
+        SWT::CustomWidget.for(command_symbol)
     end
 
     def do_handle(parent, command_symbol, *args, &block)
-      Glimmer.logger.debug "widget styles are: " + args.inspect
-      GWidget.new(command_symbol.to_s, parent.widget, args)
+      options = args.pop if args.last.is_a?(Hash)
+      Glimmer.logger.debug "Custom widget #{command_symbol} styles are: [" + args.inspect + "] and options are: #{options}"
+      SWT::CustomWidget.for(command_symbol).new(parent, *args, options, &block)
     end
 
   end

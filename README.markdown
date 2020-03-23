@@ -102,14 +102,14 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.4.3
+jgem install glimmer -v 0.4.4
 ```
 
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.4.3'
+gem 'glimmer', '~> 0.4.4'
 ```
 
 And, then run:
@@ -568,6 +568,110 @@ class TicTacToe
   # ...
 end
 ```
+
+## Custom Widgets
+
+Glimmer supports creating custom widgets with minimal code, which automatically extends Glimmer's DSL syntax with an underscored lowercase keyword.
+
+Simply create a new class that includes `Glimmer::SWT::CustomWidget` and put Glimmer DSL code in its `#body` method (its return value is stored in `#body_root` attribute). Glimmer will then automatically recognize this class by convention when it encounters a keyword matching the class name converted to underscored lowercase (and namespace double-colons `::` replaced with double-underscores `__`)
+
+**Example:**
+
+Definition:
+```ruby
+class RedLabel
+  include Glimmer::SWT::CustomWidget
+  def body
+    label(swt_style) {
+      background :red
+    }
+  end
+end
+```
+
+Usage:
+```ruby
+shell {
+  red_label {
+    text 'Red Label'
+  }
+}
+```
+
+As you can see, `RedLabel` became Glimmer DSL keyword: `red_label`
+
+**Another Example:**
+
+Definition:
+```ruby
+module Red
+  class Composite
+    include Glimmer::SWT::CustomWidget
+    def body
+      composite(swt_style) {
+        background :red
+      }
+    end
+  end
+```
+
+Usage:
+```ruby
+shell {
+  red__composite {
+    label {
+      foreground :white
+      text 'This is showing inside a Red Composite'
+    }
+  }
+}
+```
+
+Notice how `Red::Composite` became `red__composite` with double-underscore, which is how Glimmer Custom Widgets signify namespaces by convention.
+
+Custom Widgets have the following attributes available to call from inside the `#body` method:
+- `parent`: Glimmer object parenting custom widget
+- `swt_style`: SWT style integer. Can be useful if you want to allow consumers to customize a widget inside the custom widget body
+- `options`: a hash of options passed in parentheses when declaring a custom widget (useful for passing in model data) (e.g. `calendar(events: events)`)
+- `content`: nested block underneath custom widget. It will be automatically called at the end of processing the custom widget body. Alternatively, the custom widget body may call `content.call` at the place where the content is needed to show up as shown in the following example.
+
+**Content Example:**
+
+Definition:
+```ruby
+class Sandwich
+  include Glimmer::SWT::CustomWidget
+  def body
+    composite(swt_style) {
+      fill_layout :vertical
+      background :white
+      label {
+        text 'SANDWICH TOP'
+      }
+      content.call
+      label {
+        text 'SANDWICH BOTTOM'
+      }
+    }
+  end
+end
+```
+
+Usage:
+```ruby
+shell {
+  sandwich {
+    label {
+      text 'SANDWICH CONTENT'
+    }
+  }
+}
+```
+
+These additional attributes may be called from outside a custom widget in addition to the attributes mentioned above, assuming it's been captured in a variable:
+- `body_root`: top-most root Glimmer widget returned in `#body` method
+- `widget`: actual SWT widget for `body_root`
+
 
 ## Samples
 

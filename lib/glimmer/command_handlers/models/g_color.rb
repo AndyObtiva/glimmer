@@ -1,4 +1,5 @@
 require_relative 'g_swt'
+require_relative 'g_display'
 
 module Glimmer
   class GColor
@@ -9,7 +10,9 @@ module Glimmer
     class << self
       include_package 'org.eclipse.swt'
 
-      def for(display, standard_color)
+      def color_for(display = nil, standard_color)
+        standard_color = "color_#{standard_color}".to_sym unless standard_color.to_s.include?('color_')
+        display ||= GDisplay.instance.display
         display.getSystemColor(GSWT[standard_color])
       end
     end

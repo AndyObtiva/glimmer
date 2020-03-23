@@ -37,7 +37,7 @@ require 'rspec/core'
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = FileList['spec/**/*_spec.rb']
-  spec.ruby_opts = ["-Xcli.debug=true --debug #{Glimmer::Launcher.jruby_command_options}"]
+  spec.ruby_opts = ["-Xcli.debug=true #{Glimmer::Launcher.jruby_swt_options}"]
 end
 
 task :default => :spec

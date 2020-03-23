@@ -9,6 +9,7 @@ require "logger"
 require "java"
 require_relative "glimmer/parent"
 require_relative "glimmer/swt_packages"
+require_relative "glimmer/swt/custom_widget"
 
 module Glimmer
    #TODO make it configurable to include or not include

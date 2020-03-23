@@ -28,22 +28,28 @@ module Glimmer
         OS.mac? ? "-J-XstartOnFirstThread" : ""
       end
 
-      def jruby_command_options
+      def jruby_swt_options
         "#{jruby_os_specific_options} -J-classpath \"#{swt_jar_file}\""
       end
 
-      def launch(application, dev_mode = false)
+      def launch(application, dev_mode = false, debug_mode = false)
         glimmer_lib = GLIMMER_LIB_GEM
         if dev_mode
           glimmer_lib = GLIMMER_LIB_LOCAL
           puts "[DEVELOPMENT MODE] (#{glimmer_lib})"
         end
-        system "jruby #{jruby_command_options} -r #{glimmer_lib} -S #{application}"
+        debug_option = ''
+        if debug_mode
+          debug_option = '--debug '
+          puts "[DEBUG MODE]"
+        end
+        system "jruby #{debug_option}#{jruby_swt_options} -r #{glimmer_lib} -S #{application}"
       end
     end
 
     def initialize(options)
       @dev_mode = !!options.delete('--dev')
+      @debug_mode = !!options.delete('--debug')
       @application_path = options.first
     end
 
@@ -59,7 +65,7 @@ module Glimmer
 
     def launch_application
       puts "Launching Glimmer Application: #{@application_path}" unless @application_path == 'irb'
-      self.class.launch(@application_path, @dev_mode)
+      self.class.launch(@application_path, @dev_mode, @debug_mode)
     end
 
     def display_usage

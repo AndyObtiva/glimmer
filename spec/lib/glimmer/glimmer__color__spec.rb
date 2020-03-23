@@ -15,10 +15,13 @@ module Glimmer
       self.class.send(:define_method, :display, @rspec_display_method)
     end
 
-    it "tests label with RGBAlpha background color" do
+    it "tests label with RGBAlpha background/foreground color" do
+      @foreground = rgba(4, 40, 244, 50) # get singleton display
+      @foreground_color = @foreground.color
       @target = shell {
         @label = label {
-          background rgba(4, 40, 244, 50)
+          background rgba(4, 40, 244, 50) # get parent display
+          foreground @foreground_color # set as SWT Color object
         }
       }
 
@@ -27,12 +30,23 @@ module Glimmer
       expect(color.getGreen).to eq(40)
       expect(color.getBlue).to eq(244)
       expect(color.getAlpha).to eq(50)
+
+      expect(@foreground_color.getRed).to eq(4)
+      expect(@foreground_color.getGreen).to eq(40)
+      expect(@foreground_color.getBlue).to eq(244)
+      expect(@foreground_color.getAlpha).to eq(50)
+      expect(@foreground_color.getDevice).to eq(GDisplay.instance.display)
+
+      expect(@foreground_color.getDevice).to eq(@target.display)
     end
 
-    it "tests label with RGB (no alpha) background color" do
+    it "tests label with RGB (no alpha) background/foreground color" do
+      @foreground = rgb(4, 40, 244) # get singleton display
+      @foreground_color = @foreground.color
       @target = shell {
         @label = label {
-          background rgb(4, 40, 244)
+          background rgb(4, 40, 244) # get parent display
+          foreground @foreground_color # set as SWT Color object
         }
       }
 
@@ -40,6 +54,13 @@ module Glimmer
       expect(color.getRed).to eq(4)
       expect(color.getGreen).to eq(40)
       expect(color.getBlue).to eq(244)
+
+      expect(@foreground_color.getRed).to eq(4)
+      expect(@foreground_color.getGreen).to eq(40)
+      expect(@foreground_color.getBlue).to eq(244)
+      expect(@foreground_color.getDevice).to eq(GDisplay.instance.display)
+
+      expect(@foreground_color.getDevice).to eq(@target.display)
     end
 
     # Standard colors: not an exhaustive list. Sample taken from here: https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
