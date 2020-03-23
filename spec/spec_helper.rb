@@ -119,6 +119,6 @@ RSpec.configure do |config|
 end
 RSpec::Matchers.define :have_style do |style|
   match do |widget|
-    expect(widget.getStyle & Glimmer::SWT::GSWT[style]).to eq(Glimmer::SWT::GSWT[style])
+    expect(widget.getStyle & GSWT[style]).to eq(GSWT[style])
   end
 end
