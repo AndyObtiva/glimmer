@@ -19,7 +19,7 @@ module Glimmer
     it "tests display" do
       @target = display
 
-      expect(@target).to be_a(GDisplay)
+      expect(@target).to be_a(Glimmer::SWT::GDisplay)
       expect(@target.display).to be_a(Display)
       expect(@target.display.isDisposed).to be_falsey
 

@@ -105,7 +105,7 @@ module Glimmer
       }
 
       expect(@red_label.widget.getParent).to eq(@target.widget)
-      expect(@red_label.widget.getBackground).to eq(GColor.color_for(:red))
+      expect(@red_label.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
     end
 
     it "builds custom widget with no namespace having attributes" do
@@ -116,7 +116,7 @@ module Glimmer
       }
 
       expect(@red_label.widget.getParent).to eq(@target.widget)
-      expect(@red_label.widget.getBackground).to eq(GColor.color_for(:red))
+      expect(@red_label.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
       expect(@red_label.widget.getText).to eq('Red Label')
     end
 
@@ -126,7 +126,7 @@ module Glimmer
       }
 
       expect(@colored_label.widget.getParent).to eq(@target.widget)
-      expect(@colored_label.widget.getBackground).to eq(GColor.color_for(:blue))
+      expect(@colored_label.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:blue))
     end
 
     it "builds custom widget with namespace" do
@@ -137,7 +137,7 @@ module Glimmer
       }
 
       expect(@red_label.widget.getParent).to eq(@target.widget)
-      expect(@red_label.widget.getBackground).to eq(GColor.color_for(:red))
+      expect(@red_label.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
       expect(@red_label.widget.getText).to eq('Red Label')
     end
 
@@ -151,7 +151,7 @@ module Glimmer
       }
 
       expect(@sandwich.widget.getParent).to eq(@target.widget)
-      expect(@sandwich.widget.getBackground).to eq(GColor.color_for(:white))
+      expect(@sandwich.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:white))
       expect(@sandwich.widget.getChildren.size).to eq(3)
       expect(@sandwich.widget.getChildren[0].getText).to eq('SANDWICH TOP')
       expect(@sandwich.widget.getChildren[1].getText).to eq('SANDWICH CONTENT')
@@ -168,9 +168,9 @@ module Glimmer
       }
 
       expect(@red_composite.widget.getParent).to eq(@target.widget)
-      expect(@red_composite.widget.getBackground).to eq(GColor.color_for(:red))
+      expect(@red_composite.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
       expect(@red_label.widget.getParent).to eq(@red_composite.widget)
-      expect(@red_label.widget.getBackground).to eq(GColor.color_for(:red))
+      expect(@red_label.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
       expect(@red_label.widget.getText).to eq('Red Label')
     end
 
@@ -190,15 +190,15 @@ module Glimmer
       expect(@multi_color_label.widget.getParent).to eq(@target.widget)
       expect(@multi_color_label.widget.getChildren.size).to eq(2)
       expect(@multi_color_label.widget.getChildren[0]).to be_a(Label)
-      expect(@multi_color_label.widget.getChildren[0].getBackground).to eq(GColor.color_for(:red))
+      expect(@multi_color_label.widget.getChildren[0].getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
       expect(@multi_color_label.widget.getChildren[0].getFont.getFontData[0].getHeight).to eq(62)
       expect(@multi_color_label.widget.getChildren[0].getText).to eq("Hello,")
-      expect(@multi_color_label.widget.getChildren[0].getStyle & GSWT[:center]).to eq(GSWT[:center])
+      expect(@multi_color_label.widget.getChildren[0].getStyle & Glimmer::SWT::GSWT[:center]).to eq(Glimmer::SWT::GSWT[:center])
       expect(@multi_color_label.widget.getChildren[1]).to be_a(Label)
-      expect(@multi_color_label.widget.getChildren[1].getBackground).to eq(GColor.color_for(:blue))
+      expect(@multi_color_label.widget.getChildren[1].getBackground).to eq(Glimmer::SWT::GColor.color_for(:blue))
       expect(@multi_color_label.widget.getChildren[1].getFont.getFontData[0].getHeight).to eq(73)
       expect(@multi_color_label.widget.getChildren[1].getText).to eq("World!")
-      expect(@multi_color_label.widget.getChildren[1].getStyle & GSWT[:center]).to eq(GSWT[:center])
+      expect(@multi_color_label.widget.getChildren[1].getStyle & Glimmer::SWT::GSWT[:center]).to eq(Glimmer::SWT::GSWT[:center])
     end
   end
 end

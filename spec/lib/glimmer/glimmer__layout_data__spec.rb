@@ -127,8 +127,8 @@ module Glimmer
         expect(layout_data.heightHint).to eq(30)
         expect(layout_data.grabExcessHorizontalSpace).to eq(true)
         expect(layout_data.grabExcessVerticalSpace).to eq(false)
-        expect(layout_data.horizontalAlignment).to eq(GSWT[:end])
-        expect(layout_data.verticalAlignment).to eq(GSWT[:beginning])
+        expect(layout_data.horizontalAlignment).to eq(Glimmer::SWT::GSWT[:end])
+        expect(layout_data.verticalAlignment).to eq(Glimmer::SWT::GSWT[:beginning])
         expect(layout_data.horizontalIndent).to eq(10)
         expect(layout_data.verticalIndent).to eq(20)
         expect(layout_data.horizontalSpan).to eq(15)
@@ -169,8 +169,8 @@ module Glimmer
         expect(layout_data.is_a?(GridData)).to eq(true)
         expect(layout_data.grabExcessHorizontalSpace).to eq(true)
         expect(layout_data.grabExcessVerticalSpace).to eq(false)
-        expect(layout_data.horizontalAlignment).to eq(GSWT[:fill])
-        expect(layout_data.verticalAlignment).to eq(GSWT[:end])
+        expect(layout_data.horizontalAlignment).to eq(Glimmer::SWT::GSWT[:fill])
+        expect(layout_data.verticalAlignment).to eq(Glimmer::SWT::GSWT[:end])
       end
 
       it "sets GridData with 6 constructor arguments" do
@@ -178,7 +178,7 @@ module Glimmer
           composite {
             # grid_layout # default layout
             @label = label {
-              layout_data GSWT[:fill], GSWT[:end], true, false, 15, 25
+              layout_data Glimmer::SWT::GSWT[:fill], Glimmer::SWT::GSWT[:end], true, false, 15, 25
             }
           }
         }
@@ -188,8 +188,8 @@ module Glimmer
         expect(layout_data.is_a?(GridData)).to eq(true)
         expect(layout_data.grabExcessHorizontalSpace).to eq(true)
         expect(layout_data.grabExcessVerticalSpace).to eq(false)
-        expect(layout_data.horizontalAlignment).to eq(GSWT[:fill])
-        expect(layout_data.verticalAlignment).to eq(GSWT[:end])
+        expect(layout_data.horizontalAlignment).to eq(Glimmer::SWT::GSWT[:fill])
+        expect(layout_data.verticalAlignment).to eq(Glimmer::SWT::GSWT[:end])
         expect(layout_data.horizontalSpan).to eq(15)
         expect(layout_data.verticalSpan).to eq(25)
       end
@@ -199,7 +199,7 @@ module Glimmer
           composite {
             # grid_layout # default layout
             @label = label {
-              layout_data GridData.new(GSWT[:fill], GSWT[:end], true, false)
+              layout_data GridData.new(Glimmer::SWT::GSWT[:fill], Glimmer::SWT::GSWT[:end], true, false)
             }
           }
         }
@@ -209,8 +209,8 @@ module Glimmer
         expect(layout_data.is_a?(GridData)).to eq(true)
         expect(layout_data.grabExcessHorizontalSpace).to eq(true)
         expect(layout_data.grabExcessVerticalSpace).to eq(false)
-        expect(layout_data.horizontalAlignment).to eq(GSWT[:fill])
-        expect(layout_data.verticalAlignment).to eq(GSWT[:end])
+        expect(layout_data.horizontalAlignment).to eq(Glimmer::SWT::GSWT[:fill])
+        expect(layout_data.verticalAlignment).to eq(Glimmer::SWT::GSWT[:end])
       end
     end
   end

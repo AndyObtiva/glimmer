@@ -29,7 +29,7 @@ module Glimmer
       font_datum = font_data.first
       expect(font_datum.getName).to eq('Arial')
       expect(font_datum.getHeight).to eq(36)
-      expect(font_datum.getStyle).to eq(GSWT[:normal])
+      expect(font_datum.getStyle).to eq(Glimmer::SWT::GSWT[:normal])
     end
 
     it "tests label with specified font styles (multiple)" do
@@ -41,7 +41,7 @@ module Glimmer
 
       font_data = @label.widget.getFont.getFontData
       font_datum = font_data.first
-      expect(font_datum.getStyle).to eq(GSWT[:bold, :italic])
+      expect(font_datum.getStyle).to eq(Glimmer::SWT::GSWT[:bold, :italic])
     end
 
     it "fails with a friendly message when label is given an invalid font style" do
@@ -57,18 +57,18 @@ module Glimmer
     it "tests label with specified font style as SWT constant" do
       @target = shell {
         @label = label {
-          font style: GSWT[:bold]
+          font style: Glimmer::SWT::GSWT[:bold]
         }
       }
 
       font_data = @label.widget.getFont.getFontData
       font_datum = font_data.first
-      expect(font_datum.getStyle).to eq(GSWT[:bold])
+      expect(font_datum.getStyle).to eq(Glimmer::SWT::GSWT[:bold])
     end
 
     it "tests label with specified font as SWT object" do
       @display = display
-      font_datum = FontData.new('Arial', 36, GSWT[:normal])
+      font_datum = FontData.new('Arial', 36, Glimmer::SWT::GSWT[:normal])
       @font = Font.new(@display.display, font_datum);
       @target = shell {
         @label = label {
@@ -80,7 +80,7 @@ module Glimmer
       font_datum = font_data.first
       expect(font_datum.getName).to eq('Arial')
       expect(font_datum.getHeight).to eq(36)
-      expect(font_datum.getStyle).to eq(GSWT[:normal])
+      expect(font_datum.getStyle).to eq(Glimmer::SWT::GSWT[:normal])
     end
   end
 end

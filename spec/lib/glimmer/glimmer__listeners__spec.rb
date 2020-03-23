@@ -51,7 +51,7 @@ module Glimmer
       }
       expect(person.name).to eq("Bruce Ting")
       @button.widget.setSelection(true)
-      @button.widget.notifyListeners(GSWT[:selection], nil)
+      @button.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
       expect(person.name).to eq("Bruce Lao")
     end
 
