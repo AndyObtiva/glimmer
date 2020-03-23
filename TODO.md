@@ -30,3 +30,4 @@ Here is a list of tasks to do (please delete once done):
 - Simplify API for add_contents (putting directly on widgets)
 - Simplify API for async_exec and sync_exec (putting directly on Glimmer)
 - Restore badges for README
+- Look into what to do regarding Glimmer silent failures (when things fall off the chain of command)

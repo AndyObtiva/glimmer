@@ -630,25 +630,26 @@ shell {
 Notice how `Red::Composite` became `red__composite` with double-underscore, which is how Glimmer Custom Widgets signify namespaces by convention.
 
 Custom Widgets have the following attributes available to call from inside the `#body` method:
-- `parent`: Glimmer object parenting custom widget
-- `swt_style`: SWT style integer. Can be useful if you want to allow consumers to customize a widget inside the custom widget body
-- `options`: a hash of options passed in parentheses when declaring a custom widget (useful for passing in model data) (e.g. `calendar(events: events)`)
-- `content`: nested block underneath custom widget. It will be automatically called at the end of processing the custom widget body. Alternatively, the custom widget body may call `content.call` at the place where the content is needed to show up as shown in the following example.
+- `#parent`: Glimmer object parenting custom widget
+- `#swt_style`: SWT style integer. Can be useful if you want to allow consumers to customize a widget inside the custom widget body
+- `#options`: a hash of options passed in parentheses when declaring a custom widget (useful for passing in model data) (e.g. `calendar(events: events)`). Custom widget class can declare option names (array) with `.options` method as shown below (not to be confused with `#options` instance method for retrieving options hash containing names & values)
+- `#content`: nested block underneath custom widget. It will be automatically called at the end of processing the custom widget body. Alternatively, the custom widget body may call `content.call` at the place where the content is needed to show up as shown in the following example.
 
-**Content Example:**
+**Content/Options Example:**
 
 Definition:
 ```ruby
 class Sandwich
   include Glimmer::SWT::CustomWidget
+  options :orientation, :bg_color
   def body
-    composite(swt_style) {
-      fill_layout :vertical
-      background :white
+    composite(swt_style) { # gets custom widget style
+      fill_layout orientation # using orientation option
+      background container_background # using container_background option
       label {
         text 'SANDWICH TOP'
       }
-      content.call
+      content.call # this is where content block is called
       label {
         text 'SANDWICH BOTTOM'
       }
@@ -660,7 +661,7 @@ end
 Usage:
 ```ruby
 shell {
-  sandwich {
+  sandwich(:no_focus, orientation: :horizontal, bg_color: :white) {
     label {
       text 'SANDWICH CONTENT'
     }
@@ -668,9 +669,11 @@ shell {
 }
 ```
 
-These additional attributes may be called from outside a custom widget in addition to the attributes mentioned above, assuming it's been captured in a variable:
-- `body_root`: top-most root Glimmer widget returned in `#body` method
-- `widget`: actual SWT widget for `body_root`
+Notice how `:no_focus` was the `swt_style` value, followed by the `options` hash `{orientation: :horizontal, bg_color: :white}`, and finally the `content` block containing the label with `'SANDWICH CONTENT'`
+
+The following additional attributes may be called from outside a custom widget in addition to the attributes mentioned above, assuming it's been captured in a variable:
+- `#body_root`: top-most root Glimmer widget returned in `#body` method
+- `#widget`: actual SWT widget for `body_root`
 
 
 ## Samples

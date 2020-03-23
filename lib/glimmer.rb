@@ -5,6 +5,7 @@
 
 require "rubygems"
 require "facets"
+require "super_module"
 require "logger"
 require "java"
 require_relative "glimmer/parent"
