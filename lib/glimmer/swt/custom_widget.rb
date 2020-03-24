@@ -4,7 +4,8 @@ require_relative 'proc_tracker'
 
 module Glimmer
   module SWT
-    super_module 'CustomWidget' do
+    module CustomWidget
+      include SuperModule
       include Glimmer
       include Parent
 
