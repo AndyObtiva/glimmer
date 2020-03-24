@@ -569,7 +569,7 @@ class TicTacToe
 end
 ```
 
-## Custom Widgets
+### Custom Widgets
 
 Glimmer supports creating custom widgets with minimal code, which automatically extends Glimmer's DSL syntax with an underscored lowercase keyword.
 
