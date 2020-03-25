@@ -137,21 +137,96 @@ This runs the Glimmer application hello_world.rb
 
 ### Widgets
 
-Glimmer UIs (user interfaces) are modeled with widgets (wrappers around the SWT library widgets found here: https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/guide/swt_widgets_controls.htm?cp=2_0_7_0_0).
+Glimmer UIs (user interfaces) are modeled with widgets, which are wrappers around the SWT library widgets found here:
+
+https://www.eclipse.org/swt/widgets/
+
+https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/guide/swt_widgets_controls.htm?cp=2_0_7_0_0
 
 In Glimmer DSL, widgets are declared with lowercase underscored naming (you may look at usage examples in the `samples` directory).
 
 The `shell` widget is always the outermost widget containing all others in a desktop windowed application. It is centered upon initial display and has a minimum width of 130 (can be re-centered when needed with `@shell.center` method)
 
 Other widget examples:
+- `text`: wrapper for `org.eclipse.swt.widgets.Text`
 - `button`: wrapper for `org.eclipse.swt.widgets.Button`
 - `label`: wrapper for `org.eclipse.swt.widgets.Label`
+- `composite`: wrapper for `org.eclipse.swt.widgets.Composite`
 - `tab_folder`: wrapper for `org.eclipse.swt.widgets.TabFolder`
 - `tab_item`: wrapper for `org.eclipse.swt.widgets.TabItem`
 - `table`: wrapper for `org.eclipse.swt.widgets.Table`
 - `table_column`: wrapper for `org.eclipse.swt.widgets.TableColumn`
 - `tree`: wrapper for `org.eclipse.swt.widgets.Tree`
+- `combo`: wrapper for `org.eclipse.swt.widgets.Combo`
+- `list`: wrapper for `org.eclipse.swt.widgets.List`
 
+Example from [hello_combo.rb](https://github.com/AndyObtiva/glimmer/blob/master/samples/hello_combo.rb) sample:
+
+![Hello Combo](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-combo.png)
+
+![Hello Combo](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-combo-expanded.png)
+
+```ruby
+shell {
+  composite {
+    combo(:read_only) {
+      selection bind(person, :country)
+    }
+    button {
+      text "Reset"
+      on_widget_selected do
+        person.reset_country
+      end
+    }
+  }
+}.open
+```
+
+Example from [hello_list_single_selection.rb](https://github.com/AndyObtiva/glimmer/blob/master/samples/hello_list_single_selection.rb) sample:
+
+![Hello List](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-list-single-selection.png)
+
+```ruby
+shell {
+  composite {
+    list {
+      selection bind(person, :country)
+    }
+    button {
+      text "Reset"
+      on_widget_selected do
+        person.reset_country
+      end
+    }
+  }
+}.open
+```
+
+Example from [hello_tab.rb](https://github.com/AndyObtiva/glimmer/blob/master/samples/hello_tab.rb) sample:
+
+![Hello Combo](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-tab1.png)
+
+![Hello Combo](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-tab2.png)
+
+```ruby
+shell {
+  text "Hello Tab"
+  tab_folder {
+    tab_item {
+      text "English"
+      label {
+        text "Hello World!"
+      }
+    }
+    tab_item {
+      text "French"
+      label {
+        text "Bonjour Univers!"
+      }
+    }
+  }
+}.open
+```
 
 **Browser Widget**
 
@@ -743,7 +818,11 @@ Here is the SWT API:
 
 https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/index.html
 
-Here is a list of SWT widgets:
+Here is a visual list of SWT widgets:
+
+https://www.eclipse.org/swt/widgets/
+
+Here is a textual list of SWT widgets:
 
 https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/guide/swt_widgets_controls.htm?cp=2_0_7_0_0
 
