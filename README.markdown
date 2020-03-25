@@ -102,14 +102,14 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.4.4
+jgem install glimmer -v 0.4.5
 ```
 
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.4.4'
+gem 'glimmer', '~> 0.4.5'
 ```
 
 And, then run:
@@ -151,6 +151,45 @@ Other widget examples:
 - `table`: wrapper for `org.eclipse.swt.widgets.Table`
 - `table_column`: wrapper for `org.eclipse.swt.widgets.TableColumn`
 - `tree`: wrapper for `org.eclipse.swt.widgets.Tree`
+
+
+**Browser Widget**
+
+Glimmer supports SWT Browser widget, which can load URLs (including media) or render HTML (useful in embedding videos). It can even be instrumented with JavaScript when needed (though highly discouraged except for rare cases when leveraging a pre-existing web codebase in a desktop app).
+
+Example loading a URL:
+
+```ruby
+shell {
+  browser {
+    url 'http://www.google.com'
+  }
+}
+```
+
+Example rendering HTML with an embedded video:
+
+```ruby
+shell {
+  @browser = browser {
+    text <<~HTML
+      <html>
+        <head>
+        </head>
+        <body>
+          <video id="bowling-video" width="100%" height="100%">
+            <source src="file://#{video_file}" type="video/mp4">
+          Your browser does not support the video tag.
+          </video>
+        </body>
+      </html>
+    HTML
+    on_completed { # on load of the page execute this JavaScript
+      @browser.widget.execute("document.getElementById('bowling-video').play()")
+    }
+  }
+}
+```
 
 ### Widget Styles
 
@@ -200,7 +239,7 @@ You may check out all available `SWT` styles here:
 
 https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
 
-**Note** (advanced case outside of standard Glimmer DSL):
+**Advanced case outside of standard Glimmer DSL**
 
 When building a widget-related SWT object manually (e.g. `GridData.new(...)`), you are expected to use `SWT::CONSTANT` directly or BIT-OR a few SWT constants together like `SWT::BORDER | SWT::V_SCROLL`.
 
@@ -219,7 +258,7 @@ shell(:no_resize) {
 
 ### Widget Properties
 
-Widget properties such as value, enablement, and layout details are set within the widget block using methods matching SWT widget property names in lower snakecase. You may refer to SWT widget guide for details on available widget properties:
+Widget properties such as text value, enablement, visibility, and layout details are set within the widget block using methods matching SWT widget property names in lower snakecase. You may refer to SWT widget guide for details on available widget properties:
 
 https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/guide/swt_widgets_controls.htm?cp=2_0_7_0_0
 

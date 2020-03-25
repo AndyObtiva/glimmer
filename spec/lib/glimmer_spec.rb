@@ -12,6 +12,7 @@ java_import 'org.eclipse.swt.layout.FillLayout'
 java_import 'org.eclipse.swt.layout.RowLayout'
 java_import 'org.eclipse.swt.graphics.Rectangle'
 java_import 'org.eclipse.swt.graphics.Point'
+java_import 'org.eclipse.swt.browser.Browser'
 
 describe Glimmer do
   include Glimmer
@@ -283,6 +284,28 @@ describe Glimmer do
     expect(@button.widget).to be_instance_of(Button)
     expect(@button.widget).to have_style(:push)
     expect(@button.widget.text).to eq( "Push Me")
+  end
+
+  it "tests shell and browser default" do
+    @target = shell {
+      @browser = browser {
+        text <<~HTML
+          <html>
+            <head>
+            </head>
+            <body>
+              <form>
+                <input id="answer" value="42">
+              </form>
+            </body>
+          </html>
+        HTML
+        on_completed {
+          expect(@browser.widget.evaluate("document.getElementById('answer').value")).to eq('42')
+        }
+      }
+    }
+    expect(@browser.widget.is_a?(Browser)).to be_truthy
   end
 
   it "tests shell_and_table_and_table_column_defaults" do

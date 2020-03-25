@@ -12,6 +12,7 @@ module Glimmer
       include_package 'org.eclipse.swt.widgets'
       include_package 'org.eclipse.swt.layout'
       include_package 'org.eclipse.swt.graphics'
+      include_package 'org.eclipse.swt.browser'
       include Parent
 
       attr_reader :widget

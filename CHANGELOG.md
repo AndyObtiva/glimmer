@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.4.5
+- Support SWT Browser widget
+
 ## 0.4.4
 - Glimmer Custom Widget support
 - Support --debug flag

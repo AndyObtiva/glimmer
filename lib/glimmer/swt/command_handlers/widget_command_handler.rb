@@ -9,6 +9,7 @@ module Glimmer
         include CommandHandler
 
         include_package 'org.eclipse.swt.widgets'
+        include_package 'org.eclipse.swt.browser'
 
         def can_handle?(parent, command_symbol, *args, &block)
           (parent.is_a?(GWidget) || parent.is_a?(SWT::CustomWidget)) and
