@@ -210,16 +210,16 @@ Example from [hello_tab.rb](https://github.com/AndyObtiva/glimmer/blob/master/sa
 
 ```ruby
 shell {
-  text "Hello Tab"
+  text "SWT"
   tab_folder {
     tab_item {
-      text "English"
+      text "Tab 1"
       label {
         text "Hello World!"
       }
     }
     tab_item {
-      text "French"
+      text "Tab 2"
       label {
         text "Bonjour Univers!"
       }
