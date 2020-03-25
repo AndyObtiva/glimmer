@@ -204,9 +204,9 @@ shell {
 
 Example from [hello_tab.rb](https://github.com/AndyObtiva/glimmer/blob/master/samples/hello_tab.rb) sample:
 
-![Hello Combo](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-tab1.png)
+![Hello Tab 1](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-tab1.png)
 
-![Hello Combo](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-tab2.png)
+![Hello Tab 2](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-tab2.png)
 
 ```ruby
 shell {
