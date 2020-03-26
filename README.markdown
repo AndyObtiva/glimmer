@@ -190,7 +190,18 @@ The first line declares a **property** called `text`, which sets the title of th
 
 The second line declares the `label` **widget**, which is followed by a Ruby **content** ***block*** that contains its `text` **property** with value `"Hello World!"`
 
-Note that The `shell` widget is always the outermost widget containing all others in a Glimmer desktop windowed application. It is centered upon initial display and has a minimum width of 130 (can be re-centered when needed with `@shell.center` method after capturing `shell` in a `@shell` variable as per samples)
+Note that The `shell` widget is always the outermost widget containing all others in a Glimmer desktop windowed application.
+
+After it is declared, a `shell` must be opened with the `#open` method, which can be called on the block directly as in the example above, or by capturing `shell` in a `@shell` variable (shown in example below), and calling `#open` on it independently (recommended in actual apps)
+
+```ruby
+@shell = shell {
+  # properties and content
+}
+@shell.open
+```
+
+It is centered upon initial display and has a minimum width of 130 (can be re-centered when needed with `@shell.center` method after capturing `shell` in a `@shell` variable as per samples)
 
 Check out the [samples](https://github.com/AndyObtiva/glimmer/tree/master/samples) directory for more examples.
 
