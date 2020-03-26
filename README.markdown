@@ -359,6 +359,65 @@ button {
 
 In the above example, the `text` widget `enabled` property was data-bound to `#empty` method on `@tic_tac_toe_board.box(row, column)` (learn more about data-binding below)
 
+#### Colors
+
+Colors make up a subset of widget properties. SWT accepts color objects created with RGB (Red Green Blue) or RGBA (Red Green Blue Alpha). Glimmer supports constructing color objects using the `rgb` and `rgba` DSL methods.
+
+Example:
+
+```ruby
+label {
+  background rgb(144, 240, 244)
+  foreground rgba(38, 92, 232, 255)
+}
+```
+
+SWT also supports standard colors available as constants under the `SWT` namespace with the `COLOR_` prefix (e.g. `SWT::COLOR_BLUE`, `SWT::COLOR_WHITE`, `SWT::COLOR_RED`)
+
+Glimmer accepts these constants as lowercase Ruby symbols with or without `color_` prefix.
+
+Example:
+
+```ruby
+label {
+  background :black
+  foreground :yellow
+}
+label {
+  background :color_white
+  foreground :color_red
+}
+```
+
+You may check out all available standard colors in `SWT` over here (having `COLOR_` prefix):
+
+https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
+
+#### Fonts
+
+Fonts are represented in Glimmer as a hash of name, height, and style keys.
+
+The style can be one (or more) of 3 values: `:normal`, `:bold`, and `:italic`
+
+Example:
+
+```ruby
+label {
+  font name: 'Arial', height: 36, style: :normal
+}
+```
+
+Keys are optional, so some of them may be left off.
+When passing multiple styles, they are included in an array.
+
+Example:
+
+```ruby
+label {
+  font style: [:bold, :italic]
+}
+```
+
 ### Layouts
 
 Glimmer lays widgets out visually using SWT layouts, which can only be set on composite widget and subclasses.
@@ -529,65 +588,6 @@ https://www.eclipse.org/articles/Article-Understanding-Layouts/Understanding-Lay
 Also, for a reference, check the SWT API:
 
 https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/index.html
-
-### Colors
-
-Colors make up a subset of widget properties. SWT accepts color objects created with RGB (Red Green Blue) or RGBA (Red Green Blue Alpha). Glimmer supports constructing color objects using the `rgb` and `rgba` DSL methods.
-
-Example:
-
-```ruby
-label {
-  background rgb(144, 240, 244)
-  foreground rgba(38, 92, 232, 255)
-}
-```
-
-SWT also supports standard colors available as constants under the `SWT` namespace with the `COLOR_` prefix (e.g. `SWT::COLOR_BLUE`, `SWT::COLOR_WHITE`, `SWT::COLOR_RED`)
-
-Glimmer accepts these constants as lowercase Ruby symbols with or without `color_` prefix.
-
-Example:
-
-```ruby
-label {
-  background :black
-  foreground :yellow
-}
-label {
-  background :color_white
-  foreground :color_red
-}
-```
-
-You may check out all available standard colors in `SWT` over here (having `COLOR_` prefix):
-
-https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
-
-### Fonts
-
-Fonts are represented in Glimmer as a hash of name, height, and style keys.
-
-The style can be one (or more) of 3 values: `:normal`, `:bold`, and `:italic`
-
-Example:
-
-```ruby
-label {
-  font name: 'Arial', height: 36, style: :normal
-}
-```
-
-Keys are optional, so some of them may be left off.
-When passing multiple styles, they are included in an array.
-
-Example:
-
-```ruby
-label {
-  font style: [:bold, :italic]
-}
-```
 
 ### Data-Binding
 
