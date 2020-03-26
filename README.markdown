@@ -740,9 +740,55 @@ You may learn more about Glimmer's data-binding syntax by reading the [Eclipse Z
 
 ### Observer
 
-Glimmer comes with `Observer` module, which is used internally for data-binding, but can also be used externally for custom use of the Observer Pattern.
+Glimmer comes with `Observer` module, which is used internally for data-binding, but can also be used externally for custom use of the Observer Pattern. It is hidden when observing widgets, and used explicitly when observing models.
 
-In summary, the class that needs to observe an object, must include Observer and implement `#call(new_value)` method. The class to be observed doesn't need to do anything. It will automatically be enhanced by Glimmer for observation.
+#### Observing Widgets
+
+Glimmer supports observing widgets with an `on_*event*` declaration where the '*event*' part is replaced with the lowercase underscored name of an SWT listener event method.
+
+To figure out what the available events for an SWT widget are, check out all of its API methods starting with `add` and ending with `Listener`, and then open the listener class to check its "event methods".
+
+For example, if you look at the `Button` SWT API:
+https://help.eclipse.org/2019-12/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fswt%2Fbrowser%2FBrowser.html
+
+It has `addSelectionListener`. Additionally, under its `Control` super class, it has `addControlListener`, `addDragDetectListener`, `addFocusListener`, `addGestureListener`, `addHelpListener`, `addKeyListener`, `addMenuDetectListener`, `addMouseListener`, `addMouseMoveListener`, `addMouseTrackListener`, `addMouseWheelListener`, `addPaintListener`, `addTouchListener`, and `addTraverseListener`
+
+Suppose, we select `addSelectionListener`, which is responsible for what happens when a user selects a button (clicks it). Then, open its argument `SelectionListener` SWT API, and you find the event (instance) methods: `widgetDefaultSelected` and `widgetSelected​`. Let's select the second one, which is what gets invoked when a button is clicked.
+
+Now, Glimmer simplifies the process of hooking into that listener (observer) by neither requiring you to call the `addSelectionListener` method nor requiring you to implement/extend the `SelectionListener` API.
+
+Instead, simply add a `on_widget_selected` followed by a Ruby block containing the logic to perform. Glimmer figures out the rest.
+
+Let's revisit the Tic Tac Toe example shown near the beginning of the page:
+
+```ruby
+shell {
+  text "Tic-Tac-Toe"
+  composite {
+    grid_layout 3, true
+    (1..3).each { |row|
+      (1..3).each { |column|
+        button {
+          layout_data :fill, :fill, true, true
+          text        bind(@tic_tac_toe_board[row, column], :sign)
+          enabled     bind(@tic_tac_toe_board[row, column], :empty)
+          on_widget_selected {
+            @tic_tac_toe_board.mark_box(row, column)
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+Note that every Tic Tac Toe grid cell has its `text` and `enabled` properties data-bound to the `sign` and `empty` attributes on the `TicTacToeBoard` model respectively.
+
+Next however, each of these Tic Tac Toe grid cells, which are clickable buttons, have an `on_widget_selected` observer, which once triggered, marks the box (cell) on the `TicTacToeBoard` to make a move.
+
+#### Observing Models
+
+The class that needs to observe a model object must include (mix in) the `Observer` module and implement the `#call(new_value)` method. The class to be observed doesn't need to do anything. It will automatically be enhanced by Glimmer for observation.
 
 To register observer, one has to call the `#observe` method and pass in the observable and the property(ies) to observe.
 
