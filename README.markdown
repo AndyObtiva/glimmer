@@ -180,9 +180,9 @@ Note that `shell` instantiates the outer shell widget, in other words, the windo
 `shell` is then followed by a block that contains
 
 ```ruby
-text "Glimmer" # <-- text property of shell
-label { # <-- label widget declaration
-  text "Hello World!"
+text "Glimmer" # text property of shell
+label { # label widget declaration
+  text "Hello World!" # text property of label
 }
 ```
 
