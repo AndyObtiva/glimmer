@@ -141,7 +141,9 @@ Glimmer UIs (user interfaces) are modeled with widgets, which are wrappers aroun
 
 https://www.eclipse.org/swt/widgets/
 
-https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/guide/swt_widgets_controls.htm?cp=2_0_7_0_0
+This screenshot taken from the link above should give a glimpse of how SWT widgets look and feel:
+
+![SWT Widgets](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-swt-widgets.png)
 
 In Glimmer DSL, widgets are declared with lowercase underscored naming (you may look at usage examples in the `samples` directory).
 
