@@ -528,7 +528,7 @@ Check out the samples directory for more advanced examples of layouts in Glimmer
 
 Glimmer composites always come with grid_layout by default, but you can still specify explicitly if you'd like to set specific properties on it.
 
-Glimmer shell always comes containing one composite by default that wraps around specified shell content. That specific composite (the one directly under shell) has fill_layout with :horizontal type.
+Glimmer shell always comes with fill_layout having :horizontal type.
 
 This is a great guide for learning more about SWT layouts:
 
