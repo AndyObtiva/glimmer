@@ -63,7 +63,7 @@ Glimmer app:
 
 ![Tic Tac Toe](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-tic-tac-toe.png)
 
-Glimmer is in beta mode. Please help make better by adopting for small or low risk projects and providing 
+NOTE: Glimmer is in beta mode. Please help make better by adopting for small or low risk projects and providing feedback. 
 
 ## Background
 
@@ -1081,8 +1081,6 @@ Example:
 ```
 jruby -J-XstartOnFirstThread -J-classpath "path_to/swt.jar" -r glimmer -S application.rb
 ```
-
-feedback.
 
 ## Resources
 
