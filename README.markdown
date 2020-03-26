@@ -83,6 +83,15 @@ Glimmer runs on the following platforms:
 - Windows
 - Linux
 
+SWT uses Win32 on Windows, Cocoa on Mac, and GTK on Linux according to Eclipse WIKI:
+
+https://wiki.eclipse.org/SWT/Devel/Gtk/Dev_guide#Win32.2FCocoa.2FGTK
+
+The SWT FAQ has further details:
+
+https://www.eclipse.org/swt/faq.php
+
+
 ## Pre-requisites
 
 * Java SE Runtime Environment 7 or higher (find at https://www.oracle.com/java/technologies/javase-downloads.html)
