@@ -3,8 +3,6 @@
 
 Glimmer is a cross-platform Ruby desktop development library. Glimmer's main innovation is a JRuby DSL that enables easy and efficient authoring of desktop application user-interfaces while relying on the robust platform-independent Eclipse SWT library. Glimmer additionally innovates by having built-in desktop UI data-binding support to greatly facilitate synchronizing the UI with domain models. As a result, that achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about UI concerns, or alternatively drive development UI-first, and then write clean business components test-first afterward.
 
-You may learn more by reading this article: [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer)
-
 ## Examples
 
 ### Hello World
@@ -65,12 +63,7 @@ Glimmer app:
 
 ![Tic Tac Toe](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-tic-tac-toe.png)
 
-## Resources
-
-* [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer)
-* [InfoQ Article](http://www.infoq.com/news/2008/02/glimmer-jruby-swt)
-* [RubyConf 2008 Video](https://confreaks.tv/videos/rubyconf2008-desktop-development-with-glimmer)
-* [Code Blog](http://andymaleh.blogspot.com/search/label/Glimmer)
+Glimmer is in beta mode. Please help make better by adopting for small or low risk projects and providing 
 
 ## Background
 
@@ -1088,6 +1081,15 @@ Example:
 ```
 jruby -J-XstartOnFirstThread -J-classpath "path_to/swt.jar" -r glimmer -S application.rb
 ```
+
+feedback.
+
+## Resources
+
+* [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer)
+* [InfoQ Article](http://www.infoq.com/news/2008/02/glimmer-jruby-swt)
+* [RubyConf 2008 Video](https://confreaks.tv/videos/rubyconf2008-desktop-development-with-glimmer)
+* [Code Blog](http://andymaleh.blogspot.com/search/label/Glimmer)
 
 ## Feature Suggestions
 
