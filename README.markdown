@@ -87,6 +87,7 @@ Glimmer runs on the following platforms:
 
 * Java SE Runtime Environment 7 or higher (find at https://www.oracle.com/java/technologies/javase-downloads.html)
 * JRuby 9.2.10.0 (supporting Ruby 2.5.x syntax) (find at https://www.jruby.org/download)
+* SWT 4.14 (comes included in Glimmer)
 
 On **Mac** and **Linux**, an easy way to obtain JRuby is through [RVM](http://rvm.io) by running:
 
@@ -102,14 +103,14 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.4.5
+jgem install glimmer -v 0.4.6
 ```
 
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.4.5'
+gem 'glimmer', '~> 0.4.6'
 ```
 
 And, then run:

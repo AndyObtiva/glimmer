@@ -1,7 +1,7 @@
 # Change Log
 
 ## 0.4.5
-- Support SWT Browser widget
+- Added SWT 4.14 library jars directly in project
 
 ## 0.4.4
 - Glimmer Custom Widget support
