@@ -160,7 +160,7 @@ In Glimmer DSL, widgets are declared with lowercase underscored names mirroring 
 - `combo` instantiates `org.eclipse.swt.widgets.Combo`
 - `list` instantiates `org.eclipse.swt.widgets.List`
 
-A widget name is followed by a Ruby block that contains the widget properties and content. Optionally, an SWT style argument may also be passed (see [next section](https://github.com/AndyObtiva/glimmer/blob/master/README.markdown#widget-styles) for details).
+A **widget** name is followed by a Ruby block that contains the widget **properties** and **content**. Optionally, an SWT **style** ***argument*** may also be passed (see [next section](#widget-styles) for details).
 
 For example, if we were to revisit `hello_world.rb` above:
 
@@ -175,9 +175,9 @@ shell {
 }.open
 ```
 
-Note that `shell` instantiates the outer shell widget, in other words, the window that houses all of the desktop graphical user interface.
+Note that `shell` instantiates the outer shell **widget**, in other words, the window that houses all of the desktop graphical user interface.
 
-`shell` is then followed by a block that contains
+`shell` is then followed by a ***block*** that contains
 
 ```ruby
 text "Glimmer" # text property of shell
@@ -186,55 +186,13 @@ label { # label widget declaration
 }
 ```
 
-The first line declares a "property" called `text`, which sets the title of the shell (window) to `"Glimmer"`. Properties always have arguments, such as the text `"Glimmer"` in this case, and do not have a block.
+The first line declares a **property** called `text`, which sets the title of the shell (window) to `"Glimmer"`. **Properties** always have ***arguments***, such as the text `"Glimmer"` in this case, and do **NOT** have a ***block***.
 
-The second line declares the `label` widget, which is followed by a Ruby block that contains its `text` property with value `"Hello World!"`
+The second line declares the `label` **widget**, which is followed by a Ruby **content** ***block*** that contains its `text` **property** with value `"Hello World!"`
 
-Note that The `shell` widget is always the outermost widget containing all others in a Glimmer desktop windowed application. It is centered upon initial display and has a minimum width of 130 (can be re-centered when needed with `@shell.center` method)
+Note that The `shell` widget is always the outermost widget containing all others in a Glimmer desktop windowed application. It is centered upon initial display and has a minimum width of 130 (can be re-centered when needed with `@shell.center` method after capturing `shell` in a `@shell` variable as per samples)
 
-Check [samples](https://github.com/AndyObtiva/glimmer/tree/master/samples) directory for more examples.
-
-Example from [hello_combo.rb](https://github.com/AndyObtiva/glimmer/blob/master/samples/hello_combo.rb) sample:
-
-![Hello Combo](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-combo.png)
-
-![Hello Combo](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-combo-expanded.png)
-
-```ruby
-shell {
-  composite {
-    combo(:read_only) {
-      selection bind(person, :country)
-    }
-    button {
-      text "Reset"
-      on_widget_selected do
-        person.reset_country
-      end
-    }
-  }
-}.open
-```
-
-Example from [hello_list_single_selection.rb](https://github.com/AndyObtiva/glimmer/blob/master/samples/hello_list_single_selection.rb) sample:
-
-![Hello List](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-list-single-selection.png)
-
-```ruby
-shell {
-  composite {
-    list {
-      selection bind(person, :country)
-    }
-    button {
-      text "Reset"
-      on_widget_selected do
-        person.reset_country
-      end
-    }
-  }
-}.open
-```
+Check out the [samples](https://github.com/AndyObtiva/glimmer/tree/master/samples) directory for more examples.
 
 Example from [hello_tab.rb](https://github.com/AndyObtiva/glimmer/blob/master/samples/hello_tab.rb) sample:
 
@@ -645,7 +603,129 @@ The 5th example demonstrates computed value data binding whereby the value of `n
 
 The 6th example demonstrates nested indexed computed value data binding whereby the value of `profiles[0].name` depends on changes to both nested `profiles[0].first_name` and `profiles[0].last_name`.
 
-You may learn more about Glimmer's syntax by reading the Eclipse Zone Tutorial mentioned in resources and opening up the samples under the [samples](https://github.com/AndyObtiva/glimmer/tree/master/samples) directory.
+Example from [hello_combo.rb](https://github.com/AndyObtiva/glimmer/blob/master/samples/hello_combo.rb) sample:
+
+![Hello Combo](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-combo.png)
+
+![Hello Combo](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-combo-expanded.png)
+
+```ruby
+class Person
+  attr_accessor :country, :country_options
+
+  def initialize
+    self.country_options=["", "Canada", "US", "Mexico"]
+    self.country = "Canada"
+  end
+
+  def reset_country
+    self.country = "Canada"
+  end
+end
+
+class HelloCombo
+  include Glimmer
+  def launch
+    person = Person.new
+    shell {
+      composite {
+        combo(:read_only) {
+          selection bind(person, :country)
+        }
+        button {
+          text "Reset"
+          on_widget_selected do
+            person.reset_country
+          end
+        }
+      }
+    }.open
+  end
+end
+
+HelloCombo.new.launch
+```
+
+`combo` widget is data-bound to the country of a person. Note that it expects `person` object to have `:country` attribute and `:country_options` attribute containing all available countries.
+
+Example from [hello_list_single_selection.rb](https://github.com/AndyObtiva/glimmer/blob/master/samples/hello_list_single_selection.rb) sample:
+
+![Hello List Single Selection](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-list-single-selection.png)
+
+```ruby
+shell {
+  composite {
+    list {
+      selection bind(person, :country)
+    }
+    button {
+      text "Reset"
+      on_widget_selected do
+        person.reset_country
+      end
+    }
+  }
+}.open
+```
+
+`list` widget is also data-bound to the country of a person similarly to the combo widget. Not much difference here (the rest of the code not shown is the same).
+
+Nonetheless, in the next example, a multi-selection list is declared instead allowing data-binding of multiple selection values to the bindable attribute on the model.
+
+![Hello List Multi Selection](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-list-single-selection.png)
+
+```ruby
+class Person
+  attr_accessor :provinces, :provinces_options
+
+  def initialize
+    self.provinces_options=[
+      "",
+      "Quebec",
+      "Ontario",
+      "Manitoba",
+      "Saskatchewan",
+      "Alberta",
+      "British Columbia",
+      "Nova Skotia",
+      "Newfoundland"
+    ]
+    self.provinces = ["Quebec", "Manitoba", "Alberta"]
+  end
+
+  def reset_provinces
+    self.provinces = ["Quebec", "Manitoba", "Alberta"]
+  end
+end
+
+class HelloListMultiSelection
+  include Glimmer
+  def launch
+    person = Person.new
+    shell {
+      composite {
+        list(:multi) {
+          selection bind(person, :provinces)
+        }
+        button {
+          text "Reset"
+          on_widget_selected do
+            person.reset_provinces
+          end
+        }
+      }
+    }.open
+  end
+end
+
+HelloListMultiSelection.new.launch
+```
+
+The Glimmer code is not much different from above except for passing the `:multi` style to the `list` widget. However, the model code behind the scenes is quite different as it is a `provinces` array bindable to the selection of multiple values on a `list` widget. `provinces_options` contains all available province values just as expected by a single selection `list` and `combo`.
+
+Note that in all the data-binding examples above, there was also an observer attached to the `button` widget to trigger an action on the model, which in turn triggers a data-binding update on the `list` or `combo`. Observers will be discussed in more details in the [next section](#observer).
+
+You may learn more about Glimmer's data-binding syntax by reading the [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer) mentioned in resources and opening up the samples under the [samples](https://github.com/AndyObtiva/glimmer/tree/master/samples) directory.
 
 ### Observer
 
