@@ -145,22 +145,54 @@ This screenshot taken from the link above should give a glimpse of how SWT widge
 
 ![SWT Widgets](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-swt-widgets.png)
 
-In Glimmer DSL, widgets are declared with lowercase underscored naming (you may look at usage examples in the `samples` directory).
+In Glimmer DSL, widgets are declared with lowercase underscored names mirroring their SWT names:
 
-The `shell` widget is always the outermost widget containing all others in a desktop windowed application. It is centered upon initial display and has a minimum width of 130 (can be re-centered when needed with `@shell.center` method)
+- `shell` instantiates `org.eclipse.swt.widgets.Shell`
+- `text` instantiates `org.eclipse.swt.widgets.Text`
+- `button` instantiates `org.eclipse.swt.widgets.Button`
+- `label` instantiates `org.eclipse.swt.widgets.Label`
+- `composite` instantiates `org.eclipse.swt.widgets.Composite`
+- `tab_folder` instantiates `org.eclipse.swt.widgets.TabFolder`
+- `tab_item` instantiates `org.eclipse.swt.widgets.TabItem`
+- `table` instantiates `org.eclipse.swt.widgets.Table`
+- `table_column` instantiates `org.eclipse.swt.widgets.TableColumn`
+- `tree` instantiates `org.eclipse.swt.widgets.Tree`
+- `combo` instantiates `org.eclipse.swt.widgets.Combo`
+- `list` instantiates `org.eclipse.swt.widgets.List`
 
-Other widget examples:
-- `text`: wrapper for `org.eclipse.swt.widgets.Text`
-- `button`: wrapper for `org.eclipse.swt.widgets.Button`
-- `label`: wrapper for `org.eclipse.swt.widgets.Label`
-- `composite`: wrapper for `org.eclipse.swt.widgets.Composite`
-- `tab_folder`: wrapper for `org.eclipse.swt.widgets.TabFolder`
-- `tab_item`: wrapper for `org.eclipse.swt.widgets.TabItem`
-- `table`: wrapper for `org.eclipse.swt.widgets.Table`
-- `table_column`: wrapper for `org.eclipse.swt.widgets.TableColumn`
-- `tree`: wrapper for `org.eclipse.swt.widgets.Tree`
-- `combo`: wrapper for `org.eclipse.swt.widgets.Combo`
-- `list`: wrapper for `org.eclipse.swt.widgets.List`
+A widget name is followed by a Ruby block that contains the widget properties and content. Optionally, an SWT style argument may also be passed (see [next section](https://github.com/AndyObtiva/glimmer/blob/master/README.markdown#widget-styles) for details).
+
+For example, if we were to revisit `hello_world.rb` above:
+
+```ruby
+include Glimmer
+
+shell {
+  text "Glimmer"
+  label {
+    text "Hello World!"
+  }
+}.open
+```
+
+Note that `shell` instantiates the outer shell widget, in other words, the window that houses all of the desktop graphical user interface.
+
+`shell` is then followed by a block that contains
+
+```ruby
+text "Glimmer" # <-- text property of shell
+label { # <-- label widget declaration
+  text "Hello World!"
+}
+```
+
+The first line declares a "property" called `text`, which sets the title of the shell (window) to `"Glimmer"`. Properties always have arguments, such as the text `"Glimmer"` in this case, and do not have a block.
+
+The second line declares the `label` widget, which is followed by a Ruby block that contains its `text` property with value `"Hello World!"`
+
+Note that The `shell` widget is always the outermost widget containing all others in a Glimmer desktop windowed application. It is centered upon initial display and has a minimum width of 130 (can be re-centered when needed with `@shell.center` method)
+
+Check [samples](https://github.com/AndyObtiva/glimmer/tree/master/samples) directory for more examples.
 
 Example from [hello_combo.rb](https://github.com/AndyObtiva/glimmer/blob/master/samples/hello_combo.rb) sample:
 
