@@ -2,10 +2,6 @@
 
 Here is a list of tasks to do (please delete once done):
 
-## Next Up
-
-- Fix issue with setting layout data on custom widget (to figure out body root parent layout, it has to go up twice)
-
 ## Feature Suggestions
 - Video custom widget
 - Image custom widget
@@ -44,5 +40,6 @@ Here is a list of tasks to do (please delete once done):
 - Document G*** classes like GWidget and GShell
 - Document "#widget" method on GWidget
 - Document Glimmer.add_contents
+- Document custom widget custom attributes/observers
 - Explain MVC and MVP
 - Double down on using the wording property vs attribute to minimize confusion

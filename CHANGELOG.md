@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.4.7
+- Fixed issues with custom widget support working for custom table, custom combo, custom list, parent of layout/layout-data, and on_*** observers
+- Support for custom attributes/observers on a custom widget
+- Display error message when using tab item widget NOT under a tab folder
+
 ## 0.4.6
 - Added SWT 4.14 library jars directly in project
 
