@@ -1,4 +1,3 @@
-require File.dirname(__FILE__) + "/g_widget_listener"
 require File.dirname(__FILE__) + "/g_runnable"
 
 module Glimmer

@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + "/../../command_handler"
 require File.dirname(__FILE__) + "/../g_widget"
+require File.dirname(__FILE__) + "/../custom_widget"
 require File.dirname(__FILE__) + "/../model_binding"
 
 module Glimmer

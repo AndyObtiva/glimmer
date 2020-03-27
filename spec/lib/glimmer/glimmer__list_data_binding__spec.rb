@@ -254,6 +254,7 @@ module Glimmer
         }
       }
 
+      expect(@list.widget.getBackground).to eq(GColor.color_for(:red))
       expect(@list.widget.item_count).to eq(4)
       expect(@list.widget.selection_index).to eq(-1)
       expect(@list.widget.selection.to_a).to eq([])

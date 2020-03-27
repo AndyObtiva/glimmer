@@ -69,6 +69,16 @@ module Glimmer
         raise 'Not implemented!'
       end
 
+      # TODO consider using delegators
+
+      def can_add_listener?(underscored_listener_name)
+        @body_root.can_add_listener?(underscored_listener_name)
+      end
+
+      def add_listener(underscored_listener_name, &block)
+        @body_root.add_listener(underscored_listener_name, &block)
+      end
+
       def add_observer(observer, attribute_name)
         @body_root.add_observer(observer, attribute_name)
       end

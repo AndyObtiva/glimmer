@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + "/../../command_handler"
 require File.dirname(__FILE__) + "/../g_widget"
+require File.dirname(__FILE__) + "/../custom_widget"
 
 module Glimmer
   module SWT
@@ -10,8 +11,9 @@ module Glimmer
         include_package 'org.eclipse.swt.widgets'
 
         def can_handle?(parent, command_symbol, *args, &block)
-          Glimmer.logger.debug "parent is a widget: " + (parent.is_a?(GWidget)).to_s
-          return unless parent.is_a?(GWidget)
+          widget_parentage = (parent.is_a?(GWidget) || parent.is_a?(CustomWidget))
+          Glimmer.logger.debug "parent is a widget: #{widget_parentage}"
+          return unless widget_parentage
           Glimmer.logger.debug "on listener?: " + (command_symbol.to_s[0,3] == "on_").to_s
           return unless command_symbol.to_s[0,3] == "on_"
           Glimmer.logger.debug "command symbol is longer than 3: " + (command_symbol.to_s.length > 3).to_s

@@ -150,6 +150,7 @@ module Glimmer
         }
       }
 
+      expect(@combo.widget.getBackground).to eq(GColor.color_for(:red))
       expect(@combo.widget.item_count).to eq(4)
       expect(@combo.widget.selection_index).to eq(-1)
       expect(@combo.widget.text).to eq("")

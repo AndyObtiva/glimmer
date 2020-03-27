@@ -32,6 +32,16 @@ module Glimmer
 
         attr_accessor :companies
       end
+
+      class ::RedTree
+        include Glimmer::SWT::CustomWidget
+
+        def body
+          tree(swt_style) {
+            background :red
+          }
+        end
+      end
     end
 
     after(:all) do
@@ -39,6 +49,7 @@ module Glimmer
         Person
         Manager
         Company
+        RedTree
       ].each do |constant|
         Object.send(:remove_const, constant) if Object.const_defined?(constant)
       end
@@ -147,6 +158,49 @@ module Glimmer
       node2_nested_indexed = root_node_nested_indexed.getItems.last
       expect(node1_nested_indexed.getText()).to eq("Julia Katherine Fang")
       expect(node2_nested_indexed.getText()).to eq("Bob David Kennith")
+    end
+
+    it "data binds text widget to a string property for a custom widget tree" do
+      person1 = Person.new
+      person1.name = "Bruce Ting"
+      person1.age = 45
+      person1.adult = true
+
+      person2 = Person.new
+      person2.name = "Julia Fang"
+      person2.age = 17
+      person2.adult = false
+
+      manager = Manager.new
+      manager.name = "Tim Harkins"
+      manager.age = 79
+      manager.adult = true
+      manager.people << person1
+      manager.people << person2
+
+      company = Company.new
+      company.owner = manager
+
+      company_group = CompanyGroup.new
+      company_group.companies << company
+
+      @target = shell {
+        @tree = red_tree(:virtual, :border) {
+          items bind(company, :owner), tree_properties(children: :people, text: :name)
+        }
+      }
+
+      expect(@tree.widget.getBackground).to eq(GColor.color_for(:red))
+      expect(@tree.widget.getItems.size).to eq(1)
+
+      root_node = @tree.widget.getItems[0]
+      expect(root_node.getText()).to eq("Tim Harkins")
+
+      expect(root_node.getItems.size).to eq(2)
+      node1 = root_node.getItems[0]
+      node2 = root_node.getItems[1]
+      expect(node1.getText()).to eq("Bruce Ting")
+      expect(node2.getText()).to eq("Julia Fang")
     end
   end
 end

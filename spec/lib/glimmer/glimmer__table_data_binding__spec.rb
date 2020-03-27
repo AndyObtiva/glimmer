@@ -24,6 +24,16 @@ module Glimmer
       class Person
         attr_accessor :name, :age, :adult
       end
+
+      class ::RedTable
+        include Glimmer::SWT::CustomWidget
+
+        def body
+          table(swt_style) {
+            background :red
+          }
+        end
+      end
     end
 
     after(:all) do
@@ -31,6 +41,7 @@ module Glimmer
         PersonCommunity
         PersonGroup
         Person
+        RedTable
       ].each do |constant|
         Object.send(:remove_const, constant) if Object.const_defined?(constant)
       end
@@ -165,5 +176,53 @@ module Glimmer
       expect(@table.widget.getItems[1].getText(0)).to eq("Bruce Flee")
     end
 
+    it "data binds text widget to a string property for a custom widget table" do
+      person1 = Person.new
+      person1.name = "Bruce Ting"
+      person1.age = 45
+      person1.adult = true
+
+      person2 = Person.new
+      person2.name = "Julia Fang"
+      person2.age = 17
+      person2.adult = false
+
+      group = PersonGroup.new
+      group.people << person1
+      group.people << person2
+
+      community = PersonCommunity.new
+      community.groups << group
+
+      @target = shell {
+        @table = red_table {
+          table_column {
+            text "Name"
+            width 120
+          }
+          table_column {
+            text "Age"
+            width 120
+          }
+          table_column {
+            text "Adult"
+            width 120
+          }
+          items bind(group, :people), column_properties(:name, :age, :adult)
+        }
+      }
+
+      expect(@table.widget.getBackground).to eq(GColor.color_for(:red))
+      expect(@table.widget.getColumnCount).to eq(3)
+      expect(@table.widget.getItems.size).to eq(2)
+
+      expect(@table.widget.getItems[0].getText(0)).to eq("Bruce Ting")
+      expect(@table.widget.getItems[0].getText(1)).to eq("45")
+      expect(@table.widget.getItems[0].getText(2)).to eq("true")
+
+      expect(@table.widget.getItems[1].getText(0)).to eq("Julia Fang")
+      expect(@table.widget.getItems[1].getText(1)).to eq("17")
+      expect(@table.widget.getItems[1].getText(2)).to eq("false")
+    end
   end
 end

@@ -8,10 +8,21 @@ module Glimmer
       class Person
         attr_accessor :name, :age, :adult
       end
+
+      class ::RedButton
+        include Glimmer::SWT::CustomWidget
+
+        def body
+          button(swt_style) {
+            background :red
+          }
+        end
+      end
     end
 
     after(:all) do
       Object.send(:remove_const, :Person) if Object.const_defined?(:Person)
+      Object.send(:remove_const, :RedButton) if Object.const_defined?(:RedButton)
     end
 
     before do
@@ -41,7 +52,7 @@ module Glimmer
       expect(@text.widget.getText).to eq("Hi")
     end
 
-    def test_button_widget_selection_listener
+    it "tests button widget selection listener" do
       person = Person.new
       person.name = "Bruce Ting"
 
@@ -54,6 +65,27 @@ module Glimmer
           }
         }
       }
+      expect(person.name).to eq("Bruce Ting")
+      @button.widget.setSelection(true)
+      @button.widget.notifyListeners(GSWT[:selection], nil)
+      expect(person.name).to eq("Bruce Lao")
+    end
+
+    it "tests button widget selection listener on a custom widget button" do
+      person = Person.new
+      person.name = "Bruce Ting"
+
+      @target = shell {
+        composite {
+          @button = red_button {
+            on_widget_selected do
+              person.name = "Bruce Lao"
+            end
+          }
+        }
+      }
+
+      expect(@button.widget.getBackground).to eq(GColor.color_for(:red))
       expect(person.name).to eq("Bruce Ting")
       @button.widget.setSelection(true)
       @button.widget.notifyListeners(GSWT[:selection], nil)
