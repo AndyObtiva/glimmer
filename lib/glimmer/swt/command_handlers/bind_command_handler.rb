@@ -17,7 +17,7 @@ module Glimmer
         def can_handle?(parent, command_symbol, *args, &block)
           # TODO refactor this long condition below
           (
-            parent.is_a?(GWidget) and
+            (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) and
             command_symbol.to_s == "bind" and
             (
               (

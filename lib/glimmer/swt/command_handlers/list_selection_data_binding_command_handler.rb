@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + "/../../command_handler"
 require File.dirname(__FILE__) + "/../g_widget"
+require File.dirname(__FILE__) + "/../custom_widget"
 require File.dirname(__FILE__) + "/../list_selection_binding"
 
 module Glimmer
@@ -12,7 +13,7 @@ module Glimmer
         include_package 'org.eclipse.swt.widgets'
 
         def can_handle?(parent, command_symbol, *args, &block)
-          parent.is_a?(GWidget) and
+          (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) and
           parent.widget.is_a?(List) and
           command_symbol.to_s == "selection" and
           args.size == 1 and
@@ -41,7 +42,7 @@ module Glimmer
               model_binding.call(list_selection_binding.evaluate_property)
             }
           }
-        end        
+        end
       end
     end
   end

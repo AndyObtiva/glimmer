@@ -11,7 +11,7 @@ module Glimmer
         include_package 'org.eclipse.swt.widgets'
 
         def can_handle?(parent, command_symbol, *args, &block)
-          parent.is_a?(GWidget) and
+          (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) and
           parent.widget.is_a?(Combo) and
           command_symbol.to_s == "selection" and
           args.size == 1 and
@@ -36,7 +36,7 @@ module Glimmer
               model_binding.call(widget_binding.evaluate_property)
             }
           }
-        end        
+        end
       end
     end
   end

@@ -3,7 +3,7 @@ require "spec_helper"
 module Glimmer
   module SWT
     describe ObservableModel do
-      before do
+      before(:all) do
         class Person
           attr_accessor :name
         end
@@ -17,9 +17,13 @@ module Glimmer
         end
       end
 
-      after do
-        Object.send(:remove_const, :Person) if Object.const_defined?(:Person)
-        Object.send(:remove_const, :SpecPerson) if Object.const_defined?(:SpecPerson)
+      after(:all) do
+        %w[
+          Person
+          SpecPerson
+        ].each do |constant|
+          Object.send(:remove_const, constant) if Object.const_defined?(constant)
+        end
       end
 
       it "observes model" do

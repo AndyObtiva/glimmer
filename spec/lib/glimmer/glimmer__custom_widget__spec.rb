@@ -4,10 +4,7 @@ module Glimmer
   describe "Glimmer Custom Widget" do
     include Glimmer
 
-    before do
-      @rspec_display_method = method(:display)
-      self.class.send(:undef_method, :display)
-      dsl :swt
+    before(:all) do
       class ::RedLabel
         include CustomWidget
         def body
@@ -16,62 +13,35 @@ module Glimmer
           }
         end
       end
+
       class ::ColoredLabel
         include CustomWidget
+
         def body
           label(swt_style) {
             background options[:color]
           }
         end
       end
-      module Red
-        class Composite
-          include CustomWidget
-          def body
-            composite(swt_style) {
-              background :red
-            }
-          end
-        end
-        class Label
-          include CustomWidget
-          def body
-            label(swt_style) {
-              background :red
-            }
-          end
-        end
-      end
-      class Sandwich
-        include CustomWidget
-        def body
-          composite(swt_style) {
-            fill_layout :vertical
-            background :white
-            label {
-              text 'SANDWICH TOP'
-            }
-            content.call
-            label {
-              text 'SANDWICH BOTTOM'
-            }
-          }
-        end
-      end
+
       class ::MultiColorLabel
         include CustomWidget
+
         options :color1, :color2
         options "font1", "font2"
+
         def text=(value)
           half_size = value.size/2
           @label1.widget.setText value[0...half_size]
           @label2.widget.setText value[half_size...value.size]
         end
+
         def text
           value1 = @label1.widget.getText
           value2 = @label2.widget.getText
           "#{value1}#{value2}"
         end
+
         def body
           composite {
             fill_layout :horizontal
@@ -86,17 +56,67 @@ module Glimmer
           }
         end
       end
+
+      module Red
+        class Composite
+          include CustomWidget
+
+          def body
+            composite(swt_style) {
+              background :red
+            }
+          end
+        end
+
+        class Label
+          include CustomWidget
+
+          def body
+            label(swt_style) {
+              background :red
+            }
+          end
+        end
+      end
+
+      class Sandwich
+        include CustomWidget
+
+        def body
+          composite(swt_style) {
+            fill_layout :vertical
+            background :white
+            label {
+              text 'SANDWICH TOP'
+            }
+            content.call
+            label {
+              text 'SANDWICH BOTTOM'
+            }
+          }
+        end
+      end
     end
 
-    after do
-      @target.display.dispose if @target.display
-      self.class.send(:define_method, :display, @rspec_display_method)
+    after(:all) do
       Object.send(:remove_const, :RedLabel) if Object.const_defined?(:RedLabel)
+      Object.send(:remove_const, :ColoredLabel) if Object.const_defined?(:ColoredLabel)
       Object.send(:remove_const, :MultiColorLabel) if Object.const_defined?(:MultiColorLabel)
       Glimmer::Red.send(:remove_const, :Composite) if Glimmer::Red.const_defined?(:Composite)
       Glimmer::Red.send(:remove_const, :Label) if Glimmer::Red.const_defined?(:Label)
       Glimmer.send(:remove_const, :Red) if Glimmer.const_defined?(:Red)
       Glimmer.send(:remove_const, :Sandwich) if Glimmer.const_defined?(:Sandwich)
+    end
+
+    before do
+      @rspec_display_method = method(:display)
+      self.class.send(:undef_method, :display)
+      dsl :swt
+    end
+
+    after do
+      @target.display.dispose if @target.display
+      self.class.send(:define_method, :display, @rspec_display_method)
     end
 
     it "builds custom widget with no namespace" do
@@ -161,6 +181,7 @@ module Glimmer
     it "builds nested custom widgets" do
       @target = shell {
         @red_composite = glimmer__red__composite {
+          row_layout :vertical
           @red_label = glimmer__red__label {
             text 'Red Label'
           }
@@ -169,6 +190,7 @@ module Glimmer
 
       expect(@red_composite.widget.getParent).to eq(@target.widget)
       expect(@red_composite.widget.getBackground).to eq(GColor.color_for(:red))
+      expect(@red_composite.widget.getLayout.is_a?(RowLayout)).to be_truthy
       expect(@red_label.widget.getParent).to eq(@red_composite.widget)
       expect(@red_label.widget.getBackground).to eq(GColor.color_for(:red))
       expect(@red_label.widget.getText).to eq('Red Label')

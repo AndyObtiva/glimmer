@@ -12,7 +12,7 @@ module Glimmer
         include_package 'org.eclipse.swt.browser'
 
         def can_handle?(parent, command_symbol, *args, &block)
-          (parent.is_a?(GWidget) || parent.is_a?(SWT::CustomWidget)) and
+          (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) and
           command_symbol.to_s != "shell" and
           GWidget.widget_exists?(command_symbol.to_s)
         end

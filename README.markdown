@@ -929,7 +929,9 @@ Definition:
 ```ruby
 class Sandwich
   include Glimmer::SWT::CustomWidget
+
   options :orientation, :bg_color
+
   def body
     composite(swt_style) { # gets custom widget style
       fill_layout orientation # using orientation option

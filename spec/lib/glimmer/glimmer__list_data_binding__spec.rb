@@ -4,9 +4,7 @@ module Glimmer
   describe "Glimmer List Data Binding" do
     include Glimmer
 
-    before do
-      dsl :swt
-
+    before(:all) do
       class Person
         attr_accessor :country, :country_options
         attr_accessor :provinces, :provinces_options
@@ -31,11 +29,28 @@ module Glimmer
           ]
         end
       end
+
+      class ::RedList
+        include CustomWidget
+        def body
+          list(swt_style) {
+            background :red
+          }
+        end
+      end
+    end
+
+    after(:all) do
+      Object.send(:remove_const, :Person) if Object.const_defined?(:Person)
+      Object.send(:remove_const, :RedList) if Object.const_defined?(:RedList)
+    end
+
+    before do
+      dsl :swt
     end
 
     after do
       @target.display.dispose if @target.display
-      Object.send(:remove_const, :Person) if Object.const_defined?(:Person)
     end
 
     it "tests single selection property" do
@@ -228,6 +243,20 @@ module Glimmer
       expect(@list.widget.selection_count.to_i).to eq(3)
       expect(@list.widget.selection.to_a).to eq(["Quebec", "Saskatchewan", "British Columbia"])
       expect(old_provinces.property_observer_list.to_a.empty?).to be_truthy
+    end
+
+    it "tests single selection property with a custom widget list" do
+      person = Person.new
+
+      @target = shell {
+        @list = red_list {
+          selection bind(person, :country)
+        }
+      }
+
+      expect(@list.widget.item_count).to eq(4)
+      expect(@list.widget.selection_index).to eq(-1)
+      expect(@list.widget.selection.to_a).to eq([])
     end
   end
 end

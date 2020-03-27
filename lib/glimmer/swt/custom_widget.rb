@@ -1,6 +1,7 @@
 require 'set'
 
 require_relative 'proc_tracker'
+require_relative 'observable_model'
 
 module Glimmer
   module SWT
@@ -8,6 +9,7 @@ module Glimmer
       include SuperModule
       include Glimmer
       include Parent
+      include ObservableModel
 
       class << self
         def for(underscored_custom_widget_name)
@@ -67,6 +69,19 @@ module Glimmer
         raise 'Not implemented!'
       end
 
+      def non_custom_body_root
+        @body_root = @body_root.body_root while @body_root.is_a?(CustomWidget)
+        @body_root
+      end
+
+      def non_custom_widget
+        non_custom_body_root.widget
+      end
+
+      def add_observer(observer, attribute_name)
+        @body_root.add_observer(observer, attribute_name)
+      end
+
       def has_attribute?(attribute_name, *args)
         respond_to?(attribute_setter(attribute_name), args) ||
           @body_root.has_attribute?(attribute_name, *args)
@@ -80,12 +95,24 @@ module Glimmer
         end
       end
 
+      def get_attribute(attribute_name)
+        if respond_to?(attribute_name)
+          send(attribute_name)
+        else
+          @body_root.get_attribute(attribute_name)
+        end
+      end
+
       def attribute_setter(attribute_name)
         "#{attribute_name}="
       end
 
       def process_block(block)
-        @content.call if @content && !@content.called?
+        if block.source_location == @content&.__getobj__.source_location
+          @content.call unless @content.called?
+        else
+          block.call
+        end
       end
     end
   end

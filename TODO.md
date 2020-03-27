@@ -2,9 +2,13 @@
 
 Here is a list of tasks to do (please delete once done):
 
+## Next Up
+
+- Fix issue with setting layout data on custom widget (to figure out body root parent layout, it has to go up twice)
+
 ## Feature Suggestions
-- Fix setBackgroundImage: make it take an image path string for convenience (instead of an SWT image) and support animated gif images
-- Support a new Glimmer widget background_video property
+- Video custom widget
+- Image custom widget
 - Glimmer Application: provide a standard structure for building a Glimmer app
 - Scaffold a Glimmer app
 - Glimmer Wizard: provide a standard structure for building a Glimmer wizard (multi-step/multi-screen process)
@@ -14,6 +18,9 @@ Here is a list of tasks to do (please delete once done):
 - Support re-rendering when updating a layout file for development.
 - Add TruffleRuby support
 - Provide friendly error messages for all failures
+- Update setBackgroundImage to take an image path string for convenience (instead of an SWT image)
+- Update setBackgroundImage to support animated gif images
+- Support a new Glimmer widget background_video property
 
 ## Technical Tasks
 
@@ -31,3 +38,11 @@ Here is a list of tasks to do (please delete once done):
 - Simplify API for async_exec and sync_exec (putting directly on Glimmer)
 - Restore badges for README
 - Look into what to do regarding Glimmer silent failures (when things fall off the chain of command)
+- Support on_*** observers on GWidget's directly without using add_contents
+
+## Documentation Tasks
+- Document G*** classes like GWidget and GShell
+- Document "#widget" method on GWidget
+- Document Glimmer.add_contents
+- Explain MVC and MVP
+- Double down on using the wording property vs attribute to minimize confusion

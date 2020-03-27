@@ -9,6 +9,22 @@ module Glimmer
   describe "Glimmer Layout Data" do
     include Glimmer
 
+    before(:all) do
+      class ::RedLabel
+        include Glimmer::SWT::CustomWidget
+
+        def body
+          label(swt_style) {
+            background :red
+          }
+        end
+      end
+    end
+
+    after(:all) do
+      Object.send(:remove_const, :RedLabel) if Object.const_defined?(:RedLabel)
+    end
+
     before do
       dsl :swt
     end
@@ -91,6 +107,28 @@ module Glimmer
         expect(layout_data.is_a?(RowData)).to eq(true)
         expect(layout_data.height).to eq(30)
         expect(layout_data.width).to eq(50)
+      end
+
+      it "sets RowData on a custom widget" do
+        @target = shell {
+          composite {
+            row_layout(:horizontal)
+            @label = red_label {
+              layout_data {
+                exclude true
+                width 50
+                height 30
+              }
+            }
+          }
+        }
+
+        widget = @label.widget
+        layout_data = widget.getLayoutData
+        expect(layout_data.is_a?(RowData)).to eq(true)
+        expect(layout_data.exclude).to eq(true)
+        expect(layout_data.width).to eq(50)
+        expect(layout_data.height).to eq(30)
       end
     end
 

@@ -40,6 +40,7 @@ module Glimmer
       end
 
       def property_observer_hash
+        # TODO simplify with ||=
         @property_observers = Hash.new unless @property_observers
         @property_observers
       end

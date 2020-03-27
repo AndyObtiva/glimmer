@@ -4,9 +4,7 @@ module Glimmer
   describe "Glimmer Combo Data Binding" do
     include Glimmer
 
-    before do
-      dsl :swt
-
+    before(:all) do
       class Person
         attr_accessor :country, :country_options
 
@@ -14,11 +12,29 @@ module Glimmer
           self.country_options=["", "Canada", "US", "Mexico"]
         end
       end
+
+      class ::RedCombo
+        include Glimmer::SWT::CustomWidget
+
+        def body
+          combo(swt_style) {
+            background :red
+          }
+        end
+      end
+    end
+
+    after(:all) do
+      Object.send(:remove_const, :Person) if Object.const_defined?(:Person)
+      Object.send(:remove_const, :RedCombo) if Object.const_defined?(:RedCombo)
+    end
+
+    before do
+      dsl :swt
     end
 
     after do
       @target.display.dispose if @target.display
-      Object.send(:remove_const, :Person) if Object.const_defined?(:Person)
     end
 
     it "tests data binding selection property" do
@@ -125,5 +141,18 @@ module Glimmer
       expect(@combo.widget.text).to eq("")
     end
 
+    it "tests data binding selection property on custom widget combo" do
+      person = Person.new
+
+      @target = shell {
+        @combo = red_combo {
+          selection bind(person, :country)
+        }
+      }
+
+      expect(@combo.widget.item_count).to eq(4)
+      expect(@combo.widget.selection_index).to eq(-1)
+      expect(@combo.widget.text).to eq("")
+    end
   end
 end

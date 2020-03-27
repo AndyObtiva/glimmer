@@ -4,9 +4,7 @@ module Glimmer
   describe "Glimmer Data Binding" do
     include Glimmer
 
-    before do
-      dsl :swt
-
+    before(:all) do
       class Person
         attr_accessor :name, :age, :adult
         attr_reader :id
@@ -47,10 +45,60 @@ module Glimmer
       class PersonWithNestedIndexedProperties
         attr_accessor :addresses, :names
       end
+
+      class ::RedComposite
+        include Glimmer::SWT::CustomWidget
+
+        def body
+          composite(swt_style) {
+            background :red
+          }
+        end
+      end
+
+      class ::RedText
+        include Glimmer::SWT::CustomWidget
+
+        def body
+          text(swt_style) {
+            background :red
+          }
+        end
+      end
+
+      module ::Red
+        class Text
+          include Glimmer::SWT::CustomWidget
+
+          def body
+            red_composite {
+              @red_text = red_text {
+                # NOOP
+              }
+            }
+          end
+
+          def text=(value)
+            @red_text.widget.setText value.to_s
+          end
+
+          def text
+            @red_text.widget.getText
+          end
+
+          def add_observer(observer, attribute_name)
+            if attribute_name.to_s == 'text'
+              @red_text.add_observer(observer, attribute_name)
+            else
+              super
+            end
+          end
+        end
+      end      
     end
 
-    after do
-      @target.display.dispose if @target.display
+    after(:all) do
+      ::Red.send(:remove_const, :Text) if ::Red.const_defined?(:Text)
       %w[
         Person
         PersonWithComputedValues
@@ -58,9 +106,20 @@ module Glimmer
         Address
         PersonWithNestedProperties
         PersonWithNestedIndexedProperties
+        RedComposite
+        RedText
+        Red
       ].each do |constant|
         Object.send(:remove_const, constant) if Object.const_defined?(constant)
       end
+    end
+
+    before do
+      dsl :swt
+    end
+
+    after do
+      @target.display.dispose if @target.display
     end
 
     it "tests text widget data binding string property" do
@@ -82,6 +141,57 @@ module Glimmer
 
       @text.widget.setText("Allen Cork")
       expect(person.name).to eq("Allen Cork")
+    end
+
+    it "tests red label custom widget data binding string property" do
+      person = Person.new
+      person.name = "Bruce Ting"
+
+      person2 = Person.new
+      person2.name = "Bruce Ting"
+
+      person3 = Person.new
+      person3.name = "Bruce Ting"
+
+      @target = shell {
+        composite {
+          @red_text = red_text {
+            text bind(person, :name)
+          }
+        }
+        red_composite {
+          @red_text2 = red_text {
+            text bind(person2, :name)
+          }
+        }
+        @red_text3 = red__text {
+          text bind(person3, :name)
+        }
+      }
+
+      expect(@red_text.widget.getText).to eq("Bruce Ting")
+      person.name = "Lady Butterfly"
+      expect(@red_text.widget.getText).to eq("Lady Butterfly")
+      @red_text.widget.setText("Allen Cork")
+      expect(person.name).to eq("Allen Cork")
+
+      expect(@red_text2.widget.getText).to eq("Bruce Ting")
+      person2.name = "Lady Butterfly"
+      expect(@red_text2.widget.getText).to eq("Lady Butterfly")
+      @red_text2.widget.setText("Allen Cork")
+      expect(person2.name).to eq("Allen Cork")
+
+      red_text3_widget = @red_text3.widget
+      red_text3_widget = red_text3_widget.getChildren.first
+      expect(red_text3_widget.getText).to eq("Bruce Ting")
+      expect(@red_text3.text).to eq("Bruce Ting")
+      person3.name = "Lady Butterfly"
+      expect(red_text3_widget.getText).to eq("Lady Butterfly")
+      expect(@red_text3.text).to eq("Lady Butterfly")
+      red_text3_widget.setText("Allen Cork")
+      expect(person3.name).to eq("Allen Cork")
+      @red_text3.text = "Sean McFaun"
+      expect(person3.name).to eq("Sean McFaun")
     end
 
     it "tests text widget data binding fixnum property" do

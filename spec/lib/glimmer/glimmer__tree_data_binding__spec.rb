@@ -4,9 +4,7 @@ module Glimmer
   describe "Glimmer Tree Data Binding" do
     include Glimmer
 
-    before do
-      dsl :swt
-
+    before(:all) do
       class Person
         attr_accessor :name, :age, :adult, :people
       end
@@ -36,8 +34,7 @@ module Glimmer
       end
     end
 
-    after do
-      @target.display.dispose if @target && @target.display
+    after(:all) do
       %w[
         Person
         Manager
@@ -45,6 +42,14 @@ module Glimmer
       ].each do |constant|
         Object.send(:remove_const, constant) if Object.const_defined?(constant)
       end
+    end
+
+    before do
+      dsl :swt
+    end
+
+    after do
+      @target.display.dispose if @target && @target.display
     end
 
     it "data binds text widget to a string property" do

@@ -4,17 +4,22 @@ module Glimmer
   describe "Glimmer Listeners" do
     include Glimmer
 
-    before do
-      dsl :swt
-
+    before(:all) do
       class Person
         attr_accessor :name, :age, :adult
       end
     end
 
+    after(:all) do
+      Object.send(:remove_const, :Person) if Object.const_defined?(:Person)
+    end
+
+    before do
+      dsl :swt
+    end
+
     after do
       @target.display.dispose if @target.display
-      Object.send(:remove_const, :Person) if Object.const_defined?(:Person)
     end
 
     it "tests text widget verify listener" do

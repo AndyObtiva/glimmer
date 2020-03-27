@@ -4,9 +4,7 @@ module Glimmer
   describe "Glimmer Table Data Binding" do
     include Glimmer
 
-    before do
-      dsl :swt
-
+    before(:all) do
       class PersonCommunity
         attr_accessor :groups
 
@@ -28,10 +26,23 @@ module Glimmer
       end
     end
 
+    after(:all) do
+      %w[
+        PersonCommunity
+        PersonGroup
+        Person
+      ].each do |constant|
+        Object.send(:remove_const, constant) if Object.const_defined?(constant)
+      end
+
+    end
+
+    before do
+      dsl :swt
+    end
+
     after do
       @target.display.dispose if @target.display
-      Object.send(:remove_const, :PersonGroup) if Object.const_defined?(:PersonGroup)
-      Object.send(:remove_const, :Person) if Object.const_defined?(:Person)
     end
 
     it "data binds text widget to a string property" do

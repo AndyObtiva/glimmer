@@ -29,6 +29,14 @@ module Glimmer
           super(attribute_name, *args)
         end
       end
+
+      def get_attribute(attribute_name)
+        if attribute_name.to_s == "text"
+          @tab_item.widget.text
+        else
+          super(attribute_name)
+        end
+      end
     end
   end
 end

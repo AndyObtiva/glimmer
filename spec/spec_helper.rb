@@ -4,6 +4,7 @@ require 'bundler'
 require 'puts_debuggerer'
 require_relative '../lib/glimmer'
 # Glimmer.logger.level = Logger::DEBUG
+Glimmer.logger.level = Logger::UNKNOWN #disable logging (used case by case)
 begin
   Bundler.require(:default, :development)
 rescue Bundler::BundlerError => e

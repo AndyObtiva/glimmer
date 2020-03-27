@@ -13,7 +13,8 @@ module Glimmer
         @widget = model
         @property = property
         @translator = translator || proc {|value| value}
-        add_contents(@widget) {
+        disposable_widget = @widget.is_a?(CustomWidget) ? @widget.non_custom_body_root : @widget
+        add_contents(disposable_widget) { # TODO consider having custom widgets support on_widget_disposed event and any event on their body_root
           on_widget_disposed { |dispose_event|
             unregister_all_observables
           }
@@ -24,7 +25,7 @@ module Glimmer
         @widget.set_attribute(@property, converted_value) unless evaluate_property == converted_value
       end
       def evaluate_property
-        @widget.widget.send(@property)
+        @widget.get_attribute(@property)
       end
     end
   end

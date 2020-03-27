@@ -17,7 +17,7 @@ module Glimmer
         def do_handle(parent, command_symbol, *args, &block)
           if args.first.is_a?(Display) || args.first.nil?
             display = args.delete_at(0)
-          elsif parent.is_a?(GWidget)
+          elsif parent.is_a?(GWidget) || parent.is_a?(CustomWidget)
             display = parent.widget.display
           else
             display = GDisplay.instance.display

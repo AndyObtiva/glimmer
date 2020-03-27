@@ -20,40 +20,10 @@ module Glimmer
 
         include_package 'org.eclipse.swt.widgets'
 
-        @@widget_data_binders = {
-          Java::OrgEclipseSwtWidgets::Text => {
-            :text => Proc.new do |g_widget, model_binding|
-              add_contents(g_widget) {
-                on_modify_text { |modify_event|
-                  model_binding.call(g_widget.widget.getText)
-                }
-              }
-            end,
-          },
-          Java::OrgEclipseSwtWidgets::Button => {
-            :selection => Proc.new do |g_widget, model_binding|
-              add_contents(g_widget) {
-                on_widget_selected { |selection_event|
-                  model_binding.call(g_widget.widget.getSelection)
-                }
-              }
-            end
-          },
-          Java::OrgEclipseSwtWidgets::Spinner => {
-            :selection => Proc.new do |g_widget, model_binding|
-              add_contents(g_widget) {
-                on_widget_selected { |selection_event|
-                  model_binding.call(g_widget.widget.getSelection)
-                }
-              }
-            end
-          }
-        }
-
         def can_handle?(parent, command_symbol, *args, &block)
-          (parent.is_a?(GWidget) and
+          (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) and
           args.size == 1 and
-          args[0].is_a?(ModelBinding))
+          args[0].is_a?(ModelBinding)
         end
 
         def do_handle(parent, command_symbol, *args, &block)
@@ -62,9 +32,7 @@ module Glimmer
           widget_binding = WidgetBinding.new(*widget_binding_parameters)
           widget_binding.call(model_binding.evaluate_property)
           widget_binding.observe(model_binding)
-          widget_data_binder_map = @@widget_data_binders[parent.widget.class]
-          widget_data_binder = widget_data_binder_map[command_symbol.to_s.to_sym] if widget_data_binder_map
-          widget_data_binder.call(parent, model_binding) if widget_data_binder
+          parent.add_observer(model_binding, command_symbol.to_s.to_sym) #TODO consider reversing statement
         end
       end
     end

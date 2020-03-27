@@ -9,9 +9,19 @@ module Glimmer
         include CommandHandler
         include Glimmer
 
+        include_package 'org.eclipse.swt.widgets'
+
         def can_handle?(parent, command_symbol, *args, &block)
-          parent.is_a?(GWidget) and
-          command_symbol.to_s == "tab_item"
+          initial_condition = (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) &&
+            command_symbol.to_s == "tab_item"
+          if initial_condition
+            if parent.widget.is_a?(TabFolder)
+              return true
+            else
+              Glimmer.logger.error "tab_item widget may only be used directly under a tab_folder widget!"
+            end
+          end
+          false
         end
 
         def do_handle(parent, command_symbol, *args, &block)

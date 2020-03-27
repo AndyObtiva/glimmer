@@ -46,6 +46,7 @@ module Glimmer
   end
 
   def self.dsl(dsl)
+    @@parent_stack = []
     CommandHandlerChainFactory.select_dsl(dsl)
   end
 
@@ -60,7 +61,7 @@ module Glimmer
   end
 
   def dsl(dsl)
-    CommandHandlerChainFactory.select_dsl(dsl)
+    Glimmer.dsl(dsl)
   end
 end
 

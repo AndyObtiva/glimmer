@@ -13,6 +13,8 @@ module Glimmer
       include_package 'org.eclipse.swt.layout'
       include_package 'org.eclipse.swt.graphics'
       include_package 'org.eclipse.swt.browser'
+
+      include Glimmer
       include Parent
 
       attr_reader :widget
@@ -56,6 +58,10 @@ module Glimmer
         @widget.send(attribute_setter(attribute_name), *args)
       end
 
+      def get_attribute(attribute_name)
+        @widget.send(attribute_getter(attribute_name))
+      end
+
       def property_type_converters
         color_converter = Proc.new do |value|
           if value.is_a?(Symbol) || value.is_a?(String)
@@ -78,6 +84,38 @@ module Glimmer
               value
             end
           end,
+        }
+      end
+
+      def widget_property_listener_installers
+        @widget_property_listener_installers ||= {
+          Java::OrgEclipseSwtWidgets::Text => {
+            :text => Proc.new do |observer|
+              add_contents(self) {
+                on_modify_text { |modify_event|
+                  observer.call(widget.getText)
+                }
+              }
+            end,
+          },
+          Java::OrgEclipseSwtWidgets::Button => {
+            :selection => Proc.new do |observer|
+              add_contents(self) {
+                on_widget_selected { |selection_event|
+                  observer.call(widget.getSelection)
+                }
+              }
+            end
+          },
+          Java::OrgEclipseSwtWidgets::Spinner => {
+            :selection => Proc.new do |observer|
+              add_contents(self) {
+                on_widget_selected { |selection_event|
+                  observer.call(widget.getSelection)
+                }
+              }
+            end
+          }
         }
       end
 
@@ -194,6 +232,16 @@ module Glimmer
         @widget.dispose
       end
 
+      def add_observer(observer, property_name)
+        property_listener_installers = widget_property_listener_installers[widget.class]
+        widget_listener_installer = property_listener_installers[property_name.to_s.to_sym] if property_listener_installers
+        widget_listener_installer.call(observer) if widget_listener_installer
+      end
+
+      def remove_observer(observer, property_name)
+        # TODO consider implementing if remove_observer is needed (consumers can remove listener via SWT API)
+      end
+
       private
 
       def style(underscored_widget_name, styles)
@@ -208,6 +256,10 @@ module Glimmer
 
       def attribute_setter(attribute_name)
         "set#{attribute_name.to_s.camelcase(:upper)}"
+      end
+
+      def attribute_getter(attribute_name)
+        "get#{attribute_name.to_s.camelcase(:upper)}"
       end
     end
   end
