@@ -105,14 +105,14 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.4.6
+jgem install glimmer -v 0.4.7
 ```
 
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.4.6'
+gem 'glimmer', '~> 0.4.7'
 ```
 
 And, then run:
