@@ -69,15 +69,6 @@ module Glimmer
         raise 'Not implemented!'
       end
 
-      def non_custom_body_root
-        @body_root = @body_root.body_root while @body_root.is_a?(CustomWidget)
-        @body_root
-      end
-
-      def non_custom_widget
-        non_custom_body_root.widget
-      end
-
       def add_observer(observer, attribute_name)
         @body_root.add_observer(observer, attribute_name)
       end

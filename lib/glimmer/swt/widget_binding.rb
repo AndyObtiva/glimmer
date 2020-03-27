@@ -13,8 +13,8 @@ module Glimmer
         @widget = model
         @property = property
         @translator = translator || proc {|value| value}
-        disposable_widget = @widget.is_a?(CustomWidget) ? @widget.non_custom_body_root : @widget
-        add_contents(disposable_widget) { # TODO consider having custom widgets support on_widget_disposed event and any event on their body_root
+
+        add_contents(@widget) { # TODO consider having custom widgets support on_widget_disposed event and any event on their body_root
           on_widget_disposed { |dispose_event|
             unregister_all_observables
           }
