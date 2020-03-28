@@ -234,6 +234,106 @@ shell {
 }.open
 ```
 
+**Video Widget**
+
+Glimmer comes with a video widget not in SWT. It comes with expected video functionality such as play, pause, and rewind. Additionally, it provides options for displaying controls, playing in looped mode, and starting with autoplay.
+
+Attributes (passed in an options hash as arguments to video widget):
+- `autoplay` [default] (true or false): starts playing video immediately after loading
+- `controls` (true or false): displays controls
+- `looped` (true or false): plays video in looped mode
+
+Methods:
+- `play`: plays video
+- `pause`: pauses video
+- `rewind`: rewinds video to beginning
+- `reload`: reloads video (useful for web urls if they fail loading)
+- `duration`: duration of video in seconds
+- `current_time`: current time in playback in seconds
+- `current_time=(value)`: set current time to fast forward to rewind
+- `on_loaded(&block)`: executes block after video has initially loaded
+- `loaded?`: returns true if video finished loading
+- `ended?`: returns true if video ended playback (reached end)
+- `autoplay`: value of autoplay
+- `autoplay?`: alias for autoplay
+- `autoplay=(value)`: sets value of autoplay
+- `controls`: value of controls
+- `controls?`: alias for controls
+- `controls=(value)`: sets value of controls
+- `looped`: value of looped
+- `looped?`: alias for looped
+- `looped=(value)`: sets value of looped
+- `file`: returns file path set if any
+- `file=`: sets a new file path (overrides what was set before)
+- `url`: returns web url set if any
+- `url=`: sets a new web url (overrides what was set before)
+
+Example (basic local file video):
+
+```ruby
+shell {
+  @video = video(file: VIDEO_ABSOLUTE_FILE_PATH)
+}.open
+```
+
+Example (local file video with controls and looped):
+
+```ruby
+shell {
+  @video = video(file: VIDEO_ABSOLUTE_FILE_PATH, controls: true, looped: true)
+}.open
+```
+
+Example (web url video with custom controls and default autoplay disabled):
+
+```ruby
+include Glimmer
+web_url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+@shell = shell {
+  grid_layout
+  minimum_size 1138, 640
+  composite {
+    grid_layout {
+      num_columns 3
+    }
+    layout_data {
+      horizontal_alignment :center
+      vertical_alignment :center
+      grab_excess_horizontal_space true
+      grab_excess_vertical_space false    
+    }
+    button {
+      text "Play"
+      on_widget_selected {
+        @video.play
+      }
+    }
+    button {
+      text "Pause"
+      on_widget_selected {
+        @video.pause
+      }
+    }
+    button {
+      text "Rewind"
+      on_widget_selected {
+        @video.rewind
+      }
+    }
+  }
+  @video = video(url: web_url, autoplay: false) {
+    layout_data {
+      horizontal_alignment :fill
+      vertical_alignment :fill
+      grab_excess_horizontal_space true
+      grab_excess_vertical_space true
+    }
+  }
+}
+@shell.open
+```
+
+
 **Browser Widget**
 
 Glimmer supports SWT Browser widget, which can load URLs (including media) or render HTML (useful in embedding videos). It can even be instrumented with JavaScript when needed (though highly discouraged except for rare cases when leveraging a pre-existing web codebase in a desktop app).
