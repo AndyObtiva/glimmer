@@ -1,5 +1,3 @@
-require 'set'
-
 require_relative 'proc_tracker'
 require_relative 'observable_model'
 
@@ -34,17 +32,25 @@ module Glimmer
         # Can be called multiple times to set more options additively.
         # When passed no arguments, it returns list of all option names captured so far
         def options(*new_options)
-          new_options = new_options.compact.map(&:to_s)
+          new_options = new_options.compact.map(&:to_s).map(&:to_sym)
           if new_options.empty?
-            @options ||= Set.new # class options array
+            @options ||= {} # maps options to defaults
           else
-            options |= Set[*new_options]
+            new_options = new_options.reduce({}) {|new_options, new_option| new_options.merge(new_option => nil)}
+            @options = options.merge(new_options)
             def_option_attr_readers(new_options)
           end
         end
 
+        def option(new_option, new_option_default = nil)
+          new_option = new_option.to_s.to_sym
+          new_options = {new_option => new_option_default}
+          @options = options.merge(new_options)
+          def_option_attr_readers(new_options)
+        end
+
         def def_option_attr_readers(new_options)
-          new_options.each do |option|
+          new_options.each do |option, default|
             class_eval <<-end_eval, __FILE__, __LINE__
               def #{option}
                 options[:#{option}]
@@ -59,7 +65,8 @@ module Glimmer
       def initialize(parent, *swt_constants, options, &content)
         @parent = parent
         @swt_style = GSWT[*swt_constants]
-        @options = options # instance options hash
+        options ||= {}
+        @options = self.class.options.merge(options)
         @content = ProcTracker.new(content) if content
         @body_root = body
         @widget = @body_root.widget

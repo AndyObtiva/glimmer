@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'facets', '3.1.0'
 gem 'os', '1.0.0'
-gem 'super_module', '1.3.0'
+gem 'super_module', '1.3.1'
 
 group :development do
   gem "rspec-mocks", "~> 3.5.0"

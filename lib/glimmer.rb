@@ -11,6 +11,7 @@ require "java"
 require_relative "glimmer/parent"
 require_relative "glimmer/swt_packages" #TODO move into SWT namespace
 require_relative "glimmer/swt/custom_widget"
+require_relative 'glimmer/swt/video' # TODO offload to a custom widget directory
 require_relative "glimmer/ext/module"
 
 module Glimmer

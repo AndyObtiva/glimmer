@@ -35,6 +35,7 @@ Here is a list of tasks to do (please delete once done):
 - Restore badges for README
 - Look into what to do regarding Glimmer silent failures (when things fall off the chain of command)
 - Support on_*** observers on GWidget's directly without using add_contents
+- Check for need to recursively call dispose on widget descendants
 
 ## Documentation Tasks
 - Document G*** classes like GWidget and GShell
@@ -43,3 +44,4 @@ Here is a list of tasks to do (please delete once done):
 - Document custom widget custom attributes/observers
 - Explain MVC and MVP
 - Double down on using the wording property vs attribute to minimize confusion
+- document async_exec and sync_exec

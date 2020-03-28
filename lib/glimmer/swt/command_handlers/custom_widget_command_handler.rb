@@ -14,7 +14,7 @@ module Glimmer
         end
 
         def do_handle(parent, command_symbol, *args, &block)
-          options = args.pop if args.last.is_a?(Hash)
+          options = args.last.is_a?(Hash) ? args.pop : {}
           Glimmer.logger.debug "Custom widget #{command_symbol} styles are: [" + args.inspect + "] and options are: #{options}"
           CustomWidget.for(command_symbol).new(parent, *args, options, &block)
         end

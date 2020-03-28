@@ -40,6 +40,10 @@ module Glimmer
         @widget.pack
         center
         @widget.open
+        start_event_loop
+      end
+
+      def start_event_loop
         until @widget.isDisposed
           @display.sleep unless @display.readAndDispatch
         end

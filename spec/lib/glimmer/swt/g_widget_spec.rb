@@ -9,6 +9,10 @@ module Glimmer
         dsl :swt
       end
 
+      after do
+        @target.start_event_loop
+      end
+
       it 'asyncronously executes' do
         @target = shell {
           @text = text {
@@ -24,8 +28,6 @@ module Glimmer
           expect(@text.widget.getText).to eq("text2")
           @target.widget.close
         end
-
-        @target.open
       end
 
       it "syncronously executes" do
@@ -47,8 +49,6 @@ module Glimmer
         @target.async_exec do
           @target.widget.close
         end
-
-        @target.open
       end
     end
   end

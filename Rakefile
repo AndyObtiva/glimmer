@@ -10,7 +10,6 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 require 'rake'
-
 begin
   jeweler_required = require 'jeweler'
 rescue Exception
