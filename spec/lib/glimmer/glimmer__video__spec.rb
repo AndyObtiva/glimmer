@@ -291,5 +291,63 @@ module Glimmer
         }
       }
     end
+
+    it 'sets background to white by default' do
+      @target = shell
+      add_contents(@target) {
+        @video = video(file: video_file) {
+          on_completed {
+            expect(@video.widget.evaluate("return document.getElementById('style-body-background').innerHTML")).to include("rgba(255, 255, 255, 255)")
+            @target.widget.close
+          }
+        }
+      }
+    end
+
+    it 'sets background to black with option argument' do
+      @target = shell
+      add_contents(@target) {
+        @video = video(file: video_file, background: :black) {
+          on_completed {
+            expect(@video.widget.evaluate("return document.getElementById('style-body-background').innerHTML")).to include("rgba(0, 0, 0, 255)")
+            @target.widget.close
+          }
+        }
+      }
+    end
+
+    it 'sets background to black with option property' do
+      @target = shell
+      add_contents(@target) {
+        @video = video(file: video_file) {
+          background :black
+          on_completed {
+            expect(@video.widget.evaluate("return document.getElementById('style-body-background').innerHTML")).to include("rgba(0, 0, 0, 255)")
+            @target.widget.close
+          }
+        }
+      }
+    end
+
+    it 'sets background to black with option setter method' do
+      @target = shell
+      add_contents(@target) {
+        @video = video(file: video_file) {
+          on_completed {
+            @video.background = :black
+            expect(@video.widget.evaluate("return document.getElementById('style-body-background').innerHTML")).to include("rgba(0, 0, 0, 255)")
+            @target.widget.close
+          }
+        }
+      }
+    end
+
+    xit 'fits video to width by default' do
+
+    end
+
+    #TODO handle 100% values in width and height
+    xit 'fit to width'
+    xit 'fit to height'
   end
 end

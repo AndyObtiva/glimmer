@@ -11,6 +11,8 @@ module Glimmer
       class << self
         include_package 'org.eclipse.swt'
 
+        # TODO consider refactoring to simply for and returning GColor instead for consistency
+
         def color_for(display = nil, standard_color)
           standard_color = "color_#{standard_color}".to_sym unless standard_color.to_s.include?('color_')
           display ||= GDisplay.instance.display

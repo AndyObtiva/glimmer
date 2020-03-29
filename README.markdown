@@ -242,6 +242,7 @@ Attributes (passed in an options hash as arguments to video widget):
 - `autoplay` [default] (true or false): starts playing video immediately after loading
 - `controls` (true or false): displays controls
 - `looped` (true or false): plays video in looped mode
+- `background` (Glimmer color): sets background color just like with any other widget
 
 Methods:
 - `play`: plays video
@@ -267,12 +268,14 @@ Methods:
 - `file=`: sets a new file path (overrides what was set before)
 - `url`: returns web url set if any
 - `url=`: sets a new web url (overrides what was set before)
+- `background`: returns background color set
+- `background=`: sets background color
 
 Example (basic local file video):
 
 ```ruby
 shell {
-  @video = video(file: VIDEO_ABSOLUTE_FILE_PATH)
+  video(file: video_file)
 }.open
 ```
 
@@ -280,7 +283,13 @@ Example (local file video with controls and looped):
 
 ```ruby
 shell {
-  @video = video(file: VIDEO_ABSOLUTE_FILE_PATH, controls: true, looped: true)
+  grid_layout
+  video(file: video_file, looped: true, controls: true, background: :black) {
+    layout_data {
+      width_hint 1024
+      height_hint 640
+    }
+  }
 }.open
 ```
 
@@ -969,6 +978,7 @@ Definition:
 ```ruby
 class RedLabel
   include Glimmer::SWT::CustomWidget
+
   def body
     label(swt_style) {
       background :red
@@ -995,6 +1005,7 @@ Definition:
 module Red
   class Composite
     include Glimmer::SWT::CustomWidget
+
     def body
       composite(swt_style) {
         background :red
@@ -1017,11 +1028,15 @@ shell {
 
 Notice how `Red::Composite` became `red__composite` with double-underscore, which is how Glimmer Custom Widgets signify namespaces by convention.
 
-Custom Widgets have the following attributes available to call from inside the `#body` method:
+Custom Widgets have the following attributes (attribute readers) available to call from inside the `#body` method:
 - `#parent`: Glimmer object parenting custom widget
 - `#swt_style`: SWT style integer. Can be useful if you want to allow consumers to customize a widget inside the custom widget body
-- `#options`: a hash of options passed in parentheses when declaring a custom widget (useful for passing in model data) (e.g. `calendar(events: events)`). Custom widget class can declare option names (array) with `.options` method as shown below (not to be confused with `#options` instance method for retrieving options hash containing names & values)
+- `#options`: a hash of options passed in parentheses when declaring a custom widget (useful for passing in model data) (e.g. `calendar(events: events)`). Custom widget class can declare option names (array) with `.options` method as shown below, which generates attribute readers for every option (not to be confused with `#options` instance method for retrieving options hash containing names & values)
 - `#content`: nested block underneath custom widget. It will be automatically called at the end of processing the custom widget body. Alternatively, the custom widget body may call `content.call` at the place where the content is needed to show up as shown in the following example.
+
+Additionally, custom widgets can call the following class methods:
+- `.options`: declares a list of options by taking an option name array (symbols/strings). This generates option attribute readers (e.g. `options :orientation, :bg_color` generates `#orientation` and `#bg_color` attribute readers)
+- `.option`: declares a single option taking option name and default value as arguments (also generates an attribute reader just like `.options`)
 
 **Content/Options Example:**
 
@@ -1031,6 +1046,7 @@ class Sandwich
   include Glimmer::SWT::CustomWidget
 
   options :orientation, :bg_color
+  option :fg_color, :black
 
   def body
     composite(swt_style) { # gets custom widget style

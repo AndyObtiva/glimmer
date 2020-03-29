@@ -1,4 +1,5 @@
 require_relative 'custom_widget'
+require_relative 'g_color'
 
 module Glimmer
   module SWT
@@ -9,6 +10,7 @@ module Glimmer
       option :autoplay, true
       option :controls, false
       option :looped, false
+      option :background, :white
 
       alias autoplay? autoplay
       alias controls? controls
@@ -19,10 +21,15 @@ module Glimmer
           text <<~HTML
             <html>
               <head>
-                <style>
+                <style id="style">
                   body {
                     margin: 0;
                     padding: 0;
+                  }
+                </style>
+                <style id="style-body-background">
+                  body {
+                    background: #{browser_body_background};
                   }
                 </style>
               </head>
@@ -74,6 +81,14 @@ module Glimmer
 
       def current_time=(time)
         video_property_set('currentTime', time)
+      end
+
+      def background=(new_background)
+        options[:background] = new_background
+        on_loaded do
+          style_background = "body { background: #{browser_body_background}; }"
+          widget.execute("document.getElementById('style-body-background').innerHTML='#{style_background}'")
+        end
       end
 
       def paused?
@@ -145,6 +160,16 @@ module Glimmer
 
       def browser_video_loop
         'loop' if looped?
+      end
+
+      def browser_body_background
+        color = background
+        if color.is_a?(Symbol) || color.is_a?(String)
+          color = GColor.color_for(parent.widget.getDisplay, color)
+        elsif color.is_a?(GColor)
+          color = color.color
+        end
+        "rgba(#{color.getRed}, #{color.getGreen}, #{color.getBlue}, #{color.getAlpha})"
       end
 
       def update_source
