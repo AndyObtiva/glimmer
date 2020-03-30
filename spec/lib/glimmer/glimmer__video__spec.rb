@@ -199,6 +199,54 @@ module Glimmer
       }
     end
 
+    it 'sets offset_x to 0 by default' do
+      @target = shell
+      add_contents(@target) {
+        @video = video(file: video_file) {
+          on_completed {
+            expect(@video.widget.evaluate("return document.getElementById('style-body-offset-x').innerHTML")).to include("margin-left: 0px;")
+            @target.widget.close
+          }
+        }
+      }
+    end
+
+    it 'sets offset_x to value specified by offset_x option argument' do
+      @target = shell
+      add_contents(@target) {
+        @video = video(file: video_file, offset_x: -150) {
+          on_completed {
+            expect(@video.widget.evaluate("return document.getElementById('style-body-offset-x').innerHTML")).to include("margin-left: -150px;")
+            @target.widget.close
+          }
+        }
+      }
+    end
+
+    it 'sets offset_y to 0 by default' do
+      @target = shell
+      add_contents(@target) {
+        @video = video(file: video_file) {
+          on_completed {
+            expect(@video.widget.evaluate("return document.getElementById('style-body-offset-y').innerHTML")).to include("margin-top: 0px;")
+            @target.widget.close
+          }
+        }
+      }
+    end
+
+    it 'sets offset_y to value specified by offset_y option argument' do
+      @target = shell
+      add_contents(@target) {
+        @video = video(file: video_file, offset_y: -150) {
+          on_completed {
+            expect(@video.widget.evaluate("return document.getElementById('style-body-offset-y').innerHTML")).to include("margin-top: -150px;")
+            @target.widget.close
+          }
+        }
+      }
+    end
+
     it 'plays and pauses video' do
       @target = shell
       add_contents(@target) {

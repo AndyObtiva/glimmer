@@ -26,6 +26,8 @@ module Glimmer
       option :background, :white
       option :fit_to_width, true
       option :fit_to_height, true
+      option :offset_x, 0
+      option :offset_y, 0
 
       alias autoplay? autoplay
       alias controls? controls
@@ -47,6 +49,16 @@ module Glimmer
                 <style id="style-body-background">
                   body {
                     background: #{browser_body_background};
+                  }
+                </style>
+                <style id="style-body-offset-x">
+                  body {
+                    margin-left: #{browser_body_offset_x}px;
+                  }
+                </style>
+                <style id="style-body-offset-y">
+                  body {
+                    margin-top: #{browser_body_offset_y}px;
                   }
                 </style>
               </head>
@@ -107,6 +119,14 @@ module Glimmer
           color = color.color
         end
         "rgba(#{color.getRed}, #{color.getGreen}, #{color.getBlue}, #{color.getAlpha})"
+      end
+
+      def browser_body_offset_x
+        offset_x
+      end
+
+      def browser_body_offset_y
+        offset_y
       end
     end
   end
