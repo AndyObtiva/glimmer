@@ -6,7 +6,6 @@ class TicTacToe
 
   def initialize
     @tic_tac_toe_board = TicTacToeBoard.new
-    @main =
     @shell = shell {
       text "Tic-Tac-Toe"
       composite {
@@ -50,7 +49,7 @@ class TicTacToe
   end
 
   def open
-    @main.open
+    @shell.open
   end
 end
 

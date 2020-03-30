@@ -2,8 +2,12 @@
 
 Here is a list of tasks to do (please delete once done):
 
-## Feature Suggestions
+Up Next:
+
 - Video custom widget
+- Girb update to include Glimmer
+
+## Feature Suggestions
 - Image custom widget
 - Glimmer Application: provide a standard structure for building a Glimmer app
 - Scaffold a Glimmer app

@@ -111,6 +111,8 @@ module Glimmer
         if computed?
           add_computed_observers(observer)
         elsif nested_property?
+          require 'puts_debuggerer'
+          # pd '>> nested'
           add_nested_observers(observer)
         else
           observer.observe(model, property_name)
@@ -160,8 +162,13 @@ module Glimmer
               nested_property_observer.observe(model)
               parent_observer.add_dependent([parent_model, parent_property_name] => [nested_property_observer, model, nil])
             else
+              # pd property_name, announcer: '[NESTED]', header: true
+              # pd model, announcer: '[NESTED]'
+              # pd nested_property_observer, announcer: '[NESTED]'
               nested_property_observer.observe(model, property_name)
+              # pd 'DONE ADDING OBSERVER', announcer: '[NESTED]'
               parent_observer.add_dependent([parent_model, parent_property_name] => [nested_property_observer, model, property_name])
+              # pd 'DONE ADDING DEPENDENT', announcer: '[NESTED]'
             end
           end
         end
@@ -172,6 +179,13 @@ module Glimmer
         invoke_property_writer(model, "#{property_name}=", converted_value) unless evaluate_property == converted_value
       end
       def evaluate_property
+        require 'puts_debuggerer'
+        # pd model, header: true
+        # pd property_name
+        # pd base_model
+        # pd model_property_names
+        # pd nested_property_names
+        # pd 'evaluate_property', caller: true, header: true
         invoke_property_reader(model, property_name) unless model.nil?
       end
       def evaluate_options_property

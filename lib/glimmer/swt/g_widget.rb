@@ -55,6 +55,10 @@ module Glimmer
 
       def set_attribute(attribute_name, *args)
         apply_property_type_converters(attribute_name, args)
+        # require 'puts_debuggerer'
+        # pd @widget
+        # pd attribute_name
+        # pd args
         @widget.send(attribute_setter(attribute_name), *args)
       end
 

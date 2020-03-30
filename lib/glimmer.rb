@@ -15,7 +15,7 @@ require_relative 'glimmer/swt/video' # TODO offload to a custom widget directory
 require_relative "glimmer/ext/module"
 
 module Glimmer
-   #TODO make it configurable to include or not include
+   #TODO consider make it configurable to include or not include
   include SwtPackages
   def self.included(klass)
     klass.include SwtPackages
@@ -30,6 +30,8 @@ module Glimmer
   def self.logger
     @@logger
   end
+
+  # TODO calling original method_missing after aliasing for cases where method_missing is not needed, like known excluded symbols
 
   def self.method_missing(method_symbol, *args, &block)
     Glimmer.logger.debug "method: " + method_symbol.to_s + " and args: " + args.to_s

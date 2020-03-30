@@ -4,6 +4,8 @@ require_relative 'g_color'
 module Glimmer
   module SWT
     class Video
+      include_package 'org.eclipse.swt.browser'
+
       include Glimmer::SWT::CustomWidget
 
       options :file, :url
@@ -43,6 +45,7 @@ module Glimmer
           HTML
           on_completed {
             @loaded = true
+            register_observers
           }
         }
       end
@@ -63,13 +66,31 @@ module Glimmer
         self.current_time = 0
       end
 
-      def loaded?
+      # TODO rename to initialized
+      def loaded
         !!@loaded
       end
+      alias loaded? loaded
 
-      def ended?
+      def ended
         video_property('ended')
       end
+      alias ended? ended
+
+      def started
+        current_time > 0
+      end
+      alias started? started
+
+      def paused
+        video_property('paused')
+      end
+      alias paused? paused
+
+      def playing
+        !paused
+      end
+      alias playing? playing
 
       def current_time
         video_property('currentTime')
@@ -89,10 +110,6 @@ module Glimmer
           style_background = "body { background: #{browser_body_background}; }"
           widget.execute("document.getElementById('style-body-background').innerHTML='#{style_background}'")
         end
-      end
-
-      def paused?
-        video_property('paused')
       end
 
       def file=(new_file)
@@ -123,9 +140,7 @@ module Glimmer
       end
 
       def video_property(property)
-        on_loaded do
-          widget.evaluate("return document.getElementById('video').#{property}")
-        end
+        widget.evaluate("return document && document.getElementById('video') && document.getElementById('video').#{property}")
       end
 
       def video_property_set(property, value)
@@ -135,6 +150,7 @@ module Glimmer
         end
       end
 
+      #TODO rename to on_initialized to avoid confusiong with on_loaded for video oncanplay event listener
       def on_loaded(&block)
         if loaded?
           block.call
@@ -142,13 +158,58 @@ module Glimmer
           add_contents(body_root) {
             on_completed {
               block.call
-              # TODO unregister listener
+              # TODO unregister listener?
             }
           }
         end
       end
 
       private
+
+      class VideoEventHandler < BrowserFunction
+        PROPERTIES_OBSERVED = [
+          'playing',
+          'paused',
+          'ended',
+        ]
+
+        attr_reader :video, :event
+
+        def initialize(video, event)
+          @video = video
+          @event = event
+          function_name = "notify_#{event}"
+          browser = video.widget
+          super(browser, function_name)
+        end
+
+        def function(arguments)
+          # pd event
+          # property_name = MAPPING_EVENTS_TO_PROPERTIES[event]
+          # pd property_name
+          # pd send(property_name)
+          PROPERTIES_OBSERVED.each do |property|
+            @video.notify_observers(property)
+          end
+          # @video.notify_observers(property_name)
+          true
+        rescue => e
+          Glimmer.logger.error "#{e.message}\n#{e.backtrace.join("\n")}"
+          false
+        end
+      end
+
+      def register_observers
+        require 'puts_debuggerer'
+        register_observer('play')
+        register_observer('pause')
+        register_observer('ended')
+      end
+
+      def register_observer(event)
+        video_event_handler = VideoEventHandler.new(self, event)
+        widget.execute("document.getElementById('video').on#{event} = function() {#{video_event_handler.getName}()}")
+      end
 
       def browser_video_autoplay
         'autoplay' if autoplay?

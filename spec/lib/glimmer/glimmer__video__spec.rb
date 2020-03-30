@@ -343,11 +343,17 @@ module Glimmer
     end
 
     xit 'fits video to width by default' do
+    end
 
+    xit 'does not fit video to width when specified by option argument' do
     end
 
     #TODO handle 100% values in width and height
-    xit 'fit to width'
     xit 'fit to height'
+    xit 'paused'
+    xit 'ended'
+    xit 'playing?'
+    xit 'started?'
+    xit 'binding video listeners for paused, ended, current_time, etc....'
   end
 end

@@ -2,4 +2,5 @@
 
 require_relative '../lib/glimmer/launcher'
 
-Glimmer::Launcher.new(['irb'] + ARGV).launch
+girb_runner = File.expand_path('../girb_runner.rb', __FILE__)
+Glimmer::Launcher.new(["irb -r #{girb_runner}"] + ARGV).launch

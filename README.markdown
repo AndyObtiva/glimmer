@@ -26,13 +26,14 @@ glimmer samples/hello_world.rb
 
 Glimmer app:
 
-![Hello World](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-world.png)
+![Hello World](images/glimmer-hello-world.png)
 
 ### Tic Tac Toe
 
 Glimmer code (from `samples/tictactoe/tic_tac_toe.rb`):
 
 ```ruby
+# ...
 shell {
   text "Tic-Tac-Toe"
   composite {
@@ -51,6 +52,7 @@ shell {
     }
   }
 }
+# ...
 ```
 
 Run:
@@ -61,7 +63,7 @@ glimmer samples/tictactoe/tic_tac_toe.rb
 
 Glimmer app:
 
-![Tic Tac Toe](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-tic-tac-toe.png)
+![Tic Tac Toe](images/glimmer-tic-tac-toe.png)
 
 NOTE: Glimmer is in beta mode. Please help make better by adopting for small or low risk projects and providing feedback.
 
@@ -120,7 +122,7 @@ And, then run:
 bundle install
 ```
 
-## Glimmer command
+## Glimmer Command
 
 Usage:
 ```
@@ -132,9 +134,13 @@ the glimmer ruby gem and SWT jar dependency.
 
 Example:
 ```
-glimmer hello_world.rb
+glimmer samples/hello_world.rb
 ```
 This runs the Glimmer application hello_world.rb
+
+## Girb (Glimmer irb) Command
+
+With Glimmer installed, you may run want to run `girb` instead of standard `irb` to have SWT preloaded and the Glimmer library required and included for quick Glimmer coding/testing.
 
 ## Glimmer DSL Syntax
 
@@ -146,7 +152,7 @@ https://www.eclipse.org/swt/widgets/
 
 This screenshot taken from the link above should give a glimpse of how SWT widgets look and feel:
 
-![SWT Widgets](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-swt-widgets.png)
+![SWT Widgets](images/glimmer-swt-widgets.png)
 
 In Glimmer DSL, widgets are declared with lowercase underscored names mirroring their SWT names minus the package name:
 
@@ -165,11 +171,9 @@ In Glimmer DSL, widgets are declared with lowercase underscored names mirroring 
 
 A **widget** name is followed by a Ruby block that contains the widget **properties** and **content**. Optionally, an SWT **style** ***argument*** may also be passed (see [next section](#widget-styles) for details).
 
-For example, if we were to revisit `hello_world.rb` above:
+For example, if we were to revisit `samples/hello_world.rb` above:
 
 ```ruby
-include Glimmer
-
 shell {
   text "Glimmer"
   label {
@@ -183,10 +187,12 @@ Note that `shell` instantiates the outer shell **widget**, in other words, the w
 `shell` is then followed by a ***block*** that contains
 
 ```ruby
-text "Glimmer" # text property of shell
-label { # label widget declaration
-  text "Hello World!" # text property of label
-}
+# ...
+  text "Glimmer" # text property of shell
+  label { # label widget declaration
+    text "Hello World!" # text property of label
+  }
+# ...
 ```
 
 The first line declares a **property** called `text`, which sets the title of the shell (window) to `"Glimmer"`. **Properties** always have ***arguments***, such as the text `"Glimmer"` in this case, and do **NOT** have a ***block***.
@@ -200,19 +206,20 @@ After it is declared, a `shell` must be opened with the `#open` method, which ca
 ```ruby
 @shell = shell {
   # properties and content
+  # ...
 }
 @shell.open
 ```
 
 It is centered upon initial display and has a minimum width of 130 (can be re-centered when needed with `@shell.center` method after capturing `shell` in a `@shell` variable as per samples)
 
-Check out the [samples](https://github.com/AndyObtiva/glimmer/tree/master/samples) directory for more examples.
+Check out the [samples](samples) directory for more examples.
 
-Example from [hello_tab.rb](https://github.com/AndyObtiva/glimmer/blob/master/samples/hello_tab.rb) sample:
+Example from [hello_tab.rb](samples/hello_tab.rb) sample:
 
-![Hello Tab 1](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-tab1.png)
+![Hello Tab 1](images/glimmer-hello-tab1.png)
 
-![Hello Tab 2](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-tab2.png)
+![Hello Tab 2](images/glimmer-hello-tab2.png)
 
 ```ruby
 shell {
@@ -234,7 +241,9 @@ shell {
 }.open
 ```
 
-**Video Widget**
+#### Video Widget
+
+![Video Widget](images/glimmer-video-widget.png)
 
 Glimmer comes with a video widget not in SWT. It comes with expected video functionality such as play, pause, and rewind. Additionally, it provides options for displaying controls, playing in looped mode, and starting with autoplay.
 
@@ -271,25 +280,22 @@ Methods:
 - `background`: returns background color set
 - `background=`: sets background color
 
-Example (basic local file video):
+Example ([samples/video/hello_video.rb](samples/video/hello_video.rb)):
 
 ```ruby
+# ...
 shell {
   video(file: video_file)
 }.open
 ```
 
-Example (local file video with controls and looped):
+Example ([samples/video/hello_looped_video_with_controls_and_background.rb](samples/video/hello_looped_video_with_controls_and_background.rb)):
 
 ```ruby
+# ...
 shell {
-  grid_layout
-  video(file: video_file, looped: true, controls: true, background: :black) {
-    layout_data {
-      width_hint 1024
-      height_hint 640
-    }
-  }
+  minimum_size 1024, 640
+  video(file: video_file, looped: true, controls: true, background: :black)
 }.open
 ```
 
@@ -343,7 +349,7 @@ web_url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigB
 ```
 
 
-**Browser Widget**
+#### Browser Widget
 
 Glimmer supports SWT Browser widget, which can load URLs (including media) or render HTML (useful in embedding videos). It can even be instrumented with JavaScript when needed (though highly discouraged except for rare cases when leveraging a pre-existing web codebase in a desktop app).
 
@@ -351,10 +357,11 @@ Example loading a URL:
 
 ```ruby
 shell {
+  minimum_size 1024, 860
   browser {
-    url 'http://www.google.com'
+    url 'http://brightonresort.com/about'
   }
-}
+}.open
 ```
 
 Example rendering HTML with an embedded video:
@@ -367,7 +374,7 @@ shell {
         <head>
         </head>
         <body>
-          <video id="bowling-video" width="100%" height="100%">
+          <video id="video" width="100%" height="100%">
             <source src="file://#{video_file}" type="video/mp4">
           Your browser does not support the video tag.
           </video>
@@ -375,10 +382,10 @@ shell {
       </html>
     HTML
     on_completed { # on load of the page execute this JavaScript
-      @browser.widget.execute("document.getElementById('bowling-video').play()")
+      @browser.widget.execute("document.getElementById('video').play()")
     }
   }
-}
+}.open
 ```
 
 ### Widget Styles
@@ -429,13 +436,13 @@ You may check out all available `SWT` styles here:
 
 https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
 
-**Advanced case outside of standard Glimmer DSL**
+#### Advanced case outside of standard Glimmer DSL
 
 When building a widget-related SWT object manually (e.g. `GridData.new(...)`), you are expected to use `SWT::CONSTANT` directly or BIT-OR a few SWT constants together like `SWT::BORDER | SWT::V_SCROLL`.
 
 Glimmer facilitates that with `GSWT` class by allowing you to pass multiple styles as an argument array of symbols instead of dealing with BIT-OR. For example: `GSWT[:border, :v_scroll]`
 
-**Non-resizable Window**
+#### Non-resizable Window
 
 SWT Shell widget by default is resizable. To make it non-resizable, one must pass a complicated style bit concoction like `GSWT[:shell_trim] & (~GSWT[:resize]) & (~GSWT[:max])`.
 
@@ -569,7 +576,7 @@ composite {
 }
 ```
 
-Here is a more sophisticated example taken from [hello_computed.rb](https://github.com/AndyObtiva/glimmer/blob/master/samples/hellocomputed/hello_computed.rb) sample:
+Here is a more sophisticated example taken from [hello_computed.rb](samples/hellocomputed/hello_computed.rb) sample:
 ```ruby
 shell {
   text "Hello Computed"
@@ -726,11 +733,11 @@ The 5th example demonstrates computed value data binding whereby the value of `n
 
 The 6th example demonstrates nested indexed computed value data binding whereby the value of `profiles[0].name` depends on changes to both nested `profiles[0].first_name` and `profiles[0].last_name`.
 
-Example from [hello_combo.rb](https://github.com/AndyObtiva/glimmer/blob/master/samples/hello_combo.rb) sample:
+Example from [hello_combo.rb](samples/hello_combo.rb) sample:
 
-![Hello Combo](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-combo.png)
+![Hello Combo](images/glimmer-hello-combo.png)
 
-![Hello Combo](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-combo-expanded.png)
+![Hello Combo](images/glimmer-hello-combo-expanded.png)
 
 ```ruby
 class Person
@@ -771,9 +778,9 @@ HelloCombo.new.launch
 
 `combo` widget is data-bound to the country of a person. Note that it expects `person` object to have `:country` attribute and `:country_options` attribute containing all available countries.
 
-Example from [hello_list_single_selection.rb](https://github.com/AndyObtiva/glimmer/blob/master/samples/hello_list_single_selection.rb) sample:
+Example from [hello_list_single_selection.rb](samples/hello_list_single_selection.rb) sample:
 
-![Hello List Single Selection](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-list-single-selection.png)
+![Hello List Single Selection](images/glimmer-hello-list-single-selection.png)
 
 ```ruby
 shell {
@@ -795,7 +802,7 @@ shell {
 
 Nonetheless, in the next example, a multi-selection list is declared instead allowing data-binding of multiple selection values to the bindable attribute on the model.
 
-![Hello List Multi Selection](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-list-multi-selection.png)
+![Hello List Multi Selection](images/glimmer-hello-list-multi-selection.png)
 
 ```ruby
 class Person
@@ -848,7 +855,7 @@ The Glimmer code is not much different from above except for passing the `:multi
 
 Note that in all the data-binding examples above, there was also an observer attached to the `button` widget to trigger an action on the model, which in turn triggers a data-binding update on the `list` or `combo`. Observers will be discussed in more details in the [next section](#observer).
 
-You may learn more about Glimmer's data-binding syntax by reading the [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer) mentioned in resources and opening up the samples under the [samples](https://github.com/AndyObtiva/glimmer/tree/master/samples) directory.
+You may learn more about Glimmer's data-binding syntax by reading the [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer) mentioned in resources and opening up the samples under the [samples](samples) directory.
 
 ### Observer
 
@@ -1084,7 +1091,7 @@ The following additional attributes may be called from outside a custom widget i
 
 ## Samples
 
-Check the [samples](https://github.com/AndyObtiva/glimmer/tree/master/samples) directory for examples on how to write Glimmer applications. To run a sample, make sure to install the `glimmer` gem first and then use the `glimmer` command to run it (alternatively, you may clone the repo, follow [CONTRIBUTING.md](https://github.com/AndyObtiva/glimmer/blob/master/CONTRIBUTING.md) instructions, and run samples locally with development glimmer command: `bin/glimmer --dev`).
+Check the [samples](samples) directory for examples on how to write Glimmer applications. To run a sample, make sure to install the `glimmer` gem first and then use the `glimmer` command to run it (alternatively, you may clone the repo, follow [CONTRIBUTING.md](CONTRIBUTING.md) instructions, and run samples locally with development glimmer command: `bin/glimmer --dev`).
 
 Examples:
 
@@ -1144,10 +1151,6 @@ java_import 'org.eclipse.swt.SWT'
 This allows you to call SWT Java classes from Ruby without mentioning package namespaces.
 
 For example, after imports, `org.eclipse.swt.graphics.Color` can be referenced by just `Color`
-
-## Girb (Glimmer irb)
-
-With Glimmer installed, you may run want to run `girb` instead of standard `irb` to have SWT preloaded and the Glimmer library required and included for quick Glimmer coding/testing.
 
 ## Logging
 
@@ -1211,15 +1214,15 @@ jruby -J-XstartOnFirstThread -J-classpath "path_to/swt.jar" -r glimmer -S applic
 
 These features have been suggested. You might see them in a future version of Glimmer. You are welcome to contribute more feature suggestions.
 
-[TODO.md](https://github.com/AndyObtiva/glimmer/blob/master/TODO.md)
+[TODO.md](TODO.md)
 
 ## Change Log
 
-[CHANGELOG.md](https://github.com/AndyObtiva/glimmer/blob/master/CHANGELOG.md)
+[CHANGELOG.md](CHANGELOG.md)
 
 ## Contributing
 
-[CONTRIBUTING.md](https://github.com/AndyObtiva/glimmer/blob/master/CONTRIBUTING.md)
+[CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Contributors
 
