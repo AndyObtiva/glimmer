@@ -245,7 +245,7 @@ shell {
 
 ![Video Widget](images/glimmer-video-widget.png)
 
-Glimmer comes with a video widget not in SWT. It comes with expected video functionality such as play, pause, and rewind. Additionally, it provides options for displaying controls, playing in looped mode, and starting with autoplay.
+Glimmer comes with a video widget not in SWT. It comes with expected video functionality such as play, pause, and restart. Additionally, it provides options for displaying controls, playing in looped mode, and starting with autoplay.
 
 Attributes (passed in an options hash as arguments to video widget):
 - `autoplay` [default] (true or false): starts playing video immediately after loading
@@ -256,13 +256,13 @@ Attributes (passed in an options hash as arguments to video widget):
 Methods:
 - `play`: plays video
 - `pause`: pauses video
-- `rewind`: rewinds video to beginning
+- `restart`: restarts video to beginning
 - `reload`: reloads video (useful for web urls if they fail loading)
 - `duration`: duration of video in seconds
 - `current_time`: current time in playback in seconds
-- `current_time=(value)`: set current time to fast forward to rewind
-- `on_loaded(&block)`: executes block after video has initially loaded
-- `loaded?`: returns true if video finished loading
+- `current_time=(value)`: set current time to fast forward to restart
+- `on_initialized(&block)`: executes block after video has initially initialized
+- `initialized?`: returns true if video finished loading
 - `ended?`: returns true if video ended playback (reached end)
 - `autoplay`: value of autoplay
 - `autoplay?`: alias for autoplay
@@ -330,9 +330,9 @@ web_url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigB
       }
     }
     button {
-      text "Rewind"
+      text "restart"
       on_widget_selected {
-        @video.rewind
+        @video.restart
       }
     }
   }

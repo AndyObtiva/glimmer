@@ -1,22 +1,34 @@
 require_relative 'custom_widget'
 require_relative 'g_color'
 
+#TODO display progress wheel while loading video
+
 module Glimmer
   module SWT
     class Video
+      PROPERTIES_OBSERVED = [
+        'playing',
+        'paused',
+        'ended',
+        'started',
+        'remaining',
+        'current_time',
+      ]
+
       include_package 'org.eclipse.swt.browser'
 
       include Glimmer::SWT::CustomWidget
 
-      options :file, :url
       option :autoplay, true
-      option :controls, false
+      option :controls, true
       option :looped, false
       option :background, :white
 
       alias autoplay? autoplay
       alias controls? controls
       alias looped? looped
+
+      attr_accessor :file, :url
 
       def body
         browser {
@@ -44,7 +56,7 @@ module Glimmer
             </html>
           HTML
           on_completed {
-            @loaded = true
+            @initialized = true
             register_observers
           }
         }
@@ -52,30 +64,37 @@ module Glimmer
 
       def play
         video_action('play')
+        notify_all_property_observers
       end
 
       def pause
         video_action('pause')
+        notify_all_property_observers
       end
 
       def reload
         video_action('load')
+        notify_all_property_observers
       end
 
-      def rewind
+      def restart
         self.current_time = 0
       end
 
-      # TODO rename to initialized
-      def loaded
-        !!@loaded
+      def initialized
+        !!@initialized
       end
-      alias loaded? loaded
+      alias initialized? initialized
 
       def ended
         video_property('ended')
       end
       alias ended? ended
+
+      def remaining
+        !ended
+      end
+      alias remaining? remaining
 
       def started
         current_time > 0
@@ -93,34 +112,35 @@ module Glimmer
       alias playing? playing
 
       def current_time
-        video_property('currentTime')
+        video_property('currentTime').to_f
       end
 
       def duration
-        video_property('duration')
+        video_property('duration').to_f
       end
 
       def current_time=(time)
         video_property_set('currentTime', time)
+        notify_all_property_observers
       end
 
       def background=(new_background)
         options[:background] = new_background
-        on_loaded do
+        on_initialized do
           style_background = "body { background: #{browser_body_background}; }"
           widget.execute("document.getElementById('style-body-background').innerHTML='#{style_background}'")
         end
       end
 
       def file=(new_file)
-        options[:file] = new_file
-        options[:url] = nil
+        @file = new_file
+        @url = nil
         update_source
       end
 
       def url=(new_url)
-        options[:url] = new_url.match(/^https?\:\/\//) ? new_url : "http://#{new_url}"
-        options[:file] = nil
+        @url = new_url.match(/^https?\:\/\//) ? new_url : "http://#{new_url}"
+        @file = nil
         update_source
       end
 
@@ -130,11 +150,11 @@ module Glimmer
       end
 
       def source
-        file ? "file://#{options[:file]}" : url
+        file ? "file://#{file}" : url
       end
 
       def video_action(action)
-        on_loaded do
+        on_initialized do
           widget.execute("document.getElementById('video').#{action}()")
         end
       end
@@ -144,15 +164,16 @@ module Glimmer
       end
 
       def video_property_set(property, value)
-        on_loaded do
+        on_initialized do
           value = "'#{value}'" if value.is_a?(String) || value.is_a?(Symbol)
           widget.execute("document.getElementById('video').#{property}=#{value}")
         end
       end
 
-      #TODO rename to on_initialized to avoid confusiong with on_loaded for video oncanplay event listener
-      def on_loaded(&block)
-        if loaded?
+      # Runs block once video widget is fully initialized
+      def on_initialized(&block)
+        # TODO see if we still need this on_completed after we decided to set video after construction
+        if initialized?
           block.call
         else
           add_contents(body_root) {
@@ -164,51 +185,43 @@ module Glimmer
         end
       end
 
+      def notify_all_property_observers
+        PROPERTIES_OBSERVED.each do |property|
+          notify_observers(property)
+        end
+      end
+
+      def register_observer(event, &handler)
+        video_event_handler = VideoEventHandler.new(self, event, &handler)
+        widget.execute("document.getElementById('video').on#{event} = function() {#{video_event_handler.getName}()}")
+      end
+
       private
 
       class VideoEventHandler < BrowserFunction
-        PROPERTIES_OBSERVED = [
-          'playing',
-          'paused',
-          'ended',
-        ]
 
         attr_reader :video, :event
 
-        def initialize(video, event)
+        def initialize(video, event, &handler)
           @video = video
           @event = event
+          @handler = handler
           function_name = "notify_#{event}"
           browser = video.widget
           super(browser, function_name)
         end
 
         def function(arguments)
-          # pd event
-          # property_name = MAPPING_EVENTS_TO_PROPERTIES[event]
-          # pd property_name
-          # pd send(property_name)
-          PROPERTIES_OBSERVED.each do |property|
-            @video.notify_observers(property)
-          end
-          # @video.notify_observers(property_name)
-          true
-        rescue => e
-          Glimmer.logger.error "#{e.message}\n#{e.backtrace.join("\n")}"
-          false
+          @handler.call
+          nil
         end
       end
 
       def register_observers
-        require 'puts_debuggerer'
-        register_observer('play')
-        register_observer('pause')
-        register_observer('ended')
-      end
-
-      def register_observer(event)
-        video_event_handler = VideoEventHandler.new(self, event)
-        widget.execute("document.getElementById('video').on#{event} = function() {#{video_event_handler.getName}()}")
+        register_observer('play') {notify_all_property_observers}
+        register_observer('pause') {notify_all_property_observers}
+        register_observer('ended') {notify_all_property_observers}
+        register_observer('timeupdate') {notify_all_property_observers}
       end
 
       def browser_video_autoplay
@@ -234,7 +247,7 @@ module Glimmer
       end
 
       def update_source
-        on_loaded do
+        on_initialized do
           widget.execute("document.getElementById('source').src='#{source}'")
           widget.execute("document.getElementById('video').src='#{source}'")
         end

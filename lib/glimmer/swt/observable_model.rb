@@ -54,9 +54,6 @@ module Glimmer
       end
 
       def notify_observers(property_name)
-        require 'puts_debuggerer'
-        # pd property_name, announcer: '[NOTIFY]'
-        # pd property_observer_list(property_name), announcer: '[NOTIFY]'
         property_observer_list(property_name).each {|observer| observer.call(send(property_name))}
       end
       #TODO upon updating values, make sure dependent observers are cleared (not added as dependents here)

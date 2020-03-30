@@ -15,7 +15,8 @@ require_relative 'glimmer/swt/video' # TODO offload to a custom widget directory
 require_relative "glimmer/ext/module"
 
 module Glimmer
-   #TODO consider make it configurable to include or not include
+  REGEX_METHODS_EXCLUDED = /^(to_|\[)/
+   #TODO make it configurable to include or not include
   include SwtPackages
   def self.included(klass)
     klass.include SwtPackages
@@ -33,12 +34,19 @@ module Glimmer
 
   # TODO calling original method_missing after aliasing for cases where method_missing is not needed, like known excluded symbols
 
+  alias method_missing_without_glimmer method_missing
   def self.method_missing(method_symbol, *args, &block)
+    if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
+      return method_missing_without_glimmer(method_symbol, *args, &block)
+    end
     Glimmer.logger.debug "method: " + method_symbol.to_s + " and args: " + args.to_s
     command_handler_chain = CommandHandlerChainFactory.chain
     return_value = command_handler_chain.handle(@@parent_stack.last, method_symbol, *args, &block)
     add_contents(return_value, &block)
     return return_value
+  rescue => e
+    # Glimmer.logger.error e.message
+    method_missing_without_glimmer(method_symbol, *args, &block)
   end
 
   # TODO come up with a better public name for this and put on gwidgets directly

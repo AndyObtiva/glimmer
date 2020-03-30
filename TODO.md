@@ -40,6 +40,8 @@ Up Next:
 - Look into what to do regarding Glimmer silent failures (when things fall off the chain of command)
 - Support on_*** observers on GWidget's directly without using add_contents
 - Check for need to recursively call dispose on widget descendants
+- Support Glimmer DSL observe keyword
+- Report a friendly error message for  can't modify frozen NilClass when mistakenly observing a nil model instead of doing a nested bind(self, 'model.property')
 
 ## Documentation Tasks
 - Document G*** classes like GWidget and GShell

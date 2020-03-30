@@ -14,9 +14,9 @@ module Glimmer
         return @next_chain_link.handle(parent, command_symbol, *args, &block)
       else
         # TODO see if we need a better response here (e.g. dev mode error raising vs production mode silent failure)
-        # Glimmer.logger.error "Command: #{command_symbol} cannot be handled!" unless command_symbol.to_s.start_with?('to_')
+        # Glimmer.logger.error "Command: #{command_symbol} cannot be handled!"
         Glimmer.logger.debug "Command: #{command_symbol} cannot be handled!"
-        return nil
+        raise "Command: #{command_symbol} cannot be handled!"
       end
     end
   end
