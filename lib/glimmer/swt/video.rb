@@ -20,12 +20,18 @@ module Glimmer
       include Glimmer::SWT::CustomWidget
 
       options :file, :url
+      option :autoplay, true
       option :controls, true
       option :looped, false
       option :background, :white
+      option :fit_to_width, true
+      option :fit_to_height, true
 
+      alias autoplay? autoplay
       alias controls? controls
       alias looped? looped
+      alias fit_to_width? fit_to_width
+      alias fit_to_height? fit_to_height
 
       def body
         browser {
@@ -45,7 +51,7 @@ module Glimmer
                 </style>
               </head>
               <body>
-                <video id="video" width="100%" height="100%" #{browser_video_loop} #{browser_video_controls} #{browser_video_autoplay}>
+                <video id="video" #{browser_video_width} #{browser_video_height} #{browser_video_loop} #{browser_video_controls} #{browser_video_autoplay}>
                   <source id="source" src="#{source}" type="video/mp4">
                 Your browser does not support the video tag.
                 </video>
@@ -59,10 +65,22 @@ module Glimmer
         file ? "file://#{file}" : url
       end
 
+      def play
+        video_action('play')
+      end
+
+      def pause
+        video_action('pause')
+      end
+
       private
 
+      def video_action(action)
+        widget.execute("document.getElementById('video').#{action}()")
+      end
+
       def browser_video_autoplay
-        'autoplay'
+        'autoplay' if autoplay?
       end
 
       def browser_video_controls
@@ -71,6 +89,14 @@ module Glimmer
 
       def browser_video_loop
         'loop' if looped?
+      end
+
+      def browser_video_width
+        "width='100%'" if fit_to_width
+      end
+
+      def browser_video_height
+        "height='100%'" if fit_to_height
       end
 
       def browser_body_background

@@ -248,9 +248,16 @@ shell {
 Glimmer comes with a video widget not in SWT. It comes with very basic video functionality at the moment, such as autoplay by default, displaying controls, looping, and setting background.
 
 Attributes (passed in an options hash as arguments to video widget):
+- `autoplay` (true [default] or false): plays video automatically as soon as loaded
 - `controls` (true [default] or false): displays controls
 - `looped` (true or false [default]): plays video in looped mode
 - `background` (Glimmer color [default: white]): sets background color just like with any other widget
+- `fit_to_width` (true [default] or false): fits video width to widget allotted width regardless of video's original size. Maintains video aspect ratio.
+- `fit_to_height` (true [default] or false): fits video height to widget allotted height regardless of video's original size. Maintains video aspect ratio.
+
+Methods:
+- `play`: plays video
+- `pause`: pauses video
 
 Example ([samples/video/hello_video.rb](samples/video/hello_video.rb)):
 

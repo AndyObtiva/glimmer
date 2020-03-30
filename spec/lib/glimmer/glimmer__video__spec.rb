@@ -127,12 +127,92 @@ module Glimmer
       }
     end
 
-    xit 'fits video to width by default' do
+    it 'fits video to width by default' do
+      @target = shell
+      add_contents(@target) {
+        @video = video(file: video_file) {
+          on_completed {
+            expect(@video.widget.evaluate("return document.getElementById('video').width")).to eq(100.0)
+            @target.widget.close
+          }
+        }
+      }
     end
 
-    xit 'does not fit video to width when specified by option argument' do
+    it 'does not fit video to width when specified with fit_to_width option argument' do
+      @target = shell
+      add_contents(@target) {
+        @video = video(file: video_file, fit_to_width: false) {
+          on_completed {
+            expect(@video.widget.evaluate("return document.getElementById('video').width")).to eq(0.0)
+            @target.widget.close
+          }
+        }
+      }
     end
 
-    xit 'fit to height'
+    it 'fits video to height by default' do
+      @target = shell
+      add_contents(@target) {
+        @video = video(file: video_file) {
+          on_completed {
+            expect(@video.widget.evaluate("return document.getElementById('video').height")).to eq(100.0)
+            @target.widget.close
+          }
+        }
+      }
+    end
+
+    it 'does not fit video to height when specified with fit_to_height option argument' do
+      @target = shell
+      add_contents(@target) {
+        @video = video(file: video_file, fit_to_height: false) {
+          on_completed {
+            expect(@video.widget.evaluate("return document.getElementById('video').height")).to eq(0.0)
+            @target.widget.close
+          }
+        }
+      }
+    end
+
+    it "autoplays video by default" do
+      @target = shell
+      add_contents(@target) {
+        @video = video(file: video_file) {
+          on_completed {
+            expect(@video.widget.evaluate("return document.getElementById('video').autoplay")).to eq(true)
+            @target.widget.close
+          }
+        }
+      }
+    end
+
+    it "does not autoplay video when specified with autoplay option argument" do
+      @target = shell
+      add_contents(@target) {
+        @video = video(file: video_file, autoplay: false) {
+          on_completed {
+            expect(@video.widget.evaluate("return document.getElementById('video').autoplay")).to eq(false)
+            @target.widget.close
+          }
+        }
+      }
+    end
+
+    it 'plays and pauses video' do
+      @target = shell
+      add_contents(@target) {
+        @video = video(file: video_file, autoplay: false) {
+          on_completed {
+            expect(@video.widget.evaluate("return document.getElementById('video').paused")).to eq(true)
+            @video.play
+            expect(@video.widget.evaluate("return document.getElementById('video').paused")).to eq(false)
+            @video.pause
+            expect(@video.widget.evaluate("return document.getElementById('video').paused")).to eq(true)
+            @target.widget.close
+          }
+        }
+      }
+    end
   end
 end
