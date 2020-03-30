@@ -44,9 +44,9 @@ module Glimmer
     return_value = command_handler_chain.handle(@@parent_stack.last, method_symbol, *args, &block)
     add_contents(return_value, &block)
     return return_value
-  rescue => e
+  # rescue => e
     # Glimmer.logger.error e.message
-    method_missing_without_glimmer(method_symbol, *args, &block)
+    # method_missing_without_glimmer(method_symbol, *args, &block)
   end
 
   # TODO come up with a better public name for this and put on gwidgets directly

@@ -1,4 +1,4 @@
-# Glimmer 0.4.7 Beta (JRuby Desktop UI DSL + Data-Binding)
+# Glimmer 0.4.8 Beta (JRuby Desktop UI DSL + Data-Binding)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master)
 
 Glimmer is a cross-platform Ruby desktop development library. Glimmer's main innovation is a JRuby DSL that enables easy and efficient authoring of desktop application user-interfaces while relying on the robust platform-independent Eclipse SWT library. Glimmer additionally innovates by having built-in desktop UI data-binding support to greatly facilitate synchronizing the UI with domain models. As a result, that achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about UI concerns, or alternatively drive development UI-first, and then write clean business components test-first afterward.
@@ -107,14 +107,14 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.4.7
+jgem install glimmer -v 0.4.8
 ```
 
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.4.7'
+gem 'glimmer', '~> 0.4.8'
 ```
 
 And, then run:
@@ -245,40 +245,12 @@ shell {
 
 ![Video Widget](images/glimmer-video-widget.png)
 
-Glimmer comes with a video widget not in SWT. It comes with expected video functionality such as play, pause, and restart. Additionally, it provides options for displaying controls, playing in looped mode, and starting with autoplay.
+Glimmer comes with a video widget not in SWT. It comes with very basic video functionality at the moment, such as autoplay by default, displaying controls, looping, and setting background.
 
 Attributes (passed in an options hash as arguments to video widget):
-- `autoplay` [default] (true or false): starts playing video immediately after loading
-- `controls` (true or false): displays controls
-- `looped` (true or false): plays video in looped mode
-- `background` (Glimmer color): sets background color just like with any other widget
-
-Methods:
-- `play`: plays video
-- `pause`: pauses video
-- `restart`: restarts video to beginning
-- `reload`: reloads video (useful for web urls if they fail loading)
-- `duration`: duration of video in seconds
-- `current_time`: current time in playback in seconds
-- `current_time=(value)`: set current time to fast forward to restart
-- `on_initialized(&block)`: executes block after video has initially initialized
-- `initialized?`: returns true if video finished loading
-- `ended?`: returns true if video ended playback (reached end)
-- `autoplay`: value of autoplay
-- `autoplay?`: alias for autoplay
-- `autoplay=(value)`: sets value of autoplay
-- `controls`: value of controls
-- `controls?`: alias for controls
-- `controls=(value)`: sets value of controls
-- `looped`: value of looped
-- `looped?`: alias for looped
-- `looped=(value)`: sets value of looped
-- `file`: returns file path set if any
-- `file=`: sets a new file path (overrides what was set before)
-- `url`: returns web url set if any
-- `url=`: sets a new web url (overrides what was set before)
-- `background`: returns background color set
-- `background=`: sets background color
+- `controls` (true [default] or false): displays controls
+- `looped` (true or false [default]): plays video in looped mode
+- `background` (Glimmer color [default: white]): sets background color just like with any other widget
 
 Example ([samples/video/hello_video.rb](samples/video/hello_video.rb)):
 
@@ -289,65 +261,15 @@ shell {
 }.open
 ```
 
-Example ([samples/video/hello_looped_video_with_controls_and_background.rb](samples/video/hello_looped_video_with_controls_and_background.rb)):
+Example ([samples/video/hello_looped_video_with_black_background.rb](samples/video/hello_looped_video_with_black_background.rb)):
 
 ```ruby
 # ...
 shell {
   minimum_size 1024, 640
-  video(file: video_file, looped: true, controls: true, background: :black)
+  video(file: video_file, looped: true, background: :black)
 }.open
 ```
-
-Example (web url video with custom controls and default autoplay disabled):
-
-```ruby
-include Glimmer
-web_url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-@shell = shell {
-  grid_layout
-  minimum_size 1138, 640
-  composite {
-    grid_layout {
-      num_columns 3
-    }
-    layout_data {
-      horizontal_alignment :center
-      vertical_alignment :center
-      grab_excess_horizontal_space true
-      grab_excess_vertical_space false    
-    }
-    button {
-      text "Play"
-      on_widget_selected {
-        @video.play
-      }
-    }
-    button {
-      text "Pause"
-      on_widget_selected {
-        @video.pause
-      }
-    }
-    button {
-      text "restart"
-      on_widget_selected {
-        @video.restart
-      }
-    }
-  }
-  @video = video(url: web_url, autoplay: false) {
-    layout_data {
-      horizontal_alignment :fill
-      vertical_alignment :fill
-      grab_excess_horizontal_space true
-      grab_excess_vertical_space true
-    }
-  }
-}
-@shell.open
-```
-
 
 #### Browser Widget
 

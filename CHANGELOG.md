@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.4.8
+- Video widget
+- Girb fix to auto-include Glimmer
+
 ## 0.4.7
 - Fixed issues with custom widget support working for custom table, custom combo, custom list, parent of layout/layout-data, and on_*** observers
 - Support for custom attributes/observers on a custom widget
