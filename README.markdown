@@ -1033,6 +1033,7 @@ shell {
 - Widget listeners are always declared starting with `on_` prefix and affixing listener event method name afterwards in underscored lowercase form
 - Widget listeners are always followed by a block using curly brackets
 - Data-binding is done via `bind` keyword, which always takes arguments wrapped in parentheses
+- Custom widgets receive additional arguments to SWT style called options. These are passed as the last argument inside the parentheses, a hash of option names pointing to values.
 
 ## Samples
 
