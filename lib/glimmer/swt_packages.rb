@@ -8,6 +8,7 @@ module Glimmer
         include_package 'org.eclipse.swt.layout'
         include_package 'org.eclipse.swt.graphics'
         include_package 'org.eclipse.swt.browser'
+        include_package 'org.eclipse.swt.custom'
       end
     end
   end

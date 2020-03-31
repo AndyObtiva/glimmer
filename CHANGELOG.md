@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.4.9
+- Added `org.eclipse.swt.custom` to default list of Glimmer SWT packages
+
 ## 0.4.8
 - Video widget
 - Girb fix to auto-include Glimmer

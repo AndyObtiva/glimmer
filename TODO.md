@@ -38,6 +38,8 @@ Here is a list of tasks to do (please delete once done):
 - Support Glimmer DSL observe keyword
 - Report a friendly error message for  can't modify frozen NilClass when mistakenly observing a nil model instead of doing a nested bind(self, 'model.property')
 - Support method_name? methods in data-binding just like standard attr readers
+- Decide on whether to continue to pass a widget var to blocks or give them access to widget parent through parent method
+- Provide general DSL to construct any object with Glimmer even if not a widget. Useful for easily setting style_range on a StyledText widget. Maybe make it work like layout_data where it knows type to instantiate automatically. With style_range, that's easy since it can be inferred from args.
 
 ## Documentation Tasks
 - Document G*** classes like GWidget and GShell
@@ -47,3 +49,4 @@ Here is a list of tasks to do (please delete once done):
 - Explain MVC and MVP
 - Double down on using the wording property vs attribute to minimize confusion
 - document async_exec and sync_exec
+- Document example of using an SWT external custom widget by importing its java package directly to do the trick
