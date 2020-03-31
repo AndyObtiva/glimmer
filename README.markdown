@@ -169,7 +169,9 @@ In Glimmer DSL, widgets are declared with lowercase underscored names mirroring 
 - `combo` instantiates `org.eclipse.swt.widgets.Combo`
 - `list` instantiates `org.eclipse.swt.widgets.List`
 
-A **widget** name is followed by a Ruby block that contains the widget **properties** and **content**. Optionally, an SWT **style** ***argument*** may also be passed (see [next section](#widget-styles) for details).
+Every **widget** is sufficiently declared by name, but may optionally be accompanied with:
+- SWT **style** ***argument*** wrapped by parenthesis according to Glimmer coding style (see [next section](#widget-styles) for details).
+- Ruby block containing **properties** (widget attributes) and **content** (nested widgets)
 
 For example, if we were to revisit `samples/hello_world.rb` above:
 
@@ -189,13 +191,13 @@ Note that `shell` instantiates the outer shell **widget**, in other words, the w
 ```ruby
 # ...
   text "Glimmer" # text property of shell
-  label { # label widget declaration
+  label { # label widget declaration as content of shell
     text "Hello World!" # text property of label
   }
 # ...
 ```
 
-The first line declares a **property** called `text`, which sets the title of the shell (window) to `"Glimmer"`. **Properties** always have ***arguments***, such as the text `"Glimmer"` in this case, and do **NOT** have a ***block***.
+The first line declares a **property** called `text`, which sets the title of the shell (window) to `"Glimmer"`. **Properties** always have ***arguments*** (not wrapped by parenthesis according to Glimmer coding style), such as the text `"Glimmer"` in this case, and do **NOT** have a ***block*** (this distinguishes them from **widget** declarations).
 
 The second line declares the `label` **widget**, which is followed by a Ruby **content** ***block*** that contains its `text` **property** with value `"Hello World!"`
 
@@ -241,89 +243,13 @@ shell {
 }.open
 ```
 
-#### Video Widget
-
-![Video Widget](images/glimmer-video-widget.png)
-
-Glimmer comes with a video widget not in SWT. It comes with very basic video functionality at the moment, such as autoplay by default, displaying controls, looping, and setting background.
-
-Attributes (passed in an options hash as arguments to video widget):
-- `autoplay` (true [default] or false): plays video automatically as soon as loaded
-- `controls` (true [default] or false): displays controls
-- `looped` (true or false [default]): plays video in looped mode
-- `background` (Glimmer color [default: white]): sets background color just like with any other widget
-- `fit_to_width` (true [default] or false): fits video width to widget allotted width regardless of video's original size. Maintains video aspect ratio.
-- `fit_to_height` (true [default] or false): fits video height to widget allotted height regardless of video's original size. Maintains video aspect ratio.
-- `offset_x` (integer [default: 0]): offset from left border. Could be a negative number if you want to show only an area of the video. Useful when fit_to_width is false to pick an area of the video to display.
-- `offset_y` (integer [default: 0]): offset from top border. Could be a negative number if you want to show only an area of the video. Useful when fit_to_height is false to pick an area of the video to display.
-
-Methods:
-- `play`: plays video
-- `pause`: pauses video
-
-Example ([samples/video/hello_video.rb](samples/video/hello_video.rb)):
-
-```ruby
-# ...
-shell {
-  video(file: video_file)
-}.open
-```
-
-Example ([samples/video/hello_looped_video_with_black_background.rb](samples/video/hello_looped_video_with_black_background.rb)):
-
-```ruby
-# ...
-shell {
-  minimum_size 1024, 640
-  video(file: video_file, looped: true, background: :black)
-}.open
-```
-
-#### Browser Widget
-
-Glimmer supports SWT Browser widget, which can load URLs or render HTML. It can even be instrumented with JavaScript when needed (though highly discouraged in Glimmer except for rare cases when leveraging a pre-existing web codebase in a desktop app).
-
-Example loading a URL:
-
-```ruby
-shell {
-  minimum_size 1024, 860
-  browser {
-    url 'http://brightonresort.com/about'
-  }
-}.open
-```
-
-Example rendering HTML with JavaScript on document ready:
-
-```ruby
-shell {
-  minimum_size 130, 130
-  @browser = browser {
-    text <<~HTML
-      <html>
-        <head>
-        </head>
-        <body>
-          <h1>Hello, World!</h1>
-        </body>
-      </html>
-    HTML
-    on_completed { # on load of the page execute this JavaScript
-      @browser.widget.execute("alert('Hello, World!');")
-    }
-  }
-}.open
-```
-
 ### Widget Styles
 
 SWT widgets receive `SWT` styles in their constructor as per this guide:
 
 https://wiki.eclipse.org/SWT_Widget_Style_Bits
 
-Glimmer DSL facilitates that by passing symbols representing `SWT` constants as widget method arguments (i.e. inside widget `()` parentheses. See example below) in lower case version (e.g. `SWT::MULTI` becomes `:multi`).
+Glimmer DSL facilitates that by passing symbols representing `SWT` constants as widget method arguments (i.e. inside widget `()` parentheses according to Glimmer coding style. See example below) in lower case version (e.g. `SWT::MULTI` becomes `:multi`).
 
 These styles customize widget look, feel, and behavior.
 
@@ -1017,6 +943,95 @@ The following additional attributes may be called from outside a custom widget i
 - `#body_root`: top-most root Glimmer widget returned in `#body` method
 - `#widget`: actual SWT widget for `body_root`
 
+### Glimmer Coding Style
+
+- Widgets are declared with underscored lowercase versions of their SWT names minus the SWT package name.
+- Widget declarations may optionally have arguments and be followed by a block (to contain properties and content)
+- Widget blocks are always declared with curly brackets
+- Widget arguments are always wrapped inside parentheses
+- Widget properties are declared with underscored lowercase versions of the SWT properties
+- Widget property declarations always have arguments and never take a block
+- Widget property arguments are never wrapped inside parentheses
+- Widget listeners are always declared starting with `on_` prefix and affixing listener event method name afterwards in underscored lowercase form
+- Widget listeners are always followed by a block using curly brackets
+
+### Miscellaneous
+
+#### Video Widget
+
+![Video Widget](images/glimmer-video-widget.png)
+
+Glimmer comes with a video widget not in SWT. It comes with very basic video functionality at the moment, such as autoplay by default, displaying controls, looping, and setting background.
+
+Attributes (passed in an options hash as arguments to video widget):
+- `autoplay` (true [default] or false): plays video automatically as soon as loaded
+- `controls` (true [default] or false): displays controls
+- `looped` (true or false [default]): plays video in looped mode
+- `background` (Glimmer color [default: white]): sets background color just like with any other widget
+- `fit_to_width` (true [default] or false): fits video width to widget allotted width regardless of video's original size. Maintains video aspect ratio.
+- `fit_to_height` (true [default] or false): fits video height to widget allotted height regardless of video's original size. Maintains video aspect ratio.
+- `offset_x` (integer [default: 0]): offset from left border. Could be a negative number if you want to show only an area of the video. Useful when fit_to_width is false to pick an area of the video to display.
+- `offset_y` (integer [default: 0]): offset from top border. Could be a negative number if you want to show only an area of the video. Useful when fit_to_height is false to pick an area of the video to display.
+
+Methods:
+- `play`: plays video
+- `pause`: pauses video
+
+Example ([samples/video/hello_video.rb](samples/video/hello_video.rb)):
+
+```ruby
+# ...
+shell {
+  video(file: video_file)
+}.open
+```
+
+Example ([samples/video/hello_looped_video_with_black_background.rb](samples/video/hello_looped_video_with_black_background.rb)):
+
+```ruby
+# ...
+shell {
+  minimum_size 1024, 640
+  video(file: video_file, looped: true, background: :black)
+}.open
+```
+
+#### Browser Widget
+
+Glimmer supports SWT Browser widget, which can load URLs or render HTML. It can even be instrumented with JavaScript when needed (though highly discouraged in Glimmer except for rare cases when leveraging a pre-existing web codebase in a desktop app).
+
+Example loading a URL:
+
+```ruby
+shell {
+  minimum_size 1024, 860
+  browser {
+    url 'http://brightonresort.com/about'
+  }
+}.open
+```
+
+Example rendering HTML with JavaScript on document ready:
+
+```ruby
+shell {
+  minimum_size 130, 130
+  @browser = browser {
+    text <<~HTML
+      <html>
+        <head>
+        </head>
+        <body>
+          <h1>Hello, World!</h1>
+        </body>
+      </html>
+    HTML
+    on_completed { # on load of the page execute this JavaScript
+      @browser.widget.execute("alert('Hello, World!');")
+    }
+  }
+}.open
+```
 
 ## Samples
 
