@@ -37,6 +37,7 @@ Here is a list of tasks to do (please delete once done):
 - Check for need to recursively call dispose on widget descendants
 - Support Glimmer DSL observe keyword
 - Report a friendly error message for  can't modify frozen NilClass when mistakenly observing a nil model instead of doing a nested bind(self, 'model.property')
+- Support method_name? methods in data-binding just like standard attr readers
 
 ## Documentation Tasks
 - Document G*** classes like GWidget and GShell
