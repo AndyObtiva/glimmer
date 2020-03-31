@@ -170,7 +170,7 @@ In Glimmer DSL, widgets are declared with lowercase underscored names mirroring 
 - `list` instantiates `org.eclipse.swt.widgets.List`
 
 Every **widget** is sufficiently declared by name, but may optionally be accompanied with:
-- SWT **style** ***argument*** wrapped by parenthesis according to Glimmer coding style (see [next section](#widget-styles) for details).
+- SWT **style** ***argument*** wrapped by parenthesis according to [Glimmer coding style](#glimmer-coding-style) (see [next section](#widget-styles) for details).
 - Ruby block containing **properties** (widget attributes) and **content** (nested widgets)
 
 For example, if we were to revisit `samples/hello_world.rb` above:
@@ -197,7 +197,7 @@ Note that `shell` instantiates the outer shell **widget**, in other words, the w
 # ...
 ```
 
-The first line declares a **property** called `text`, which sets the title of the shell (window) to `"Glimmer"`. **Properties** always have ***arguments*** (not wrapped by parenthesis according to Glimmer coding style), such as the text `"Glimmer"` in this case, and do **NOT** have a ***block*** (this distinguishes them from **widget** declarations).
+The first line declares a **property** called `text`, which sets the title of the shell (window) to `"Glimmer"`. **Properties** always have ***arguments*** (not wrapped by parenthesis according to [Glimmer coding style](#glimmer-coding-style)), such as the text `"Glimmer"` in this case, and do **NOT** have a ***block*** (this distinguishes them from **widget** declarations).
 
 The second line declares the `label` **widget**, which is followed by a Ruby **content** ***block*** that contains its `text` **property** with value `"Hello World!"`
 
@@ -249,7 +249,7 @@ SWT widgets receive `SWT` styles in their constructor as per this guide:
 
 https://wiki.eclipse.org/SWT_Widget_Style_Bits
 
-Glimmer DSL facilitates that by passing symbols representing `SWT` constants as widget method arguments (i.e. inside widget `()` parentheses according to Glimmer coding style. See example below) in lower case version (e.g. `SWT::MULTI` becomes `:multi`).
+Glimmer DSL facilitates that by passing symbols representing `SWT` constants as widget method arguments (i.e. inside widget `()` parentheses according to [Glimmer coding style](#glimmer-coding-style). See example below) in lower case version (e.g. `SWT::MULTI` becomes `:multi`).
 
 These styles customize widget look, feel, and behavior.
 
@@ -943,18 +943,6 @@ The following additional attributes may be called from outside a custom widget i
 - `#body_root`: top-most root Glimmer widget returned in `#body` method
 - `#widget`: actual SWT widget for `body_root`
 
-### Glimmer Coding Style
-
-- Widgets are declared with underscored lowercase versions of their SWT names minus the SWT package name.
-- Widget declarations may optionally have arguments and be followed by a block (to contain properties and content)
-- Widget blocks are always declared with curly brackets
-- Widget arguments are always wrapped inside parentheses
-- Widget properties are declared with underscored lowercase versions of the SWT properties
-- Widget property declarations always have arguments and never take a block
-- Widget property arguments are never wrapped inside parentheses
-- Widget listeners are always declared starting with `on_` prefix and affixing listener event method name afterwards in underscored lowercase form
-- Widget listeners are always followed by a block using curly brackets
-
 ### Miscellaneous
 
 #### Video Widget
@@ -1032,6 +1020,19 @@ shell {
   }
 }.open
 ```
+
+## Glimmer Coding Style
+
+- Widgets are declared with underscored lowercase versions of their SWT names minus the SWT package name.
+- Widget declarations may optionally have arguments and be followed by a block (to contain properties and content)
+- Widget blocks are always declared with curly brackets
+- Widget arguments are always wrapped inside parentheses
+- Widget properties are declared with underscored lowercase versions of the SWT properties
+- Widget property declarations always have arguments and never take a block
+- Widget property arguments are never wrapped inside parentheses
+- Widget listeners are always declared starting with `on_` prefix and affixing listener event method name afterwards in underscored lowercase form
+- Widget listeners are always followed by a block using curly brackets
+- Data-binding is done via `bind` keyword, which always takes arguments wrapped in parentheses
 
 ## Samples
 
