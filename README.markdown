@@ -282,7 +282,7 @@ shell {
 
 #### Browser Widget
 
-Glimmer supports SWT Browser widget, which can load URLs (including media) or render HTML (useful in embedding videos). It can even be instrumented with JavaScript when needed (though highly discouraged except for rare cases when leveraging a pre-existing web codebase in a desktop app).
+Glimmer supports SWT Browser widget, which can load URLs or render HTML. It can even be instrumented with JavaScript when needed (though highly discouraged in Glimmer except for rare cases when leveraging a pre-existing web codebase in a desktop app).
 
 Example loading a URL:
 
@@ -295,25 +295,23 @@ shell {
 }.open
 ```
 
-Example rendering HTML with an embedded video:
+Example rendering HTML with JavaScript on document ready:
 
 ```ruby
 shell {
+  minimum_size 130, 130
   @browser = browser {
     text <<~HTML
       <html>
         <head>
         </head>
         <body>
-          <video id="video" width="100%" height="100%">
-            <source src="file://#{video_file}" type="video/mp4">
-          Your browser does not support the video tag.
-          </video>
+          <h1>Hello, World!</h1>
         </body>
       </html>
     HTML
     on_completed { # on load of the page execute this JavaScript
-      @browser.widget.execute("document.getElementById('video').play()")
+      @browser.widget.execute("alert('Hello, World!');")
     }
   }
 }.open
