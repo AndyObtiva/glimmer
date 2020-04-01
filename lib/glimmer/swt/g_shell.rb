@@ -10,7 +10,8 @@ module Glimmer
       include_package 'org.eclipse.swt.layout'
       include_package 'org.eclipse.swt.widgets'
 
-      attr_reader :display
+      attr_reader :display, :opened_before
+      alias opened_before? opened_before
 
       # Instantiates shell with same arguments expected by SWT Shell
       def initialize(*args)
@@ -37,10 +38,28 @@ module Glimmer
 
       # Opens shell and starts SWT's UI thread event loop
       def open
-        @widget.pack
-        center
-        @widget.open
-        start_event_loop
+        if @opened_before
+          @widget.setVisible(true)
+        else
+          @opened_before = true
+          @widget.pack
+          center
+          @widget.open
+          start_event_loop
+        end
+      end
+      alias show open
+
+      def hide
+        @widget.setVisible(false)
+      end
+
+      def close
+        # TODO (including making it report visible false event)
+      end
+
+      def visible
+        # TODO implement and notify_observers('visible') based on open and hide
       end
 
       def start_event_loop

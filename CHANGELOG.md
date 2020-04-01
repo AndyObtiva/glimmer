@@ -2,6 +2,10 @@
 
 ## 0.4.9
 - Added `org.eclipse.swt.custom` to default list of Glimmer SWT packages
+- Added Custom Shell
+- Made shell `#open` method remember if it was already opened before yet hidden, and just show the shell
+- Implement shell `#hide` method
+- Alias shell `#open` as `#show`
 
 ## 0.4.8
 - Video widget
