@@ -173,7 +173,7 @@ Every **widget** is sufficiently declared by name, but may optionally be accompa
 - SWT **style** ***argument*** wrapped by parenthesis according to [Glimmer coding style](#glimmer-coding-style) (see [next section](#widget-styles) for details).
 - Ruby block containing **properties** (widget attributes) and **content** (nested widgets)
 
-For example, if we were to revisit `samples/hello_world.rb` above:
+For example, if we were to revisit `samples/hello_world.rb` above (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
 shell {
@@ -217,7 +217,7 @@ It is centered upon initial display and has a minimum width of 130 (can be re-ce
 
 Check out the [samples](samples) directory for more examples.
 
-Example from [hello_tab.rb](samples/hello_tab.rb) sample:
+Example from [hello_tab.rb](samples/hello_tab.rb) sample (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ![Hello Tab 1](images/glimmer-hello-tab1.png)
 
@@ -243,6 +243,27 @@ shell {
 }.open
 ```
 
+#### `#widget`
+
+Glimmer widget objects come with an instance method `#widget` that returns the actual SWT `Widget` object wrapped by the Glimmer widget object. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+@shell = shell {
+  button {
+    text "Press Me"
+    on_widget_selected {
+      message_box = MessageBox.new(@shell.widget) # passing SWT Shell widget
+      message_box.setText("Surprise")
+      message_box.setMessage("You have won $1,000,000!")
+      message_box.open      
+    }
+  }
+}
+@shell.open
+```
+
 ### Widget Styles
 
 SWT widgets receive `SWT` styles in their constructor as per this guide:
@@ -254,29 +275,35 @@ Glimmer DSL facilitates that by passing symbols representing `SWT` constants as 
 These styles customize widget look, feel, and behavior.
 
 Example:
+
 ```ruby
+# ...
 list(:multi) { # SWT styles go inside ()
   # ...
 }
+# ...
 ```
-
 Passing `:multi` to `list` widget enables list element multi-selection.
 
 ```ruby
+# ...
 composite(:border) { # SWT styles go inside ()
   # ...
 }
+# ...
 ```
-
 Passing `:border` to `composite` widget ensures it has a border.
 
 When you need to pass in **multiple SWT styles**, simply separate by commas.
 
 Example:
+
 ```ruby
+# ...
 text(:center, :border) { # Multiple SWT styles separated by comma
   # ...
 }
+# ...
 ```
 
 Glimmer ships with SWT style **smart defaults** so you wouldn't have to set them yourself most of the time (albeit you can always override them):
@@ -318,17 +345,21 @@ https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/guide/swt_wi
 Code examples:
 
 ```ruby
+# ...
 label {
   text "Hello World!" # SWT properties go inside {} block
 }
+# ...
 ```
 
 In the above example, the `label` widget `text` property was set to "Hello World!".
 
 ```ruby
+# ...
 button {
   enabled bind(@tic_tac_toe_board.box(row, column), :empty)
 }
+# ...
 ```
 
 In the above example, the `text` widget `enabled` property was data-bound to `#empty` method on `@tic_tac_toe_board.box(row, column)` (learn more about data-binding below)
@@ -340,10 +371,12 @@ Colors make up a subset of widget properties. SWT accepts color objects created 
 Example:
 
 ```ruby
+# ...
 label {
   background rgb(144, 240, 244)
   foreground rgba(38, 92, 232, 255)
 }
+# ...
 ```
 
 SWT also supports standard colors available as constants under the `SWT` namespace with the `COLOR_` prefix (e.g. `SWT::COLOR_BLUE`, `SWT::COLOR_WHITE`, `SWT::COLOR_RED`)
@@ -353,6 +386,7 @@ Glimmer accepts these constants as lowercase Ruby symbols with or without `color
 Example:
 
 ```ruby
+# ...
 label {
   background :black
   foreground :yellow
@@ -361,11 +395,21 @@ label {
   background :color_white
   foreground :color_red
 }
+# ...
 ```
 
 You may check out all available standard colors in `SWT` over here (having `COLOR_` prefix):
 
 https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
+
+
+##### `#color`
+
+Glimmer color objects come with an instance method `#color` that returns the actual SWT `Color` object wrapped by the Glimmer color object. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
+
+##### `GColor.color_for(display = nil, standard_color)`
+
+Glimmer `GColor` class comes with `.color_for` method that builds an actual SWT `Color` object from a standard color string or symbol. Passing a `display` is optional. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
 
 #### Fonts
 
@@ -376,9 +420,11 @@ The style can be one (or more) of 3 values: `:normal`, `:bold`, and `:italic`
 Example:
 
 ```ruby
+# ...
 label {
   font name: 'Arial', height: 36, style: :normal
 }
+# ...
 ```
 
 Keys are optional, so some of them may be left off.
@@ -387,9 +433,11 @@ When passing multiple styles, they are included in an array.
 Example:
 
 ```ruby
+# ...
 label {
   font style: [:bold, :italic]
 }
+# ...
 ```
 
 ### Layouts
@@ -406,6 +454,7 @@ In Glimmer DSL, just like widgets, layouts can be specified with lowercase under
 Example:
 
 ```ruby
+# ...
 composite {
   row_layout {
     wrap true
@@ -420,15 +469,18 @@ composite {
   }
   # ... widgets follow
 }
+# ...
 ```
 
 Alternatively, a layout may be constructed by following the SWT API for the layout object. For example, a `RowLayout` can be constructed by passing it an SWT style constant (Glimmer automatically accepts symbols (e.g. `:horizontal`) for SWT style arguments like `SWT::HORIZONTAL`.)
 
 ```ruby
+# ...
 composite {
   row_layout :horizontal
   # ... widgets follow
 }
+# ...
 ```
 
 Here is a more sophisticated example taken from [hello_computed.rb](samples/hellocomputed/hello_computed.rb) sample:
@@ -521,6 +573,7 @@ Glimmer also automatically accepts symbols (e.g. `:fill`) for SWT style argument
 Examples:
 
 ```ruby
+# ...
 composite {
   row_layout :horizontal
   label {
@@ -531,9 +584,11 @@ composite {
   }
   # ... more widgets follow
 }
+# ...
 ```
 
 ```ruby
+# ...
 composite {
   grid_layout 3, false # grid layout with 3 columns not of equal width
   label {
@@ -541,9 +596,11 @@ composite {
     layout_data :fill, :end, true, false
   }
 }
+# ...
 ```
 
 ```ruby
+# ...
 composite {
   grid_layout 3, false # grid layout with 3 columns not of equal width
   label {
@@ -551,6 +608,7 @@ composite {
     layout_data GridData.new(GSWT[:fill], GSWT[:end], true, false)
   }
 }
+# ...
 ```
 
 **NOTE**: Layout data must never be reused between widgets. Always specify or clone again for every widget.
@@ -588,7 +646,7 @@ The 5th example demonstrates computed value data binding whereby the value of `n
 
 The 6th example demonstrates nested indexed computed value data binding whereby the value of `profiles[0].name` depends on changes to both nested `profiles[0].first_name` and `profiles[0].last_name`.
 
-Example from [hello_combo.rb](samples/hello_combo.rb) sample:
+Example from [samples/hello_combo.rb](samples/hello_combo.rb) sample (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ![Hello Combo](images/glimmer-hello-combo.png)
 
@@ -633,7 +691,7 @@ HelloCombo.new.launch
 
 `combo` widget is data-bound to the country of a person. Note that it expects `person` object to have `:country` attribute and `:country_options` attribute containing all available countries.
 
-Example from [hello_list_single_selection.rb](samples/hello_list_single_selection.rb) sample:
+Example from [samples/hello_list_single_selection.rb](samples/hello_list_single_selection.rb) sample:
 
 ![Hello List Single Selection](images/glimmer-hello-list-single-selection.png)
 
@@ -656,6 +714,8 @@ shell {
 `list` widget is also data-bound to the country of a person similarly to the combo widget. Not much difference here (the rest of the code not shown is the same).
 
 Nonetheless, in the next example, a multi-selection list is declared instead allowing data-binding of multiple selection values to the bindable attribute on the model.
+
+Example from [samples/hello_list_multi_selection.rb](samples/hello_list_multi_selection.rb) sample (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ![Hello List Multi Selection](images/glimmer-hello-list-multi-selection.png)
 
@@ -834,7 +894,7 @@ Glimmer supports creating custom widgets with minimal code, which automatically 
 
 Simply create a new class that includes `Glimmer::SWT::CustomWidget` and put Glimmer DSL code in its `#body` method (its return value is stored in `#body_root` attribute). Glimmer will then automatically recognize this class by convention when it encounters a keyword matching the class name converted to underscored lowercase (and namespace double-colons `::` replaced with double-underscores `__`)
 
-**Example:**
+#### Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 Definition:
 ```ruby
@@ -855,12 +915,12 @@ shell {
   red_label {
     text 'Red Label'
   }
-}
+}.open
 ```
 
 As you can see, `RedLabel` became Glimmer DSL keyword: `red_label`
 
-**Another Example:**
+#### Another Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 Definition:
 ```ruby
@@ -874,6 +934,7 @@ module Red
       }
     end
   end
+end
 ```
 
 Usage:
@@ -885,7 +946,7 @@ shell {
       text 'This is showing inside a Red Composite'
     }
   }
-}
+}.open
 ```
 
 Notice how `Red::Composite` became `red__composite` with double-underscore, which is how Glimmer Custom Widgets signify namespaces by convention.
@@ -900,7 +961,7 @@ Additionally, custom widgets can call the following class methods:
 - `.options`: declares a list of options by taking an option name array (symbols/strings). This generates option attribute readers (e.g. `options :orientation, :bg_color` generates `#orientation` and `#bg_color` attribute readers)
 - `.option`: declares a single option taking option name and default value as arguments (also generates an attribute reader just like `.options`)
 
-**Content/Options Example:**
+#### Content/Options Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 Definition:
 ```ruby
@@ -913,7 +974,7 @@ class Sandwich
   def body
     composite(swt_style) { # gets custom widget style
       fill_layout orientation # using orientation option
-      background container_background # using container_background option
+      background bg_color # using container_background option
       label {
         text 'SANDWICH TOP'
       }
@@ -929,12 +990,13 @@ end
 Usage:
 ```ruby
 shell {
-  sandwich(:no_focus, orientation: :horizontal, bg_color: :white) {
+  sandwich(:no_focus, orientation: :vertical, bg_color: :red) {
     label {
+      background :green
       text 'SANDWICH CONTENT'
     }
   }
-}
+}.open
 ```
 
 Notice how `:no_focus` was the `swt_style` value, followed by the `options` hash `{orientation: :horizontal, bg_color: :white}`, and finally the `content` block containing the label with `'SANDWICH CONTENT'`
@@ -988,7 +1050,7 @@ shell {
 
 Glimmer supports SWT Browser widget, which can load URLs or render HTML. It can even be instrumented with JavaScript when needed (though highly discouraged in Glimmer except for rare cases when leveraging a pre-existing web codebase in a desktop app).
 
-Example loading a URL:
+Example loading a URL (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
 shell {
@@ -999,7 +1061,7 @@ shell {
 }.open
 ```
 
-Example rendering HTML with JavaScript on document ready:
+Example rendering HTML with JavaScript on document ready (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
 shell {
