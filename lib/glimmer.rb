@@ -8,6 +8,7 @@ require "facets"
 require "super_module"
 require "logger"
 require "java"
+require "nested_inherited_jruby_include_package"
 require_relative "glimmer/parent"
 require_relative "glimmer/swt_packages" #TODO move into SWT namespace
 require_relative "glimmer/swt/custom_widget"
