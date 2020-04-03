@@ -316,22 +316,18 @@ describe Glimmer do
     }
 
     expect(@table.widget).to have_style(:border)
-    assert @table.widget.getHeaderVisible
-    assert @table.widget.getLinesVisible
+    expect(@table.widget.getHeaderVisible).to eq(true)
+    expect(@table.widget.getLinesVisible).to eq(true)
     expect(@table_column.widget.getWidth).to eq( 80)
   end
 
   it "tests shell_containing_undefined_command" do
     @target = shell {
-      undefined_command(:undefined_parameter) {
-      }
+      expect do
+        undefined_command(:undefined_parameter) {
+        }
+      end.to raise_error(RuntimeError)
     }
-
-    expect(@target).to_not be_nil
-    expect(@target.widget).to_not be_nil
-    expect(@target.widget).to be_instance_of(Shell)
-    expect(@target.widget.getLayout).to_not be_nil
-    expect(@target.widget.getLayout).to be_instance_of(FillLayout)
   end
 
 

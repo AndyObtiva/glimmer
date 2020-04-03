@@ -778,9 +778,13 @@ Glimmer comes with `Observer` module, which is used internally for data-binding,
 
 #### Observing Widgets
 
-Glimmer supports observing widgets with an `on_*event*` declaration where the '*event*' part is replaced with the lowercase underscored name of an SWT listener event method.
+Glimmer supports observing widgets with two types of syntax:
+1. `on_{swt-listener-method-name}`: where {swt-listener-method-name} is replaced with the lowercase underscored method name on an SWT listener class (e.g. `on_verify_text` for `org.eclipse.swt.events.VerifyListener#verifyText`).
+2. `on_event_{swt-event-constant}`: where {swt-event-constant} is replaced with an `org.eclipse.swt.SWT` event constant (e.g. `on_event_show` for `SWT.Show` to observe when widget becomes visible)
 
-To figure out what the available events for an SWT widget are, check out all of its API methods starting with `add` and ending with `Listener`, and then open the listener class to check its "event methods".
+Number 1 is more commonly used in SWT applications, so make it your starting point. Number 2 covers events not found in number 1, so look into it if you don't find an SWT listener you need in number 1.
+
+**Regarding number 1**, to figure out what the available events for an SWT widget are, check out all of its `add***Listener` API methods, and then open the listener class argument to check its "event methods".
 
 For example, if you look at the `Button` SWT API:
 https://help.eclipse.org/2019-12/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fswt%2Fbrowser%2FBrowser.html
@@ -819,6 +823,62 @@ shell {
 Note that every Tic Tac Toe grid cell has its `text` and `enabled` properties data-bound to the `sign` and `empty` attributes on the `TicTacToeBoard` model respectively.
 
 Next however, each of these Tic Tac Toe grid cells, which are clickable buttons, have an `on_widget_selected` observer, which once triggered, marks the box (cell) on the `TicTacToeBoard` to make a move.
+
+**Regarding number 2**, you can figure out all available events by looking at the `org.eclipse.swt.SWT` API:
+
+https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+`SWT.Show` - hooks a listener for showing a widget (using `on_event_show` in Glimmer)
+`SWT.Hide` - hooks a listener for hiding a widget (using `on_event_hide` in Glimmer)
+
+```ruby
+shell {
+  @button1 = button {
+    text "Show 2nd Button"
+    visible true
+    on_event_show {
+      @button2.widget.setVisible(false)
+    }
+    on_widget_selected {
+      @button2.widget.setVisible(true)
+    }
+  }
+  @button2 = button {
+    text "Show 1st Button"
+    visible false
+    on_event_show {
+      @button1.widget.setVisible(false)
+    }
+    on_widget_selected {
+      @button1.widget.setVisible(true)        
+    }
+  }
+}.open
+```
+
+##### Alternative Syntax
+
+Instead of declaring a widget observer using `on_***` syntax inside a widget content block, you may also do so after the widget declaration by invoking directly on the widget object.
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```
+@shell = shell {
+  label {
+    text "Hello, World!"
+  }
+}
+@shell.on_shell_iconified {
+  @shell.close
+}  
+@shell.open
+```
+
+The shell declared above has been modified so that the minimize button works just like the close button. Once you minimize the shell (iconify it), it closes.
+
+The alternative syntax can be helpful if you prefer to separate Glimmer observer declarations from Glimmer UI declarations, or would like to add observers dynamically based on some logic later on.
 
 #### Observing Models
 
@@ -1133,9 +1193,13 @@ Here is a textual list of SWT widgets:
 
 https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/guide/swt_widgets_controls.htm?cp=2_0_7_0_0
 
-Here is a list of SWT style bits:
+Here is a list of SWT style bits as used in widget declaration:
 
 https://wiki.eclipse.org/SWT_Widget_Style_Bits
+
+Here is a SWT style bit constant reference:
+
+https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
 
 ## SWT Packages
 

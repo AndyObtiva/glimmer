@@ -10,10 +10,32 @@ module Glimmer
       end
 
       after do
+        @target.async_exec do
+          @target.widget.dispose
+        end
         @target.start_event_loop
       end
 
-      it 'asyncronously executes' do
+      it 'adds listener' do
+        @target = shell {
+          composite {
+            @text = text {
+              text "Howdy"
+            }
+            @text.on_verify_text do |verify_event|
+              verify_event.doit = false if verify_event.text == "Hello"
+            end
+          }
+        }
+
+        @text.widget.setText("Hi")
+        expect(@text.widget.getText).to eq("Hi")
+
+        @text.widget.setText("Hello")
+        expect(@text.widget.getText).to eq("Hi")
+      end
+
+      it 'asyncronously executes UI code' do
         @target = shell {
           @text = text {
             text "text1"
@@ -24,13 +46,14 @@ module Glimmer
           @text.widget.setText("text2")
         end
 
+        expect(@text.widget.getText).to_not eq("text2")
+
         @target.async_exec do
           expect(@text.widget.getText).to eq("text2")
-          @target.widget.close
         end
       end
 
-      it "syncronously executes" do
+      it "syncronously executes UI code" do
         @target = shell {
           @text = text {
             text "text1"
@@ -39,15 +62,10 @@ module Glimmer
 
         @target.async_exec do
           expect(@text.widget.getText).to eq("text2")
-          @text.widget.setText("text3")
         end
 
         @target.sync_exec do
           @text.widget.setText("text2")
-        end
-
-        @target.async_exec do
-          @target.widget.close
         end
       end
     end

@@ -23,6 +23,14 @@ module Glimmer
       def dispose
         @display.dispose
       end
+
+      def async_exec(&block)
+        @display.asyncExec(GRunnable.new(&block))
+      end
+
+      def sync_exec(&block)
+        @display.syncExec(GRunnable.new(&block))
+      end
     end
   end
 end

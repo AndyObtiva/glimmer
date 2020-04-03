@@ -92,5 +92,43 @@ module Glimmer
       expect(person.name).to eq("Bruce Lao")
     end
 
+    context "SWT event listener (hooked with addListener(SWT.Style, listener)" do
+      it "tests button SWT.Show event listener" do
+        person = Person.new
+        person.name = "Bruce Ting"
+
+        @target = shell {
+          composite {
+            @button = button {
+              visible false
+              on_event_show do
+                @button_shown = true
+              end
+            }
+          }
+        }
+
+        expect(@button_shown).to eq(nil)
+        @button.widget.setVisible(true)
+        expect(@button_shown).to eq(true)
+      end
+      it "fails in adding button SWT.invalid event listener" do
+        person = Person.new
+        person.name = "Bruce Ting"
+
+        @target = shell {
+          composite {
+            @button = button {
+              visible false
+              expect do
+                on_event_invalid do
+                  @button_shown = true
+                end
+              end.to raise_error(RuntimeError)
+            }
+          }
+        }
+      end
+    end
   end
 end

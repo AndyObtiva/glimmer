@@ -14,7 +14,7 @@ module Glimmer
       include_package 'org.eclipse.swt.graphics'
       include_package 'org.eclipse.swt.browser'
 
-      include Glimmer
+      include Glimmer # TODO consider removing when no longer needed
       include Parent
 
       attr_reader :widget
@@ -43,10 +43,6 @@ module Glimmer
       def initialize(underscored_widget_name, parent, styles, &contents)
         @widget = self.class.swt_widget_class_for(underscored_widget_name).new(parent, style(underscored_widget_name, styles))
         @@default_initializers[underscored_widget_name].call(@widget) if @@default_initializers[underscored_widget_name]
-      end
-
-      def has_style?(swt_style)
-        pd(pd(@widget.getStyle) & swt_style) == pd(swt_style)
       end
 
       def has_attribute?(attribute_name, *args)
@@ -153,21 +149,11 @@ module Glimmer
         nil
       end
 
-      def widget_listener_exists?(underscored_listener_name)
-        listener_method_name = underscored_listener_name.listener_method_name(:lower)
-        @widget.getClass.getMethods.each do |widget_method|
-          if widget_method.getName.match(/add.*Listener/)
-            widget_method.getParameterTypes.each do |listener_type|
-              listener_type.getMethods.each do |listener_method|
-                if (listener_method.getName == listener_method_name)
-                  return true
-                end
-              end
-            end
-          end
-        end
-        return false
-      end
+      # TODO refactor following methods to eliminate duplication
+      # perhaps consider relying on raising an exception to avoid checking first
+      # unless that gives obscure SWT errors
+      # Otherwise, consider caching results from can_add_lsitener and using them in
+      # add_listener knowing it will be called for sure afterwards
 
       def can_add_listener?(underscored_listener_name)
         listener_method_name = underscored_listener_name.camelcase(:lower)
@@ -217,11 +203,11 @@ module Glimmer
       end
 
       def async_exec(&block)
-        @widget.getDisplay.asyncExec(GRunnable.new(&block))
+        GDisplay.instance.async_exec(&block)
       end
 
       def sync_exec(&block)
-        @widget.getDisplay.syncExec(GRunnable.new(&block))
+        GDisplay.instance.sync_exec(&block)
       end
 
       def has_style?(style)
@@ -232,14 +218,55 @@ module Glimmer
         @widget.dispose
       end
 
+      # TODO Consider renaming these methods as they are mainly used for data-binding
+
+      def can_add_observer?(property_name)
+        widget_property_listener_installers[@widget.class].values.map(&:keys).flatten.map(&:to_s).include?(property_name.to_s)
+      end
+
       def add_observer(observer, property_name)
-        property_listener_installers = widget_property_listener_installers[widget.class]
+        property_listener_installers = widget_property_listener_installers[@widget.class]
         widget_listener_installer = property_listener_installers[property_name.to_s.to_sym] if property_listener_installers
         widget_listener_installer.call(observer) if widget_listener_installer
       end
 
       def remove_observer(observer, property_name)
         # TODO consider implementing if remove_observer is needed (consumers can remove listener via SWT API)
+      end
+
+      # TODO eliminate duplication in the following methods perhaps by relying on exceptions
+
+      def can_handle_observation_request?(observation_request)
+        observation_request = observation_request.to_s
+        if observation_request.start_with?('on_event_')
+          constant_name = observation_request.sub(/^on_event_/, '')
+          GSWT.has_constant?(constant_name)
+        elsif observation_request.start_with?('on_')
+          event = observation_request.sub(/^on_/, '')
+          can_add_listener?(event)
+        else
+          false
+        end
+      end
+
+      def handle_observation_request(observation_request, &block)
+        if observation_request.start_with?('on_event_')
+          constant_name = observation_request.sub(/^on_event_/, '')
+          @widget.addListener(GSWT[constant_name], &block)
+        elsif observation_request.start_with?('on_')
+          event = observation_request.sub(/^on_/, '')
+          add_listener(event, &block)
+        end
+        nil
+      end
+
+      def method_missing(method, *args, &block)
+        method_name = method.to_s
+        if can_handle_observation_request?(method_name)
+          handle_observation_request(method_name, &block)
+        else
+          super
+        end
       end
 
       private

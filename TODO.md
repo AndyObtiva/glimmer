@@ -5,7 +5,7 @@ Here is a list of tasks to do (please delete once done):
 ## Up Next
 
 - Handle focus on display of a CustomShell
-- Add visible observable event to GShell and CustomShell and making Glimmer accept working with such custom events on top of SWT listener events
+- Support Glimmer DSL observe keyword
 - Make `glimmer` command work with Bundler to grab glimmer only if Gemfile is available
 - Support CustomWidget before_body and after_body hooks
 - Support CustomShell before_open/before_show and after_open/after_show hooks
@@ -41,9 +41,7 @@ Here is a list of tasks to do (please delete once done):
 - Simplify API for async_exec and sync_exec (putting directly on Glimmer)
 - Restore badges for README
 - Look into what to do regarding Glimmer silent failures (when things fall off the chain of command)
-- Support on_*** observers on GWidget's directly without using add_contents
 - Check for need to recursively call dispose on widget descendants
-- Support Glimmer DSL observe keyword
 - Report a friendly error message for  can't modify frozen NilClass when mistakenly observing a nil model instead of doing a nested bind(self, 'model.property')
 - Support method_name? methods in data-binding just like standard attr readers
 - Decide on whether to continue to pass a widget var to blocks or give them access to widget parent through parent method
@@ -55,14 +53,19 @@ Here is a list of tasks to do (please delete once done):
 - Support a Glimmer ruby gem generator for custom widgets to easily and quickly wrap and publish as a Ruby gem if desired (despite option of github convention consumption mentioned above)
 - Put Glimmer on Travis CI and test on many platforms and with many jruby versions
 - Get rid of dispose widget error upon quitting a Glimmer app
+- Make gwidgets and custom widgets proxy method calls to wrapped widget
+- Make observers 'method?' friendly
 
 ## Documentation Tasks
 - Document G*** classes like GWidget and GShell
 - Document Glimmer.add_contents
-- Document custom widget custom attributes/observers
+- Document custom widget custom properties/observers
 - Document how to build 3rd party library custom widgets and custom shells for distribution and consumption
 - Explain MVC and MVP
 - Double down on using the wording property vs attribute to minimize confusion
 - Document async_exec and sync_exec
 - Document example of using an external Java SWT custom widget by importing its java package directly to do the trick
 - Document Glimmer::Launcher
+- Make a video documenting how to build Tic Tac Toe (no AI) step by step
+- RDoc documentation
+- Document on_ SWT event listeners for events declared on SWT constant like show and hide

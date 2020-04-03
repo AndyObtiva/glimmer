@@ -160,13 +160,8 @@ module Glimmer
               nested_property_observer.observe(model)
               parent_observer.add_dependent([parent_model, parent_property_name] => [nested_property_observer, model, nil])
             else
-              # pd property_name, announcer: '[NESTED]', header: true
-              # pd model, announcer: '[NESTED]'
-              # pd nested_property_observer, announcer: '[NESTED]'
               nested_property_observer.observe(model, property_name)
-              # pd 'DONE ADDING OBSERVER', announcer: '[NESTED]'
               parent_observer.add_dependent([parent_model, parent_property_name] => [nested_property_observer, model, property_name])
-              # pd 'DONE ADDING DEPENDENT', announcer: '[NESTED]'
             end
           end
         end

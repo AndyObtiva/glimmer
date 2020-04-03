@@ -10,9 +10,9 @@ module Glimmer
       def open
         if body_root.opened_before?
           body_root.open
-          @initially_focused_widget.widget.setFocus
+          @initially_focused_widget&.widget&.setFocus
         else
-          @initially_focused_widget.widget.setFocus
+          @initially_focused_widget&.widget&.setFocus
           body_root.open
         end
       end
@@ -22,8 +22,16 @@ module Glimmer
         open
       end
 
+      def close
+        body_root.close
+      end
+
       def hide
         body_root.hide
+      end
+
+      def visible?
+        body_root.visible?
       end
 
       def center

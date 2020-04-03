@@ -52,24 +52,15 @@ module Glimmer
       # registers observer in an observable on a property (optional)
       # observer maintains registration list to unregister later
       def register(observable, property = nil)
-        # pd property, announcer: '[OBSERVE]', header: true
-        # pd observable, announcer: '[OBSERVE]'
-        # pd self, announcer: '[OBSERVE]'
         unless observable.is_a?(Observable)
-          # pd 'not an observable'
           # TODO refactor code to be more smart/polymorphic/automated and honor open/closed principle
           if observable.is_a?(Array)
-            # pd 'array'
             observable.extend(ObservableArray)
           else
-            # pd 'not array'
             observable.extend(ObservableModel)
           end
         end
-        # pd 'adding observer', announcer: '[OBSERVE]'
-        # pd [self, property], announcer: '[OBSERVE]'
         observable.add_observer(*[self, property].compact)
-        # pd 'adding registration', announcer: '[OBSERVE]'
         [observable, property].tap do |registration|
           self.registrations << registration
         end

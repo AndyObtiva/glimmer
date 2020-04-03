@@ -14,10 +14,11 @@ module Glimmer
         return @next_chain_link.handle(parent, command_symbol, *args, &block)
       else
         # TODO see if we need a better response here (e.g. dev mode error raising vs production mode silent failure)
-        # Glimmer.logger.error "Command: #{command_symbol} cannot be handled!"
-        Glimmer.logger.debug "Command: #{command_symbol} cannot be handled!"
-        # raise "Command: #{command_symbol} cannot be handled!"
-        nil
+        message = "Glimmer keyword #{command_symbol} with args #{args} cannot be handled"
+        message += " inside parent #{parent.inspect}" if parent
+        message += "! Check the validity of the code."
+        # Glimmer.logger.error message
+        raise message
       end
     end
   end

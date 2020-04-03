@@ -76,16 +76,26 @@ module Glimmer
         raise 'Not implemented!'
       end
 
-      # TODO consider using delegators
-
-      def can_add_listener?(underscored_listener_name)
-        @body_root.can_add_listener?(underscored_listener_name)
+      def can_handle_observation_request?(observation_request)
+        result = false
+        if observation_request.start_with?('on_updated_')
+          property = observation_request.sub(/^on_updated_/, '')
+          result = can_add_observer?(property)
+        end
+        result || body_root&.can_handle_observation_request?(observation_request)
       end
 
-      # TODO clean up difference between add_listener and add_observer
+      def handle_observation_request(observation_request, &block)
+        if observation_request.start_with?('on_updated_')
+          property = observation_request.sub(/^on_updated_/, '')
+          add_observer(Observer::Proc.new(&block), property) if can_add_observer?(property)
+        else
+          body_root.handle_observation_request(observation_request, &block)
+        end
+      end
 
-      def add_listener(underscored_listener_name, &block)
-        @body_root.add_listener(underscored_listener_name, &block)
+      def can_add_observer?(attribute_name)
+        respond_to?(attribute_name) || @body_root.can_add_observer?(attribute_name)
       end
 
       def add_observer(observer, attribute_name)
@@ -121,12 +131,39 @@ module Glimmer
         "#{attribute_name}="
       end
 
+      # TODO see if it is worth it to eliminate duplication of method_missing
+      # from GWidget using a module
+
+      def method_missing(method, *args, &block)
+        method_name = method.to_s
+        if can_handle_observation_request?(method_name)
+          handle_observation_request(method_name, &block)
+        else
+          super
+        end
+      end
+
       def process_block(block)
         if block.source_location == @content&.__getobj__.source_location
           @content.call unless @content.called?
         else
           block.call
         end
+      end
+
+      def has_style?(style)
+        (swt_style & GSWT[style]) == GSWT[style]
+      end
+
+      # TODO see if it is worth it to eliminate duplication of async_exec/sync_exec
+      # delegation to GDisplay, via a module
+
+      def async_exec(&block)
+        GDisplay.instance.async_exec(&block)
+      end
+
+      def sync_exec(&block)
+        GDisplay.instance.sync_exec(&block)
       end
     end
   end

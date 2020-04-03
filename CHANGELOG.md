@@ -6,6 +6,9 @@
 - Made shell `#open` method remember if it was already opened before yet hidden, and just show the shell
 - Implement shell `#hide` method
 - Alias shell `#open` as `#show`
+- Support CustomWidget/CustomShell Custom Property Observers
+- Support on_*** observers on GWidget's directly
+- Support on_event_*** observers for SWT.constant event listeners (like show and hide)
 
 ## 0.4.8
 - Video widget

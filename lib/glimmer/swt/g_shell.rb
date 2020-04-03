@@ -40,11 +40,17 @@ module Glimmer
       def open
         if @opened_before
           @widget.setVisible(true)
+          # notify_observers('visible')
         else
           @opened_before = true
           @widget.pack
           center
           @widget.open
+          # NOTE: the following line runs after scheduled sync exec events,
+          # but ensures visible status is only updated upon true visibility
+          # async_exec do
+            # notify_observers('visible')
+          # end
           start_event_loop
         end
       end
@@ -52,14 +58,24 @@ module Glimmer
 
       def hide
         @widget.setVisible(false)
+        # notify_observers('visible')
       end
 
       def close
-        # TODO (including making it report visible false event)
+        @widget.close
+        # notify_observers('visible')
       end
 
-      def visible
-        # TODO implement and notify_observers('visible') based on open and hide
+      # TODO implement and notify_observers('visible') based on open and hide
+
+      def visible?
+        @widget.isDisposed ? false : @widget.isVisible
+      end
+
+      # TODO evaluate if this is needed
+
+      def visible=(visibility)
+        visibility ? show : hide
       end
 
       def start_event_loop
@@ -67,6 +83,23 @@ module Glimmer
           @display.sleep unless @display.readAndDispatch
         end
         @display.dispose
+      end
+
+      def add_observer(observer, property_name)
+        case property_name.to_s
+        when 'visible?'
+          @widget.addListener(GSWT[:show]) do |event|
+            observer.call(visible?)
+          end
+          @widget.addListener(GSWT[:hide]) do |event|
+            observer.call(visible?)
+          end
+          @widget.addListener(GSWT[:close]) do |event|
+            observer.call(visible?)
+          end
+        else
+          super
+        end
       end
     end
   end

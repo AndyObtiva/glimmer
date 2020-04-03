@@ -21,9 +21,6 @@ module Glimmer
       end
 
       def add_observer(observer, property_name)
-        # pd property_name, announcer: '[ADD_OBSERVER]'
-        # pd observer, announcer: '[ADD_OBSERVER]'
-        # pd has_observer?(observer, property_name)
         return observer if has_observer?(observer, property_name)
         property_observer_list(property_name) << observer
         add_property_writer_observers(property_name)
