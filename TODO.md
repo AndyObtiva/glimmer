@@ -4,8 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Make `glimmer` command work with Bundler to grab glimmer version properly when Gemfile is available
-- Fix issue requiring us to include Glimmer again in CustomShell to get SWT packages included (consider making SwtPackages a super_module) [perhaps fix super_module bugs/limitations?]
 - Update setBackgroundImage to take an image path string for convenience (instead of an SWT image)
 
 ## Feature Suggestions
@@ -32,14 +30,12 @@ Here is a list of tasks to do (please delete once done):
 - Build a sample demonstrating how to use Glimmer from Java only for the View layer in a desktop MVC SWT app
 - Support data binding translator option via a block
 - Consider using Ruby Refinements for Glimmer
-- Simplify API for add_contents (putting directly on widgets)
 - Simplify API for async_exec and sync_exec (putting directly on Glimmer)
 - Restore badges for README
 - Look into what to do regarding Glimmer silent failures (when things fall off the chain of command)
 - Check for need to recursively call dispose on widget descendants
 - Report a friendly error message for  can't modify frozen NilClass when mistakenly observing a nil model instead of doing a nested bind(self, 'model.property')
 - Support method_name? methods in data-binding just like standard attr readers
-- Decide on whether to continue to pass a widget var to blocks or give them access to widget parent through parent method
 - Provide general DSL to construct any object with Glimmer even if not a widget. Useful for easily setting style_range on a StyledText widget. Maybe make it work like layout_data where it knows type to instantiate automatically. With style_range, that's easy since it can be inferred from args.
 - Consider implementing Glimmer.app_dir as Pathname object referring to app root path of Glimmer application project (not Glimmer library)
 - Consider implementing Glimmer.__lib_dir__ as Pathname object referring to root path of Glimmer library
@@ -51,8 +47,9 @@ Here is a list of tasks to do (please delete once done):
 - Make gwidgets and custom widgets proxy method calls to wrapped widget
 - Make observers 'method?' friendly
 - Rename add_contents to add_content
-- Make Glimmer DSL block provide parent as block argument (not widget)
 - Compose ModelBinding out of another ModelBinding (nesting deeper)
+- Scrap XML/XHTML support
+- Fix issue requiring us to include Glimmer again in CustomShell to get SWT packages included (consider making SwtPackages a super_module) [perhaps fix super_module potential limitations around class variables and document them?]
 
 ## Documentation Tasks
 - Document G*** classes like GWidget and GShell

@@ -46,7 +46,7 @@ module Glimmer
       end
 
       def process_block(block)
-        block.call(@layout)
+        block.call(self)
       end
 
       def has_attribute?(attribute_name, *args)

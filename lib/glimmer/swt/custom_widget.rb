@@ -157,9 +157,9 @@ module Glimmer
 
       def process_block(block)
         if block.source_location == @content&.__getobj__.source_location
-          @content.call unless @content.called?
+          @content.call(self) unless @content.called?
         else
-          block.call
+          block.call(self)
         end
       end
 
@@ -176,6 +176,10 @@ module Glimmer
 
       def sync_exec(&block)
         GDisplay.instance.sync_exec(&block)
+      end
+
+      def add_content(&block)
+        body_root.add_content(&block)
       end
 
       private

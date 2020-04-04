@@ -46,7 +46,7 @@ module Glimmer
       end
 
       def process_block(block)
-        return_value = block.call(@widget)
+        return_value = block.call(@widget) #TODO fix (remove @widget reference)
         if return_value.is_a?(String) and !@children.include?(return_value)
           text = return_value
           first_match = text.match(/[#][^{]+[{][^}]+[}]/)

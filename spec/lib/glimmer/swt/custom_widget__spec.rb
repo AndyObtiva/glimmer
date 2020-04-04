@@ -313,6 +313,21 @@ module Glimmer
         expect(@label.isEnabled).to eq(false)
       end
 
+      it 'adds content' do
+        @target = shell {
+          @red_composite = red__composite
+        }
+
+        @red_composite.add_content {
+          @text = text {
+            text "Howdy"
+          }
+        }
+
+        expect(@red_composite.widget.getChildren.first).to eq(@text.widget)
+        expect(@text.widget.getText).to eq('Howdy')
+      end
+
       context 'UI code execution' do
         after do
           @target.async_exec do

@@ -12,6 +12,9 @@
 - Added widget focus listener and data-binding support
 - Support Glimmer DSL observe keyword and make it return observer registration object to unregister later on (unobserve)
 - Support CustomWidget before_body and after_body hooks
+- Make Glimmer DSL block provide parent Glimmer object (not SWT widget) as block argument
+- Give widgets/custom-widgets ability to add content (properties/nested widgets) after construction via `#add_content` method
+
 
 ## 0.4.8
 - Video widget

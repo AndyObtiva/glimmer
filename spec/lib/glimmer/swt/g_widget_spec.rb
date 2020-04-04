@@ -35,6 +35,25 @@ module Glimmer
         expect(@text.widget.getText).to eq("Hi")
       end
 
+      it 'adds content' do
+        @target = shell {
+          minimum_size 50, 20
+        }
+
+        @target.add_content {
+          minimum_size 300, 200
+          composite {
+            @text = text {
+              text "Howdy"
+            }
+          }
+        }
+
+        expect(@target.widget.getMinimumSize.x).to eq(300)
+        expect(@target.widget.getMinimumSize.y).to eq(200)
+        expect(@text.widget.getText).to eq("Howdy")
+      end
+
       it 'asyncronously executes UI code' do
         @target = shell {
           @text = text {

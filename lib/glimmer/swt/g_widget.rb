@@ -235,7 +235,7 @@ module Glimmer
       end
 
       def process_block(block)
-        block.call(@widget) # TODO change this to self
+        block.call(self)
       end
 
       def async_exec(&block)
@@ -305,6 +305,10 @@ module Glimmer
         else
           super
         end
+      end
+
+      def add_content(&block)
+        Glimmer.add_contents(self, &block)
       end
 
       private

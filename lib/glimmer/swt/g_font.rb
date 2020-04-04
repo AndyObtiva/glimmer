@@ -7,17 +7,17 @@ module Glimmer
       FONT_STYLES = [:normal, :bold, :italic]
       include_package 'org.eclipse.swt.graphics'
 
-      extend Glimmer
-
       attr_reader :g_widget
       attr_accessor :display
 
       class << self
+        include Glimmer
+        
         def for(g_widget)
           @instances ||= {}
           unless @instances[g_widget]
             @instances[g_widget] = new(g_widget)
-            add_contents(g_widget) {
+            g_widget.add_content {
               on_widget_disposed { |dispose_event|
                 @instances.delete(g_widget)
               }

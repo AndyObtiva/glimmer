@@ -24,7 +24,7 @@ module Glimmer
       end
 
       def process_block(block)
-        block.call(@layout)
+        block.call(self)
       end
 
       def swt_layout_data_class

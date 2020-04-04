@@ -16,7 +16,6 @@ module Glimmer
       #
       # Depends on BindCommandHandler
       class DataBindingCommandHandler
-        extend Glimmer
         include CommandHandler
 
         include_package 'org.eclipse.swt.widgets'
