@@ -6,6 +6,11 @@ module Glimmer
       include SuperModule
       include Glimmer::SWT::CustomWidget
 
+      def initialize(parent, *swt_constants, options, &content)
+        super
+        raise 'Invalid custom shell body root! Must be a shell or another custom shell.' unless body_root.is_a?(GShell) || body_root.is_a?(CustomShell)
+      end
+
       # Classes may override
       def open
         body_root.open

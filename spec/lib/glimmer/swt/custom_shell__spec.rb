@@ -46,11 +46,22 @@ module Glimmer
         @target.open
       end
 
-      it 'focuses on initially_focused_widget' do
-        
-      end
+      it 'rejects a non shell body root' do
+        expect do
+          class ::TimeCompositeCustomShell
+            include Glimmer::SWT::CustomShell
 
-      xit 'rejects a non shell body root'
+            def body
+              composite {
+                label {
+                  text "It is always beer'o'clock!"
+                }
+              }
+            end
+          end
+          @target = time_composite_custom_shell
+        end.to raise_error(RuntimeError)
+      end
     end
   end
 end

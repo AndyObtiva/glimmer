@@ -97,6 +97,36 @@ module Glimmer
             }
           end
         end
+
+        class ::BeforeAndAfter
+          include CustomWidget
+
+          before_body do
+            @background = :red
+          end
+
+          after_body do
+            @label.widget.setText "Before and After"
+          end
+
+          def body
+            composite {
+              background @background
+              @label = label {
+                background @background
+                foreground @foreground
+              }
+            }
+          end
+
+          after_body do
+            @label.widget.setEnabled(false)
+          end
+
+          before_body do
+            @foreground = :green
+          end
+        end
       end
 
       after(:all) do
@@ -269,6 +299,18 @@ module Glimmer
         @multi_color_label.text = 'Howdy,Partner!'
 
         expect(@updated_text_with_alternative_syntax).to eq(true)
+      end
+
+      it 'executes before_body and after_body blocks' do
+        @target = shell {
+          @before_and_after = before_and_after
+        }
+        expect(@before_and_after.widget.getBackground).to eq(GColor.color_for(:red))
+        @label = @before_and_after.widget.getChildren.first
+        expect(@label.getBackground).to eq(GColor.color_for(:red))
+        expect(@label.getForeground).to eq(GColor.color_for(:green))
+        expect(@label.getText).to eq('Before and After')
+        expect(@label.isEnabled).to eq(false)
       end
 
       context 'UI code execution' do

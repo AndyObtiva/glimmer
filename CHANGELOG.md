@@ -11,7 +11,7 @@
 - Support on_event_*** observers for SWT.constant event listeners (like show and hide)
 - Added widget focus listener and data-binding support
 - Support Glimmer DSL observe keyword and make it return observer registration object to unregister later on (unobserve)
-
+- Support CustomWidget before_body and after_body hooks
 
 ## 0.4.8
 - Video widget

@@ -4,9 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Support CustomWidget before_body and after_body hooks
-- Support CustomShell before_open/before_show and after_open/after_show hooks
-- Support CustomShell before_hide and after_hide hooks (taking close into account in hide)
 - Make `glimmer` command work with Bundler to grab glimmer version properly when Gemfile is available
 - Fix issue requiring us to include Glimmer again in CustomShell to get SWT packages included (consider making SwtPackages a super_module) [perhaps fix super_module bugs/limitations?]
 - Update setBackgroundImage to take an image path string for convenience (instead of an SWT image)

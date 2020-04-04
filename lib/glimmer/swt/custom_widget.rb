@@ -58,6 +58,16 @@ module Glimmer
             end_eval
           end
         end
+
+        def before_body(&block)
+          @before_body_blocks ||= []
+          @before_body_blocks << block
+        end
+
+        def after_body(&block)
+          @after_body_blocks ||= []
+          @after_body_blocks << block
+        end
       end
 
       attr_reader :body_root, :widget, :parent, :swt_style, :options, :content
@@ -68,7 +78,9 @@ module Glimmer
         options ||= {}
         @options = self.class.options.merge(options)
         @content = ProcTracker.new(content) if content
+        execute_hooks('before_body')
         @body_root = body
+        execute_hooks('after_body')
         @widget = @body_root.widget
       end
 
@@ -164,6 +176,17 @@ module Glimmer
 
       def sync_exec(&block)
         GDisplay.instance.sync_exec(&block)
+      end
+
+      private
+
+      def execute_hooks(hook_name)
+        self.class.instance_variable_get("@#{hook_name}_blocks")&.each_with_index do |hook_block, i|
+          hook_block_number = i + 1
+          self.class.define_method("__#{hook_name}#{hook_block_number}", hook_block)
+          send("__#{hook_name}#{hook_block_number}")
+          self.class.send(:undef_method, "__#{hook_name}#{hook_block_number}")
+        end
       end
     end
   end
