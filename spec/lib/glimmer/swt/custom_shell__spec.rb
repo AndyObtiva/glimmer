@@ -46,7 +46,9 @@ module Glimmer
         @target.open
       end
 
-      xit 'focuses on initially_focused_widget'
+      it 'focuses on initially_focused_widget' do
+        
+      end
 
       xit 'rejects a non shell body root'
     end

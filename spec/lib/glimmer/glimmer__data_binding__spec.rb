@@ -94,7 +94,7 @@ module Glimmer
             end
           end
         end
-      end      
+      end
     end
 
     after(:all) do
@@ -119,7 +119,7 @@ module Glimmer
     end
 
     after do
-      @target.display.dispose if @target.display
+      @target.dispose if @target
     end
 
     it "tests text widget data binding string property" do
@@ -341,6 +341,46 @@ module Glimmer
       @spinner.widget.setSelection(34)
       @spinner.widget.notifyListeners(GSWT[:selection], nil)
       expect(person.age).to eq(34)
+    end
+
+    it 'tests widget data binding focus' do
+      person = Person.new
+      expect(person.adult).to be_nil
+
+      @target = shell {
+        alpha 0 # keep invisible while running specs
+        @text1 = text {
+          text "First one is focused by default"
+        }
+        @text2 = text {
+          focus bind(person, :adult)
+          text "Not focused"
+        }
+      }
+
+      @target.async_exec do
+        expect(@text1.widget.isFocusControl).to eq(true)
+        expect(@text2.widget.isFocusControl).to eq(false)
+
+        person.adult = true
+
+        expect(@text1.widget.isFocusControl).to eq(false)
+        expect(@text2.widget.isFocusControl).to eq(true)
+
+        expect(@text1.widget.setFocus).to eq(true)
+
+        expect(person.adult).to eq(false)
+
+        expect(@text2.widget.setFocus).to eq(true)
+
+        expect(person.adult).to eq(true)
+
+        @target.close
+      end
+
+      @target.open
+
+      # TODO test data binding in the other direction (from widget to model)
     end
 
     it "tests widget data binding enablement" do

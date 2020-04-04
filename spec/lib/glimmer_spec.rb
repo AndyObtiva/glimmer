@@ -25,7 +25,7 @@ describe Glimmer do
   end
 
 	after do
-		@target.display.dispose if @target.display
+		@target.dispose if @target
     self.class.send(:define_method, :display, @rspec_display_method)
 	end
 
@@ -351,4 +351,67 @@ describe Glimmer do
     expect(text_widget.getText).to eq( "Hello")
   end
 
+  context 'focus' do
+    it 'does not focus widget when not declaring focus true' do
+      @target = shell {
+        alpha 0 # keep invisible while running specs
+        @text1 = text {
+          text "First one is focused by default"
+        }
+        @text2 = text {
+          text "Not focused"
+        }
+      }
+
+      @target.async_exec do
+        expect(@text1.widget.isFocusControl).to eq(true)
+        expect(@text2.widget.isFocusControl).to eq(false)
+        @target.close
+      end
+
+      @target.open
+    end
+
+    it 'does not focus widget when declaring focus false' do
+      @target = shell {
+        alpha 0 # keep invisible while running specs
+        @text1 = text {
+          text "First one is focused by default"
+        }
+        @text2 = text {
+          focus false
+          text "Not focused"
+        }
+      }
+
+      @target.async_exec do
+        expect(@text1.widget.isFocusControl).to eq(true)
+        expect(@text2.widget.isFocusControl).to eq(false)
+        @target.close
+      end
+
+      @target.open
+    end
+
+    it 'focuses widget when declaring focus true' do
+      @target = shell {
+        alpha 0 # keep invisible while running specs
+        @text1 = text {
+          text "Not focused"
+        }
+        @text2 = text {
+          focus true
+          text "Focused"
+        }
+      }
+
+      @target.async_exec do
+        expect(@text1.widget.isFocusControl).to eq(false)
+        expect(@text2.widget.isFocusControl).to eq(true)
+        @target.close
+      end
+
+      @target.open
+    end
+  end
 end

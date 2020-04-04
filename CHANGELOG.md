@@ -9,6 +9,7 @@
 - Support CustomWidget/CustomShell Custom Property Observers
 - Support on_*** observers on GWidget's directly
 - Support on_event_*** observers for SWT.constant event listeners (like show and hide)
+- Added widget focus listener and data-binding support
 
 ## 0.4.8
 - Video widget

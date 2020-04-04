@@ -45,17 +45,41 @@ module Glimmer
         @@default_initializers[underscored_widget_name].call(@widget) if @@default_initializers[underscored_widget_name]
       end
 
+      def widget_custom_attribute_mapping
+        @widget_custom_attribute_mapping ||= {
+          'focus' => {
+            getter: {name: 'isFocusControl'},
+            setter: {name: 'setFocus', invoker: lambda { |widget, args| widget.setFocus if args.first }},
+          }
+        }
+      end
+
       def has_attribute?(attribute_name, *args)
-        @widget.respond_to?(attribute_setter(attribute_name), args)
+        widget_custom_attribute = widget_custom_attribute_mapping[attribute_name.to_s]
+        if widget_custom_attribute
+          @widget.respond_to?(widget_custom_attribute[:setter][:name])
+        else
+          @widget.respond_to?(attribute_setter(attribute_name), args)
+        end
       end
 
       def set_attribute(attribute_name, *args)
-        apply_property_type_converters(attribute_name, args)
-        @widget.send(attribute_setter(attribute_name), *args)
+        widget_custom_attribute = widget_custom_attribute_mapping[attribute_name.to_s]
+        if widget_custom_attribute
+          widget_custom_attribute[:setter][:invoker].call(@widget, args)
+        else
+          apply_property_type_converters(attribute_name, args)
+          @widget.send(attribute_setter(attribute_name), *args)
+        end
       end
 
       def get_attribute(attribute_name)
-        @widget.send(attribute_getter(attribute_name))
+        widget_custom_attribute = widget_custom_attribute_mapping[attribute_name.to_s]
+        if widget_custom_attribute
+          @widget.send(widget_custom_attribute[:getter][:name])
+        else
+          @widget.send(attribute_getter(attribute_name))
+        end
       end
 
       def property_type_converters
@@ -85,6 +109,18 @@ module Glimmer
 
       def widget_property_listener_installers
         @widget_property_listener_installers ||= {
+          Java::OrgEclipseSwtWidgets::Control => {
+            :focus => Proc.new do |observer|
+              add_contents(self) {
+                on_focus_gained { |focus_event|
+                  observer.call(true)
+                }
+                on_focus_lost { |focus_event|
+                  observer.call(false)
+                }
+              }
+            end,
+          },
           Java::OrgEclipseSwtWidgets::Text => {
             :text => Proc.new do |observer|
               add_contents(self) {
@@ -199,7 +235,7 @@ module Glimmer
       end
 
       def process_block(block)
-        block.call(@widget)
+        block.call(@widget) # TODO change this to self
       end
 
       def async_exec(&block)
@@ -221,13 +257,15 @@ module Glimmer
       # TODO Consider renaming these methods as they are mainly used for data-binding
 
       def can_add_observer?(property_name)
-        widget_property_listener_installers[@widget.class].values.map(&:keys).flatten.map(&:to_s).include?(property_name.to_s)
+        @widget.class.ancestors.map {|ancestor| widget_property_listener_installers[ancestor]}.compact.map(&:keys).flatten.map(&:to_s).include?(property_name.to_s)
       end
 
       def add_observer(observer, property_name)
-        property_listener_installers = widget_property_listener_installers[@widget.class]
-        widget_listener_installer = property_listener_installers[property_name.to_s.to_sym] if property_listener_installers
-        widget_listener_installer.call(observer) if widget_listener_installer
+        property_listener_installers = @widget.class.ancestors.map {|ancestor| widget_property_listener_installers[ancestor]}.compact
+        widget_listener_installers = property_listener_installers.map{|installer| installer[property_name.to_s.to_sym]}.compact if !property_listener_installers.empty?
+        widget_listener_installers.each do |widget_listener_installer|
+          widget_listener_installer.call(observer)
+        end
       end
 
       def remove_observer(observer, property_name)

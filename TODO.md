@@ -4,7 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Handle focus on display of a CustomShell
 - Support Glimmer DSL observe keyword
 - Support CustomWidget before_body and after_body hooks
 - Support CustomShell before_open/before_show and after_open/after_show hooks
@@ -12,6 +11,8 @@ Here is a list of tasks to do (please delete once done):
 - Make `glimmer` command work with Bundler to grab glimmer version properly when Gemfile is available
 - Fix issue requiring us to include Glimmer again in CustomShell to get SWT packages included (consider making SwtPackages a super_module) [perhaps fix super_module bugs/limitations?]
 - Update setBackgroundImage to take an image path string for convenience (instead of an SWT image)
+- include puts_debuggerer in Glimmer, disabled in gem mode. This avoid the risk of breaking the library without noticing if I leave a pd statement inside it.
+- Have `rake build` disable `pd` and run specs
 
 ## Feature Suggestions
 - Image custom widget
@@ -55,6 +56,8 @@ Here is a list of tasks to do (please delete once done):
 - Get rid of dispose widget error upon quitting a Glimmer app
 - Make gwidgets and custom widgets proxy method calls to wrapped widget
 - Make observers 'method?' friendly
+- Rename add_contents to add_content
+- Make Glimmer DSL block provide parent as block argument (not widget)
 
 ## Documentation Tasks
 - Document G*** classes like GWidget and GShell
@@ -67,5 +70,6 @@ Here is a list of tasks to do (please delete once done):
 - Document example of using an external Java SWT custom widget by importing its java package directly to do the trick
 - Document Glimmer::Launcher
 - Make a video documenting how to build Tic Tac Toe (no AI) step by step
-- RDoc documentation
+- Basic RDoc documentation
 - Document on_ SWT event listeners for events declared on SWT constant like show and hide
+- Document Glimmer DSL in full detail by generating translated documentation from SWT API (write a program) and adding to it
