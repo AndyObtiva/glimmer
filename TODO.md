@@ -4,15 +4,12 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Support Glimmer DSL observe keyword
 - Support CustomWidget before_body and after_body hooks
 - Support CustomShell before_open/before_show and after_open/after_show hooks
 - Support CustomShell before_hide and after_hide hooks (taking close into account in hide)
 - Make `glimmer` command work with Bundler to grab glimmer version properly when Gemfile is available
 - Fix issue requiring us to include Glimmer again in CustomShell to get SWT packages included (consider making SwtPackages a super_module) [perhaps fix super_module bugs/limitations?]
 - Update setBackgroundImage to take an image path string for convenience (instead of an SWT image)
-- include puts_debuggerer in Glimmer, disabled in gem mode. This avoid the risk of breaking the library without noticing if I leave a pd statement inside it.
-- Have `rake build` disable `pd` and run specs
 
 ## Feature Suggestions
 - Image custom widget
@@ -24,7 +21,7 @@ Here is a list of tasks to do (please delete once done):
 - Consider easy rerendering support for Glimmer upon processing events
 - Support re-rendering when updating a layout file for development.
 - Provide friendly error messages for all failures
-- Provide girb option to run without including Glimmer. Useful when testing an application that is not a hello world sort of example
+- Provide girb option to run without including Glimmer. Useful when testing an application that is not a "hello, world!" sort of example
 
 ## Technical Tasks
 
@@ -58,6 +55,7 @@ Here is a list of tasks to do (please delete once done):
 - Make observers 'method?' friendly
 - Rename add_contents to add_content
 - Make Glimmer DSL block provide parent as block argument (not widget)
+- Compose ModelBinding out of another ModelBinding (nesting deeper)
 
 ## Documentation Tasks
 - Document G*** classes like GWidget and GShell

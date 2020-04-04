@@ -1,4 +1,5 @@
 require_relative "command_handler_chain_factory"
+require_relative "swt/command_handlers/observe_command_handler"
 require_relative "swt/command_handlers/color_command_handler"
 require_relative "swt/command_handlers/display_command_handler"
 require_relative "swt/command_handlers/shell_command_handler"
@@ -22,6 +23,7 @@ require_relative "swt/command_handlers/custom_widget_command_handler"
 module Glimmer
   # edit to add more command handlers and extend Glimmer
   CommandHandlerChainFactory.def_dsl(:swt,
+    SWT::CommandHandlers::ObserveCommandHandler.new,
     SWT::CommandHandlers::DisplayCommandHandler.new,
     SWT::CommandHandlers::ShellCommandHandler.new,
     SWT::CommandHandlers::LayoutDataCommandHandler.new,

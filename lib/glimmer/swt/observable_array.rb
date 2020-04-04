@@ -28,7 +28,7 @@ module Glimmer
         end
         observer
       end
-      
+
       def has_observer?(observer)
         property_observer_list.include?(observer)
       end
@@ -97,7 +97,7 @@ module Glimmer
         # TODO look into optimizing this
         return unless old_value.is_a?(ObservableModel) || old_value.is_a?(ObservableArray)
         property_observer_list.each do |observer|
-          observer.unregister_dependents_with_observable([self, nil], old_value)
+          observer.unregister_dependents_with_observable(observer.registration_for(self), old_value)
         end
       end
     end

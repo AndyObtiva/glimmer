@@ -82,16 +82,17 @@ module Glimmer
         # TODO look into optimizing this
         return unless old_value.is_a?(ObservableModel) || old_value.is_a?(ObservableArray)
         property_observer_list(property_name).each do |observer|
-          observer.unregister_dependents_with_observable([self, property_name], old_value)
+          observer.unregister_dependents_with_observable(observer.registration_for(self, property_name), old_value)
         end
       end
 
       def ensure_array_object_observer(property_name, object, old_object = nil)
         return unless object.is_a?(Array)
         array_object_observer = array_object_observer_for(property_name)
-        array_object_observer.observe(object)
+        array_observer_registration = array_object_observer.observe(object)
         property_observer_list(property_name).each do |observer|
-          observer.add_dependent([self, property_name] => [array_object_observer, object, nil])
+          my_registration = observer.registration_for(self, property_name) # TODO eliminate repetition
+          observer.add_dependent(my_registration => array_observer_registration)
         end
         array_object_observer_for(property_name).unregister(old_object) if old_object.is_a?(ObservableArray)
       end

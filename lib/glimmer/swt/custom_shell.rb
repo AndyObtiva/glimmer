@@ -8,13 +8,7 @@ module Glimmer
 
       # Classes may override
       def open
-        if body_root.opened_before?
-          body_root.open
-          @initially_focused_widget&.widget&.setFocus
-        else
-          @initially_focused_widget&.widget&.setFocus
-          body_root.open
-        end
+        body_root.open
       end
 
       # DO NOT OVERRIDE. JUST AN ALIAS FOR `#open`. OVERRIDE `#open` INSTEAD.

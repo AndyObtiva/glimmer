@@ -42,3 +42,9 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
 end
 
 task :default => :spec
+
+task :no_puts_debuggerer do
+  ENV['puts_debuggerer'] = 'false'
+end
+
+Rake::Task["build"].enhance [:no_puts_debuggerer, :spec]

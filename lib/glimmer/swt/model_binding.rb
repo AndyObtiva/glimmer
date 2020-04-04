@@ -96,15 +96,6 @@ module Glimmer
             )
           end
         end
-        # @nested_property_observers_collection[observer].keys.each_with_index do |property_name, i|
-        #   previous_property_name = nested_property_names[i-1]
-        #   previous_observer = @nested_property_observers_collection[observer][previous_property_name]
-        #   nested_property_observer = @nested_property_observers_collection[observer][property_name]
-        #   previous_observer.add_dependent(nested_property_observer) unless previous_observer.nil?
-        # end
-        # TODO remove this brainstorming
-        # person.addresses[1].streets[2].number
-        # person.addresses[1] = ...
         @nested_property_observers_collection[observer]
       end
       def add_observer(observer)
@@ -113,8 +104,9 @@ module Glimmer
         elsif nested_property?
           add_nested_observers(observer)
         else
-          observer.observe(model, property_name)
-          observer.add_dependent([self, nil] => [observer, model, property_name])
+          observer_registration = observer.observe(model, property_name)
+          my_registration = observer.registration_for(self)
+          observer.add_dependent(my_registration => observer_registration)
         end
       end
       def remove_observer(observer)
@@ -140,8 +132,9 @@ module Glimmer
       end
       def add_computed_observers(observer)
         @computed_model_bindings.each do |computed_model_binding|
-          computed_observer_for(observer).observe(computed_model_binding)
-          observer.add_dependent([self, nil] => [computed_observer_for(observer), computed_model_binding, nil])
+          observer_registration = computed_observer_for(observer).observe(computed_model_binding)
+          my_registration = observer.registration_for(self)
+          observer.add_dependent(my_registration => observer_registration)
         end
       end
       def add_nested_observers(observer)
@@ -157,12 +150,12 @@ module Glimmer
           unless model.nil?
             if property_indexed?(property_name)
               # TODO figure out a way to deal with this more uniformly
-              nested_property_observer.observe(model)
-              parent_observer.add_dependent([parent_model, parent_property_name] => [nested_property_observer, model, nil])
+              observer_registration = nested_property_observer.observe(model)
             else
-              nested_property_observer.observe(model, property_name)
-              parent_observer.add_dependent([parent_model, parent_property_name] => [nested_property_observer, model, property_name])
+              observer_registration = nested_property_observer.observe(model, property_name)
             end
+            parent_registration = parent_observer.registration_for(parent_model, parent_property_name)
+            parent_observer.add_dependent(parent_registration => observer_registration)
           end
         end
       end

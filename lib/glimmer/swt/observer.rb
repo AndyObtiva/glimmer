@@ -25,6 +25,13 @@ module Glimmer
         end
       end
 
+      class Registration < Struct.new(:observer, :observable, :property, keyword_init: true)
+        def unregister
+          observer.unobserve(observable, property)
+        end
+        alias unobserve unregister
+      end
+
       class << self
         def proc(&observer_block)
           Proc.new(&observer_block)
@@ -35,8 +42,8 @@ module Glimmer
         @registrations ||= Set.new
       end
 
-      def registrations_for(observable, property = nil)
-        registrations.select {|o, p| o == observable && p == property}
+      def registration_for(observable, property = nil)
+        Registration.new(observer: self, observable: observable, property: property)
       end
 
       # mapping of registrations to dependents
@@ -61,18 +68,18 @@ module Glimmer
           end
         end
         observable.add_observer(*[self, property].compact)
-        [observable, property].tap do |registration|
+        registration_for(observable, property).tap do |registration|
           self.registrations << registration
         end
       end
       alias observe register
 
       def unregister(observable, property = nil)
+        # TODO optimize performance in the future via indexing and/or making a registration official object/class
         observable.remove_observer(*[self, property].compact)
-        registration = [observable, property]
+        registration = registration_for(observable, property)
         dependents_for(registration).each do |dependent|
-          dependent_observer, dependent_observable, dependent_property = dependent
-          dependent_observer.unregister(dependent_observable, dependent_property)
+          dependent.unregister
           remove_dependent(registration => dependent)
         end
         registrations.delete(registration)
@@ -80,32 +87,32 @@ module Glimmer
       alias unobserve unregister
 
       def unregister_dependents_with_observable(registration, dependent_observable)
-        thedependents = dependents_for(registration).select do |d_observer, d_observable, d_property|
-          d_observable == dependent_observable
+        thedependents = dependents_for(registration).select do |thedependent|
+          thedependent.observable == dependent_observable
         end
-        thedependents.each do |d_observer, d_observable, d_property|
-          d_observer.unregister(d_observable, d_property)
+        thedependents.each do |thedependent|
+          thedependent.unregister
         end
       end
 
       # cleans up all registrations in observables
       def unregister_all_observables
-        registrations.each do |observable, property|
-          unregister(observable, property)
+        registrations.each do |registration|
+          registration.unregister
         end
       end
       alias unobserve_all_observables unregister_all_observables
 
       # add dependent observer to unregister when unregistering observer
       def add_dependent(parent_to_dependent_hash)
-        observable, property = registration = parent_to_dependent_hash.keys.first
-        dependent_observer, dependent_observable, dependent_property = dependent = parent_to_dependent_hash.values.first
+        registration = parent_to_dependent_hash.keys.first
+        dependent = parent_to_dependent_hash.values.first
         dependents_for(registration) << dependent
       end
 
       def remove_dependent(parent_to_dependent_hash)
-        observable, property = registration = parent_to_dependent_hash.keys.first
-        dependent_observer, dependent_observable, dependent_property = dependent = parent_to_dependent_hash.values.first
+        registration = parent_to_dependent_hash.keys.first
+        dependent = parent_to_dependent_hash.values.first
         dependents_for(registration).delete(dependent)
       end
 

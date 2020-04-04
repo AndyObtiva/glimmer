@@ -1,7 +1,7 @@
 require 'coveralls'
 Coveralls.wear!
 require 'bundler'
-require 'puts_debuggerer'
+require 'puts_debuggerer' unless ENV['puts_debuggerer'] == 'false'
 require_relative '../lib/glimmer'
 # Glimmer.logger.level = Logger::DEBUG
 Glimmer.logger.level = Logger::UNKNOWN #disable logging (used case by case)
