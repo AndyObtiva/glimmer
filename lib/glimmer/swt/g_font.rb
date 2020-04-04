@@ -11,17 +11,13 @@ module Glimmer
       attr_accessor :display
 
       class << self
-        include Glimmer
-        
         def for(g_widget)
           @instances ||= {}
           unless @instances[g_widget]
             @instances[g_widget] = new(g_widget)
-            g_widget.add_content {
-              on_widget_disposed { |dispose_event|
-                @instances.delete(g_widget)
-              }
-            }
+            g_widget.on_widget_disposed do |dispose_event|
+              @instances.delete(g_widget)
+            end
           end
           @instances[g_widget]
         end

@@ -19,11 +19,9 @@ module Glimmer
         call(@model_binding.evaluate_property)
         model = model_binding.base_model
         observe(model, model_binding.property_name_expression)
-        add_contents(@table) {
-          on_widget_disposed { |dispose_event|
-            unregister_all_observables
-          }
-        }
+        @table.on_widget_disposed do |dispose_event|
+          unregister_all_observables
+        end
       end
       def call(model_collection=nil)
         if model_collection and model_collection.is_a?(Array)

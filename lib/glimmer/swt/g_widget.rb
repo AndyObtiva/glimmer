@@ -95,6 +95,20 @@ module Glimmer
           :items => Proc.new { |value| value.to_java :string},
           :visible => Proc.new { |value| !!value},
           :background => color_converter,
+          :background_image => Proc.new do |value|
+            if value.is_a?(String)
+              image_data = ImageData.new(value)
+              # TODO in the future, look into unregistering this listener when no longer needed
+              on_event_Resize do |resize_event|
+                new_image_data = image_data.scaledTo(widget.getSize.x, widget.getSize.y)
+                widget.getBackgroundImage&.dispose
+                widget.setBackgroundImage(Image.new(widget.getDisplay, new_image_data))
+              end
+              Image.new(widget.getDisplay, image_data)
+            else
+              value
+            end
+          end,
           :foreground => color_converter,
           :font => Proc.new do |value|
             if value.is_a?(Hash)

@@ -14,7 +14,7 @@
 - Support CustomWidget before_body and after_body hooks
 - Make Glimmer DSL block provide parent Glimmer object (not SWT widget) as block argument
 - Give widgets/custom-widgets ability to add content (properties/nested widgets) after construction via `#add_content` method
-
+- Update setBackgroundImage to take an image path string for convenience (instead of an SWT image)
 
 ## 0.4.8
 - Video widget

@@ -14,11 +14,9 @@ module Glimmer
         @property = property
         @translator = translator || proc {|value| value}
 
-        add_contents(@widget) { # TODO consider having custom widgets support on_widget_disposed event and any event on their body_root
-          on_widget_disposed { |dispose_event|
-            unregister_all_observables
-          }
-        }
+        @widget.on_widget_disposed do |dispose_event|
+          unregister_all_observables
+        end
       end
       def call(value)
         converted_value = translated_value = @translator.call(value)

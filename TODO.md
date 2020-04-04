@@ -4,7 +4,9 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Update setBackgroundImage to take an image path string for convenience (instead of an SWT image)
+- Scrap XML/XHTML support
+- Rename add_contents to add_content
+- Make gwidgets and custom widgets proxy method calls to wrapped widget
 
 ## Feature Suggestions
 - Image custom widget
@@ -44,11 +46,8 @@ Here is a list of tasks to do (please delete once done):
 - Support a Glimmer ruby gem generator for custom widgets to easily and quickly wrap and publish as a Ruby gem if desired (despite option of github convention consumption mentioned above)
 - Put Glimmer on Travis CI and test on many platforms and with many jruby versions
 - Get rid of dispose widget error upon quitting a Glimmer app
-- Make gwidgets and custom widgets proxy method calls to wrapped widget
 - Make observers 'method?' friendly
-- Rename add_contents to add_content
 - Compose ModelBinding out of another ModelBinding (nesting deeper)
-- Scrap XML/XHTML support
 - Fix issue requiring us to include Glimmer again in CustomShell to get SWT packages included (consider making SwtPackages a super_module) [perhaps fix super_module potential limitations around class variables and document them?]
 
 ## Documentation Tasks

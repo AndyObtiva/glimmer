@@ -351,6 +351,28 @@ describe Glimmer do
     expect(text_widget.getText).to eq( "Hello")
   end
 
+  it 'sets background image via image path' do
+    @target = shell {
+      @composite = composite {
+        background_image File.expand_path(File.join(__FILE__, '..', '..', '..', 'images', 'glimmer-hello-world.png'))
+      }
+    }
+
+    expect(@composite.widget.getBackgroundImage.is_a?(Image)).to eq(true)
+  end
+
+  it 'sets background image via image object' do
+    image_data = ImageData.new(File.expand_path(File.join(__FILE__, '..', '..', '..', 'images', 'glimmer-hello-world.png')))
+    image = Image.new(display.display, image_data)
+    @target = shell {
+      @composite = composite {
+        background_image image
+      }
+    }
+
+    expect(@composite.widget.getBackgroundImage).to eq(image)
+  end
+
   context 'focus' do
     it 'does not focus widget when not declaring focus true' do
       @target = shell {

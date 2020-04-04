@@ -30,11 +30,9 @@ module Glimmer
         property_type = :string if property_type.nil? or property_type == :undefined
         @widget = widget
         @property_type = property_type
-        add_contents(@widget) {
-          on_widget_disposed { |dispose_event|
-            unregister_all_observables
-          }
-        }
+        @widget.on_widget_disposed do |dispose_event|
+          unregister_all_observables
+        end
       end
       def call(value)
         @@property_type_updaters[@property_type].call(@widget, value) unless evaluate_property == value

@@ -19,11 +19,9 @@ module Glimmer
         call(@model_binding.evaluate_property)
         model = model_binding.base_model
         observe(model, model_binding.property_name_expression)
-        add_contents(@tree) {
-          on_widget_disposed { |dispose_event|
-            unregister_all_observables
-          }
-        }
+        @tree.on_widget_disposed do |dispose_event|
+          unregister_all_observables
+        end
       end
       def call(model_tree_root_node=nil)
         if model_tree_root_node and model_tree_root_node.respond_to?(@tree_properties[:children])

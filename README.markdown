@@ -858,6 +858,8 @@ shell {
 }.open
 ```
 
+**Gotcha:** SWT.Resize event needs to be hooked using **`on_event_Resize`** because `org.eclipse.swt.SWT` has 2 constants for resize: `RESIZE` and `Resize`, so it cannot infer the right one automatically from the underscored version `on_event_resize`
+
 ##### Alternative Syntax
 
 Instead of declaring a widget observer using `on_***` syntax inside a widget content block, you may also do so after the widget declaration by invoking directly on the widget object.
