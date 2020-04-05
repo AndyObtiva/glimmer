@@ -8,10 +8,6 @@ module Glimmer
   describe "Glimmer Layout" do
     include Glimmer
 
-    before do
-      dsl :swt
-    end
-
     after do
       @target.display.dispose if @target.display
     end

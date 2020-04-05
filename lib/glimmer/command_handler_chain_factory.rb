@@ -2,9 +2,7 @@ require File.dirname(__FILE__) + "/command_handler_chain_link"
 
 module Glimmer
   class CommandHandlerChainFactory
-    @@dsls = {}
-
-    def self.def_dsl(dsl, *command_handler_array)
+    def self.setup(*command_handler_array)
       @@last_chain_link = nil
       @@chain = nil
       command_handler_array.each do |command_handler|
@@ -14,15 +12,7 @@ module Glimmer
         @@last_chain_link = chain_link
         @@chain = chain_link unless @@chain
       end
-      @@dsls[dsl] = {
-        :last_chain_link => @@last_chain_link,
-        :chain => @@chain
-      }
-    end
-
-    def self.select_dsl(dsl)
-      @@last_chain_link = @@dsls[dsl][:last_chain_link]
-      @@chain = @@dsls[dsl][:chain]
+      @@chain
     end
 
     def self.chain

@@ -25,10 +25,6 @@ module Glimmer
       Object.send(:remove_const, :RedLabel) if Object.const_defined?(:RedLabel)
     end
 
-    before do
-      dsl :swt
-    end
-
     after do
       @target.display.dispose if @target.display
     end

@@ -29,10 +29,6 @@ module Glimmer
       Object.send(:remove_const, :RedCombo) if Object.const_defined?(:RedCombo)
     end
 
-    before do
-      dsl :swt
-    end
-
     after do
       @target.display.dispose if @target.display
     end

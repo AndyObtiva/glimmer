@@ -21,7 +21,6 @@ describe Glimmer do
     @rspec_display_method = method(:display)
     self.class.send(:undef_method, :display)
     @target = nil
-    dsl :swt
   end
 
 	after do

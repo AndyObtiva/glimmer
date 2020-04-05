@@ -10,10 +10,6 @@
 # 	include_package 'org.eclipse.swt.widgets'
 # 	include_package 'org.eclipse.swt.layout'
 #
-#   before do
-#     dsl :swt
-#   end
-#
 # 	after do
 #   	@target.display.dispose if @target.display
 # 	end

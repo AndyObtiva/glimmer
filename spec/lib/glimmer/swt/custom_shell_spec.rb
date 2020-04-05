@@ -17,16 +17,28 @@ module Glimmer
             }
           end
         end
+
+        class ::InvalidCustomShell
+          include Glimmer::SWT::CustomShell
+
+          def body
+            composite {
+              label {
+                text "It is always beer'o'clock!"
+              }
+            }
+          end
+        end
       end
 
       after(:all) do
         Object.send(:remove_const, :TimeShell) if Object.const_defined?(:TimeShell)
+        Object.send(:remove_const, :InvalidCustomShell) if Object.const_defined?(:InvalidCustomShell)
       end
 
       before do
         @rspec_display_method = method(:display)
         self.class.send(:undef_method, :display)
-        dsl :swt
       end
 
       after do
@@ -48,17 +60,6 @@ module Glimmer
 
       it 'rejects a non shell body root' do
         expect do
-          class ::TimeCompositeCustomShell
-            include Glimmer::SWT::CustomShell
-
-            def body
-              composite {
-                label {
-                  text "It is always beer'o'clock!"
-                }
-              }
-            end
-          end
           @target = time_composite_custom_shell
         end.to raise_error(RuntimeError)
       end

@@ -48,10 +48,6 @@ module Glimmer
 
     end
 
-    before do
-      dsl :swt
-    end
-
     after do
       @target.display.dispose if @target.display
     end

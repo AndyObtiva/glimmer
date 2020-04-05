@@ -10,7 +10,6 @@ module Glimmer
     before do
       @rspec_display_method = method(:display)
       self.class.send(:undef_method, :display)
-      dsl :swt
     end
 
     after do

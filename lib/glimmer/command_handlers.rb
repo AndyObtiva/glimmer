@@ -22,7 +22,7 @@ require_relative "swt/command_handlers/custom_widget_command_handler"
 # TODO move into SWT namespace
 module Glimmer
   # edit to add more command handlers and extend Glimmer
-  CommandHandlerChainFactory.def_dsl(:swt,
+  CommandHandlerChainFactory.setup(
     SWT::CommandHandlers::ObserveCommandHandler.new,
     SWT::CommandHandlers::DisplayCommandHandler.new,
     SWT::CommandHandlers::ShellCommandHandler.new,

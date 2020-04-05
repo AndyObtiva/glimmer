@@ -322,7 +322,7 @@ module Glimmer
       end
 
       def add_content(&block)
-        Glimmer.add_contents(self, &block)
+        add_contents(self, &block)
       end
 
       private

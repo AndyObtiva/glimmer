@@ -55,10 +55,6 @@ module Glimmer
       end
     end
 
-    before do
-      dsl :swt
-    end
-
     after do
       @target.display.dispose if @target && @target.display
     end

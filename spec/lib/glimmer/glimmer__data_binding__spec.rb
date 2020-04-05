@@ -114,10 +114,6 @@ module Glimmer
       end
     end
 
-    before do
-      dsl :swt
-    end
-
     after do
       @target.dispose if @target
     end

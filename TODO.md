@@ -5,8 +5,11 @@ Here is a list of tasks to do (please delete once done):
 ## Up Next
 
 - Scrap XML/XHTML support
+- Rename commands to keywords in Glimmer
+- Correct attribute/property naming (unify as attributes)
 - Rename add_contents to add_content
 - Document Glimmer.add_content and GWidget.add_content
+- Fix issue requiring us to include Glimmer again in CustomShell to get SWT packages included (consider making SwtPackages a super_module) [perhaps fix super_module potential limitations around class variables and document them?]
 - Make gwidgets and custom widgets proxy method calls to wrapped widget
 - Fix contactmanager sample sorting
 - Recapture all of readme's sample screenshots on Mac, Windows, and Linux (except the general widget listing for now)
@@ -20,6 +23,7 @@ Here is a list of tasks to do (please delete once done):
 - Scaffold a View/View-Model pair
 - Scaffold a custom widget
 - Scaffold a custom shell
+- Remove module.rb
 
 
 ## Feature Suggestions
@@ -67,7 +71,6 @@ bind(model, 'addresses').each { |address|
 - Get rid of dispose widget error upon quitting a Glimmer app
 - Make observers 'method?' friendly
 - Compose ModelBinding out of another ModelBinding (nesting deeper)
-- Fix issue requiring us to include Glimmer again in CustomShell to get SWT packages included (consider making SwtPackages a super_module) [perhaps fix super_module potential limitations around class variables and document them?]
 - add a `#shell` method to gwidget and custom widget classes to get gshell containing them (or custom shell [think about the implications of this one])
 - Change "def body" to body { } in custom widget/shell
 

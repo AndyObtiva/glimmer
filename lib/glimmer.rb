@@ -57,13 +57,6 @@ module Glimmer
     @@parent_stack.pop if parent.is_a?(Parent)
   end
 
-  def self.dsl(dsl)
-    @@parent_stack = []
-    CommandHandlerChainFactory.select_dsl(dsl)
-  end
-
-  #added for convenience
-
   def method_missing(method_symbol, *args, &block)
     Glimmer.method_missing(method_symbol, *args, &block)
   end
@@ -71,12 +64,6 @@ module Glimmer
   def add_contents(parent, &block)
     Glimmer.add_contents(parent, &block)
   end
-
-  def dsl(dsl)
-    Glimmer.dsl(dsl)
-  end
 end
 
-# Command handlers may rely on Glimmer, so this is put here to avoid an infinite loop.
-require File.dirname(__FILE__) + "/glimmer/xml_command_handlers" #TODO move into namespace
-require File.dirname(__FILE__) + "/glimmer/command_handlers" #TODO move into namespace
+require File.dirname(__FILE__) + "/glimmer/command_handlers"

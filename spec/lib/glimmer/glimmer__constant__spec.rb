@@ -6,10 +6,6 @@ module Glimmer
   describe "Glimmer Constant" do
     include Glimmer
 
-    before do
-      dsl :swt
-    end
-
     after do
       @target.display.dispose if @target.display
     end

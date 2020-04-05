@@ -17,8 +17,6 @@ module Glimmer
           @streets = ['389 Park Ave', '928 Huron Ave']
         end
       end
-
-      dsl :swt
     end
 
     after do

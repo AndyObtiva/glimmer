@@ -5,10 +5,6 @@ module Glimmer
     describe GWidget do
       include Glimmer
 
-      before do
-        dsl :swt
-      end
-
       after do
         @target.async_exec do
           @target.widget.dispose
