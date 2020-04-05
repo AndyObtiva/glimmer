@@ -18,28 +18,28 @@ module Glimmer
         def can_handle?(parent, command_symbol, *args, &block)
           # TODO refactor this long condition below
           (
-            (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) and
-            command_symbol.to_s == "bind" and
+            command_symbol.to_s == "bind" &&
+            (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) &&
             (
               (
-                (args.size == 2) and
+                (args.size == 2) &&
                   (
                     args[1].is_a?(Symbol) or
                     args[1].is_a?(String)
                   )
               ) or
                 (
-                  (args.size == 3) and
-                  (args[1].is_a?(Symbol) or args[1].is_a?(String)) and
+                  (args.size == 3) &&
+                  (args[1].is_a?(Symbol) or args[1].is_a?(String)) &&
                   (args[2].is_a?(Symbol) or args[2].is_a?(String) or args[2].is_a?(Hash))
                 ) or
                 (
-                  (args.size == 4) and
-                  (args[1].is_a?(Symbol) or args[1].is_a?(String)) and
-                  (args[2].is_a?(Symbol) or args[2].is_a?(String)) and
+                  (args.size == 4) &&
+                  (args[1].is_a?(Symbol) or args[1].is_a?(String)) &&
+                  (args[2].is_a?(Symbol) or args[2].is_a?(String)) &&
                   (args[3].is_a?(Hash))
                 )
-            ) and
+            ) &&
               block == nil
           )
         end

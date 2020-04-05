@@ -67,6 +67,7 @@ RSpec.configure do |config|
   config.after do
     Glimmer.parent_stack.clear
   end
+  # config.profile_examples = 10
 
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.

@@ -9,7 +9,7 @@ module Glimmer
     include Glimmer
 
     after do
-      @target.display.dispose if @target.display
+      @target.dispose if @target
     end
 
     describe 'FillLayout' do

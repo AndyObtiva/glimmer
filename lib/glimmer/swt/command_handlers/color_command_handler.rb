@@ -10,8 +10,8 @@ module Glimmer
         include_package 'org.eclipse.swt.widgets'
 
         def can_handle?(parent, command_symbol, *args, &block)
-          ['rgba', 'rgb'].include?(command_symbol.to_s) and
-          (3..5).include?(args.count)
+          ['rgba', 'rgb'].include?(command_symbol.to_s) &&
+            (3..5).include?(args.count)
         end
 
         def do_handle(parent, command_symbol, *args, &block)

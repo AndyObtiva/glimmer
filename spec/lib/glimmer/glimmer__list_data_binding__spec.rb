@@ -46,7 +46,7 @@ module Glimmer
     end
 
     after do
-      @target.display.dispose if @target.display
+      @target.dispose if @target
     end
 
     it "tests single selection property" do

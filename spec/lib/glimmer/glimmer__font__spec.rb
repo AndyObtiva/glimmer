@@ -13,7 +13,7 @@ module Glimmer
     end
 
     after do
-      @target.display.dispose if @target.display
+      @target.dispose if @target
       self.class.send(:define_method, :display, @rspec_display_method)
     end
 

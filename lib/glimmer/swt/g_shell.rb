@@ -52,6 +52,7 @@ module Glimmer
             # notify_observers('visible')
           # end
           start_event_loop
+          @display.dispose
         end
       end
       alias show open
@@ -82,7 +83,6 @@ module Glimmer
         until @widget.isDisposed
           @display.sleep unless @display.readAndDispatch
         end
-        @display.dispose
       end
 
       def add_observer(observer, property_name)

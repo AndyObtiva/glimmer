@@ -13,15 +13,15 @@ module Glimmer
         include_package 'org.eclipse.swt.widgets'
 
         def can_handle?(parent, command_symbol, *args, &block)
+          Glimmer.logger.debug "keyword starts with on_: #{command_symbol.to_s.start_with?('on_')}"
+          return unless command_symbol.to_s.start_with?('on_')
+          Glimmer.logger.debug "block exists?: #{!block.nil?}"
+          return unless !block.nil?
           widget_parentage = (parent.is_a?(GWidget) || parent.is_a?(CustomWidget))
           Glimmer.logger.debug "parent is a widget: #{widget_parentage}"
           return unless widget_parentage
-          Glimmer.logger.debug "keyword starts with on_: #{command_symbol.to_s.start_with?('on_')}"
-          return unless command_symbol.to_s.start_with?('on_')
           Glimmer.logger.debug "args are empty?: #{args.empty?}"
           return unless args.empty?
-          Glimmer.logger.debug "block exists?: #{!block.nil?}"
-          return unless !block.nil?
           result = parent.can_handle_observation_request?(command_symbol.to_s)
           Glimmer.logger.debug "can add listener? #{result}"
           result

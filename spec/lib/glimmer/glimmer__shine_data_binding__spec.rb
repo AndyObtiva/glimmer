@@ -11,7 +11,7 @@
 # 	include_package 'org.eclipse.swt.layout'
 #
 # 	after do
-#   	@target.display.dispose if @target.display
+#   	@target.dispose if @target
 # 	end
 #
 #   class Person

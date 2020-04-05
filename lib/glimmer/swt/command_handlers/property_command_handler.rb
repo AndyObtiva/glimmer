@@ -7,10 +7,10 @@ module Glimmer
         include CommandHandler
 
         def can_handle?(parent, command_symbol, *args, &block)
-          parent.respond_to?(:set_attribute) and
-            parent.respond_to?(:has_attribute?) and
-            args.size > 0 and
-            block == nil and
+          block == nil &&
+            args.size > 0 &&
+            parent.respond_to?(:set_attribute) &&
+            parent.respond_to?(:has_attribute?) &&
             parent.has_attribute?(command_symbol, *args)
         end
 

@@ -1193,7 +1193,7 @@ shell {
 
 ### Custom Shells
 
-Custom shells are a kind of custom widgets that wraps around Glimmer shells only as the body root. They can be self-contained application shells that may be opened and hidden/closed independently of the main app.
+Custom shells are a kind of custom widgets that have shells only as the body root. They can be self-contained applications that may be opened and hidden/closed independently of the main app.
 
 They may also be chained in a wizard fashion.
 
@@ -1203,7 +1203,7 @@ Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 class WizardStep
   include Glimmer::SWT::CustomShell
 
-  option :number, :count
+  options :number, :step_count
 
   before_body do
     @title = "Step #{number}"
@@ -1211,13 +1211,14 @@ class WizardStep
 
   def body
     shell {
-      text @title
+      text "Wizard - #{@title}"
+      minimum_size 200, 100
       fill_layout :vertical
-      label {
+      label(:center) {
         text @title
-        font height: 40
+        font height: 30
       }
-      if number < options[:count]
+      if number < step_count
         button {
           text "Go To Next Step"
           on_widget_selected {
@@ -1234,7 +1235,7 @@ shell { |app_shell|
   minimum_size 200, 100
   @current_step_number = 1
   @wizard_steps = 5.times.map { |n|
-    wizard_step(number: n+1, count: 5) {
+    wizard_step(number: n+1, step_count: 5) {
       on_event_hide {
         if @current_step_number < 5
           @current_step_number += 1

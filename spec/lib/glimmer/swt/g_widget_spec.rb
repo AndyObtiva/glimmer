@@ -5,13 +5,6 @@ module Glimmer
     describe GWidget do
       include Glimmer
 
-      after do
-        @target.async_exec do
-          @target.widget.dispose
-        end
-        @target.start_event_loop
-      end
-
       it 'adds listener' do
         @target = shell {
           composite {
@@ -50,37 +43,31 @@ module Glimmer
         expect(@text.widget.getText).to eq("Howdy")
       end
 
-      it 'asyncronously executes UI code' do
-        @target = shell {
-          @text = text {
-            text "text1"
+      context 'UI code execution' do
+        after do
+          if @target
+            @target.async_exec do
+              @target.dispose
+            end
+            @target.start_event_loop
+          end
+        end
+
+        it "syncronously and asynchronously executes UI code" do
+          @target = shell {
+            @text = text {
+              text "text1"
+            }
           }
-        }
 
-        @target.async_exec do
-          @text.widget.setText("text2")
-        end
+          @target.async_exec do
+            expect(@text.widget.getText).to eq("text2")
+          end
 
-        expect(@text.widget.getText).to_not eq("text2")
-
-        @target.async_exec do
-          expect(@text.widget.getText).to eq("text2")
-        end
-      end
-
-      it "syncronously executes UI code" do
-        @target = shell {
-          @text = text {
-            text "text1"
-          }
-        }
-
-        @target.async_exec do
-          expect(@text.widget.getText).to eq("text2")
-        end
-
-        @target.sync_exec do
-          @text.widget.setText("text2")
+          # This takes prioerity over async_exec
+          @target.sync_exec do
+            @text.widget.setText("text2")
+          end
         end
       end
     end

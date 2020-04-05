@@ -12,8 +12,8 @@ module Glimmer
         include_package 'org.eclipse.swt.widgets'
 
         def can_handle?(parent, command_symbol, *args, &block)
-          initial_condition = (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) &&
-            command_symbol.to_s == "tab_item"
+          initial_condition = command_symbol.to_s == "tab_item" &&
+            (parent.is_a?(GWidget) || parent.is_a?(CustomWidget))
           if initial_condition
             if parent.widget.is_a?(TabFolder)
               return true

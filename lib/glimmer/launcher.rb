@@ -44,7 +44,7 @@ module Glimmer
           debug_option = '--debug '
           puts "[DEBUG MODE]"
         end
-        system "jruby -w #{debug_option}#{jruby_swt_options} -r #{glimmer_lib} -S #{application}"
+        system "jruby #{debug_option}#{jruby_swt_options} -r #{glimmer_lib} -S #{application}"
       end
     end
 

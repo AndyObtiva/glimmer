@@ -56,7 +56,7 @@ module Glimmer
     end
 
     after do
-      @target.display.dispose if @target && @target.display
+      @target.dispose if @target
     end
 
     it "data binds text widget to a string property" do

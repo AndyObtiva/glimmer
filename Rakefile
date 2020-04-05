@@ -38,7 +38,8 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = FileList['spec/**/*_spec.rb']
   # spec.ruby_opts = ["-Xcli.debug=true --debug #{Glimmer::Launcher.jruby_swt_options}"]
   # NOTE: Disabled debug flags because they were giving noisy output on raise of an error
-  spec.ruby_opts = [Glimmer::Launcher.jruby_swt_options]
+  # spec.ruby_opts = ["--profile.graph #{Glimmer::Launcher.jruby_swt_options}"]
+  spec.ruby_opts = ["#{Glimmer::Launcher.jruby_swt_options}"]
 end
 
 task :default => :spec

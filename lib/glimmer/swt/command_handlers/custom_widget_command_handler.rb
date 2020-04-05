@@ -11,7 +11,7 @@ module Glimmer
 
         def can_handle?(parent, command_symbol, *args, &block)
           custom_widget_class = CustomWidget.for(command_symbol)
-          custom_widget_class and
+          custom_widget_class &&
             (parent.is_a?(GWidget) || parent.is_a?(CustomWidget) || custom_widget_class.ancestors.include?(CustomShell))
         end
 

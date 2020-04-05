@@ -21,9 +21,9 @@ module Glimmer
         include_package 'org.eclipse.swt.widgets'
 
         def can_handle?(parent, command_symbol, *args, &block)
-          (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) and
-          args.size == 1 and
-          args[0].is_a?(ModelBinding)
+          args.size == 1 &&
+          args[0].is_a?(ModelBinding) &&
+          (parent.is_a?(GWidget) || parent.is_a?(CustomWidget))
         end
 
         def do_handle(parent, command_symbol, *args, &block)

@@ -14,10 +14,10 @@ module Glimmer
         include_package 'org.eclipse.swt.widgets'
 
         def can_handle?(parent, command_symbol, *args, &block)
-          (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) and
-          parent.widget.is_a?(Tree) and
-          command_symbol.to_s == "tree_properties" and
-          block == nil
+          command_symbol.to_s == "tree_properties" &&
+            block == nil &&
+            (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) &&
+            parent.widget.is_a?(Tree)
         end
 
         def do_handle(parent, command_symbol, *args, &block)

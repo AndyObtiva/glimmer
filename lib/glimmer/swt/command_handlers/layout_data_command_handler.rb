@@ -13,8 +13,8 @@ module Glimmer
         include_package 'org.eclipse.swt.layout'
 
         def can_handle?(parent, command_symbol, *args, &block)
-          (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) and
-          command_symbol.to_s == 'layout_data'
+          command_symbol.to_s == 'layout_data' &&
+            (parent.is_a?(GWidget) || parent.is_a?(CustomWidget))
         end
 
         def do_handle(parent, command_symbol, *args, &block)

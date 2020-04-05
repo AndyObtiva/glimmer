@@ -7,7 +7,7 @@ module Glimmer
     include Glimmer
 
     after do
-      @target.display.dispose if @target.display
+      @target.dispose if @target
     end
 
     it "test shell with default layout and composite" do

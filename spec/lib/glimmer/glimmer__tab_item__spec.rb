@@ -25,7 +25,7 @@ describe "Glimmer Tab Item" do
   end
 
   after do
-    @target.display.dispose if @target.display
+    @target.dispose if @target
   end
 
   it "tests tab item composite with default layout" do

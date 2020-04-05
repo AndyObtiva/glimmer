@@ -7,6 +7,7 @@ Here is a list of tasks to do (please delete once done):
 - Rename commands to keywords in Glimmer
 - Correct attribute/property naming (unify as attributes)
 - Fix issue requiring us to include Glimmer again in CustomShell to get SWT packages included (consider making SwtPackages a super_module) [perhaps fix super_module potential limitations around class variables and document them?]
+- Change "def body" to body { } in custom widget/shell
 - Make gwidgets and custom widgets proxy method calls to wrapped widget
 - Fix contactmanager sample sorting
 - Recapture all of readme's sample screenshots on Mac, Windows, and Linux (except the general widget listing for now)
@@ -22,6 +23,7 @@ Here is a list of tasks to do (please delete once done):
 - Remove module.rb
 - Upgrade jruby
 - Upgrade SWT
+- Proxy java/jruby options to launcher
 
 
 ## Feature Suggestions
@@ -70,7 +72,6 @@ bind(model, 'addresses').each { |address|
 - Make observers 'method?' friendly
 - Compose ModelBinding out of another ModelBinding (nesting deeper)
 - add a `#shell` method to gwidget and custom widget classes to get gshell containing them (or custom shell [think about the implications of this one])
-- Change "def body" to body { } in custom widget/shell
 
 ## Documentation Tasks
 - Document G*** classes like GWidget and GShell

@@ -41,6 +41,6 @@ module Glimmer
     SWT::CommandHandlers::ColorCommandHandler.new,
     SWT::CommandHandlers::PropertyCommandHandler.new,
     SWT::CommandHandlers::WidgetCommandHandler.new,
-    SWT::CommandHandlers::CustomWidgetCommandHandler.new
+    SWT::CommandHandlers::CustomWidgetCommandHandler.new,
   )
 end

@@ -13,7 +13,6 @@ require_relative "glimmer/parent"
 require_relative "glimmer/swt_packages" #TODO move into SWT namespace
 require_relative "glimmer/swt/custom_widget"
 require_relative 'glimmer/swt/video' # TODO offload to a custom widget directory
-require_relative "glimmer/ext/module"
 
 module Glimmer
   REGEX_METHODS_EXCLUDED = /^(to_|\[)/
@@ -45,6 +44,7 @@ module Glimmer
 
     alias method_missing_without_glimmer method_missing
     def method_missing(method_symbol, *args, &block)
+      puts method_symbol
       if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
         return method_missing_without_glimmer(method_symbol, *args, &block)
       end

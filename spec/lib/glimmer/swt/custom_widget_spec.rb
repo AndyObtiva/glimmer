@@ -7,7 +7,7 @@ module Glimmer
 
       before(:all) do
         class ::RedLabel
-          include CustomWidget
+          include Glimmer::SWT::CustomWidget
           def body
             label(swt_style) {
               background :red
@@ -16,7 +16,7 @@ module Glimmer
         end
 
         class ::ColoredLabel
-          include CustomWidget
+          include Glimmer::SWT::CustomWidget
 
           def body
             label(swt_style) {
@@ -26,7 +26,7 @@ module Glimmer
         end
 
         class ::MultiColorLabel
-          include CustomWidget
+          include Glimmer::SWT::CustomWidget
 
           options :color1, :color2
           options "font1", "font2"
@@ -60,7 +60,7 @@ module Glimmer
 
         module Red
           class Composite
-            include CustomWidget
+            include Glimmer::SWT::CustomWidget
 
             def body
               composite(swt_style) {
@@ -70,7 +70,7 @@ module Glimmer
           end
 
           class Label
-            include CustomWidget
+            include Glimmer::SWT::CustomWidget
 
             def body
               label(swt_style) {
@@ -81,7 +81,7 @@ module Glimmer
         end
 
         class Sandwich
-          include CustomWidget
+          include Glimmer::SWT::CustomWidget
 
           def body
             composite(swt_style) {
@@ -99,7 +99,7 @@ module Glimmer
         end
 
         class ::BeforeAndAfter
-          include CustomWidget
+          include Glimmer::SWT::CustomWidget
 
           before_body do
             @background = :red
@@ -133,10 +133,10 @@ module Glimmer
         Object.send(:remove_const, :RedLabel) if Object.const_defined?(:RedLabel)
         Object.send(:remove_const, :ColoredLabel) if Object.const_defined?(:ColoredLabel)
         Object.send(:remove_const, :MultiColorLabel) if Object.const_defined?(:MultiColorLabel)
-        Glimmer::Red.send(:remove_const, :Composite) if Glimmer::Red.const_defined?(:Composite)
-        Glimmer::Red.send(:remove_const, :Label) if Glimmer::Red.const_defined?(:Label)
-        Glimmer.send(:remove_const, :Red) if Glimmer.const_defined?(:Red)
-        Glimmer.send(:remove_const, :Sandwich) if Glimmer.const_defined?(:Sandwich)
+        Glimmer::SWT::Red.send(:remove_const, :Composite) if Glimmer::SWT::Red.const_defined?(:Composite)
+        Glimmer::SWT::Red.send(:remove_const, :Label) if Glimmer::SWT::Red.const_defined?(:Label)
+        Glimmer::SWT.send(:remove_const, :Red) if Glimmer::SWT.const_defined?(:Red)
+        Glimmer::SWT.send(:remove_const, :Sandwich) if Glimmer::SWT.const_defined?(:Sandwich)
       end
 
       before do
@@ -145,7 +145,7 @@ module Glimmer
       end
 
       after do
-        @target.display.dispose if @target.display
+        @target.dispose if @target
         self.class.send(:define_method, :display, @rspec_display_method)
       end
 
@@ -181,7 +181,7 @@ module Glimmer
 
       it "builds custom widget with namespace" do
         @target = shell {
-          @red_label = glimmer__red__label {
+          @red_label = glimmer__swt__red__label {
             text 'Red Label'
           }
         }
@@ -193,7 +193,7 @@ module Glimmer
 
       it "builds custom widget with namespace and content" do
         @target = shell {
-          @sandwich = glimmer__sandwich {
+          @sandwich = glimmer__swt__sandwich {
             label {
               text 'SANDWICH CONTENT'
             }
@@ -210,9 +210,9 @@ module Glimmer
 
       it "builds nested custom widgets" do
         @target = shell {
-          @red_composite = glimmer__red__composite {
+          @red_composite = glimmer__swt__red__composite {
             row_layout :vertical
-            @red_label = glimmer__red__label {
+            @red_label = glimmer__swt__red__label {
               text 'Red Label'
             }
           }
@@ -314,7 +314,7 @@ module Glimmer
 
       it 'adds content' do
         @target = shell {
-          @red_composite = red__composite
+          @red_composite = glimmer__swt__red__composite
         }
 
         @red_composite.content {
@@ -329,31 +329,15 @@ module Glimmer
 
       context 'UI code execution' do
         after do
-          @target.async_exec do
-            @target.widget.dispose
-          end
-          @target.start_event_loop
-        end
-
-        it 'asyncronously executes UI code' do
-          @target = shell {
-            @red_label = red_label {
-              text "text1"
-            }
-          }
-
-          @red_label.async_exec do
-            @red_label.widget.setText("text2")
-          end
-
-          expect(@red_label.widget.getText).to_not eq("text2")
-
-          @red_label.async_exec do
-            expect(@red_label.widget.getText).to eq("text2")
+          if @target
+            @target.async_exec do
+              @target.dispose
+            end
+            @target.start_event_loop
           end
         end
 
-        it "syncronously executes UI code" do
+        it "syncronously and asynchronously executes UI code" do
           @target = shell {
             @red_label = red_label {
               text "text1"
@@ -364,6 +348,7 @@ module Glimmer
             expect(@red_label.widget.getText).to eq("text2")
           end
 
+          # This takes prioerity over async_exec
           @red_label.sync_exec do
             @red_label.widget.setText("text2")
           end

@@ -17,7 +17,13 @@ module Glimmer
               namespace.camelcase(:upper)
             end
           custom_widget_class = namespaces.reduce(Object) do |result, namespace|
-            result.const_get(namespace.to_sym)
+            namespace = namespace.to_sym
+            if !result.constants.include?(namespace)
+              namespace = result.constants.detect {|c|
+                c.to_s.upcase == namespace.to_s.upcase
+              } || namespace
+            end
+            result.const_get(namespace)
           end
           custom_widget_class if custom_widget_class.ancestors.include?(Glimmer::SWT::CustomWidget)
         rescue => e
@@ -184,6 +190,10 @@ module Glimmer
         else
           @content
         end
+      end
+
+      def dispose
+        body_root.dispose
       end
 
       private

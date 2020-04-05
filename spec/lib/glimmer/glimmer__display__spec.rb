@@ -73,6 +73,7 @@ module Glimmer
           expect(@text.widget.getText).to eq("text2")
         end
 
+        # This takes prioerity over async_exec
         @target.sync_exec do
           @text.widget.setText("text2")
         end
