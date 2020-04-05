@@ -6,23 +6,42 @@ Here is a list of tasks to do (please delete once done):
 
 - Scrap XML/XHTML support
 - Rename add_contents to add_content
+- Document Glimmer.add_content and GWidget.add_content
 - Make gwidgets and custom widgets proxy method calls to wrapped widget
+- Fix contactmanager sample sorting
+- Recapture all of readme's sample screenshots on Mac, Windows, and Linux (except the general widget listing for now)
+- Document custom shell widget
+- Document Glimmer::Launcher
+- Make Glimmer::Launcher automatically figure out dev mode when run as bin/glimmer locally
+- Alias glimmer/girb command --dev mode as -d
+- Provide girb option to run without including Glimmer. Useful when testing an application that is not a "hello, world!" sort of example
+- Image custom widget similar to video, and supporting gif
+- Scaffold a Glimmer app: provide a standard structure for building a Glimmer app (models, views, and assets [images, videos, sounds])
+- Scaffold a View/View-Model pair
+- Scaffold a custom widget
+- Scaffold a custom shell
+
 
 ## Feature Suggestions
-- Image custom widget
-- Glimmer Application: provide a standard structure for building a Glimmer app (models, views, and assets [images, videos, sounds])
-- Scaffold a Glimmer app
 - Glimmer Wizard: provide a standard structure for building a Glimmer wizard (multi-step/multi-screen process)
 - bind_collection: an iterator that enables spawning widgets based on a variable collection (e.g. `bind_collection('user.addresses') { |address| address_widget {...} }` spawns 3 `AddressWidget`s if `user.addresses` is set with 3 addresses; and replaces with 2 `AddressWidget`s if `user.addresses` is reset with 2 addresses only). Needs further thought on naming and functionality.
+Another idea:
+bind(model, 'addresses').each { |address|
+  label {
+    bind(address, :street)
+  }
+  label {
+    bind(address, :zip)    
+  }
+}
 - Automatic relayout of "glimmer components" when disposing one or as an option
 - Consider easy rerendering support for Glimmer upon processing events
 - Support re-rendering when updating a layout file for development.
 - Provide friendly error messages for all failures
-- Provide girb option to run without including Glimmer. Useful when testing an application that is not a "hello, world!" sort of example
 
 ## Technical Tasks
 
-- Support Tree databinding (bidirectional)
+- Support Tree databinding in the other direction (from tree update to model)
 - Figure out what is missing from table databinding (bidirectional?)
 - Explore rewriting shine with Ruby 2 support
 - Consider need for a startup progress dialog (with Glimmer branding)
@@ -54,14 +73,12 @@ Here is a list of tasks to do (please delete once done):
 
 ## Documentation Tasks
 - Document G*** classes like GWidget and GShell
-- Document Glimmer.add_contents
 - Document custom widget custom properties/observers
 - Document how to build 3rd party library custom widgets and custom shells for distribution and consumption
 - Explain MVC and MVP
 - Double down on using the wording property vs attribute to minimize confusion
 - Document async_exec and sync_exec
 - Document example of using an external Java SWT custom widget by importing its java package directly to do the trick
-- Document Glimmer::Launcher
 - Make a video documenting how to build Tic Tac Toe (no AI) step by step
 - Basic RDoc documentation
 - Document on_ SWT event listeners for events declared on SWT constant like show and hide
