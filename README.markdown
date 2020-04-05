@@ -990,9 +990,13 @@ module Red
   class Composite
     include Glimmer::SWT::CustomWidget
 
+    before_body do
+      @color = :red
+    end
+
     def body
       composite(swt_style) {
-        background :red
+        background @color
       }
     end
   end
@@ -1011,7 +1015,7 @@ shell {
 }.open
 ```
 
-Notice how `Red::Composite` became `red__composite` with double-underscore, which is how Glimmer Custom Widgets signify namespaces by convention.
+Notice how `Red::Composite` became `red__composite` with double-underscore, which is how Glimmer Custom Widgets signify namespaces by convention. Additionally, `before_body` hook was utilized to set a `@color` variable and use inside the `body`.
 
 Custom Widgets have the following attributes (attribute readers) available to call from inside the `#body` method:
 - `#parent`: Glimmer object parenting custom widget
@@ -1066,6 +1070,10 @@ Notice how `:no_focus` was the `swt_style` value, followed by the `options` hash
 The following additional attributes may be called from outside a custom widget in addition to the attributes mentioned above, assuming it's been captured in a variable:
 - `#body_root`: top-most root Glimmer widget returned in `#body` method
 - `#widget`: actual SWT widget for `body_root`
+
+Last but not least, these are the available hooks:
+- `before_body`: takes a block that executes in the custom widget instance scope before calling `body`. Useful for initializing variables to later use in `body`
+- `after_body`: takes a block that executes in the custom widget instance scope after calling `body`. Useful for setting up observers on widgets built in `body` (set in instance variables) and linking to other shells.
 
 ### Miscellaneous
 
@@ -1140,6 +1148,70 @@ shell {
     HTML
     on_completed { # on load of the page execute this JavaScript
       @browser.widget.execute("alert('Hello, World!');")
+    }
+  }
+}.open
+```
+
+### Custom Shells
+
+Custom shells are a kind of custom widgets that wraps around Glimmer shells only as the body root. They can be self-contained application shells that may be opened and hidden/closed independently of the main app.
+
+They may also be chained in a wizard fashion.
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+class WizardStep
+  include Glimmer::SWT::CustomShell
+
+  option :number, :count
+
+  before_body do
+    @title = "Step #{number}"
+  end
+
+  def body
+    shell {
+      text @title
+      fill_layout :vertical
+      label {
+        text @title
+        font height: 40
+      }
+      if number < options[:count]
+        button {
+          text "Go To Next Step"
+          on_widget_selected {
+            body_root.hide
+          }
+        }
+      end
+    }
+  end
+end
+
+shell { |app_shell|
+  text "Wizard"
+  minimum_size 200, 100
+  @current_step_number = 1
+  @wizard_steps = 5.times.map { |n|
+    wizard_step(number: n+1, count: 5) {
+      on_event_hide {
+        if @current_step_number < 5
+          @current_step_number += 1
+          app_shell.hide
+          @wizard_steps[@current_step_number - 1].open
+        end
+      }      
+    }
+  }
+  button {
+    text "Start"
+    font height: 40
+    on_widget_selected {
+      app_shell.hide
+      @wizard_steps[@current_step_number - 1].open
     }
   }
 }.open

@@ -50,6 +50,7 @@ Here is a list of tasks to do (please delete once done):
 - Compose ModelBinding out of another ModelBinding (nesting deeper)
 - Fix issue requiring us to include Glimmer again in CustomShell to get SWT packages included (consider making SwtPackages a super_module) [perhaps fix super_module potential limitations around class variables and document them?]
 - add a `#shell` method to gwidget and custom widget classes to get gshell containing them (or custom shell [think about the implications of this one])
+- Change "def body" to body { } in custom widget/shell
 
 ## Documentation Tasks
 - Document G*** classes like GWidget and GShell
