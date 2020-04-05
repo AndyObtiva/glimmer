@@ -51,7 +51,7 @@ describe "Glimmer Tab Item" do
   it "tests tab item composite with invalid parent (not a tab folder)" do
     @target = shell
     expect {
-      @target.add_content {
+      @target.content {
         @invalid_parent = composite {
           @tab_item_composite = tab_item {
             text "Tab 1"

@@ -36,7 +36,7 @@ module Glimmer
           minimum_size 50, 20
         }
 
-        @target.add_content {
+        @target.content {
           minimum_size 300, 200
           composite {
             @text = text {

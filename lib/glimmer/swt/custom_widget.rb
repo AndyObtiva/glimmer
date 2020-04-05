@@ -70,7 +70,7 @@ module Glimmer
         end
       end
 
-      attr_reader :body_root, :widget, :parent, :swt_style, :options, :content
+      attr_reader :body_root, :widget, :parent, :swt_style, :options
 
       def initialize(parent, *swt_constants, options, &content)
         @parent = parent
@@ -178,8 +178,12 @@ module Glimmer
         GDisplay.instance.sync_exec(&block)
       end
 
-      def add_content(&block)
-        body_root.add_content(&block)
+      def content(&block)
+        if block_given?
+          body_root.content(&block)
+        else
+          @content
+        end
       end
 
       private

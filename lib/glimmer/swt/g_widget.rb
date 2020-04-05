@@ -313,7 +313,7 @@ module Glimmer
         end
       end
 
-      def add_content(&block)
+      def content(&block)
         Glimmer.add_content(self, &block)
       end
 

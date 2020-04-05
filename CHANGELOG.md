@@ -3,7 +3,7 @@
 ## 0.5.0
 
 - Scraped XML and multi-DSL support
-- Renamed add_contents to add_content
+- Renamed `#add_contents` to `#content`
 
 ## 0.4.9
 - Added `org.eclipse.swt.custom` to default list of Glimmer SWT packages
@@ -18,7 +18,7 @@
 - Support Glimmer DSL observe keyword and make it return observer registration object to unregister later on (unobserve)
 - Support CustomWidget before_body and after_body hooks
 - Make Glimmer DSL block provide parent Glimmer object (not SWT widget) as block argument
-- Give widgets/custom-widgets ability to add content (properties/nested widgets) after construction via `#add_content` method
+- Give widgets/custom-widgets ability to add content (properties/nested widgets) after construction via `#content` method
 - Update setBackgroundImage to take an image path string for convenience (instead of an SWT image)
 
 ## 0.4.8

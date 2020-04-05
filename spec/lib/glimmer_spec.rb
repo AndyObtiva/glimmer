@@ -330,7 +330,7 @@ describe Glimmer do
   end
 
 
-  it "tests add_content" do
+  it "adds content to existing widget (shell)" do
     @target = shell {
     }
 

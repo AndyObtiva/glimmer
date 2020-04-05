@@ -317,7 +317,7 @@ module Glimmer
           @red_composite = red__composite
         }
 
-        @red_composite.add_content {
+        @red_composite.content {
           @text = text {
             text "Howdy"
           }

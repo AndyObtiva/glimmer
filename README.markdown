@@ -255,9 +255,9 @@ shell {
 }.open
 ```
 
-#### `#add_content`
+#### `#content`
 
-Glimmer allows re-opening any widget and adding properties or extra content after it has been constructed already by using the `#add_content` method.
+Glimmer allows re-opening any widget and adding properties or extra content after it has been constructed already by using the `#content` method.
 
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
@@ -269,13 +269,13 @@ Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
     text "Hello,"
   }
 }
-@shell.add_content {
+@shell.content {
   minimum_size 130, 130
   label {
     text "World!"
   }
 }
-@label1.add_content {
+@label1.content {
   foreground :red
 }
 @shell.open
