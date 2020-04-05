@@ -7,7 +7,6 @@ module Glimmer
     module CommandHandlers
       class ComboSelectionDataBindingCommandHandler
         include CommandHandler
-        include Glimmer
 
         include_package 'org.eclipse.swt.widgets'
 
@@ -32,10 +31,8 @@ module Glimmer
           widget_binding.call(model_binding.evaluate_property)
           widget_binding.observe(model, model_binding.property_name_expression)
 
-          add_contents(parent) {
-            on_widget_selected {
-              model_binding.call(widget_binding.evaluate_property)
-            }
+          parent.on_widget_selected {
+            model_binding.call(widget_binding.evaluate_property)
           }
         end
       end

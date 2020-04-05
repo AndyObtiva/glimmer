@@ -37,10 +37,8 @@ module Glimmer
           #TODO check if nested data binding works for list widget and other widgets that need custom data binding
           list_selection_binding.observe(model, model_binding.property_name_expression)
 
-          add_contents(parent) {
-            on_widget_selected {
-              model_binding.call(list_selection_binding.evaluate_property)
-            }
+          parent.on_widget_selected {
+            model_binding.call(list_selection_binding.evaluate_property)
           }
         end
       end

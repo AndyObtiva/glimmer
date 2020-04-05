@@ -125,40 +125,32 @@ module Glimmer
         @widget_property_listener_installers ||= {
           Java::OrgEclipseSwtWidgets::Control => {
             :focus => Proc.new do |observer|
-              add_contents(self) {
-                on_focus_gained { |focus_event|
-                  observer.call(true)
-                }
-                on_focus_lost { |focus_event|
-                  observer.call(false)
-                }
+              on_focus_gained { |focus_event|
+                observer.call(true)
+              }
+              on_focus_lost { |focus_event|
+                observer.call(false)
               }
             end,
           },
           Java::OrgEclipseSwtWidgets::Text => {
             :text => Proc.new do |observer|
-              add_contents(self) {
-                on_modify_text { |modify_event|
-                  observer.call(widget.getText)
-                }
+              on_modify_text { |modify_event|
+                observer.call(widget.getText)
               }
             end,
           },
           Java::OrgEclipseSwtWidgets::Button => {
             :selection => Proc.new do |observer|
-              add_contents(self) {
-                on_widget_selected { |selection_event|
-                  observer.call(widget.getSelection)
-                }
+              on_widget_selected { |selection_event|
+                observer.call(widget.getSelection)
               }
             end
           },
           Java::OrgEclipseSwtWidgets::Spinner => {
             :selection => Proc.new do |observer|
-              add_contents(self) {
-                on_widget_selected { |selection_event|
-                  observer.call(widget.getSelection)
-                }
+              on_widget_selected { |selection_event|
+                observer.call(widget.getSelection)
               }
             end
           }
@@ -322,7 +314,7 @@ module Glimmer
       end
 
       def add_content(&block)
-        add_contents(self, &block)
+        Glimmer.add_content(self, &block)
       end
 
       private

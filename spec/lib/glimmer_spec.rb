@@ -330,11 +330,11 @@ describe Glimmer do
   end
 
 
-  it "tests add_contents" do
+  it "tests add_content" do
     @target = shell {
     }
 
-    add_contents(@target) {
+    add_content(@target) {
       composite {
         text(:password) {
           text "Hello"

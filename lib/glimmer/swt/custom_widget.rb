@@ -36,7 +36,7 @@ module Glimmer
           if new_options.empty?
             @options ||= {} # maps options to defaults
           else
-            new_options = new_options.reduce({}) {|new_options, new_option| new_options.merge(new_option => nil)}
+            new_options = new_options.reduce({}) {|new_options_hash, new_option| new_options_hash.merge(new_option => nil)}
             @options = options.merge(new_options)
             def_option_attr_readers(new_options)
           end

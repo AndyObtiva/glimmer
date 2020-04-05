@@ -32,23 +32,24 @@ module Glimmer
         "#{jruby_os_specific_options} -J-classpath \"#{swt_jar_file}\""
       end
 
-      def launch(application, dev_mode = false, debug_mode = false)
+      def launch(application, debug_mode = false)
         glimmer_lib = GLIMMER_LIB_GEM
-        if dev_mode
+        glimmer_gem_listing = `jgem list #{GLIMMER_LIB_GEM}`
+        if !glimmer_gem_listing.include?(GLIMMER_LIB_GEM) && File.exists?(GLIMMER_LIB_LOCAL)
           glimmer_lib = GLIMMER_LIB_LOCAL
-          puts "[DEVELOPMENT MODE] (#{glimmer_lib})"
+          puts "[DEVELOPMENT MODE] (detected #{glimmer_lib})"
         end
         debug_option = ''
         if debug_mode
           debug_option = '--debug '
           puts "[DEBUG MODE]"
         end
-        system "jruby #{debug_option}#{jruby_swt_options} -r #{glimmer_lib} -S #{application}"
+        system "jruby -w #{debug_option}#{jruby_swt_options} -r #{glimmer_lib} -S #{application}"
       end
     end
 
     def initialize(options)
-      @dev_mode = !!options.delete('--dev')
+      # TODO proxy java/jruby options
       @debug_mode = !!options.delete('--debug')
       @application_path = options.first
     end
@@ -64,8 +65,8 @@ module Glimmer
     private
 
     def launch_application
-      puts "Launching Glimmer Application: #{@application_path}" unless @application_path == 'irb'
-      self.class.launch(@application_path, @dev_mode, @debug_mode)
+      puts "Launching Glimmer Application: #{@application_path}" unless @application_path.to_s.include?('irb')
+      self.class.launch(@application_path, @debug_mode)
     end
 
     def display_usage

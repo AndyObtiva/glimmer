@@ -19,50 +19,58 @@ module Glimmer
   REGEX_METHODS_EXCLUDED = /^(to_|\[)/
    #TODO make it configurable to include or not include
   include SwtPackages
-  def self.included(klass)
-    klass.include SwtPackages
-  end
-  def self.extended(klass)
-    klass.include SwtPackages
-  end
 
-  @@parent_stack = []
-  @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}
-
-  def self.logger
-    @@logger
-  end
-
-  # TODO calling original method_missing after aliasing for cases where method_missing is not needed, like known excluded symbols
-
-  alias method_missing_without_glimmer method_missing
-  def self.method_missing(method_symbol, *args, &block)
-    if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
-      return method_missing_without_glimmer(method_symbol, *args, &block)
+  class << self
+    def included(klass)
+      klass.include SwtPackages
     end
-    Glimmer.logger.debug "method: " + method_symbol.to_s + " and args: " + args.to_s
-    command_handler_chain = CommandHandlerChainFactory.chain
-    return_value = command_handler_chain.handle(@@parent_stack.last, method_symbol, *args, &block)
-    add_contents(return_value, &block)
-    return return_value
-  # rescue => e
-    # Glimmer.logger.error e.message
-    # method_missing_without_glimmer(method_symbol, *args, &block)
-  end
 
-  # TODO come up with a better public name for this and put on gwidgets directly
-  def self.add_contents(parent, &block)
-    @@parent_stack.push(parent) if parent.is_a?(Parent)
-    @@parent_stack.last.process_block(block) if block and @@parent_stack.last
-    @@parent_stack.pop if parent.is_a?(Parent)
+    def logger
+      unless defined? @@logger
+        @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}
+      end
+      @@logger
+    end
+
+    def parent_stack
+      unless defined? @@parent_stack
+        @@parent_stack = []
+      end
+      @@parent_stack
+    end
+
+    def current_parent
+      parent_stack.last
+    end
+
+    alias method_missing_without_glimmer method_missing
+    def method_missing(method_symbol, *args, &block)
+      if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
+        return method_missing_without_glimmer(method_symbol, *args, &block)
+      end
+      begin
+        Glimmer.logger.debug "method: " + method_symbol.to_s + " and args: " + args.to_s
+        command_handler_chain = CommandHandlerChainFactory.chain
+        return_value = command_handler_chain.handle(current_parent, method_symbol, *args, &block)
+        add_content(return_value, &block)
+        return return_value
+      end
+    end
+
+    # TODO come up with a better public name for this and put on gwidgets directly
+    def add_content(parent, &block)
+      parent_stack.push(parent) if parent.is_a?(Parent)
+      current_parent.process_block(block) if block and current_parent
+      parent_stack.pop if parent.is_a?(Parent)
+    end
   end
 
   def method_missing(method_symbol, *args, &block)
     Glimmer.method_missing(method_symbol, *args, &block)
   end
 
-  def add_contents(parent, &block)
-    Glimmer.add_contents(parent, &block)
+  def add_content(parent, &block)
+    Glimmer.add_content(parent, &block)
   end
 end
 

@@ -7,7 +7,7 @@ class HelloTab
         tab_item {
           text "English"
           label {
-            text "Hello World!"
+            text "Hello, World!"
           }
         }
         tab_item {

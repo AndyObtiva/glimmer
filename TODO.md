@@ -4,11 +4,8 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Scrap XML/XHTML support
 - Rename commands to keywords in Glimmer
 - Correct attribute/property naming (unify as attributes)
-- Rename add_contents to add_content
-- Document Glimmer.add_content and GWidget.add_content
 - Fix issue requiring us to include Glimmer again in CustomShell to get SWT packages included (consider making SwtPackages a super_module) [perhaps fix super_module potential limitations around class variables and document them?]
 - Make gwidgets and custom widgets proxy method calls to wrapped widget
 - Fix contactmanager sample sorting
@@ -16,7 +13,6 @@ Here is a list of tasks to do (please delete once done):
 - Document custom shell widget
 - Document Glimmer::Launcher
 - Make Glimmer::Launcher automatically figure out dev mode when run as bin/glimmer locally
-- Alias glimmer/girb command --dev mode as -d
 - Provide girb option to run without including Glimmer. Useful when testing an application that is not a "hello, world!" sort of example
 - Image custom widget similar to video, and supporting gif
 - Scaffold a Glimmer app: provide a standard structure for building a Glimmer app (models, views, and assets [images, videos, sounds])
@@ -24,6 +20,8 @@ Here is a list of tasks to do (please delete once done):
 - Scaffold a custom widget
 - Scaffold a custom shell
 - Remove module.rb
+- Upgrade jruby
+- Upgrade SWT
 
 
 ## Feature Suggestions

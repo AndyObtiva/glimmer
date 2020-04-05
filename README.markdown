@@ -14,7 +14,7 @@ include Glimmer
 shell {
   text "Glimmer"
   label {
-    text "Hello World!"
+    text "Hello, World!"
   }
 }.open
 ```
@@ -99,6 +99,8 @@ On **Mac** and **Linux**, an easy way to obtain JRuby is through [RVM](http://rv
 rvm install jruby-9.2.10.0
 ```
 
+Glimmer might still work on lower versions of Java, JRuby and SWT, but there are no guarantees, so it is best to stick to the pre-requisites outlined above.
+
 ## Setup
 
 Please follow these instructions to make the `glimmer` command available on your system.
@@ -142,6 +144,16 @@ This runs the Glimmer application hello_world.rb
 
 With Glimmer installed, you may want to run `girb` instead of standard `irb` to have SWT preloaded and the Glimmer library required and included for quick Glimmer coding/testing.
 
+```
+girb
+```
+
+If you cloned this project locally, you may run `bin/girb` instead.
+
+```
+bin/girb
+```
+
 ## Glimmer DSL Syntax
 
 ### Widgets
@@ -179,7 +191,7 @@ For example, if we were to revisit `samples/hello_world.rb` above (you may copy/
 shell {
   text "Glimmer"
   label {
-    text "Hello World!"
+    text "Hello, World!"
   }
 }.open
 ```
@@ -192,14 +204,14 @@ Note that `shell` instantiates the outer shell **widget**, in other words, the w
 # ...
   text "Glimmer" # text property of shell
   label { # label widget declaration as content of shell
-    text "Hello World!" # text property of label
+    text "Hello, World!" # text property of label
   }
 # ...
 ```
 
 The first line declares a **property** called `text`, which sets the title of the shell (window) to `"Glimmer"`. **Properties** always have ***arguments*** (not wrapped by parenthesis according to [Glimmer coding style](#glimmer-coding-style)), such as the text `"Glimmer"` in this case, and do **NOT** have a ***block*** (this distinguishes them from **widget** declarations).
 
-The second line declares the `label` **widget**, which is followed by a Ruby **content** ***block*** that contains its `text` **property** with value `"Hello World!"`
+The second line declares the `label` **widget**, which is followed by a Ruby **content** ***block*** that contains its `text` **property** with value `"Hello, World!"`
 
 Note that The `shell` widget is always the outermost widget containing all others in a Glimmer desktop windowed application.
 
@@ -230,7 +242,7 @@ shell {
     tab_item {
       text "Tab 1"
       label {
-        text "Hello World!"
+        text "Hello, World!"
       }
     }
     tab_item {
@@ -241,6 +253,32 @@ shell {
     }
   }
 }.open
+```
+
+#### `#add_content`
+
+Glimmer allows re-opening any widget and adding properties or extra content after it has been constructed already by using the `#add_content` method.
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+@shell = shell {
+  text "Application"
+  row_layout
+  @label1 = label {
+    text "Hello,"
+  }
+}
+@shell.add_content {
+  minimum_size 130, 130
+  label {
+    text "World!"
+  }
+}
+@label1.add_content {
+  foreground :red
+}
+@shell.open
 ```
 
 #### `#widget`
@@ -347,12 +385,12 @@ Code examples:
 ```ruby
 # ...
 label {
-  text "Hello World!" # SWT properties go inside {} block
+  text "Hello, World!" # SWT properties go inside {} block
 }
 # ...
 ```
 
-In the above example, the `label` widget `text` property was set to "Hello World!".
+In the above example, the `label` widget `text` property was set to "Hello, World!".
 
 ```ruby
 # ...
@@ -1233,7 +1271,7 @@ shell { |app_shell|
 
 ## Samples
 
-Check the [samples](samples) directory for examples on how to write Glimmer applications. To run a sample, make sure to install the `glimmer` gem first and then use the `glimmer` command to run it (alternatively, you may clone the repo, follow [CONTRIBUTING.md](CONTRIBUTING.md) instructions, and run samples locally with development glimmer command: `bin/glimmer --dev`).
+Check the [samples](samples) directory for examples on how to write Glimmer applications. To run a sample, make sure to install the `glimmer` gem first and then use the `glimmer` command to run it (alternatively, you may clone the repo, follow [CONTRIBUTING.md](CONTRIBUTING.md) instructions, and run samples locally with development glimmer command: `bin/glimmer`).
 
 Examples:
 

@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.5.0
+
+- Scraped XML and multi-DSL support
+- Renamed add_contents to add_content
+
 ## 0.4.9
 - Added `org.eclipse.swt.custom` to default list of Glimmer SWT packages
 - Added Custom Shell
