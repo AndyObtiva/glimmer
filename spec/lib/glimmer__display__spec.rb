@@ -23,7 +23,7 @@ module Glimmer
       it "instantiates display" do
         @target = display
 
-        expect(@target).to be_a(GDisplay)
+        expect(@target).to be_a(Glimmer::SWT::GDisplay)
         expect(@target.display).to be_a(Display)
         expect(@target.display.isDisposed).to be_falsey
 
@@ -38,10 +38,12 @@ module Glimmer
 
     context 'UI code execution' do
       after do
-        @target.async_exec do
-          @target.widget.dispose
+        if @target
+          @target.async_exec do
+            @target.dispose
+          end
+          @target.start_event_loop
         end
-        @target.start_event_loop
       end
 
       it 'asyncronously executes UI code' do

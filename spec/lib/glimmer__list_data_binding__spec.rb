@@ -31,7 +31,7 @@ module Glimmer
       end
 
       class ::RedList
-        include CustomWidget
+        include Glimmer::SWT::CustomWidget
         def body
           list(swt_style) {
             background :red
@@ -63,7 +63,7 @@ module Glimmer
       expect(@list.widget.selection.to_a).to eq([])
 
       @list.widget.select(1)
-      @list.widget.notifyListeners(GSWT[:selection], nil)
+      @list.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
       expect(person.country).to eq("Canada")
 
       person.country_options << "France"
@@ -101,7 +101,7 @@ module Glimmer
       expect(@list.widget.selection.to_a).to eq([""])
 
       @list.widget.select(2)
-      @list.widget.notifyListeners(GSWT[:selection], nil)
+      @list.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
       expect(person.country).to eq("US")
     end
 
@@ -120,7 +120,7 @@ module Glimmer
       expect(@list.widget.selection.to_a).to eq(["Canada"])
 
       @list.widget.select(2)
-      @list.widget.notifyListeners(GSWT[:selection], nil)
+      @list.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
       expect(person.country).to eq("US")
 
       person.country_options << "France"
@@ -171,11 +171,11 @@ module Glimmer
       expect(@list.widget.selection.to_a).to eq([])
 
       @list.widget.select(1)
-      @list.widget.notifyListeners(GSWT[:selection], nil)
+      @list.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
       expect(person.provinces).to eq(["Quebec"])
 
       @list.widget.select(2)
-      @list.widget.notifyListeners(GSWT[:selection], nil)
+      @list.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
       expect(person.provinces).to eq(["Quebec", "Ontario"])
 
       person.provinces=["Ontario", "Manitoba", "Alberta"]
@@ -207,11 +207,11 @@ module Glimmer
       expect(@list.widget.selection.to_a).to eq([])
 
       @list.widget.select(1)
-      @list.widget.notifyListeners(GSWT[:selection], nil)
+      @list.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
       expect(person.provinces).to eq(["Quebec"])
 
       @list.widget.select(2)
-      @list.widget.notifyListeners(GSWT[:selection], nil)
+      @list.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
       expect(person.provinces).to eq(["Quebec", "Ontario"])
 
       person.provinces=["Ontario", "Manitoba", "Alberta"]
@@ -250,7 +250,7 @@ module Glimmer
         }
       }
 
-      expect(@list.widget.getBackground).to eq(GColor.color_for(:red))
+      expect(@list.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
       expect(@list.widget.item_count).to eq(4)
       expect(@list.widget.selection_index).to eq(-1)
       expect(@list.widget.selection.to_a).to eq([])

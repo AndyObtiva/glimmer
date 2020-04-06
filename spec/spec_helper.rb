@@ -67,8 +67,9 @@ RSpec.configure do |config|
   config.after do
     Glimmer.parent_stack.clear
   end
-  # config.profile_examples = 10
-
+  config.profile_examples = 20
+  # config.fail_fast = true
+  # config.formatter = 'documentation'
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin
@@ -125,6 +126,6 @@ RSpec.configure do |config|
 end
 RSpec::Matchers.define :have_style do |style|
   match do |widget|
-    expect(widget.getStyle & GSWT[style]).to eq(GSWT[style])
+    expect(widget.getStyle & Glimmer::SWT::GSWT[style]).to eq(Glimmer::SWT::GSWT[style])
   end
 end

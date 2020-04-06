@@ -63,7 +63,7 @@ module Glimmer
       }
       expect(person.name).to eq("Bruce Ting")
       @button.widget.setSelection(true)
-      @button.widget.notifyListeners(GSWT[:selection], nil)
+      @button.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
       expect(person.name).to eq("Bruce Lao")
     end
 
@@ -81,10 +81,10 @@ module Glimmer
         }
       }
 
-      expect(@button.widget.getBackground).to eq(GColor.color_for(:red))
+      expect(@button.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
       expect(person.name).to eq("Bruce Ting")
       @button.widget.setSelection(true)
-      @button.widget.notifyListeners(GSWT[:selection], nil)
+      @button.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
       expect(person.name).to eq("Bruce Lao")
     end
 

@@ -35,7 +35,7 @@ module Glimmer
       end
 
       class Address
-        attr_accessor :street, :city, :state, :zip
+        attr_accessor :street
       end
 
       class PersonWithNestedProperties
@@ -291,7 +291,7 @@ module Glimmer
       expect(@check_box.widget.getSelection).to eq(false)
 
       @check_box.widget.setSelection(true)
-      @check_box.widget.notifyListeners(GSWT[:selection], nil)
+      @check_box.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
       expect(person.adult).to eq(true)
     end
 
@@ -313,7 +313,7 @@ module Glimmer
       expect(@radio.widget.getSelection).to eq(false)
 
       @radio.widget.setSelection(true)
-      @radio.widget.notifyListeners(GSWT[:selection], nil)
+      @radio.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
       expect(person.adult).to eq(true)
     end
 
@@ -335,48 +335,55 @@ module Glimmer
       expect(@spinner.widget.getSelection).to eq(20)
 
       @spinner.widget.setSelection(34)
-      @spinner.widget.notifyListeners(GSWT[:selection], nil)
+      @spinner.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
       expect(person.age).to eq(34)
     end
 
-    it 'tests widget data binding focus' do
-      person = Person.new
-      expect(person.adult).to be_nil
-
-      @target = shell {
-        alpha 0 # keep invisible while running specs
-        @text1 = text {
-          text "First one is focused by default"
-        }
-        @text2 = text {
-          focus bind(person, :adult)
-          text "Not focused"
-        }
-      }
-
-      @target.async_exec do
-        expect(@text1.widget.isFocusControl).to eq(true)
-        expect(@text2.widget.isFocusControl).to eq(false)
-
-        person.adult = true
-
-        expect(@text1.widget.isFocusControl).to eq(false)
-        expect(@text2.widget.isFocusControl).to eq(true)
-
-        expect(@text1.widget.setFocus).to eq(true)
-
-        expect(person.adult).to eq(false)
-
-        expect(@text2.widget.setFocus).to eq(true)
-
-        expect(person.adult).to eq(true)
-
-        @target.close
+    context 'focus' do
+      after do
+        if @target
+          @target.async_exec do
+            @target.dispose
+          end
+          @target.open
+        end
       end
 
-      @target.open
+      it 'tests widget data binding focus' do
+        person = Person.new
+        expect(person.adult).to be_nil
 
-      # TODO test data binding in the other direction (from widget to model)
+        @target = shell {
+          alpha 0 # keep invisible while running specs
+          @text1 = text {
+            text "First one is focused by default"
+          }
+          @text2 = text {
+            focus bind(person, :adult)
+            text "Not focused"
+          }
+        }
+
+        @target.async_exec do
+          expect(@text1.widget.isFocusControl).to eq(true)
+          expect(@text2.widget.isFocusControl).to eq(false)
+
+          person.adult = true
+
+          expect(@text1.widget.isFocusControl).to eq(false)
+          expect(@text2.widget.isFocusControl).to eq(true)
+
+          expect(@text1.widget.setFocus).to eq(true)
+
+          expect(person.adult).to eq(false)
+
+          expect(@text2.widget.setFocus).to eq(true)
+
+          expect(person.adult).to eq(true)
+        end
+
+        # TODO test data binding in the other direction (from widget to model)
+      end
     end
 
     it "tests widget data binding enablement" do
@@ -462,7 +469,7 @@ module Glimmer
       expect(person.age).to eq(30)
 
       @check_box.widget.setSelection(true)
-      @check_box.widget.notifyListeners(GSWT[:selection], nil)
+      @check_box.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
       expect(person.adult).to eq(true)
     end
 
@@ -474,131 +481,59 @@ module Glimmer
         person.address2 = Address.new
 
         person.address1.street = "20 Naper Ave"
-        person.address1.city = "Indianapolis"
-        person.address1.state = "IN"
-        person.address1.zip = "46183"
 
         person.address2.street = "101 Confession St"
-        person.address2.city = "Denver"
-        person.address2.state = "CO"
-        person.address2.zip = "80014"
 
         @target = shell {
           composite {
             @address1_street_text_widget = text {
               text bind(person, "address1.street")
             }
-            @address1_city_text_widget = text {
-              text bind(person, "address1.city")
-            }
-            @address1_state_text_widget = text {
-              text bind(person, "address1.state")
-            }
-            @address1_zip_text_widget = text {
-              text bind(person, "address1.zip")
-            }
           }
           composite {
             @address2_street_text_widget = text {
               text bind(person, "address2.street")
             }
-            @address2_city_text_widget = text {
-              text bind(person, "address2.city")
-            }
-            @address2_state_text_widget = text {
-              text bind(person, "address2.state")
-            }
-            @address2_zip_text_widget = text {
-              text bind(person, "address2.zip")
-            }
           }
         }
 
         expect(@address1_street_text_widget.widget.getText).to eq("20 Naper Ave")
-        expect(@address1_city_text_widget.widget.getText).to eq("Indianapolis")
-        expect(@address1_state_text_widget.widget.getText).to eq("IN")
-        expect(@address1_zip_text_widget.widget.getText).to eq("46183")
 
         expect(@address2_street_text_widget.widget.getText).to eq("101 Confession St")
-        expect(@address2_city_text_widget.widget.getText).to eq("Denver")
-        expect(@address2_state_text_widget.widget.getText).to eq("CO")
-        expect(@address2_zip_text_widget.widget.getText).to eq("80014")
 
         @address1_street_text_widget.widget.setText "101 Confession St"
-        @address1_city_text_widget.widget.setText "Denver"
-        @address1_state_text_widget.widget.setText "CO"
-        @address1_zip_text_widget.widget.setText "80014"
 
         @address2_street_text_widget.widget.setText "20 Naper Ave"
-        @address2_city_text_widget.widget.setText "Indianapolis"
-        @address2_state_text_widget.widget.setText "IN"
-        @address2_zip_text_widget.widget.setText "46183"
 
         expect(person.address1.street).to eq("101 Confession St")
-        expect(person.address1.city).to eq("Denver")
-        expect(person.address1.state).to eq("CO")
-        expect(person.address1.zip).to eq("80014")
 
         expect(person.address2.street).to eq("20 Naper Ave")
-        expect(person.address2.city).to eq("Indianapolis")
-        expect(person.address2.state).to eq("IN")
-        expect(person.address2.zip).to eq("46183")
 
         person.address1.street = "123 Main St"
-        person.address1.city = "Chicago"
-        person.address1.state = "IL"
-        person.address1.zip = "60654"
 
         person.address2.street = "100 Park Ave"
-        person.address2.city = "San Diego"
-        person.address2.state = "CA"
-        person.address2.zip = "92014"
 
         expect(@address1_street_text_widget.widget.getText).to eq("123 Main St")
-        expect(@address1_city_text_widget.widget.getText).to eq("Chicago")
-        expect(@address1_state_text_widget.widget.getText).to eq("IL")
-        expect(@address1_zip_text_widget.widget.getText).to eq("60654")
 
         expect(@address2_street_text_widget.widget.getText).to eq("100 Park Ave")
-        expect(@address2_city_text_widget.widget.getText).to eq("San Diego")
-        expect(@address2_state_text_widget.widget.getText).to eq("CA")
-        expect(@address2_zip_text_widget.widget.getText).to eq("92014")
 
         person.address2 = person.address1
 
         expect(@address2_street_text_widget.widget.getText).to eq("123 Main St")
-        expect(@address2_city_text_widget.widget.getText).to eq("Chicago")
-        expect(@address2_state_text_widget.widget.getText).to eq("IL")
-        expect(@address2_zip_text_widget.widget.getText).to eq("60654")
 
         person.address2 = nil
 
         expect(@address2_street_text_widget.widget.getText).to eq("")
-        expect(@address2_city_text_widget.widget.getText).to eq("")
-        expect(@address2_state_text_widget.widget.getText).to eq("")
-        expect(@address2_zip_text_widget.widget.getText).to eq("")
 
         person.address2 = Address.new
 
         person.address2.street = "101 Confession St"
-        person.address2.city = "Denver"
-        person.address2.state = "CO"
-        person.address2.zip = "80014"
 
         expect(@address2_street_text_widget.widget.getText).to eq("101 Confession St")
-        expect(@address2_city_text_widget.widget.getText).to eq("Denver")
-        expect(@address2_state_text_widget.widget.getText).to eq("CO")
-        expect(@address2_zip_text_widget.widget.getText).to eq("80014")
 
         person.address2.street = "123 Main St"
-        person.address2.city = "Chicago"
-        person.address2.state = "IL"
-        person.address2.zip = "60654"
 
         expect(@address2_street_text_widget.widget.getText).to eq("123 Main St")
-        expect(@address2_city_text_widget.widget.getText).to eq("Chicago")
-        expect(@address2_state_text_widget.widget.getText).to eq("IL")
-        expect(@address2_zip_text_widget.widget.getText).to eq("60654")
       end
 
       it "tests text widget data binding to nested indexed string property" do
@@ -612,15 +547,6 @@ module Glimmer
             @address1_street_text_widget = text {
               text bind(person, "addresses[0].street")
             }
-            @address1_city_text_widget = text {
-              text bind(person, "addresses[0].city")
-            }
-            @address1_state_text_widget = text {
-              text bind(person, "addresses[0].state")
-            }
-            @address1_zip_text_widget = text {
-              text bind(person, "addresses[0].zip")
-            }
           }
           composite {
             @name2 = text {
@@ -629,29 +555,14 @@ module Glimmer
             @address2_street_text_widget = text {
               text bind(person, "addresses[1].street")
             }
-            @address2_city_text_widget = text {
-              text bind(person, "addresses[1].city")
-            }
-            @address2_state_text_widget = text {
-              text bind(person, "addresses[1].state")
-            }
-            @address2_zip_text_widget = text {
-              text bind(person, "addresses[1].zip")
-            }
           }
         }
 
         expect(@name1.widget.getText).to eq("")
         expect(@address1_street_text_widget.widget.getText).to eq("")
-        expect(@address1_city_text_widget.widget.getText).to eq("")
-        expect(@address1_state_text_widget.widget.getText).to eq("")
-        expect(@address1_zip_text_widget.widget.getText).to eq("")
 
         expect(@name2.widget.getText).to eq("")
         expect(@address2_street_text_widget.widget.getText).to eq("")
-        expect(@address2_city_text_widget.widget.getText).to eq("")
-        expect(@address2_state_text_widget.widget.getText).to eq("")
-        expect(@address2_zip_text_widget.widget.getText).to eq("")
 
         person.names = []
         person.names[0] = 'Robert'
@@ -662,74 +573,38 @@ module Glimmer
         person.addresses[1] = Address.new
 
         person.addresses[0].street = "20 Naper Ave"
-        person.addresses[0].city = "Indianapolis"
-        person.addresses[0].state = "IN"
-        person.addresses[0].zip = "46183"
 
         person.addresses[1].street = "101 Confession St"
-        person.addresses[1].city = "Denver"
-        person.addresses[1].state = "CO"
-        person.addresses[1].zip = "80014"
 
         expect(@name1.widget.getText).to eq("Robert")
         expect(@address1_street_text_widget.widget.getText).to eq("20 Naper Ave")
-        expect(@address1_city_text_widget.widget.getText).to eq("Indianapolis")
-        expect(@address1_state_text_widget.widget.getText).to eq("IN")
-        expect(@address1_zip_text_widget.widget.getText).to eq("46183")
 
         expect(@name2.widget.getText).to eq("Bob")
         expect(@address2_street_text_widget.widget.getText).to eq("101 Confession St")
-        expect(@address2_city_text_widget.widget.getText).to eq("Denver")
-        expect(@address2_state_text_widget.widget.getText).to eq("CO")
-        expect(@address2_zip_text_widget.widget.getText).to eq("80014")
 
         @name1.widget.setText "Roberto"
         @address1_street_text_widget.widget.setText "101 Confession St"
-        @address1_city_text_widget.widget.setText "Denver"
-        @address1_state_text_widget.widget.setText "CO"
-        @address1_zip_text_widget.widget.setText "80014"
 
         @name2.widget.setText "Bobo"
         @address2_street_text_widget.widget.setText "20 Naper Ave"
-        @address2_city_text_widget.widget.setText "Indianapolis"
-        @address2_state_text_widget.widget.setText "IN"
-        @address2_zip_text_widget.widget.setText "46183"
 
         expect(person.names[0]).to eq("Roberto")
         expect(person.addresses[0].street).to eq("101 Confession St")
-        expect(person.addresses[0].city).to eq("Denver")
-        expect(person.addresses[0].state).to eq("CO")
-        expect(person.addresses[0].zip).to eq("80014")
 
         expect(person.names[1]).to eq("Bobo")
         expect(person.addresses[1].street).to eq("20 Naper Ave")
-        expect(person.addresses[1].city).to eq("Indianapolis")
-        expect(person.addresses[1].state).to eq("IN")
-        expect(person.addresses[1].zip).to eq("46183")
 
         person.names[0] = "Robertissimo"
         person.addresses[0].street = "123 Main St"
-        person.addresses[0].city = "Chicago"
-        person.addresses[0].state = "IL"
-        person.addresses[0].zip = "60654"
 
         person.names[1] = "Bobissimo"
         person.addresses[1].street = "100 Park Ave"
-        person.addresses[1].city = "San Diego"
-        person.addresses[1].state = "CA"
-        person.addresses[1].zip = "92014"
 
         expect(@name1.widget.getText).to eq("Robertissimo")
         expect(@address1_street_text_widget.widget.getText).to eq("123 Main St")
-        expect(@address1_city_text_widget.widget.getText).to eq("Chicago")
-        expect(@address1_state_text_widget.widget.getText).to eq("IL")
-        expect(@address1_zip_text_widget.widget.getText).to eq("60654")
 
         expect(@name2.widget.getText).to eq("Bobissimo")
         expect(@address2_street_text_widget.widget.getText).to eq("100 Park Ave")
-        expect(@address2_city_text_widget.widget.getText).to eq("San Diego")
-        expect(@address2_state_text_widget.widget.getText).to eq("CA")
-        expect(@address2_zip_text_widget.widget.getText).to eq("92014")
 
         person.names[1] = person.names[0]
         original_address2 = person.addresses[1]
@@ -737,9 +612,6 @@ module Glimmer
 
         expect(@name2.widget.getText).to eq("Robertissimo")
         expect(@address2_street_text_widget.widget.getText).to eq("123 Main St")
-        expect(@address2_city_text_widget.widget.getText).to eq("Chicago")
-        expect(@address2_state_text_widget.widget.getText).to eq("IL")
-        expect(@address2_zip_text_widget.widget.getText).to eq("60654")
 
         # Ensure data-binding observers are removed when address value changed
         original_address2.street = '838 Newman'
@@ -752,85 +624,49 @@ module Glimmer
 
         expect(@name2.widget.getText).to eq("")
         expect(@address2_street_text_widget.widget.getText).to eq("")
-        expect(@address2_city_text_widget.widget.getText).to eq("")
-        expect(@address2_state_text_widget.widget.getText).to eq("")
-        expect(@address2_zip_text_widget.widget.getText).to eq("")
 
         person.addresses[1] = Address.new
 
         person.addresses[1].street = "101 Confession St"
-        person.addresses[1].city = "Denver"
-        person.addresses[1].state = "CO"
-        person.addresses[1].zip = "80014"
 
         expect(@address2_street_text_widget.widget.getText).to eq("101 Confession St")
-        expect(@address2_city_text_widget.widget.getText).to eq("Denver")
-        expect(@address2_state_text_widget.widget.getText).to eq("CO")
-        expect(@address2_zip_text_widget.widget.getText).to eq("80014")
 
         person.addresses[1].street = "123 Main St"
-        person.addresses[1].city = "Chicago"
-        person.addresses[1].state = "IL"
-        person.addresses[1].zip = "60654"
 
         expect(@address2_street_text_widget.widget.getText).to eq("123 Main St")
-        expect(@address2_city_text_widget.widget.getText).to eq("Chicago")
-        expect(@address2_state_text_widget.widget.getText).to eq("IL")
-        expect(@address2_zip_text_widget.widget.getText).to eq("60654")
 
         # test removal of observers on severed nested chains
         old_address2 = person.addresses[1]
         expect(old_address2.property_observer_list('street').to_a.empty?).to be_falsey
-        expect(old_address2.property_observer_list('city').to_a.empty?).to be_falsey
-        expect(old_address2.property_observer_list('state').to_a.empty?).to be_falsey
-        expect(old_address2.property_observer_list('zip').to_a.empty?).to be_falsey
+
         person.addresses[1] = Address.new
         expect(old_address2.property_observer_list('street').to_a.empty?).to be_truthy
-        expect(old_address2.property_observer_list('city').to_a.empty?).to be_truthy
-        expect(old_address2.property_observer_list('state').to_a.empty?).to be_truthy
-        expect(old_address2.property_observer_list('zip').to_a.empty?).to be_truthy
 
         old_address2 = person.addresses[1]
         expect(old_address2.property_observer_list('street').to_a.empty?).to be_falsey
-        expect(old_address2.property_observer_list('city').to_a.empty?).to be_falsey
-        expect(old_address2.property_observer_list('state').to_a.empty?).to be_falsey
-        expect(old_address2.property_observer_list('zip').to_a.empty?).to be_falsey
+
         person.addresses.delete(old_address2)
         expect(old_address2.property_observer_list('street').to_a.empty?).to be_truthy
-        expect(old_address2.property_observer_list('city').to_a.empty?).to be_truthy
-        expect(old_address2.property_observer_list('state').to_a.empty?).to be_truthy
-        expect(old_address2.property_observer_list('zip').to_a.empty?).to be_truthy
-        person.addresses << old_address2
 
+        person.addresses << old_address2
         expect(old_address2.property_observer_list('street').to_a.empty?).to be_falsey
-        expect(old_address2.property_observer_list('city').to_a.empty?).to be_falsey
-        expect(old_address2.property_observer_list('state').to_a.empty?).to be_falsey
-        expect(old_address2.property_observer_list('zip').to_a.empty?).to be_falsey
+
         person.addresses.delete_at(1)
         expect(old_address2.property_observer_list('street').to_a.empty?).to be_truthy
-        expect(old_address2.property_observer_list('city').to_a.empty?).to be_truthy
-        expect(old_address2.property_observer_list('state').to_a.empty?).to be_truthy
-        expect(old_address2.property_observer_list('zip').to_a.empty?).to be_truthy
+
         person.addresses << old_address2
 
         old_address1 = person.addresses[0]
         expect(old_address1.property_observer_list('street').to_a.empty?).to be_falsey
-        expect(old_address1.property_observer_list('city').to_a.empty?).to be_falsey
-        expect(old_address1.property_observer_list('state').to_a.empty?).to be_falsey
-        expect(old_address1.property_observer_list('zip').to_a.empty?).to be_falsey
+
         expect(old_address2.property_observer_list('street').to_a.empty?).to be_falsey
-        expect(old_address2.property_observer_list('city').to_a.empty?).to be_falsey
-        expect(old_address2.property_observer_list('state').to_a.empty?).to be_falsey
-        expect(old_address2.property_observer_list('zip').to_a.empty?).to be_falsey
+
         person.addresses.clear
+
         expect(old_address1.property_observer_list('street').to_a.empty?).to be_truthy
-        expect(old_address1.property_observer_list('city').to_a.empty?).to be_truthy
-        expect(old_address1.property_observer_list('state').to_a.empty?).to be_truthy
-        expect(old_address1.property_observer_list('zip').to_a.empty?).to be_truthy
+
         expect(old_address2.property_observer_list('street').to_a.empty?).to be_truthy
-        expect(old_address2.property_observer_list('city').to_a.empty?).to be_truthy
-        expect(old_address2.property_observer_list('state').to_a.empty?).to be_truthy
-        expect(old_address2.property_observer_list('zip').to_a.empty?).to be_truthy
+
         person.addresses << old_address1
         person.addresses << old_address2
 
@@ -839,23 +675,15 @@ module Glimmer
         old_address2 = person.addresses[1]
         expect(old_addresses.property_observer_list.to_a.empty?).to be_falsey
         expect(old_address1.property_observer_list('street').to_a.empty?).to be_falsey
-        expect(old_address1.property_observer_list('city').to_a.empty?).to be_falsey
-        expect(old_address1.property_observer_list('state').to_a.empty?).to be_falsey
-        expect(old_address1.property_observer_list('zip').to_a.empty?).to be_falsey
+
         expect(old_address2.property_observer_list('street').to_a.empty?).to be_falsey
-        expect(old_address2.property_observer_list('city').to_a.empty?).to be_falsey
-        expect(old_address2.property_observer_list('state').to_a.empty?).to be_falsey
-        expect(old_address2.property_observer_list('zip').to_a.empty?).to be_falsey
+
         person.addresses = []
+
         expect(old_addresses.property_observer_list.to_a.empty?).to be_truthy
         expect(old_address1.property_observer_list('street').to_a.empty?).to be_truthy
-        expect(old_address1.property_observer_list('city').to_a.empty?).to be_truthy
-        expect(old_address1.property_observer_list('state').to_a.empty?).to be_truthy
-        expect(old_address1.property_observer_list('zip').to_a.empty?).to be_truthy
+
         expect(old_address2.property_observer_list('street').to_a.empty?).to be_truthy
-        expect(old_address2.property_observer_list('city').to_a.empty?).to be_truthy
-        expect(old_address2.property_observer_list('state').to_a.empty?).to be_truthy
-        expect(old_address2.property_observer_list('zip').to_a.empty?).to be_truthy
       end
 
       it "tests label widget nested computed value data binding string property" do

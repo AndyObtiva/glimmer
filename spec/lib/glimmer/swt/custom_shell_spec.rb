@@ -22,11 +22,7 @@ module Glimmer
           include Glimmer::SWT::CustomShell
 
           def body
-            composite {
-              label {
-                text "It is always beer'o'clock!"
-              }
-            }
+            composite {}
           end
         end
       end
@@ -52,22 +48,14 @@ module Glimmer
       end
 
       it 'opens and closes' do
-        # require 'jruby/profiler'
-
-        # profile_data = JRuby::Profiler.profile do
-          @target = time_shell
-          @target.widget.setAlpha(0) # keep invisible while running specs
-          expect(@target.visible?).to eq(false)
-          @target.async_exec do
-            expect(@target.visible?).to eq(true)
-          end
-        # end
-        # profile_data
-        # profile_printer = JRuby::Profiler::HtmlProfilePrinter.new(profile_data)
-        # ps = java.io.PrintStream.new(STDOUT.to_outputstream)
-        # profile_printer.printHeader(ps)
-        # profile_printer.printProfile(ps)
-        # profile_printer.printFooter(ps)
+        @target = time_shell
+        @target.widget.setAlpha(0) # keep invisible while running specs
+        expect(@target.widget.children.first.is_a?(Label)).to eq(true)
+        expect(@target.widget.children.first.getText).to eq("It is always beer'o'clock!")
+        expect(@target.visible?).to eq(false)
+        @target.async_exec do
+          expect(@target.visible?).to eq(true)
+        end
       end
 
       it 'rejects a non shell body root' do

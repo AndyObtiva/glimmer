@@ -44,7 +44,7 @@ module Glimmer
 
     alias method_missing_without_glimmer method_missing
     def method_missing(method_symbol, *args, &block)
-      puts method_symbol
+      # This if statement speeds up Glimmer in girb or whenever directly including on main object
       if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
         return method_missing_without_glimmer(method_symbol, *args, &block)
       end

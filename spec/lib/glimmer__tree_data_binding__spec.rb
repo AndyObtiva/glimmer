@@ -186,7 +186,7 @@ module Glimmer
         }
       }
 
-      expect(@tree.widget.getBackground).to eq(GColor.color_for(:red))
+      expect(@tree.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
       expect(@tree.widget.getItems.size).to eq(1)
 
       root_node = @tree.widget.getItems[0]

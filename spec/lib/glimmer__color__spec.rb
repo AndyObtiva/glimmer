@@ -34,7 +34,7 @@ module Glimmer
       expect(@foreground_color.getGreen).to eq(40)
       expect(@foreground_color.getBlue).to eq(244)
       expect(@foreground_color.getAlpha).to eq(50)
-      expect(@foreground_color.getDevice).to eq(GDisplay.instance.display)
+      expect(@foreground_color.getDevice).to eq(Glimmer::SWT::GDisplay.instance.display)
 
       expect(@foreground_color.getDevice).to eq(@target.display)
     end
@@ -57,7 +57,7 @@ module Glimmer
       expect(@foreground_color.getRed).to eq(4)
       expect(@foreground_color.getGreen).to eq(40)
       expect(@foreground_color.getBlue).to eq(244)
-      expect(@foreground_color.getDevice).to eq(GDisplay.instance.display)
+      expect(@foreground_color.getDevice).to eq(Glimmer::SWT::GDisplay.instance.display)
 
       expect(@foreground_color.getDevice).to eq(@target.display)
     end
@@ -65,21 +65,9 @@ module Glimmer
     # Standard colors: not an exhaustive list. Sample taken from here: https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
     [
       :color_black,
-      :color_blue,
-      :color_cyan,
-      :color_green,
       'color_magenta',
-      'color_red',
-      'color_white',
-      'color_yellow',
       :black,
-      :blue,
-      :cyan,
-      :green,
       'magenta',
-      'red',
-      'white',
-      'yellow',
     ].each do |standard_color|
       it "tests label with standard #{standard_color} background color passed as a Ruby symbol" do
         @target = shell {
@@ -91,16 +79,10 @@ module Glimmer
 
         background = @label.widget.getBackground
         foreground = @label.widget.getForeground
-        swt_color_constant = GSWT['color_' + standard_color.to_s.sub(/^color_/, '')]
+        swt_color_constant = Glimmer::SWT::GSWT['color_' + standard_color.to_s.sub(/^color_/, '')]
         expected_color = @target.display.getSystemColor(swt_color_constant)
-        expect(background.getRed).to eq(expected_color.getRed)
-        expect(background.getGreen).to eq(expected_color.getGreen)
-        expect(background.getBlue).to eq(expected_color.getBlue)
-        expect(background.getAlpha).to eq(expected_color.getAlpha)
-        expect(foreground.getRed).to eq(expected_color.getRed)
-        expect(foreground.getGreen).to eq(expected_color.getGreen)
-        expect(foreground.getBlue).to eq(expected_color.getBlue)
-        expect(foreground.getAlpha).to eq(expected_color.getAlpha)
+        expect(background).to eq(expected_color)
+        expect(foreground).to eq(expected_color)
       end
     end
 

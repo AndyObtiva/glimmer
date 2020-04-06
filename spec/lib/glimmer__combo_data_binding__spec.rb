@@ -67,7 +67,7 @@ module Glimmer
       expect(@combo.widget.text).to eq("")
 
       @combo.widget.select(2)
-      @combo.widget.notifyListeners(GSWT[:selection], nil)
+      @combo.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
       expect(person.country).to eq("US")
 
       person.country = "Canada"
@@ -117,7 +117,7 @@ module Glimmer
       expect(@combo.widget.text).to eq("")
 
       @combo.widget.select(8)
-      @combo.widget.notifyListeners(GSWT[:selection], nil)
+      @combo.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
       expect(person.country).to eq("Australia")
 
       person.country = "Canada"
@@ -146,7 +146,7 @@ module Glimmer
         }
       }
 
-      expect(@combo.widget.getBackground).to eq(GColor.color_for(:red))
+      expect(@combo.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
       expect(@combo.widget.item_count).to eq(4)
       expect(@combo.widget.selection_index).to eq(-1)
       expect(@combo.widget.text).to eq("")

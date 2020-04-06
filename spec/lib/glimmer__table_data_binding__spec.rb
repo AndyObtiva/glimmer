@@ -208,7 +208,7 @@ module Glimmer
         }
       }
 
-      expect(@table.widget.getBackground).to eq(GColor.color_for(:red))
+      expect(@table.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
       expect(@table.widget.getColumnCount).to eq(3)
       expect(@table.widget.getItems.size).to eq(2)
 

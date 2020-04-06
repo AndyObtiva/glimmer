@@ -15,7 +15,7 @@ module Glimmer
 
       # Instantiates shell with same arguments expected by SWT Shell
       def initialize(*args)
-        if !args.first.is_a?(Display) && !args.first.is_a?(Shell)
+        if args.first.nil? || !args.first.is_a?(Display) && !args.first.is_a?(Shell)
           @display = GDisplay.instance.display
           args = [@display] + args
         end
@@ -52,7 +52,7 @@ module Glimmer
             # notify_observers('visible')
           # end
           start_event_loop
-          @display.dispose
+          @display.dispose # it's more performant to reuse instead of disposing
         end
       end
       alias show open

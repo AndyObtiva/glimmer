@@ -11,7 +11,12 @@ module Glimmer
 
     after do
       self.class.send(:define_method, :display, @rspec_display_method)
-      @target&.start_event_loop
+      if @target
+        @target.async_exec do
+          @target.dispose
+        end
+        @target.start_event_loop
+      end
     end
 
     let(:video_file) { File.expand_path('../../../fixtures/videos/Pepa-creativeCommonsMp4956_512kb.mp4', __FILE__) }
@@ -24,7 +29,6 @@ module Glimmer
         @video = video(file: video_file) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('source').src")).to eq("file://#{video_file}")
-            @target.widget.close
           }
         }
       }
@@ -36,7 +40,6 @@ module Glimmer
         @video = video(url: video_url) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('source').src")).to eq(video_url)
-            @target.widget.close
           }
         }
       }
@@ -48,7 +51,6 @@ module Glimmer
         @video = video(file: video_file) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('video').autoplay")).to eq(true)
-            @target.widget.close
           }
         }
       }
@@ -60,7 +62,6 @@ module Glimmer
         @video = video(file: video_file) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('video').controls")).to eq(true)
-            @target.widget.close
           }
         }
       }
@@ -72,7 +73,6 @@ module Glimmer
         @video = video(file: video_file, controls: false) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('video').controls")).to eq(false)
-            @target.widget.close
           }
         }
       }
@@ -84,7 +84,6 @@ module Glimmer
         @video = video(file: video_file) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('video').loop")).to eq(false)
-            @target.widget.close
           }
         }
       }
@@ -96,7 +95,6 @@ module Glimmer
         @video = video(file: video_file, looped: true) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('video').loop")).to eq(true)
-            @target.widget.close
           }
         }
       }
@@ -108,7 +106,6 @@ module Glimmer
         @video = video(file: video_file) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('style-body-background').innerHTML")).to include("rgba(255, 255, 255, 255)")
-            @target.widget.close
           }
         }
       }
@@ -120,7 +117,6 @@ module Glimmer
         @video = video(file: video_file, background: :black) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('style-body-background').innerHTML")).to include("rgba(0, 0, 0, 255)")
-            @target.widget.close
           }
         }
       }
@@ -132,7 +128,6 @@ module Glimmer
         @video = video(file: video_file) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('video').width")).to eq(100.0)
-            @target.widget.close
           }
         }
       }
@@ -144,7 +139,6 @@ module Glimmer
         @video = video(file: video_file, fit_to_width: false) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('video').width")).to eq(0.0)
-            @target.widget.close
           }
         }
       }
@@ -156,7 +150,6 @@ module Glimmer
         @video = video(file: video_file) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('video').height")).to eq(100.0)
-            @target.widget.close
           }
         }
       }
@@ -168,7 +161,6 @@ module Glimmer
         @video = video(file: video_file, fit_to_height: false) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('video').height")).to eq(0.0)
-            @target.widget.close
           }
         }
       }
@@ -180,7 +172,6 @@ module Glimmer
         @video = video(file: video_file) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('video').autoplay")).to eq(true)
-            @target.widget.close
           }
         }
       }
@@ -192,7 +183,6 @@ module Glimmer
         @video = video(file: video_file, autoplay: false) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('video').autoplay")).to eq(false)
-            @target.widget.close
           }
         }
       }
@@ -204,7 +194,6 @@ module Glimmer
         @video = video(file: video_file) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('style-body-offset-x').innerHTML")).to include("margin-left: 0px;")
-            @target.widget.close
           }
         }
       }
@@ -216,7 +205,6 @@ module Glimmer
         @video = video(file: video_file, offset_x: -150) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('style-body-offset-x').innerHTML")).to include("margin-left: -150px;")
-            @target.widget.close
           }
         }
       }
@@ -228,7 +216,6 @@ module Glimmer
         @video = video(file: video_file) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('style-body-offset-y').innerHTML")).to include("margin-top: 0px;")
-            @target.widget.close
           }
         }
       }
@@ -240,7 +227,6 @@ module Glimmer
         @video = video(file: video_file, offset_y: -150) {
           on_completed {
             expect(@video.widget.evaluate("return document.getElementById('style-body-offset-y').innerHTML")).to include("margin-top: -150px;")
-            @target.widget.close
           }
         }
       }
@@ -256,7 +242,6 @@ module Glimmer
             expect(@video.widget.evaluate("return document.getElementById('video').paused")).to eq(false)
             @video.pause
             expect(@video.widget.evaluate("return document.getElementById('video').paused")).to eq(true)
-            @target.widget.close
           }
         }
       }

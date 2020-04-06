@@ -16,15 +16,24 @@ module Glimmer
             split(/__/).map do |namespace|
               namespace.camelcase(:upper)
             end
-          custom_widget_class = namespaces.reduce(Object) do |result, namespace|
-            namespace = namespace.to_sym
-            if !result.constants.include?(namespace)
-              namespace = result.constants.detect {|c|
-                c.to_s.upcase == namespace.to_s.upcase
-              } || namespace
+          custom_widget_class = [Object, Glimmer::SWT].reduce([]) do |found, base|
+            if found.empty?
+              found << namespaces.reduce(base) do |result, namespace|
+                namespace = namespace.to_sym
+                if !result.constants.include?(namespace)
+                  namespace = result.constants.detect {|c| c.to_s.upcase == namespace.to_s.upcase } || namespace
+                end
+                begin
+                  result.const_get(namespace)
+                rescue => e
+                  Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"
+                  nil
+                end
+              end
             end
-            result.const_get(namespace)
-          end
+            found.compact
+          end.first
+          raise "#{underscored_custom_widget_name} has no custom widget class!" if custom_widget_class.nil?
           custom_widget_class if custom_widget_class.ancestors.include?(Glimmer::SWT::CustomWidget)
         rescue => e
           Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"

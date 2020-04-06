@@ -1,9 +1,5 @@
 require "spec_helper"
 
-java_import 'org.eclipse.swt.layout.FillLayout'
-java_import 'org.eclipse.swt.layout.RowLayout'
-java_import 'org.eclipse.swt.layout.GridLayout'
-
 module Glimmer
   describe "Glimmer Layout" do
     include Glimmer
@@ -28,7 +24,7 @@ module Glimmer
         widget = @composite.widget
         layout = widget.getLayout
         expect(layout.is_a?(FillLayout)).to eq(true)
-        expect(layout.type).to eq(GSWT[:horizontal])
+        expect(layout.type).to eq(Glimmer::SWT::GSWT[:horizontal])
         expect(layout.marginWidth).to eq(30)
         expect(layout.marginHeight).to eq(50)
         expect(layout.spacing).to eq(5)
@@ -44,7 +40,7 @@ module Glimmer
         widget = @composite.widget
         layout = widget.getLayout
         expect(layout.is_a?(FillLayout)).to eq(true)
-        expect(layout.type).to eq(GSWT[:horizontal])
+        expect(layout.type).to eq(Glimmer::SWT::GSWT[:horizontal])
       end
     end
 
@@ -72,7 +68,7 @@ module Glimmer
         expect(layout.wrap).to eq(true)
         expect(layout.pack).to eq(false)
         expect(layout.justify).to eq(true)
-        expect(layout.type).to eq(GSWT[:vertical])
+        expect(layout.type).to eq(Glimmer::SWT::GSWT[:vertical])
         expect(layout.marginLeft).to eq(1)
         expect(layout.marginTop).to eq(2)
         expect(layout.marginRight).to eq(3)
@@ -90,7 +86,7 @@ module Glimmer
         widget = @composite.widget
         layout = widget.getLayout
         expect(layout.is_a?(RowLayout)).to eq(true)
-        expect(layout.type).to eq(GSWT[:horizontal])
+        expect(layout.type).to eq(Glimmer::SWT::GSWT[:horizontal])
       end
     end
 

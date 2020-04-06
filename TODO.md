@@ -4,6 +4,10 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
+- Reorder file namespaces and directories
+- #TODO make it configurable to include SwtPackages or not include
+- Support swt keyword for style
+- Support color keyword for standard colors
 - Rename commands to keywords in Glimmer
 - Correct attribute/property naming (unify as attributes)
 - Fix issue requiring us to include Glimmer again in CustomShell to get SWT packages included (consider making SwtPackages a super_module) [perhaps fix super_module potential limitations around class variables and document them?]

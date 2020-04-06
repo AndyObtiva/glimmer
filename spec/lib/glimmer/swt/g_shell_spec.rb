@@ -5,13 +5,6 @@ module Glimmer
     describe GShell do
       include Glimmer
 
-      before do
-      end
-
-      after do
-        @target.close if @target && !@target.widget.isDisposed
-      end
-
       describe '#visible?' do
         it 'returns false before initially opened and true afterwards' do
           @target = GShell.new

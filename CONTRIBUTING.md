@@ -18,12 +18,23 @@ Follow these steps, running mentioned commands in the terminal:
 
 ### rspec
 
-To run a specific spec, run:
+`rake` or `rake spec` runs all specs.
+
+To run a specific spec file, run:
 ```
 rake SPEC=spec_file_path
 ```
 
-Otherwise, `rake` or `rake spec` runs all specs.
+To run a specific spec, run:
+```
+rake SPEC=spec_file_path:line_number
+```
+
+Make sure not to use the keyword or mouse while tests are running since they bring up UI elements behind the scenes (invisible). This avoids fudging them and causing false test failures. If you get obscure failures related to focus of widgets, they are most likely false negatives. Just rerun the specs without touching the keyboard or mouse and they should pass assuming they are not really broken.
+
+### build
+
+`rake build` builds the Glimmer gem under the `pkg` directory.
 
 ### glimmer command
 
