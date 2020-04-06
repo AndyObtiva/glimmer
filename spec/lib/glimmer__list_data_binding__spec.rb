@@ -1,6 +1,6 @@
 require "spec_helper"
 
-module Glimmer
+module GlimmerSpec
   describe "Glimmer List Data Binding" do
     include Glimmer
 

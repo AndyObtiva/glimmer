@@ -12,6 +12,9 @@ rescue Bundler::BundlerError => e
   $stderr.puts "Run `bundle install` to install missing gems"
   exit e.status_code
 end
+module GlimmerSpec
+  include Glimmer::SwtPackages # makes SWT packages available to namespace containing specs
+end
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'samples'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
@@ -65,9 +68,9 @@ RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
   config.after do
-    Glimmer.parent_stack.clear
+    Glimmer.parent_stack.clear # ensures no conflict in using Glimmer across tests
   end
-  config.profile_examples = 20
+  # config.profile_examples = 20
   # config.fail_fast = true
   # config.formatter = 'documentation'
 # The settings below are suggested to provide a good initial experience

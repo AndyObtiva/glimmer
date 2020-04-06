@@ -1,6 +1,6 @@
 require "spec_helper"
 
-module Glimmer
+module GlimmerSpec
   describe "Glimmer Listeners" do
     include Glimmer
 

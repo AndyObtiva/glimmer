@@ -1,13 +1,20 @@
+require 'super_module'
+require 'glimmer'
 require_relative 'proc_tracker'
 require_relative 'observable_model'
+require_relative 'observable_widget'
 
 module Glimmer
   module SWT
     module CustomWidget
       include SuperModule
-      include Glimmer
       include Parent
       include ObservableModel
+
+      super_module_included do |klass|
+        klass.include(Glimmer) unless klass.name.include?("Glimmer::SWT::CustomShell")
+        klass.prepend ObservableWidget
+      end
 
       class << self
         def for(underscored_custom_widget_name)
@@ -158,17 +165,6 @@ module Glimmer
         "#{attribute_name}="
       end
 
-      # TODO see if it is worth it to eliminate duplication of method_missing
-      # from GWidget using a module
-
-      def method_missing(method, *args, &block)
-        method_name = method.to_s
-        if can_handle_observation_request?(method_name)
-          handle_observation_request(method_name, &block)
-        else
-          super
-        end
-      end
 
       def process_block(block)
         if block.source_location == @content&.__getobj__.source_location

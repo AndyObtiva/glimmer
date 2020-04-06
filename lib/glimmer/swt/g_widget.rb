@@ -15,6 +15,7 @@ module Glimmer
       include_package 'org.eclipse.swt.browser'
 
       include Glimmer # TODO consider removing when no longer needed
+      include ObservableWidget      
       include Parent
 
       attr_reader :widget
@@ -302,15 +303,6 @@ module Glimmer
           add_listener(event, &block)
         end
         nil
-      end
-
-      def method_missing(method, *args, &block)
-        method_name = method.to_s
-        if can_handle_observation_request?(method_name)
-          handle_observation_request(method_name, &block)
-        else
-          super
-        end
       end
 
       def content(&block)

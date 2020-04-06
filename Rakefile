@@ -22,7 +22,7 @@ unless jeweler_required.nil?
     gem.homepage = "http://github.com/AndyObtiva/glimmer"
     gem.license = "MIT"
     gem.summary = %Q{Desktop application development library}
-    gem.description = %Q{JRuby Desktop UI DSL + Data-Binding library that enables easy and efficient authoring of user-interfaces using the robust platform-independent Eclipse SWT library}
+    gem.description = %Q{JRuby Desktop UI DSL + Data-Binding cross-platform library that enables productive and efficient authoring of desktop user-interfaces using the robust platform-native Eclipse SWT library}
     gem.email = "andy.am@gmail.com"
     gem.authors = ["AndyMaleh"]
     gem.executables = ['glimmer', 'girb']

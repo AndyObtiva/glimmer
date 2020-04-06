@@ -1,7 +1,7 @@
 # Glimmer 0.5.0 Beta (JRuby Desktop UI DSL + Data-Binding)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master)
 
-Glimmer is a cross-platform Ruby desktop development library. Glimmer's main innovation is a JRuby DSL that enables easy and efficient authoring of desktop application user-interfaces while relying on the robust platform-independent Eclipse SWT library. Glimmer additionally innovates by having built-in desktop UI data-binding support to greatly facilitate synchronizing the UI with domain models. As a result, that achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about UI concerns, or alternatively drive development UI-first, and then write clean business components test-first afterward.
+Glimmer is a native-UI cross-platform desktop development library written in Ruby. Glimmer's main innovation is a JRuby DSL that enables productive and efficient authoring of desktop application user-interfaces while relying on the robust platform-native Eclipse SWT library. Glimmer additionally innovates by having built-in data-binding support to greatly facilitate synchronizing the UI with domain models. As a result, that achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about UI concerns, or alternatively drive development UI-first, and then write clean business components test-first afterwards.
 
 ## Examples
 
@@ -78,12 +78,14 @@ Glimmer runs on the following platforms:
 - Windows
 - Linux
 
-SWT uses Win32 on Windows, Cocoa on Mac, and GTK on Linux according to Eclipse WIKI:
+Glimmer's UI has the native look and feel of each operating system it runs on since it uses SWT behind the scenes, which leverages the following native libraries:
+- Win32 on Windows
+- Cocoa on Mac
+- GTK on Linux
+
+More info about the SWT UI on various platforms can be found on the Eclipse WIKI and SWT FAQ:
 
 https://wiki.eclipse.org/SWT/Devel/Gtk/Dev_guide#Win32.2FCocoa.2FGTK
-
-The SWT FAQ has further details:
-
 https://www.eclipse.org/swt/faq.php
 
 
@@ -1318,24 +1320,37 @@ https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/
 
 Glimmer automatically imports all SWT Java packages upon adding `include Glimmer` to a class or module.
 
-Still, if you'd like to import manually elsewhere, you may add the following lines to your code (in the class or module body) to import SWT Java packages using `include_package`:
-
-```ruby
-include_package 'org.eclipse.swt'
-include_package 'org.eclipse.swt.widgets'
-include_package 'org.eclipse.swt.layout'
-include_package 'org.eclipse.swt.graphics'
+Here are the Java packages imported:
+```
+org.eclipse.swt.*
+org.eclipse.swt.widgets.*
+org.eclipse.swt.layout.*
+org.eclipse.swt.graphics.*
+org.eclipse.swt.browser.*
+org.eclipse.swt.custom.*
 ```
 
-To import a specific SWT Java class using `java_import`, add the following:
-
-```ruby
-java_import 'org.eclipse.swt.SWT'
-```
-
-This allows you to call SWT Java classes from Ruby without mentioning package namespaces.
+This allows you to call SWT Java classes from Ruby without mentioning Java package references.
 
 For example, after imports, `org.eclipse.swt.graphics.Color` can be referenced by just `Color`
+
+Nonetheless, you can disable automatic import if needed via this Glimmer configuration option:
+
+```ruby
+Glimmer.import_swt_packages = false
+```
+
+To import SWT Java packages manually instead, you have 2 options:
+
+1. `include Glimmer::SwtPackages`: lazily imports all SWT Java packages to your class, lazy-loading SWT Java class constants on first reference.
+
+2. `java_import swt_package_class_string`: immediately imports a specific Java class where `swt_package_class_string` is the Java full package reference of a Java class (e.g. `java_import 'org.eclipse.swt.SWT'`)
+
+Note: Glimmer relies on [`nested_imported_jruby_include_package`](https://github.com/AndyObtiva/nested_inherited_jruby_include_package), which automatically brings packages to nested-modules/nested-classes and sub-modules/sub-classes.
+
+You can learn more about importing Java packages into Ruby code at this JRuby WIKI page:
+
+https://github.com/jruby/jruby/wiki/CallingJavaFromJRuby
 
 ## Logging
 

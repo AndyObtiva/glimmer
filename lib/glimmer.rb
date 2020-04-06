@@ -11,17 +11,27 @@ require "java"
 require "nested_inherited_jruby_include_package"
 require_relative "glimmer/parent"
 require_relative "glimmer/swt_packages" #TODO move into SWT namespace
-require_relative "glimmer/swt/custom_widget"
-require_relative 'glimmer/swt/video' # TODO offload to a custom widget directory
 
 module Glimmer
+   #TODO make it configurable to include or not include perhaps reverting to using included
   REGEX_METHODS_EXCLUDED = /^(to_|\[)/
-   #TODO make it configurable to include or not include
-  include SwtPackages
 
   class << self
     def included(klass)
-      klass.include SwtPackages
+      if import_swt_packages
+        klass.include(SwtPackages)
+      end
+    end
+
+    def import_swt_packages=(value)
+      @@import_swt_packages = !!value
+    end
+
+    def import_swt_packages
+      unless defined? @@import_swt_packages
+        @@import_swt_packages = true
+      end
+      @@import_swt_packages
     end
 
     def logger
@@ -73,4 +83,6 @@ module Glimmer
   end
 end
 
+require_relative "glimmer/swt/custom_widget"
+require_relative 'glimmer/swt/video' # TODO offload to a custom widget directory
 require File.dirname(__FILE__) + "/glimmer/command_handlers"

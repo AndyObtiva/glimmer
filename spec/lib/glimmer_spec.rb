@@ -1,6 +1,6 @@
 require "spec_helper"
 
-module Glimmer
+module GlimmerSpec
   describe Glimmer do
     include Glimmer
 
@@ -13,6 +13,7 @@ module Glimmer
     after do
       @target.dispose if @target
       self.class.send(:define_method, :display, @rspec_display_method)
+      Glimmer.import_swt_packages = true
     end
 
     it "tests shell with no args having default layout and singleton display instance" do

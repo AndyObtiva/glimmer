@@ -4,6 +4,7 @@
 
 - Scraped XML and multi-DSL support
 - Renamed `#add_contents` to `#content`
+- make it configurable to include SWT Packages or not
 
 ## 0.4.9
 - Added `org.eclipse.swt.custom` to default list of Glimmer SWT packages

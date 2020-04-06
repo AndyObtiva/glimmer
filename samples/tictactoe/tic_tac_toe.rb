@@ -2,7 +2,6 @@ require_relative "tic_tac_toe_board"
 
 class TicTacToe
   include Glimmer
-  include Observer
 
   def initialize
     @tic_tac_toe_board = TicTacToeBoard.new
@@ -24,12 +23,10 @@ class TicTacToe
         }
       }
     }
-    observe(@tic_tac_toe_board, :game_status)
-  end
-
-  def call(game_status)
-    display_win_message if game_status == TicTacToeBoard::WIN
-    display_draw_message if game_status == TicTacToeBoard::DRAW
+    observe(@tic_tac_toe_board, :game_status) { |game_status|
+      display_win_message if game_status == TicTacToeBoard::WIN
+      display_draw_message if game_status == TicTacToeBoard::DRAW
+    }
   end
 
   def display_win_message

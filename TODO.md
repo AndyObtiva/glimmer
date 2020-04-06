@@ -5,15 +5,12 @@ Here is a list of tasks to do (please delete once done):
 ## Up Next
 
 - Reorder file namespaces and directories
-- #TODO make it configurable to include SwtPackages or not include
 - Support swt keyword for style
 - Support color keyword for standard colors
 - Rename commands to keywords in Glimmer
 - Correct attribute/property naming (unify as attributes)
-- Fix issue requiring us to include Glimmer again in CustomShell to get SWT packages included (consider making SwtPackages a super_module) [perhaps fix super_module potential limitations around class variables and document them?]
 - Change "def body" to body { } in custom widget/shell
 - Make gwidgets and custom widgets proxy method calls to wrapped widget
-- Fix contactmanager sample sorting
 - Recapture all of readme's sample screenshots on Mac, Windows, and Linux (except the general widget listing for now)
 - Document custom shell widget
 - Document Glimmer::Launcher
@@ -24,11 +21,12 @@ Here is a list of tasks to do (please delete once done):
 - Scaffold a View/View-Model pair
 - Scaffold a custom widget
 - Scaffold a custom shell
-- Remove module.rb
 - Upgrade jruby
 - Upgrade SWT
 - Proxy java/jruby options to launcher
-
+- Rename GWidget.widget, GDisplay.display, and GColor.color methods to just swt_object
+- Use right requires in relation to load_path everywhere
+- Implement Glimmer sample launcher
 
 ## Feature Suggestions
 - Glimmer Wizard: provide a standard structure for building a Glimmer wizard (multi-step/multi-screen process)
