@@ -140,7 +140,15 @@ Example:
 ```
 glimmer samples/hello_world.rb
 ```
-This runs the Glimmer application hello_world.rb
+This runs the Glimmer "Hello, World!" sample.
+
+If you cloned this project locally, you may run `bin/glimmer` instead.
+
+Example:
+```
+bin/glimmer samples/hello_world.rb
+```
+
 
 ## Girb (Glimmer irb) Command
 
