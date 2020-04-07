@@ -20,6 +20,7 @@ require_relative "swt/command_handlers/widget_command_handler"
 require_relative "swt/command_handlers/custom_widget_command_handler"
 
 # TODO move into SWT namespace
+# TODO reimplement with interpreter design pattern as expressions instead of command handlers
 module Glimmer
   # edit to add more command handlers and extend Glimmer
   CommandHandlerChainFactory.setup(

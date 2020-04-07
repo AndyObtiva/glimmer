@@ -24,6 +24,7 @@ module Glimmer
         @display.dispose
       end
 
+      # TODO avoid using GRunnable by relying on JRuby's closure convention
       def async_exec(&block)
         @display.asyncExec(GRunnable.new(&block))
       end
