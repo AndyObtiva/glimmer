@@ -15,7 +15,7 @@ module Glimmer
       include_package 'org.eclipse.swt.browser'
 
       include Glimmer # TODO consider removing when no longer needed
-      include ObservableWidget      
+      include ObservableWidget
       include Parent
 
       attr_reader :widget
@@ -306,7 +306,7 @@ module Glimmer
       end
 
       def content(&block)
-        Glimmer.add_content(self, &block)
+        Glimmer::DSL::Engine.add_content(self, &block)
       end
 
       private

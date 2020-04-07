@@ -1,55 +1,48 @@
-require File.dirname(__FILE__) + "/../../command_handler"
-require File.dirname(__FILE__) + "/../g_widget"
-require File.dirname(__FILE__) + "/../custom_widget"
-require File.dirname(__FILE__) + "/../model_binding"
+require 'glimmer/dsl/expression'
+require 'glimmer/swt/g_widget'
+require 'glimmer/custom/widget'
+require 'glimmer/data_binding/model_binding'
 
 module Glimmer
-  module SWT
-    module CommandHandlers
-      # Responsible for setting up the return value of the bind keyword (command symbol)
-      # as a ModelBinding. It is then used by another command handler like
-      # DataBindingCommandHandler for text and selection properties on Text and Spinner
-      # or TableItemsDataBindingCommandHandler for items in a Table
-      class BindCommandHandler
-        include CommandHandler
+  module DSL
+    # Responsible for setting up the return value of the bind keyword (command symbol)
+    # as a ModelBinding. It is then used by another command handler like
+    # DataBindingCommandHandler for text and selection properties on Text and Spinner
+    # or TableItemsDataBindingCommandHandler for items in a Table
+    class BindExpression < Expression
 
-        include_package 'org.eclipse.swt.widgets'
+      include_package 'org.eclipse.swt.widgets'
 
-        def can_handle?(parent, command_symbol, *args, &block)
-          # TODO refactor this long condition below
-          (
-            command_symbol.to_s == "bind" &&
-            (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) &&
+      def can_interpret?(parent, keyword, *args, &block)
+        (
+          keyword == 'bind' &&
+            block == nil &&
+            widget?(parent) &&
             (
               (
                 (args.size == 2) &&
-                  (
-                    args[1].is_a?(Symbol) or
-                    args[1].is_a?(String)
-                  )
-              ) or
+                  textual?(args[1])
+              ) ||
                 (
                   (args.size == 3) &&
-                  (args[1].is_a?(Symbol) or args[1].is_a?(String)) &&
-                  (args[2].is_a?(Symbol) or args[2].is_a?(String) or args[2].is_a?(Hash))
-                ) or
+                    textual?(args[1]) &&
+                    (textual?(args[2]) || args[2].is_a?(Hash))
+                ) ||
                 (
                   (args.size == 4) &&
-                  (args[1].is_a?(Symbol) or args[1].is_a?(String)) &&
-                  (args[2].is_a?(Symbol) or args[2].is_a?(String)) &&
-                  (args[3].is_a?(Hash))
+                    textual?(args[1]) &&
+                    textual?(args[2]) &&
+                    (args[3].is_a?(Hash))
                 )
-            ) &&
-              block == nil
-          )
-        end
+            )
+        )
+      end
 
-        def do_handle(parent, command_symbol, *args, &block)
-          property_type = args[2] if (args.size == 3) && !args[2].is_a?(Hash)
-          binding_options = args[2] if args[2].is_a?(Hash)
-          binding_options = args[3] if args[3].is_a?(Hash)
-          ModelBinding.new(args[0], args[1].to_s, property_type, binding_options)
-        end
+      def interpret(parent, keyword, *args, &block)
+        property_type = args[2] if (args.size == 3) && !args[2].is_a?(Hash)
+        binding_options = args[2] if args[2].is_a?(Hash)
+        binding_options = args[3] if args[3].is_a?(Hash)
+        ModelBinding.new(args[0], args[1].to_s, property_type, binding_options)
       end
     end
   end

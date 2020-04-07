@@ -36,7 +36,7 @@ module Glimmer
         class ListenerParent
           include Parent
 
-          def process_block(block)
+          def content(&block)
             #NOOP
           end
 

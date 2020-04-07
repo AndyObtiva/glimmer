@@ -8,7 +8,6 @@ module Glimmer
   module SWT
     module CustomWidget
       include SuperModule
-      include Parent
       include ObservableModel
 
       super_module_included do |klass|
@@ -167,6 +166,7 @@ module Glimmer
 
 
       def process_block(block)
+        # TODO consider avoiding source_location
         if block.source_location == @content&.__getobj__.source_location
           @content.call(self) unless @content.called?
         else

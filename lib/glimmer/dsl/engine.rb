@@ -1,22 +1,65 @@
-require File.dirname(__FILE__) + "/command_handler_chain_link"
+Dir['glimmer/dsl/**/*_expression.rb'].each {|f| require f}
+require 'glimmer/dsl/expression_handler'
 
 module Glimmer
-  class CommandHandlerChainFactory
-    def self.setup(*command_handler_array)
-      @@last_chain_link = nil
-      @@chain = nil
-      command_handler_array.each do |command_handler|
-        Glimmer.logger.debug "Loading #{command_handler.class.to_s}..."
-        chain_link = CommandHandlerChainLink.new(command_handler)
-        @@last_chain_link.chain_to(chain_link) if @@last_chain_link
-        @@last_chain_link = chain_link
-        @@chain = chain_link unless @@chain
-      end
-      @@chain
-    end
+  module DSL
+    # Glimmer DSL Engine
+    #
+    # Follows Interpreter and Chain of Responsibility Design Patterns
+    #
+    # When DSL engine interprets an expression, it attempts to handle
+    # with ordered expression array specified via `.expressions=` method.
+    class Engine
+      class << self
+        # Sets an ordered array of DSL expressions to support
+        #
+        # Every expression has an underscored name corresponding to an upper
+        # camelcase AbstractExpression subclass name in glimmer/dsl
+        #
+        # They are used in order following the Chain of Responsibility Design
+        # Pattern when interpretting a DSL expression
+        def expressions=(expression_names)
+          @expression_chain_of_responsibility = expression_names.reverse.reduce(nil) do |last_expresion_handler, expression_name|
+            Glimmer.logger.debug "Loading #{expression_class_name(expression_name)}..."
+            expression = expression_class(expression_name).new
+            expression_handler = ExpressionHandler.new(expression)
+            expression_handler.next = last_expresion_handler if last_expresion_handler
+            expression_handler
+          end
+        end
 
-    def self.chain
-      @@chain
+        def expression_class(expression_name)
+          const_get(expression_class_name(expression_name).to_sym)
+        end
+
+        def expression_class_name(expression_name)
+          "#{expression_name}_expression".camelcase(:upper)
+        end
+
+        def interpret(keyword, *args, &block)
+          keyword = keyword.to_s
+          expression = @expression_chain_of_responsibility.handle(current_parent, keyword, *args, &block)
+          expression.interpret(current_parent, keyword, *args, &block).tap do |ui_object|
+            add_content(ui_object, &block)
+          end
+        end
+
+        def add_content(parent, &block)
+          parent_stack.push(parent)
+          expression.add_content(&block)
+          parent_stack.pop
+        end
+
+        def current_parent
+          parent_stack.last
+        end
+
+        private
+
+        def parent_stack
+          @parent_stack ||= []
+        end
+      end
     end
   end
 end
