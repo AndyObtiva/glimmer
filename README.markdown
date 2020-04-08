@@ -307,9 +307,9 @@ Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 @shell.open
 ```
 
-#### `#widget`
+#### `#swt_widget`
 
-Glimmer widget objects come with an instance method `#widget` that returns the actual SWT `Widget` object wrapped by the Glimmer widget object. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
+Glimmer widget objects come with an instance method `#swt_widget` that returns the actual SWT `Widget` object wrapped by the Glimmer widget object. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
 
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
@@ -327,6 +327,19 @@ Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 }
 @shell.open
 ```
+
+#### Shell widget proxy methods
+
+Shell widget proxy has extra methods specific to SWT Shell:
+- `#open`: Opens the shell, making it visible and active, and starting the SWT Event Loop (you may learn more about it here: https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/widgets/Display.html). If shell was already open, but hidden, it makes the shell visible.
+- `#show`: Alias for `#open`
+- `#hide`: Hides a shell setting "visible" property to false
+- `#close`: Closes the shell
+- `#center`: Centers the shell within monitor it is in
+- `#start_event_loop`: (happens as part of `#open`) Starts SWT Event Loop (you may learn more about it here: https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/widgets/Display.html). This method is not needed except in rare circumstances where there is a need to start the SWT Event Loop before opening the shell.
+- `#visible?`: Returns whether a shell is visible
+- `#opened_before?`: Returns whether a shell has been opened at least once before (additionally implying the SWT Event Loop has been started already)
+- `#visible=`: Setting to true opens/shows shell. Setting to false hides the shell.
 
 ### Widget Styles
 
@@ -386,11 +399,11 @@ https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/
 
 When building a widget-related SWT object manually (e.g. `GridData.new(...)`), you are expected to use `SWT::CONSTANT` directly or BIT-OR a few SWT constants together like `SWT::BORDER | SWT::V_SCROLL`.
 
-Glimmer facilitates that with `GSWT` class by allowing you to pass multiple styles as an argument array of symbols instead of dealing with BIT-OR. For example: `GSWT[:border, :v_scroll]`
+Glimmer facilitates that with `SWTProxy` class by allowing you to pass multiple styles as an argument array of symbols instead of dealing with BIT-OR. For example: `SWTProxy[:border, :v_scroll]`
 
 #### Non-resizable Window
 
-SWT Shell widget by default is resizable. To make it non-resizable, one must pass a complicated style bit concoction like `GSWT[:shell_trim] & (~GSWT[:resize]) & (~GSWT[:max])`.
+SWT Shell widget by default is resizable. To make it non-resizable, one must pass a complicated style bit concoction like `SWTProxy[:shell_trim] & (~SWTProxy[:resize]) & (~SWTProxy[:max])`.
 
 Glimmer makes this easier by alternatively offering `:no_resize` extra SWT style, added for convenience. This makes declaring an non-resizable window as easy as:
 ```ruby
@@ -669,7 +682,7 @@ composite {
   grid_layout 3, false # grid layout with 3 columns not of equal width
   label {
     # layout data set explicitly via an object (helps in rare cases that break convention)
-    layout_data GridData.new(GSWT[:fill], GSWT[:end], true, false)
+    layout_data GridData.new(SWTProxy[:fill], SWTProxy[:end], true, false)
   }
 }
 # ...
@@ -970,7 +983,7 @@ class TicTacToe
 end
 ```
 
-Alternatively, one can use a default Observer::Proc implementation via Observer.proc method:
+Alternatively, one can use a default Observer.proc implementation via Observer.proc method:
 ```ruby
 observer = Observer.proc { |new_value| puts new_value }
 observer.observe(@tic_tac_toe_board, :game_status)
@@ -1087,7 +1100,7 @@ Custom Widgets have the following attributes (attribute readers) available to ca
 - `#options`: a hash of options passed in parentheses when declaring a custom widget (useful for passing in model data) (e.g. `calendar(events: events)`). Custom widget class can declare option names (array) with `.options` method as shown below, which generates attribute readers for every option (not to be confused with `#options` instance method for retrieving options hash containing names & values)
 - `#content`: nested block underneath custom widget. It will be automatically called at the end of processing the custom widget body. Alternatively, the custom widget body may call `content.call` at the place where the content is needed to show up as shown in the following example.
 - `#body_root`: top-most (root) widget returned from `#body` method.
-- `#widget`: actual SWT widget for `body_root`
+- `#swt_widget`: actual SWT widget for `body_root`
 
 Additionally, custom widgets can call the following class methods:
 - `.options`: declares a list of options by taking an option name array (symbols/strings). This generates option attribute readers (e.g. `options :orientation, :bg_color` generates `#orientation` and `#bg_color` attribute readers)

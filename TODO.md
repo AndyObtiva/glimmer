@@ -27,9 +27,11 @@ Here is a list of tasks to do (please delete once done):
 - Upgrade jruby
 - Upgrade SWT
 - Proxy java/jruby options to launcher
-- Rename GWidget.widget, GDisplay.display, and GColor.color methods to just swt_object
+- Rename GWidget.widget, DisplayProxy.display, and GColor.color methods to just swt_object
 - Use right requires in relation to load_path everywhere
 - Implement Glimmer sample launcher
+- Add Glossary
+
 
 ## Feature Suggestions
 - Glimmer Wizard: provide a standard structure for building a Glimmer wizard (multi-step/multi-screen process)
@@ -77,6 +79,7 @@ bind(model, 'addresses').each { |address|
 - Make observers 'method?' friendly
 - Compose ModelBinding out of another ModelBinding (nesting deeper)
 - add a `#shell` method to gwidget and custom widget classes to get gshell containing them (or custom shell [think about the implications of this one])
+- Support proper `dispose` of widgets across the board (already support garbage collecting observers upon dispose... check if anything else is missing, like nested widget disposal)
 
 ## Documentation Tasks
 - Document G*** classes like GWidget and GShell

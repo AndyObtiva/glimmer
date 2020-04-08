@@ -22,7 +22,6 @@ module Glimmer
 
       def interpret(parent, keyword, *args, &block)
         parent.handle_observation_request(keyword, &block)
-        nil
       end
     end
   end

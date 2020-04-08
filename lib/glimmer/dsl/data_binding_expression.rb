@@ -25,6 +25,7 @@ module Glimmer
         widget_binding.call(model_binding.evaluate_property)
         #TODO make this options observer dependent and all similar observers in widget specific data binding handlers
         widget_binding.observe(model_binding)
+        # TODO simplify this logic and put it where it belongs
         parent.add_observer(model_binding, keyword)
       end
     end

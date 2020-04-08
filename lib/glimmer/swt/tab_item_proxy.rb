@@ -1,15 +1,26 @@
-require File.dirname(__FILE__) + "/g_runnable"
+require 'glimmer/swt/widget_proxy'
 
 module Glimmer
   module SWT
-    class TabItemProxy < GWidget
+    # Proxy for org.eclipse.swt.widgets.TabItem
+    #
+    # Functions differently from other widget proxies.
+    #
+    # Glimmer instantiates an SWT Composite alongside the SWT TabItem
+    # and returns it for `#swt_widget` to allow adding widgets into it.
+    #
+    # In order to get the SWT TabItem object, one must call `#swt_tab_item`.
+    #
+    # Follows the Proxy Design Pattern
+    class TabItemProxy < WidgetProxy
       include_package 'org.eclipse.swt.widgets'
 
-      attr_reader :tab_item
-      def initialize(tab_item, parent, style, &contents)
+      attr_reader :swt_tab_item
+
+      def initialize(parent, style, &contents)
         super("composite", parent, style, &contents)
-        @tab_item = tab_item
-        @tab_item.widget.control = self.widget
+        @swt_tab_item = SWT::WidgetProxy.new('tab_item', parent.swt_widget, args)
+        @swt_tab_item.swt_widget.control = self.swt_widget
       end
 
       def has_attribute?(attribute_name, *args)
@@ -23,7 +34,7 @@ module Glimmer
       def set_attribute(attribute_name, *args)
         if attribute_name.to_s == "text"
           text_value = args[0]
-          @tab_item.widget.text = text_value
+          @swt_tab_item.swt_widget.text = text_value
         else
           super(attribute_name, *args)
         end
@@ -31,7 +42,7 @@ module Glimmer
 
       def get_attribute(attribute_name)
         if attribute_name.to_s == "text"
-          @tab_item.widget.text
+          @swt_tab_item.swt_widget.text
         else
           super(attribute_name)
         end

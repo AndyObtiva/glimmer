@@ -58,7 +58,7 @@
 - SWT Layout Data DSL support
 
 ## 0.4.0
-- Changed `BlockObserver` into `Observer::Proc`
+- Changed `BlockObserver` into `Observer.proc`
 - Added `Observer#proc` to create simple block-based observers.
 - Updated Observer API renaming `#update` to `#call`
 - Renamed `R` prefixed classes (i.e. Ruby) to `G` prefixed classes (i.e. Glimmer) (e.g. `RWidget` becomes `GWidget`)
@@ -69,7 +69,7 @@
 
 ## 0.3.5
 - Added font support to Glimmer DSL via name/height/style hash
-- Added GSWT to easily build SWT constants (e.g. GSWT[:border] is SWT::BORDER )
+- Added SWTProxy to easily build SWT constants (e.g. SWTProxy[:border] is SWT::BORDER )
 
 ## 0.3.4
 - Fixed color support/property converter support to work both in data-binding and in static property setting

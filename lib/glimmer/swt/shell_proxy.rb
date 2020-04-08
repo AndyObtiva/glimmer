@@ -1,86 +1,86 @@
-require_relative 'g_widget'
-require_relative 'g_display'
+require 'glimmer/swt/swt_proxy'
+require 'glimmer/swt/widget_proxy'
+require 'glimmer/swt/display_proxy'
 
 module Glimmer
   module SWT
-    class GShell < GWidget
+    # Proxy for org.eclipse.swt.widgets.Shell
+    #
+    # Follows the Proxy Design Pattern
+    class ShellProxy < WidgetProxy
+      include_package 'org.eclipse.swt.widgets'
+      include_package 'org.eclipse.swt.layout'
+
       WIDTH_MIN = 130
       HEIGHT_MIN = 0
 
-      include_package 'org.eclipse.swt.layout'
-      include_package 'org.eclipse.swt.widgets'
-
-      attr_reader :display, :opened_before
+      attr_reader :opened_before
       alias opened_before? opened_before
 
-      # Instantiates shell with same arguments expected by SWT Shell
+      # Instantiates ShellProxy with same arguments expected by SWT Shell
       def initialize(*args)
         if args.first.nil? || !args.first.is_a?(Display) && !args.first.is_a?(Shell)
-          @display = GDisplay.instance.display
+          @display = DisplayProxy.instance.display
           args = [@display] + args
         end
-        args = GSWT.constantify_args(args)
-        @widget = Shell.new(*args)
-        @display ||= @widget.getDisplay
-        @widget.setLayout(FillLayout.new)
-        @widget.setMinimumSize(WIDTH_MIN, HEIGHT_MIN)
+        args = SWTProxy.constantify_args(args)
+        @swt_widget = Shell.new(*args)
+        @display ||= @swt_widget.getDisplay
+        @swt_widget.setLayout(FillLayout.new)
+        @swt_widget.setMinimumSize(WIDTH_MIN, HEIGHT_MIN)
       end
 
-      # Centers shell within screen
+      # Centers shell within monitor it is in
       def center
         primary_monitor = @display.getPrimaryMonitor()
         monitor_bounds = primary_monitor.getBounds()
-        shell_bounds = @widget.getBounds()
+        shell_bounds = @swt_widget.getBounds()
         location_x = monitor_bounds.x + (monitor_bounds.width - shell_bounds.width) / 2
         location_y = monitor_bounds.y + (monitor_bounds.height - shell_bounds.height) / 2
-        @widget.setLocation(location_x, location_y)
+        @swt_widget.setLocation(location_x, location_y)
       end
 
       # Opens shell and starts SWT's UI thread event loop
       def open
         if @opened_before
-          @widget.setVisible(true)
+          @swt_widget.setVisible(true)
           # notify_observers('visible')
         else
           @opened_before = true
-          @widget.pack
+          @swt_widget.pack
           center
-          @widget.open
-          # NOTE: the following line runs after scheduled sync exec events,
-          # but ensures visible status is only updated upon true visibility
-          # async_exec do
-            # notify_observers('visible')
-          # end
+          @swt_widget.open
           start_event_loop
-          @display.dispose # it's more performant to reuse instead of disposing
+          @display.dispose # TODO consider if it's more performant to reuse instead of disposing
         end
       end
       alias show open
 
       def hide
-        @widget.setVisible(false)
-        # notify_observers('visible')
+        @swt_widget.setVisible(false)
       end
 
       def close
-        @widget.close
-        # notify_observers('visible')
+        @swt_widget.close
       end
-
-      # TODO implement and notify_observers('visible') based on open and hide
 
       def visible?
-        @widget.isDisposed ? false : @widget.isVisible
+        @swt_widget.isDisposed ? false : @swt_widget.isVisible
       end
 
-      # TODO evaluate if this is needed
-
+      # Setting to true opens/shows shell. Setting to false hides the shell.
       def visible=(visibility)
         visibility ? show : hide
       end
 
+      # (happens as part of `#open`)
+      # Starts SWT Event Loop.
+      #
+      # You may learn more about the SWT Event Loop here:
+      # https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/widgets/Display.html
+      # This method is not needed except in rare circumstances where there is a need to start the SWT Event Loop before opening the shell.
       def start_event_loop
-        until @widget.isDisposed
+        until @swt_widget.isDisposed
           @display.sleep unless @display.readAndDispatch
         end
       end
@@ -88,15 +88,12 @@ module Glimmer
       def add_observer(observer, property_name)
         case property_name.to_s
         when 'visible?'
-          @widget.addListener(GSWT[:show]) do |event|
+          visibility_notifier = proc do
             observer.call(visible?)
           end
-          @widget.addListener(GSWT[:hide]) do |event|
-            observer.call(visible?)
-          end
-          @widget.addListener(GSWT[:close]) do |event|
-            observer.call(visible?)
-          end
+          on_event_show(&visibility_notifier)
+          on_event_hide(&visibility_notifier)
+          on_event_close(&visibility_notifier)
         else
           super
         end

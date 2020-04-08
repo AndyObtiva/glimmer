@@ -1,13 +1,18 @@
 module Glimmer
-  module SWT #TODO refactor so GSWT and SWT are one and the same
-    class GSWT
+  module SWT # TODO Consider making this the class below to ease calling it
+    # Proxy for org.eclipse.swt.SWT
+    #
+    # Follows the Proxy Design Pattern
+    class SWTProxy
       class << self
-        ERROR_INVALID_STYLE = " is an invalid SWT style! Please choose a style from org.eclipse.swt.SWT class constants."
         java_import 'org.eclipse.swt.SWT'
+
+        ERROR_INVALID_STYLE = " is an invalid SWT style! Please choose a style from org.eclipse.swt.SWT class constants."
 
         # Gets SWT constants as if calling SWT::CONSTANT where constant is
         # passed in as a lower case symbol
         def [](*symbols)
+          symbols = symbols.first if symbols.size == 1 && symbols.is_a?(Array)
           symbols.compact.reduce(0) do |output, symbol|
             constant_value = constant(symbol)
             if constant_value.is_a?(Integer)
@@ -58,7 +63,7 @@ module Glimmer
       end
 
       EXTRA_STYLES = {
-        NO_RESIZE: GSWT[:shell_trim] & (~GSWT[:resize]) & (~GSWT[:max])
+        NO_RESIZE: SWTProxy[:shell_trim] & (~SWTProxy[:resize]) & (~SWTProxy[:max])
       }
     end
   end

@@ -1,11 +1,15 @@
-require_relative 'custom_widget'
-require_relative 'g_color'
+require 'glimmer/ui/custom_widget'
+require 'glimmer/swt/color_proxy'
 
 #TODO display progress wheel while loading video
 
 module Glimmer
-  module SWT
+  module UI
     class Video
+      include Glimmer::UI::CustomWidget
+
+      include_package 'org.eclipse.swt.browser'
+
       PROPERTIES_OBSERVED = [
         'playing',
         'paused',
@@ -14,10 +18,6 @@ module Glimmer
         'remaining',
         'current_time',
       ]
-
-      include_package 'org.eclipse.swt.browser'
-
-      include Glimmer::SWT::CustomWidget
 
       options :file, :url
       option :autoplay, true
@@ -114,8 +114,8 @@ module Glimmer
       def browser_body_background
         color = background
         if color.is_a?(Symbol) || color.is_a?(String)
-          color = GColor.color_for(parent.widget.getDisplay, color)
-        elsif color.is_a?(GColor)
+          color = ColorProxy.color_for(parent.widget.getDisplay, color)
+        elsif color.is_a?(ColorProxy)
           color = color.color
         end
         "rgba(#{color.getRed}, #{color.getGreen}, #{color.getBlue}, #{color.getAlpha})"

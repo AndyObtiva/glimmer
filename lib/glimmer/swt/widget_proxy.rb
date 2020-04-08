@@ -1,129 +1,89 @@
 require 'glimmer/swt/widget_listener_proxy'
-require 'glimmer/swt/runnable_proxy'
 require 'glimmer/swt/color_proxy'
 require 'glimmer/swt/font_proxy'
 require 'glimmer/swt/swt_proxy'
 
 module Glimmer
   module SWT
+    # Proxy for SWT Widget objects
+    #
+    # Sets default SWT styles to widgets upon inititalizing as
+    # per DEFAULT_STYLES
+    #
+    # Also, auto-initializes widgets as per initializer blocks
+    # in DEFAULT_INITIALIZERS  (e.g. setting Composite default layout)
+    #
+    # Follows the Proxy Design Pattern
     class WidgetProxy
-      include Glimmer # TODO consider removing when no longer needed
       include ObservableWidget
+      include Packages
 
-      include_package 'org.eclipse.swt'
-      include_package 'org.eclipse.swt.widgets'
-      include_package 'org.eclipse.swt.layout'
-      include_package 'org.eclipse.swt.graphics'
-      include_package 'org.eclipse.swt.browser'
+      attr_reader :swt_widget
 
-      attr_reader :widget
-
-      #TODO externalize
-      @@default_styles = {
-        "text" => GSWT[:border],
-        "table" => GSWT[:border],
-        "spinner" => GSWT[:border],
-        "list" => GSWT[:border, :v_scroll],
-        "button" => GSWT[:push],
+      DEFAULT_STYLES = {
+        "text"    => [:border],
+        "table"   => [:border],
+        "spinner" => [:border],
+        "list"    => [:border, :v_scroll],
+        "button"  => [:push],
       }
 
-      #TODO externalize
-      @@default_initializers = {
-        "composite" => Proc.new {|composite| composite.setLayout(GridLayout.new) },
-        "table" => Proc.new do |table|
+      DEFAULT_INITIALIZERS = {
+        "composite" => proc do |composite|
+          composite.setLayout(GridLayout.new)
+        end,
+        "table" => proc do |table|
           table.setHeaderVisible(true)
           table.setLinesVisible(true)
         end,
-        "table_column" => Proc.new { |table_column| table_column.setWidth(80) },
-        "group" => Proc.new {|group| group.setLayout(GridLayout.new) },
+        "table_column" => proc do |table_column|
+          table_column.setWidth(80)
+        end,
+        "group" => proc do |group|
+          group.setLayout(GridLayout.new)
+        end,
       }
 
-      #styles is a comma separate list of symbols representing SWT styles in lower case
+      # Initializes a new SWT Widget
+      #
+      # Styles is a comma separate list of symbols representing SWT styles in lower case
       def initialize(underscored_widget_name, parent, styles, &contents)
-        @widget = self.class.swt_widget_class_for(underscored_widget_name).new(parent, style(underscored_widget_name, styles))
-        @@default_initializers[underscored_widget_name].call(@widget) if @@default_initializers[underscored_widget_name]
-      end
-
-      def widget_custom_attribute_mapping
-        @widget_custom_attribute_mapping ||= {
-          'focus' => {
-            getter: {name: 'isFocusControl'},
-            setter: {name: 'setFocus', invoker: lambda { |widget, args| widget.setFocus if args.first }},
-          }
-        }
+        @swt_widget = self.class.swt_widget_class_for(underscored_widget_name).new(parent, style(underscored_widget_name, styles))
+        DEFAULT_INITIALIZERS[underscored_widget_name].call(@swt_widget) if DEFAULT_INITIALIZERS[underscored_widget_name]
       end
 
       def has_attribute?(attribute_name, *args)
         widget_custom_attribute = widget_custom_attribute_mapping[attribute_name.to_s]
         if widget_custom_attribute
-          @widget.respond_to?(widget_custom_attribute[:setter][:name])
+          @swt_widget.respond_to?(widget_custom_attribute[:setter][:name])
         else
-          @widget.respond_to?(attribute_setter(attribute_name), args)
+          @swt_widget.respond_to?(attribute_setter(attribute_name), args)
         end
       end
 
       def set_attribute(attribute_name, *args)
         widget_custom_attribute = widget_custom_attribute_mapping[attribute_name.to_s]
         if widget_custom_attribute
-          widget_custom_attribute[:setter][:invoker].call(@widget, args)
+          widget_custom_attribute[:setter][:invoker].call(@swt_widget, args)
         else
           apply_property_type_converters(attribute_name, args)
-          @widget.send(attribute_setter(attribute_name), *args)
+          @swt_widget.send(attribute_setter(attribute_name), *args)
         end
       end
 
       def get_attribute(attribute_name)
         widget_custom_attribute = widget_custom_attribute_mapping[attribute_name.to_s]
         if widget_custom_attribute
-          @widget.send(widget_custom_attribute[:getter][:name])
+          @swt_widget.send(widget_custom_attribute[:getter][:name])
         else
-          @widget.send(attribute_getter(attribute_name))
+          @swt_widget.send(attribute_getter(attribute_name))
         end
-      end
-
-      def property_type_converters
-        color_converter = Proc.new do |value|
-          if value.is_a?(Symbol) || value.is_a?(String)
-            GColor.color_for(widget.getDisplay, value)
-          else
-            value
-          end
-        end
-        @property_type_converters ||= {
-          :text => Proc.new { |value| value.to_s },
-          :items => Proc.new { |value| value.to_java :string},
-          :visible => Proc.new { |value| !!value},
-          :background => color_converter,
-          :background_image => Proc.new do |value|
-            if value.is_a?(String)
-              image_data = ImageData.new(value)
-              # TODO in the future, look into unregistering this listener when no longer needed
-              on_event_Resize do |resize_event|
-                new_image_data = image_data.scaledTo(widget.getSize.x, widget.getSize.y)
-                widget.getBackgroundImage&.dispose
-                widget.setBackgroundImage(Image.new(widget.getDisplay, new_image_data))
-              end
-              Image.new(widget.getDisplay, image_data)
-            else
-              value
-            end
-          end,
-          :foreground => color_converter,
-          :font => Proc.new do |value|
-            if value.is_a?(Hash)
-              font_properties = value
-              FontProxy.new(self, font_properties).swt_font
-            else
-              value
-            end
-          end,
-        }
       end
 
       def widget_property_listener_installers
-        @widget_property_listener_installers ||= {
+        @swt_widget_property_listener_installers ||= {
           Java::OrgEclipseSwtWidgets::Control => {
-            :focus => Proc.new do |observer|
+            :focus => proc do |observer|
               on_focus_gained { |focus_event|
                 observer.call(true)
               }
@@ -133,40 +93,27 @@ module Glimmer
             end,
           },
           Java::OrgEclipseSwtWidgets::Text => {
-            :text => Proc.new do |observer|
+            :text => proc do |observer|
               on_modify_text { |modify_event|
-                observer.call(widget.getText)
+                observer.call(@swt_widget.getText)
               }
             end,
           },
           Java::OrgEclipseSwtWidgets::Button => {
-            :selection => Proc.new do |observer|
+            :selection => proc do |observer|
               on_widget_selected { |selection_event|
-                observer.call(widget.getSelection)
+                observer.call(@swt_widget.getSelection)
               }
             end
           },
           Java::OrgEclipseSwtWidgets::Spinner => {
-            :selection => Proc.new do |observer|
+            :selection => proc do |observer|
               on_widget_selected { |selection_event|
-                observer.call(widget.getSelection)
+                observer.call(@swt_widget.getSelection)
               }
             end
           }
         }
-      end
-
-      def apply_property_type_converters(attribute_name, args)
-        if args.count == 1
-          value = args.first
-          converter = property_type_converters[attribute_name.to_sym]
-          args[0] = converter.call(value) if converter
-        end
-        if args.count == 1 && args.first.is_a?(GColor)
-          g_color = args.first
-          g_color.display = widget.display if g_color.display.nil? || g_color.display != widget.display
-          args[0] = g_color.color
-        end
       end
 
       def self.widget_exists?(underscored_widget_name)
@@ -190,6 +137,89 @@ module Glimmer
         nil
       end
 
+      def async_exec(&block)
+        DisplayProxy.instance.async_exec(&block)
+      end
+
+      def sync_exec(&block)
+        DisplayProxy.instance.sync_exec(&block)
+      end
+
+      def has_style?(style)
+        (@swt_widget.style & SWTProxy[style]) == SWTProxy[style]
+      end
+
+      def dispose
+        @swt_widget.dispose
+      end
+
+      # TODO Consider renaming these methods as they are mainly used for data-binding
+
+      def can_add_observer?(property_name)
+        @swt_widget.class.ancestors.map {|ancestor| widget_property_listener_installers[ancestor]}.compact.map(&:keys).flatten.map(&:to_s).include?(property_name.to_s)
+      end
+
+      # Used for data-binding only. Consider renaming or improving to avoid the confusion it causes
+      def add_observer(observer, property_name)
+        property_listener_installers = @swt_widget.class.ancestors.map {|ancestor| widget_property_listener_installers[ancestor]}.compact
+        widget_listener_installers = property_listener_installers.map{|installer| installer[property_name.to_s.to_sym]}.compact if !property_listener_installers.empty?
+        widget_listener_installers.each do |widget_listener_installer|
+          widget_listener_installer.call(observer)
+        end
+      end
+
+      def remove_observer(observer, property_name)
+        # TODO consider implementing if remove_observer is needed (consumers can remove listener via SWT API)
+      end
+
+      # TODO eliminate duplication in the following methods perhaps by relying on exceptions
+
+      def can_handle_observation_request?(observation_request)
+        observation_request = observation_request.to_s
+        if observation_request.start_with?('on_event_')
+          constant_name = observation_request.sub(/^on_event_/, '')
+          SWTProxy.has_constant?(constant_name)
+        elsif observation_request.start_with?('on_')
+          event = observation_request.sub(/^on_/, '')
+          can_add_listener?(event)
+        else
+          false
+        end
+      end
+
+      def handle_observation_request(observation_request, &block)
+        if observation_request.start_with?('on_event_')
+          constant_name = observation_request.sub(/^on_event_/, '')
+          add_swt_event_listener(constant_name, &block)
+        elsif observation_request.start_with?('on_')
+          event = observation_request.sub(/^on_/, '')
+          add_listener(event, &block)
+        end
+      end
+
+      def content(&block)
+        Glimmer::DSL::Engine.add_content(self, &block)
+      end
+
+      private
+
+      def style(underscored_widget_name, styles)
+        styles.empty? ? default_style(underscored_widget_name) : SWTProxy[*styles]
+      end
+
+      def default_style(underscored_widget_name)
+        styles = DEFAULT_STYLES[underscored_widget_name] || [:none]
+        SWTProxy[styles]
+      end
+
+      def attribute_setter(attribute_name)
+        "set#{attribute_name.to_s.camelcase(:upper)}"
+      end
+
+      def attribute_getter(attribute_name)
+        "get#{attribute_name.to_s.camelcase(:upper)}"
+      end
+
       # TODO refactor following methods to eliminate duplication
       # perhaps consider relying on raising an exception to avoid checking first
       # unless that gives obscure SWT errors
@@ -198,7 +228,7 @@ module Glimmer
 
       def can_add_listener?(underscored_listener_name)
         listener_method_name = underscored_listener_name.camelcase(:lower)
-        @widget.getClass.getMethods.each do |widget_method|
+        @swt_widget.getClass.getMethods.each do |widget_method|
           if widget_method.getName.match(/add.*Listener/)
             widget_method.getParameterTypes.each do |listener_type|
               listener_type.getMethods.each do |listener_method|
@@ -214,7 +244,7 @@ module Glimmer
 
       def add_listener(underscored_listener_name, &block)
         listener_method_name = underscored_listener_name.camelcase(:lower)
-        @widget.getClass.getMethods.each do |widget_method|
+        @swt_widget.getClass.getMethods.each do |widget_method|
           if widget_method.getName.match(/add.*Listener/)
             widget_method.getParameterTypes.each do |listener_type|
               listener_type.getMethods.each do |listener_method|
@@ -232,8 +262,8 @@ module Glimmer
                   listener.block=block
                   # TODO consider define_method instead
                   eval "def listener.#{listener_method.getName}(event) @block.call(event) if @block end"
-                  @widget.send(widget_method.getName, listener)
-                  return GWidgetListener.new(listener)
+                  @swt_widget.send(widget_method.getName, listener)
+                  return WidgetListenerProxy.new(listener)
                 end
               end
             end
@@ -241,88 +271,76 @@ module Glimmer
         end
       end
 
-      def async_exec(&block)
-        GDisplay.instance.async_exec(&block)
+      def add_swt_event_listener(swt_constant, &block)
+        event_type = SWTProxy[swt_constant]
+        @swt_widget.addListener(event_type, &block)
+        WidgetListenerProxy.new(@swt_widget.getListeners(event_type).last)
       end
 
-      def sync_exec(&block)
-        GDisplay.instance.sync_exec(&block)
+      def widget_custom_attribute_mapping
+        @swt_widget_custom_attribute_mapping ||= {
+          'focus' => {
+            getter: {name: 'isFocusControl'},
+            setter: {name: 'setFocus', invoker: lambda { |widget, args| @swt_widget.setFocus if args.first }},
+          }
+        }
       end
 
-      def has_style?(style)
-        (widget.style & GSWT[style]) == GSWT[style]
-      end
-
-      def dispose
-        @widget.dispose
-      end
-
-      # TODO Consider renaming these methods as they are mainly used for data-binding
-
-      def can_add_observer?(property_name)
-        @widget.class.ancestors.map {|ancestor| widget_property_listener_installers[ancestor]}.compact.map(&:keys).flatten.map(&:to_s).include?(property_name.to_s)
-      end
-
-      def add_observer(observer, property_name)
-        property_listener_installers = @widget.class.ancestors.map {|ancestor| widget_property_listener_installers[ancestor]}.compact
-        widget_listener_installers = property_listener_installers.map{|installer| installer[property_name.to_s.to_sym]}.compact if !property_listener_installers.empty?
-        widget_listener_installers.each do |widget_listener_installer|
-          widget_listener_installer.call(observer)
+      def apply_property_type_converters(attribute_name, args)
+        if args.count == 1
+          value = args.first
+          converter = property_type_converters[attribute_name.to_sym]
+          args[0] = converter.call(value) if converter
+        end
+        if args.count == 1 && args.first.is_a?(ColorProxy)
+          g_color = args.first
+          args[0] = g_color.swt_color
         end
       end
 
-      def remove_observer(observer, property_name)
-        # TODO consider implementing if remove_observer is needed (consumers can remove listener via SWT API)
-      end
-
-      # TODO eliminate duplication in the following methods perhaps by relying on exceptions
-
-      def can_handle_observation_request?(observation_request)
-        observation_request = observation_request.to_s
-        if observation_request.start_with?('on_event_')
-          constant_name = observation_request.sub(/^on_event_/, '')
-          GSWT.has_constant?(constant_name)
-        elsif observation_request.start_with?('on_')
-          event = observation_request.sub(/^on_/, '')
-          can_add_listener?(event)
-        else
-          false
+      def property_type_converters
+        color_converter = proc do |value|
+          if value.is_a?(Symbol) || value.is_a?(String)
+            ColorProxy.new(value).swt_color
+          else
+            value
+          end
         end
-      end
-
-      def handle_observation_request(observation_request, &block)
-        if observation_request.start_with?('on_event_')
-          constant_name = observation_request.sub(/^on_event_/, '')
-          @widget.addListener(GSWT[constant_name], &block)
-        elsif observation_request.start_with?('on_')
-          event = observation_request.sub(/^on_/, '')
-          add_listener(event, &block)
-        end
-        nil
-      end
-
-      def content(&block)
-        Glimmer::DSL::Engine.add_content(self, &block)
-      end
-
-      private
-
-      def style(underscored_widget_name, styles)
-        styles.empty? ? default_style(underscored_widget_name) : GSWT[*styles]
-      end
-
-      def default_style(underscored_widget_name)
-        style = @@default_styles[underscored_widget_name] if @@default_styles[underscored_widget_name]
-        style = GSWT[:none] unless style
-        style
-      end
-
-      def attribute_setter(attribute_name)
-        "set#{attribute_name.to_s.camelcase(:upper)}"
-      end
-
-      def attribute_getter(attribute_name)
-        "get#{attribute_name.to_s.camelcase(:upper)}"
+        @property_type_converters ||= {
+          :background => color_converter,
+          :background_image => proc do |value|
+            if value.is_a?(String)
+              image_data = ImageData.new(value)
+              # TODO in the future, look into unregistering this listener when no longer needed
+              on_event_Resize do |resize_event|
+                new_image_data = image_data.scaledTo(@swt_widget.getSize.x, @swt_widget.getSize.y)
+                @swt_widget.getBackgroundImage&.dispose
+                @swt_widget.setBackgroundImage(Image.new(@swt_widget.getDisplay, new_image_data))
+              end
+              Image.new(@swt_widget.getDisplay, image_data)
+            else
+              value
+            end
+          end,
+          :foreground => color_converter,
+          :font => proc do |value|
+            if value.is_a?(Hash)
+              font_properties = value
+              FontProxy.new(self, font_properties).swt_font
+            else
+              value
+            end
+          end,
+          :items => proc do |value|
+            value.to_java :string
+          end,
+          :text => proc do |value|
+            value.to_s
+          end,
+          :visible => proc do |value|
+            !!value
+          end,
+        }
       end
     end
   end

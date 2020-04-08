@@ -1,17 +1,17 @@
-require 'super_module'
-require 'glimmer'
-require_relative 'proc_tracker'
-require_relative 'observable_model'
-require_relative 'observable_widget'
+require 'glimmer/swt/swt_proxy'
+require 'glimmer/swt/display_proxy'
+require 'glimmer/util/proc_tracker'
+require 'glimmer/data_binding/observable_model/'
+require 'glimmer/data_binding/observable_widget'
 
 module Glimmer
-  module SWT
+  module UI
     module CustomWidget
       include SuperModule
       include ObservableModel
 
       super_module_included do |klass|
-        klass.include(Glimmer) unless klass.name.include?("Glimmer::SWT::CustomShell")
+        klass.include(Glimmer) unless klass.name.include?('Glimmer::SWT::CustomShell')
         klass.prepend ObservableWidget
       end
 
@@ -91,18 +91,18 @@ module Glimmer
         end
       end
 
-      attr_reader :body_root, :widget, :parent, :swt_style, :options, :content
+      attr_reader :body_root, :swt_widget, :parent, :swt_style, :options
 
       def initialize(parent, *swt_constants, options, &content)
         @parent = parent
-        @swt_style = GSWT[*swt_constants]
+        @swt_style = SWTProxy[*swt_constants]
         options ||= {}
         @options = self.class.options.merge(options)
         @content = ProcTracker.new(content) if content
         execute_hooks('before_body')
         @body_root = body
         execute_hooks('after_body')
-        @widget = @body_root.widget
+        @swt_widget = @body_root.swt_widget
       end
 
       def body
@@ -121,7 +121,7 @@ module Glimmer
       def handle_observation_request(observation_request, &block)
         if observation_request.start_with?('on_updated_')
           property = observation_request.sub(/^on_updated_/, '')
-          add_observer(Observer::Proc.new(&block), property) if can_add_observer?(property)
+          add_observer(Observer.proc(&block), property) if can_add_observer?(property)
         else
           body_root.handle_observation_request(observation_request, &block)
         end
@@ -165,30 +165,23 @@ module Glimmer
       end
 
 
-      def process_block(block)
-        # TODO consider avoiding source_location
-        if block.source_location == @content&.__getobj__.source_location
-          @content.call(self) unless @content.called?
-        else
-          block.call(self)
-        end
-      end
-
       def has_style?(style)
-        (swt_style & GSWT[style]) == GSWT[style]
+        (swt_style & SWTProxy[style]) == SWTProxy[style]
       end
 
       # TODO see if it is worth it to eliminate duplication of async_exec/sync_exec
-      # delegation to GDisplay, via a module
+      # delegation to DisplayProxy, via a module
 
       def async_exec(&block)
-        GDisplay.instance.async_exec(&block)
+        DisplayProxy.instance.async_exec(&block)
       end
 
       def sync_exec(&block)
-        GDisplay.instance.sync_exec(&block)
+        DisplayProxy.instance.sync_exec(&block)
       end
 
+      # Returns content block if used as an attribute reader (no args)
+      # Otherwise, if a block is passed, it adds it as content to this custom widget
       def content(&block)
         if block_given?
           body_root.content(&block)

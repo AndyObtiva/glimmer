@@ -33,7 +33,7 @@ module Glimmer
       def populate_table(model_collection, parent, column_properties)
         parent.widget.removeAll
         model_collection.each do |model|
-          table_item = TableItem.new(parent.widget, GSWT[:none])
+          table_item = TableItem.new(parent.widget, SWTProxy[:none])
           for index in 0..(column_properties.size-1)
             table_item.setText(index, model.send(column_properties[index]).to_s)
           end

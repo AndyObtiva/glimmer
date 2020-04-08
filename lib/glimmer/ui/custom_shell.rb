@@ -1,10 +1,8 @@
-require 'super_module'
-
 module Glimmer
   module SWT
     module CustomShell
       include SuperModule
-      include Glimmer::SWT::CustomWidget
+      include Glimmer::UI::CustomWidget
 
       # super_module_included do |klass|
       #   if Glimmer.import_swt_packages

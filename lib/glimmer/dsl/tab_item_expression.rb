@@ -20,8 +20,7 @@ module Glimmer
       end
 
       def interpret(parent, keyword, *args, &block)
-        tab_item = SWT::WidgetProxy.new(keyword, parent.widget, args)
-        SWT::TabItemProxy.new(tab_item, parent.widget, args)
+        SWT::TabItemProxy.new(parent, args)
       end
     end
   end

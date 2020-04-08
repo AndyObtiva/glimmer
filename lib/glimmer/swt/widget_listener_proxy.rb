@@ -1,12 +1,17 @@
 module Glimmer
   module SWT
-    class GWidgetListener
+    # Proxy for widget listeners
+    #
+    # Follows the Proxy Design Pattern
+    class WidgetListenerProxy
 
-      attr_reader :listener
+      attr_reader :swt_listener
 
-      def initialize(listener)
-        @listener = listener
-      end      
+      # TODO capture its widget and support unregistering 
+
+      def initialize(swt_listener)
+        @swt_listener = swt_listener
+      end
     end
   end
 end

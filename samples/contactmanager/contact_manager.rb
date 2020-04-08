@@ -18,21 +18,21 @@ class ContactManager
           text {
             text bind(@contact_manager_presenter, :first_name)
             on_key_pressed {|key_event|
-              @contact_manager_presenter.find if key_event.keyCode == Glimmer::SWT::GSWT[:cr]
+              @contact_manager_presenter.find if key_event.keyCode == Glimmer::SWT::SWTProxy[:cr]
             }
           }
           label {text "&Last Name: "}
           text {
             text bind(@contact_manager_presenter, :last_name)
             on_key_pressed {|key_event|
-              @contact_manager_presenter.find if key_event.keyCode == Glimmer::SWT::GSWT[:cr]
+              @contact_manager_presenter.find if key_event.keyCode == Glimmer::SWT::SWTProxy[:cr]
             }
           }
           label {text "&Email: "}
           text {
             text bind(@contact_manager_presenter, :email)
             on_key_pressed {|key_event|
-              @contact_manager_presenter.find if key_event.keyCode == Glimmer::SWT::GSWT[:cr]
+              @contact_manager_presenter.find if key_event.keyCode == Glimmer::SWT::SWTProxy[:cr]
             }
           }
           composite {

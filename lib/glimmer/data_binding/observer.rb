@@ -34,7 +34,7 @@ module Glimmer
 
       class << self
         def proc(&observer_block)
-          Proc.new(&observer_block)
+          proc(&observer_block)
         end
       end
 
