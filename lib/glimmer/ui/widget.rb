@@ -91,7 +91,7 @@ module Glimmer
         end
       end
 
-      attr_reader :body_root, :widget, :parent, :swt_style, :options
+      attr_reader :body_root, :widget, :parent, :swt_style, :options, :content
 
       def initialize(parent, *swt_constants, options, &content)
         @parent = parent
