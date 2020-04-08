@@ -1,22 +1,20 @@
-require_relative 'g_widget_listener'
-require_relative 'g_runnable'
-require_relative 'g_color'
-require_relative 'g_font'
-require_relative 'g_swt'
-require_relative '../parent'
+require 'glimmer/swt/widget_listener_proxy'
+require 'glimmer/swt/runnable_proxy'
+require 'glimmer/swt/color_proxy'
+require 'glimmer/swt/font_proxy'
+require 'glimmer/swt/swt_proxy'
 
 module Glimmer
   module SWT
-    class GWidget
+    class WidgetProxy
+      include Glimmer # TODO consider removing when no longer needed
+      include ObservableWidget
+
       include_package 'org.eclipse.swt'
       include_package 'org.eclipse.swt.widgets'
       include_package 'org.eclipse.swt.layout'
       include_package 'org.eclipse.swt.graphics'
       include_package 'org.eclipse.swt.browser'
-
-      include Glimmer # TODO consider removing when no longer needed
-      include ObservableWidget
-      include Parent
 
       attr_reader :widget
 
@@ -239,10 +237,6 @@ module Glimmer
             end
           end
         end
-      end
-
-      def process_block(block)
-        block.call(self)
       end
 
       def async_exec(&block)

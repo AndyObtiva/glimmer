@@ -1,19 +1,15 @@
-require File.dirname(__FILE__) + "/../../command_handler"
-require File.dirname(__FILE__) + "/../g_display"
+require 'glimmer/dsl/expression'
+require 'glimmer/swt/display_proxy'
 
 module Glimmer
-  module SWT
-    module CommandHandlers
-      class DisplayCommandHandler
-        include CommandHandler
+  module DSL
+    class DisplayExpression < Expression
+      def can_interpret?(parent, keyword, *args, &block)
+        keyword == 'display'
+      end
 
-        def can_handle?(parent, command_symbol, *args, &block)
-          command_symbol.to_s == "display"
-        end
-
-        def do_handle(parent, command_symbol, *args, &block)
-          GDisplay.instance(*args)
-        end
+      def interpret(parent, keyword, *args, &block)
+        SWT::DisplayProxy.instance(*args)
       end
     end
   end

@@ -1002,14 +1002,14 @@ end
 
 Glimmer supports creating custom widgets with minimal code, which automatically extends Glimmer's DSL syntax with an underscored lowercase keyword.
 
-Simply create a new class that includes `Glimmer::SWT::CustomWidget` and put Glimmer DSL code in its `#body` method (its return value is stored in `#body_root` attribute). Glimmer will then automatically recognize this class by convention when it encounters a keyword matching the class name converted to underscored lowercase (and namespace double-colons `::` replaced with double-underscores `__`)
+Simply create a new class that includes `Glimmer::UI::CustomWidget` and put Glimmer DSL code in its `#body` method (its return value is stored in `#body_root` attribute). Glimmer will then automatically recognize this class by convention when it encounters a keyword matching the class name converted to underscored lowercase (and namespace double-colons `::` replaced with double-underscores `__`)
 
 #### Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 Definition:
 ```ruby
 class RedLabel
-  include Glimmer::SWT::CustomWidget
+  include Glimmer::UI::CustomWidget
 
   def body
     label(swt_style) {
@@ -1036,7 +1036,7 @@ Definition:
 ```ruby
 module Red
   class Composite
-    include Glimmer::SWT::CustomWidget
+    include Glimmer::UI::CustomWidget
 
     before_body do
       @color = :red
@@ -1070,6 +1070,8 @@ Custom Widgets have the following attributes (attribute readers) available to ca
 - `#swt_style`: SWT style integer. Can be useful if you want to allow consumers to customize a widget inside the custom widget body
 - `#options`: a hash of options passed in parentheses when declaring a custom widget (useful for passing in model data) (e.g. `calendar(events: events)`). Custom widget class can declare option names (array) with `.options` method as shown below, which generates attribute readers for every option (not to be confused with `#options` instance method for retrieving options hash containing names & values)
 - `#content`: nested block underneath custom widget. It will be automatically called at the end of processing the custom widget body. Alternatively, the custom widget body may call `content.call` at the place where the content is needed to show up as shown in the following example.
+- `#body_root`: top-most (root) widget returned from `#body` method.
+- `#widget`: actual SWT widget for `body_root`
 
 Additionally, custom widgets can call the following class methods:
 - `.options`: declares a list of options by taking an option name array (symbols/strings). This generates option attribute readers (e.g. `options :orientation, :bg_color` generates `#orientation` and `#bg_color` attribute readers)
@@ -1080,7 +1082,7 @@ Additionally, custom widgets can call the following class methods:
 Definition:
 ```ruby
 class Sandwich
-  include Glimmer::SWT::CustomWidget
+  include Glimmer::UI::CustomWidget
 
   options :orientation, :bg_color
   option :fg_color, :black
@@ -1115,13 +1117,139 @@ shell {
 
 Notice how `:no_focus` was the `swt_style` value, followed by the `options` hash `{orientation: :horizontal, bg_color: :white}`, and finally the `content` block containing the label with `'SANDWICH CONTENT'`
 
-The following additional attributes may be called from outside a custom widget in addition to the attributes mentioned above, assuming it's been captured in a variable:
-- `#body_root`: top-most root Glimmer widget returned in `#body` method
-- `#widget`: actual SWT widget for `body_root`
-
 Last but not least, these are the available hooks:
 - `before_body`: takes a block that executes in the custom widget instance scope before calling `body`. Useful for initializing variables to later use in `body`
 - `after_body`: takes a block that executes in the custom widget instance scope after calling `body`. Useful for setting up observers on widgets built in `body` (set in instance variables) and linking to other shells.
+
+### Custom Shells
+
+Custom shells are a kind of custom widgets that have shells only as the body root. They can be self-contained applications that may be opened and hidden/closed independently of the main app.
+
+They may also be chained in a wizard fashion.
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+class WizardStep
+  include Glimmer::UI::CustomShell
+
+  options :number, :step_count
+
+  before_body do
+    @title = "Step #{number}"
+  end
+
+  def body
+    shell {
+      text "Wizard - #{@title}"
+      minimum_size 200, 100
+      fill_layout :vertical
+      label(:center) {
+        text @title
+        font height: 30
+      }
+      if number < step_count
+        button {
+          text "Go To Next Step"
+          on_widget_selected {
+            body_root.hide
+          }
+        }
+      end
+    }
+  end
+end
+
+shell { |app_shell|
+  text "Wizard"
+  minimum_size 200, 100
+  @current_step_number = 1
+  @wizard_steps = 5.times.map { |n|
+    wizard_step(number: n+1, step_count: 5) {
+      on_event_hide {
+        if @current_step_number < 5
+          @current_step_number += 1
+          app_shell.hide
+          @wizard_steps[@current_step_number - 1].open
+        end
+      }      
+    }
+  }
+  button {
+    text "Start"
+    font height: 40
+    on_widget_selected {
+      app_shell.hide
+      @wizard_steps[@current_step_number - 1].open
+    }
+  }
+}.open
+```
+
+### Custom Shells
+
+Custom shells are a kind of custom widgets that have shells only as the body root. They can be self-contained applications that may be opened and hidden/closed independently of the main app.
+
+They may also be chained in a wizard fashion.
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+class WizardStep
+  include Glimmer::UI::CustomShell
+
+  options :number, :step_count
+
+  before_body do
+    @title = "Step #{number}"
+  end
+
+  def body
+    shell {
+      text "Wizard - #{@title}"
+      minimum_size 200, 100
+      fill_layout :vertical
+      label(:center) {
+        text @title
+        font height: 30
+      }
+      if number < step_count
+        button {
+          text "Go To Next Step"
+          on_widget_selected {
+            body_root.hide
+          }
+        }
+      end
+    }
+  end
+end
+
+shell { |app_shell|
+  text "Wizard"
+  minimum_size 200, 100
+  @current_step_number = 1
+  @wizard_steps = 5.times.map { |n|
+    wizard_step(number: n+1, step_count: 5) {
+      on_event_hide {
+        if @current_step_number < 5
+          @current_step_number += 1
+          app_shell.hide
+          @wizard_steps[@current_step_number - 1].open
+        end
+      }      
+    }
+  }
+  button {
+    text "Start"
+    font height: 40
+    on_widget_selected {
+      app_shell.hide
+      @wizard_steps[@current_step_number - 1].open
+    }
+  }
+}.open
+```
 
 ### Miscellaneous
 
@@ -1201,71 +1329,6 @@ shell {
 }.open
 ```
 
-### Custom Shells
-
-Custom shells are a kind of custom widgets that have shells only as the body root. They can be self-contained applications that may be opened and hidden/closed independently of the main app.
-
-They may also be chained in a wizard fashion.
-
-Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
-
-```ruby
-class WizardStep
-  include Glimmer::SWT::CustomShell
-
-  options :number, :step_count
-
-  before_body do
-    @title = "Step #{number}"
-  end
-
-  def body
-    shell {
-      text "Wizard - #{@title}"
-      minimum_size 200, 100
-      fill_layout :vertical
-      label(:center) {
-        text @title
-        font height: 30
-      }
-      if number < step_count
-        button {
-          text "Go To Next Step"
-          on_widget_selected {
-            body_root.hide
-          }
-        }
-      end
-    }
-  end
-end
-
-shell { |app_shell|
-  text "Wizard"
-  minimum_size 200, 100
-  @current_step_number = 1
-  @wizard_steps = 5.times.map { |n|
-    wizard_step(number: n+1, step_count: 5) {
-      on_event_hide {
-        if @current_step_number < 5
-          @current_step_number += 1
-          app_shell.hide
-          @wizard_steps[@current_step_number - 1].open
-        end
-      }      
-    }
-  }
-  button {
-    text "Start"
-    font height: 40
-    on_widget_selected {
-      app_shell.hide
-      @wizard_steps[@current_step_number - 1].open
-    }
-  }
-}.open
-```
-
 ## Glimmer Coding Style
 
 - Widgets are declared with underscored lowercase versions of their SWT names minus the SWT package name.
@@ -1276,7 +1339,7 @@ shell { |app_shell|
 - Widget property declarations always have arguments and never take a block
 - Widget property arguments are never wrapped inside parentheses
 - Widget listeners are always declared starting with `on_` prefix and affixing listener event method name afterwards in underscored lowercase form
-- Widget listeners are always followed by a block using curly brackets
+- Widget listeners are always followed by a block using curly brackets (Only when declared in DSL. When invoked on widget object directly outside of UI declarations, standard Ruby conventions apply)
 - Data-binding is done via `bind` keyword, which always takes arguments wrapped in parentheses
 - Custom widgets receive additional arguments to SWT style called options. These are passed as the last argument inside the parentheses, a hash of option names pointing to values.
 

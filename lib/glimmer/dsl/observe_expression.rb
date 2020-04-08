@@ -1,33 +1,25 @@
-require File.dirname(__FILE__) + "/../../command_handler"
+require 'glimmer/dsl/expression'
+require 'glimmer/data_binding/observer'
+require 'glimmer/data_binding/model_binding'
 
 module Glimmer
-  module SWT
-    module CommandHandlers
-      class ObserveCommandHandler
-        REGEX_NESTED_OR_INDEXED_PROPERTY = /([^\[]+)(\[[^\]]+\])?/
-        include CommandHandler
+  module DSL
+    class ObserveExpression < Expression
+      REGEX_NESTED_OR_INDEXED_PROPERTY = /([^\[]+)(\[[^\]]+\])?/
 
-        def can_handle?(parent, command_symbol, *args, &block)
-          command_symbol.to_s == "observe" and
-          (
-            (
-              (args.size == 2) and
-                (
-                  args[1].is_a?(Symbol) or
-                  args[1].is_a?(String)
-                )
-            )
-          ) and
-            !block.nil?
-        end
+      def can_interpret?(parent, keyword, *args, &block)
+        keyword == 'observe' &&
+          !block.nil? &&
+          (args.size == 2) &&
+          textual?(args[1])
+      end
 
-        def do_handle(parent, command_symbol, *args, &block)
-          observer = Observer.proc(&block)
-          if args[1].to_s.match(REGEX_NESTED_OR_INDEXED_PROPERTY)
-            observer.observe(ModelBinding.new(args[0], args[1]))
-          else
-            observer.observe(args[0], args[1])
-          end
+      def interpret(parent, keyword, *args, &block)
+        observer = DataBinding::Observer.proc(&block)
+        if args[1].to_s.match(REGEX_NESTED_OR_INDEXED_PROPERTY)
+          observer.observe(DataBinding::ModelBinding.new(args[0], args[1]))
+        else
+          observer.observe(args[0], args[1])
         end
       end
     end

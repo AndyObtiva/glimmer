@@ -1,28 +1,21 @@
-require File.dirname(__FILE__) + "/../../command_handler"
-require File.dirname(__FILE__) + "/../g_widget"
-require File.dirname(__FILE__) + "/../custom_widget"
+require 'glimmer/dsl/expression'
 
 module Glimmer
-  module SWT
-    module CommandHandlers
-      # Responsible for providing a readable keyword (command symbol) to capture
-      # and return column properties for use in TreeItemsDataBindingCommandHandler
-      class TableColumnPropertiesDataBindingCommandHandler
-        include CommandHandler
+  module DSL
+    # Responsible for providing a readable keyword (command symbol) to capture
+    # and return column properties for use in TreeItemsDataBindingCommandHandler
+    class TableColumnPropertiesDataBindingExpression < Expression
+      include_package 'org.eclipse.swt.widgets'
 
-        include_package 'org.eclipse.swt'
-        include_package 'org.eclipse.swt.widgets'
+      def can_interpret?(parent, keyword, *args, &block)
+        keyword == 'column_properties' &&
+          block == nil &&
+          widget?(parent) &&
+          parent.widget.is_a?(Table)
+      end
 
-        def can_handle?(parent, command_symbol, *args, &block)
-          command_symbol.to_s == "column_properties" &&
-            block == nil &&
-            (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) &&
-            parent.widget.is_a?(Table)
-        end
-
-        def do_handle(parent, command_symbol, *args, &block)
-          args
-        end
+      def interpret(parent, keyword, *args, &block)
+        args
       end
     end
   end

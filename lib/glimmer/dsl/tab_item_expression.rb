@@ -1,33 +1,27 @@
-require File.dirname(__FILE__) + "/../../command_handler"
-require File.dirname(__FILE__) + "/../g_shell"
-require File.dirname(__FILE__) + "/../g_tab_item_composite"
+require 'glimmer/dsl/expression'
+require 'glimmer/swt/widget_proxy'
+require 'glimmer/swt/tab_item_proxy'
 
 module Glimmer
-  module SWT
-    module CommandHandlers
-      class TabItemCommandHandler
-        include CommandHandler
-        include Glimmer
+  module DSL
+    class TabItemExpression < Expression
+      include_package 'org.eclipse.swt.widgets' #TODO move to DSL
 
-        include_package 'org.eclipse.swt.widgets'
-
-        def can_handle?(parent, command_symbol, *args, &block)
-          initial_condition = command_symbol.to_s == "tab_item" &&
-            (parent.is_a?(GWidget) || parent.is_a?(CustomWidget))
-          if initial_condition
-            if parent.widget.is_a?(TabFolder)
-              return true
-            else
-              Glimmer.logger.error "tab_item widget may only be used directly under a tab_folder widget!"
-            end
+      def can_interpret?(parent, keyword, *args, &block)
+        initial_condition = (keyword == 'tab_item') && widget?(parent)
+        if initial_condition
+          if parent.widget.is_a?(TabFolder)
+            return true
+          else
+            Glimmer.logger.error "tab_item widget may only be used directly under a tab_folder widget!"
           end
-          false
         end
+        false
+      end
 
-        def do_handle(parent, command_symbol, *args, &block)
-          tab_item = GWidget.new(command_symbol.to_s, parent.widget, args)
-          GTabItemComposite.new(tab_item, parent.widget, args)
-        end
+      def interpret(parent, keyword, *args, &block)
+        tab_item = SWT::WidgetProxy.new(keyword.to_s, parent.widget, args)
+        SWT::TabItemProxy.new(tab_item, parent.widget, args)
       end
     end
   end

@@ -1,26 +1,22 @@
-require File.dirname(__FILE__) + "/../../command_handler"
-require File.dirname(__FILE__) + "/../custom_widget"
-require File.dirname(__FILE__) + "/../g_widget"
+require 'glimmer/dsl/expression'
+require 'glimmer/swt/widget_proxy'
 
 module Glimmer
-  module SWT
-    module CommandHandlers
-      class WidgetCommandHandler
-        include CommandHandler
+  module DSL
+    class WidgetExpression < Expression
+      def can_interpret?(parent, keyword, *args, &block)
+        keyword != "shell" &&
+          widget?(parent) &&
+          DataBinding::WidgetProxy.widget_exists?(keyword)
+      end
 
-        include_package 'org.eclipse.swt.widgets'
-        include_package 'org.eclipse.swt.browser'
+      def interpret(parent, keyword, *args, &block)
+        Glimmer.logger.debug "widget styles are: " + args.inspect
+        DataBinding::WidgetProxy.new(keyword, parent.swt_object, args)
+      end
 
-        def can_handle?(parent, command_symbol, *args, &block)
-          command_symbol.to_s != "shell" &&
-            (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) &&
-            GWidget.widget_exists?(command_symbol.to_s)
-        end
-
-        def do_handle(parent, command_symbol, *args, &block)
-          Glimmer.logger.debug "widget styles are: " + args.inspect
-          GWidget.new(command_symbol.to_s, parent.widget, args)
-        end
+      def add_content(parent, &block)
+        block.call(parent)
       end
     end
   end

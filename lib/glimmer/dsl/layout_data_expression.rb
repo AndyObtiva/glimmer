@@ -1,26 +1,21 @@
-require File.dirname(__FILE__) + "/../../command_handler"
-require File.dirname(__FILE__) + "/../g_widget"
-require File.dirname(__FILE__) + "/../custom_widget"
-require File.dirname(__FILE__) + "/../g_layout_data"
+require 'glimmer/dsl/expression'
+require 'glimmer/swt/layout_data_proxy'
 
 module Glimmer
-  module SWT
-    module CommandHandlers
-      class LayoutDataCommandHandler
-        include CommandHandler
+  module DSL
+    class LayoutDataExpression < Expression
+      def can_interpret?(parent, keyword, *args, &block)
+        keyword == 'layout_data' &&
+          widget?(parent)
+      end
 
-        include_package 'org.eclipse.swt.widgets'
-        include_package 'org.eclipse.swt.layout'
+      def interpret(parent, keyword, *args, &block)
+        Glimmer.logger.debug "Layout Data args are: #{args.inspect}"
+        SWT::LayoutDataProxy.new(parent.widget, args)
+      end
 
-        def can_handle?(parent, command_symbol, *args, &block)
-          command_symbol.to_s == 'layout_data' &&
-            (parent.is_a?(GWidget) || parent.is_a?(CustomWidget))
-        end
-
-        def do_handle(parent, command_symbol, *args, &block)
-          Glimmer.logger.debug "Layout Data args are: #{args.inspect}"
-          GLayoutData.new(parent.widget, args)
-        end
+      def add_content(parent, &block)
+        block.call(parent)
       end
     end
   end

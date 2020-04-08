@@ -1,28 +1,23 @@
-require File.dirname(__FILE__) + "/../../command_handler"
-require File.dirname(__FILE__) + "/../g_widget"
-require File.dirname(__FILE__) + "/../custom_widget"
+require 'glimmer/dsl/expression'
+require 'glimmer/data_binding/model_binding'
+require 'glimmer/data_binding/tree_items_binding'
 
 module Glimmer
-  module SWT
-    module CommandHandlers
-      # Responsible for providing a readable keyword (command symbol) to capture
-      # and return tree properties for use in TreeItemsDataBindingCommandHandler
-      class TreePropertiesDataBindingCommandHandler
-        include CommandHandler
+  module DSL
+    # Responsible for providing a readable keyword (command symbol) to capture
+    # and return tree properties for use in TreeItemsDataBindingCommandHandler
+    class TreePropertiesDataBindingExpression < Expression
+      include_package 'org.eclipse.swt.widgets'
 
-        include_package 'org.eclipse.swt'
-        include_package 'org.eclipse.swt.widgets'
+      def can_interpret?(parent, keyword, *args, &block)
+        keyword == "tree_properties" &&
+          block == nil &&
+          widget?(parent) &&
+          parent.widget.is_a?(Tree)
+      end
 
-        def can_handle?(parent, command_symbol, *args, &block)
-          command_symbol.to_s == "tree_properties" &&
-            block == nil &&
-            (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) &&
-            parent.widget.is_a?(Tree)
-        end
-
-        def do_handle(parent, command_symbol, *args, &block)
-          args
-        end
+      def interpret(parent, keyword, *args, &block)
+        args
       end
     end
   end

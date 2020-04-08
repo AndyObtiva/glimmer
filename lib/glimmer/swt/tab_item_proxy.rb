@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + "/g_runnable"
 
 module Glimmer
   module SWT
-    class GTabItemComposite < GWidget
+    class TabItemProxy < GWidget
       include_package 'org.eclipse.swt.widgets'
 
       attr_reader :tab_item

@@ -1,26 +1,25 @@
-require File.dirname(__FILE__) + "/../../command_handler"
-require File.dirname(__FILE__) + "/../g_layout"
+require 'glimmer/dsl/expression'
+require 'glimmer/swt/layout_proxy'
 
 module Glimmer
-  module SWT
-    module CommandHandlers
-      class LayoutCommandHandler
-        include CommandHandler
+  module DSL
+    class LayoutExpression < Expression
+      include_package 'org.eclipse.swt.widgets'
 
-        include_package 'org.eclipse.swt.widgets'
-        include_package 'org.eclipse.swt.layout'
+      def can_interpret?(parent, keyword, *args, &block)
+        keyword.to_s.end_with?('_layout') &&
+          widget?(parent) &&
+          parent.widget.is_a?(Composite) &&
+          SWT::LayoutProxy.layout_exists?(keyword.to_s)
+      end
 
-        def can_handle?(parent, command_symbol, *args, &block)
-          command_symbol.to_s.end_with?('_layout') &&
-            (parent.is_a?(GWidget) || parent.is_a?(CustomWidget)) &&
-            parent.widget.is_a?(Composite) &&
-            GLayout.layout_exists?(command_symbol.to_s)
-        end
+      def interpret(parent, keyword, *args, &block)
+        Glimmer.logger.debug "Layout #{keyword} args are: #{args.inspect}"
+        SWT::LayoutProxy.new(keyword.to_s, parent.widget, args)
+      end
 
-        def do_handle(parent, command_symbol, *args, &block)
-          Glimmer.logger.debug "Layout #{command_symbol} args are: #{args.inspect}"
-          GLayout.new(command_symbol.to_s, parent.widget, args)
-        end
+      def add_content(parent, &block)
+        block.call(parent)
       end
     end
   end

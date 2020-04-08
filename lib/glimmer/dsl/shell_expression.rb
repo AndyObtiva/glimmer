@@ -1,19 +1,19 @@
-require File.dirname(__FILE__) + "/../../command_handler"
-require File.dirname(__FILE__) + "/../g_shell"
+require 'glimmer/dsl/expression'
+require 'glimmer/swt/shell_proxy'
 
 module Glimmer
   module SWT
-    module CommandHandlers
-      class ShellCommandHandler
-        include CommandHandler
+    class ShellExpression < Expression
+      def can_interpret?(parent, keyword, *args, &block)
+        keyword == 'shell'
+      end
 
-        def can_handle?(parent, command_symbol, *args, &block)
-          command_symbol.to_s == "shell"
-        end
+      def interpret(parent, keyword, *args, &block)
+        SWT::ShellProxy.send(:new, *args)
+      end
 
-        def do_handle(parent, command_symbol, *args, &block)
-          GShell.send(:new, *args)
-        end
+      def add_content(parent, &block)
+        block.call(parent)
       end
     end
   end
