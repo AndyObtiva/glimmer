@@ -166,6 +166,22 @@ bin/girb
 
 ## Glimmer DSL Syntax
 
+Glimmer DSL syntax consists of static keywords and dynamic keywords to build and bind user-interface objects.
+
+Static keywords are pre-identified keywords in the Glimmer DSL, such as `shell`, `rgb`, and `bind`.
+
+Dynamic keywords are dynamically figured out from available SWT widgets, custom widgets, and properties. Examples are: `label`, `combo`, and `text`.
+
+The only reason to distinguish between both types of Glimmer DSL keywords is to realize that importing new Java SWT custom widget libraries and Ruby custom widgets automatically expands Glimmer's available DSL syntax via new dynamic keywords.
+
+For example, if a project adds this custom SWT library:
+
+https://www.eclipse.org/nebula/widgets/cdatetime/cdatetime.php?page=operation
+
+Glimmer will automatically support using the keyword `c_date_time`
+
+You will learn more about widgets next.
+
 ### Widgets
 
 Glimmer UIs (user interfaces) are modeled with widgets, which are wrappers around the SWT library widgets found here:

@@ -112,7 +112,7 @@ module Glimmer
           :font => Proc.new do |value|
             if value.is_a?(Hash)
               font_properties = value
-              GFont.for(self).font(font_properties)
+              FontProxy.new(self, font_properties).swt_font
             else
               value
             end
@@ -223,12 +223,14 @@ module Glimmer
                   listener_class.send :include, (eval listener_type.to_s.sub("interface", ""))
                   listener = listener_class.new
                   listener_type.getMethods.each do |t_method|
+                    # TODO consider define_method instead
                     eval "def listener.#{t_method.getName}(event) end"
                   end
                   def listener.block=(block)
                     @block = block
                   end
                   listener.block=block
+                  # TODO consider define_method instead
                   eval "def listener.#{listener_method.getName}(event) @block.call(event) if @block end"
                   @widget.send(widget_method.getName, listener)
                   return GWidgetListener.new(listener)

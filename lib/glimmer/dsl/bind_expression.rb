@@ -1,6 +1,8 @@
 require 'glimmer/dsl/expression'
 require 'glimmer/data_binding/model_binding'
 
+# TODO consider turning static keywords like bind into methods
+
 module Glimmer
   module DSL
     # Responsible for setting up the return value of the bind keyword (command symbol)

@@ -62,6 +62,7 @@ module Glimmer
         begin
           method("__original_#{property_writer_name}")
         rescue
+          # TODO consider alias_method or define_method instead
           instance_eval "alias __original_#{property_writer_name} #{property_writer_name}"
           instance_eval <<-end_eval, __FILE__, __LINE__
           def #{property_writer_name}(value)

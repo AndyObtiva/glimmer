@@ -20,12 +20,12 @@ module Glimmer
 
       def interpret(parent, keyword, *args, &block)
         model_binding = args[0]
-        widget_binding_parameters = [parent, keyword.to_s]
+        widget_binding_parameters = [parent, keyword]
         widget_binding = DataBinding::WidgetBinding.new(*widget_binding_parameters)
         widget_binding.call(model_binding.evaluate_property)
         #TODO make this options observer dependent and all similar observers in widget specific data binding handlers
         widget_binding.observe(model_binding)
-        parent.add_observer(model_binding, keyword.to_s.to_sym)
+        parent.add_observer(model_binding, keyword)
       end
     end
   end

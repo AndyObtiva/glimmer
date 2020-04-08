@@ -13,6 +13,12 @@ require 'nested_inherited_jruby_include_package'
 require 'glimmer/swt/packages'
 require 'glimmer/dsl'
 
+# Glimmer provides a JRuby Desktop UI DSL + Data-Binding functionality
+#
+# A desktop UI application class must include Glimmer to gain access to Glimmer DSL
+#
+# Glimmer DSL static keywords (e.g. rgb, bind, etc..) are available as inherited methods
+# Glimmer DSL dynamic keywords (e.g. label, combo, etc...) are available via method_missing
 module Glimmer
    #TODO make it configurable to include or not include perhaps reverting to using included
   REGEX_METHODS_EXCLUDED = /^(to_|\[)/
@@ -24,10 +30,12 @@ module Glimmer
       end
     end
 
+    # Tells Glimmer to import SWT packages into including class (default: true)
     def import_swt_packages=(value)
       @@import_swt_packages = !!value
     end
 
+    # Returns whether Glimmer will import SWT packages into including class
     def import_swt_packages
       unless defined? @@import_swt_packages
         @@import_swt_packages = true
@@ -35,6 +43,7 @@ module Glimmer
       @@import_swt_packages
     end
 
+    # Returns Glimmer logger (standard Ruby logger)
     def logger
       unless defined? @@logger
         @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}

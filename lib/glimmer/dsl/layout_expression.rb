@@ -15,7 +15,7 @@ module Glimmer
 
       def interpret(parent, keyword, *args, &block)
         Glimmer.logger.debug "Layout #{keyword} args are: #{args.inspect}"
-        SWT::LayoutProxy.new(keyword.to_s, parent.widget, args)
+        SWT::LayoutProxy.new(keyword, parent, args)
       end
 
       def add_content(parent, &block)

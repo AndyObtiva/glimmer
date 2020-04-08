@@ -5,8 +5,11 @@ Here is a list of tasks to do (please delete once done):
 ## Up Next
 
 - Reorder file namespaces and directories
+- Basic RDoc documentation
+- Turn static keywords like bind/rgb/rgba into methods
 - Support swt keyword for style
 - Support color keyword for standard colors
+- Support async_exec/sync_exec keywords
 - Rename commands to keywords in Glimmer
 - Correct attribute/property naming (unify as attributes)
 - Change "def body" to body { } in custom widget/shell
@@ -84,6 +87,5 @@ bind(model, 'addresses').each { |address|
 - Document async_exec and sync_exec
 - Document example of using an external Java SWT custom widget by importing its java package directly to do the trick
 - Make a video documenting how to build Tic Tac Toe (no AI) step by step
-- Basic RDoc documentation
 - Document on_ SWT event listeners for events declared on SWT constant like show and hide
 - Document Glimmer DSL in full detail by generating translated documentation from SWT API (write a program) and adding to it

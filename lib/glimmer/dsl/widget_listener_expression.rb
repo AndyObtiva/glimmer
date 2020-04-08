@@ -6,8 +6,8 @@ module Glimmer
       include_package 'org.eclipse.swt.widgets'
 
       def can_interpret?(parent, keyword, *args, &block)
-        Glimmer.logger.debug "keyword starts with on_: #{keyword.to_s.start_with?('on_')}"
-        return unless keyword.to_s.start_with?('on_')
+        Glimmer.logger.debug "keyword starts with on_: #{keyword.start_with?('on_')}"
+        return unless keyword.start_with?('on_')
         Glimmer.logger.debug "block exists?: #{!block.nil?}"
         return unless !block.nil?
         widget_parentage = widget?(parent)
@@ -15,13 +15,13 @@ module Glimmer
         return unless widget_parentage
         Glimmer.logger.debug "args are empty?: #{args.empty?}"
         return unless args.empty?
-        result = parent.can_handle_observation_request?(keyword.to_s)
+        result = parent.can_handle_observation_request?(keyword)
         Glimmer.logger.debug "can add listener? #{result}"
         result
       end
 
       def interpret(parent, keyword, *args, &block)
-        parent.handle_observation_request(keyword.to_s, &block)
+        parent.handle_observation_request(keyword, &block)
         nil
       end
     end

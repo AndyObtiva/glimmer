@@ -42,6 +42,8 @@ module Glimmer
       end
 
       def self.extend_object(array)
+        # TODO consider alias_method, and define_method instead
+
         array.instance_eval("alias __original_add <<")
         array.instance_eval <<-end_eval, __FILE__, __LINE__
         def <<(value)

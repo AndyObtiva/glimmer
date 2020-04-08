@@ -1,14 +1,25 @@
 module Glimmer
   module DSL
+    # Expression handler for a Glimmer DSL specific expression
+    #
+    # Follows the Chain of Responsibility Design Pattern
+    #
+    # Handlers are configured in Glimmer::DSL in the right order
+    # to attempt handling Glimmer DSL interpretation calls
+    #
+    # Each handler knows the next handler in the chain of responsibility.
+    #
+    # If it handles successfully, it returns. Otherwise, it forwards to the next
+    # handler in the chain of responsibility
     class ExpressionHandler
       def initialize(expression)
         @expression = expression
       end
 
-      def next=(next_expression_handler)
-        @next_expression_handler = next_expression_handler
-      end
-
+      # Handles interpretation of Glimmer DSL expression if expression supports it
+      # If it succeeds, it returns the correct Glimmer DSL expression object
+      # Otherwise, it forwards to the next handler configured via `#next=` method
+      # If there is no handler next, then it raises an error
       def handle(parent, keyword, *args, &block)
         if @expression.can_interpret?(parent, keyword, *args, &block)
           Glimmer.logger.debug "#{@expression.class.name} will handle expression keyword #{keyword} with arguments #{args}"
@@ -23,6 +34,11 @@ module Glimmer
           # Glimmer.logger.error message
           raise message
         end
+      end
+
+      # Sets the next handler in the expression handler chain of responsibility
+      def next=(next_expression_handler)
+        @next_expression_handler = next_expression_handler
       end
     end
   end

@@ -1,6 +1,8 @@
 require 'glimmer/dsl/expression'
 require 'glimmer/swt/layout_data_proxy'
 
+# TODO consider turning static keywords like layout_data into methods
+
 module Glimmer
   module DSL
     class LayoutDataExpression < Expression
@@ -11,7 +13,7 @@ module Glimmer
 
       def interpret(parent, keyword, *args, &block)
         Glimmer.logger.debug "Layout Data args are: #{args.inspect}"
-        SWT::LayoutDataProxy.new(parent.widget, args)
+        SWT::LayoutDataProxy.new(parent, args)
       end
 
       def add_content(parent, &block)

@@ -8,6 +8,7 @@ module Glimmer
   module DSL
     # Every expression has a corresponding AbstractExpression subclass
     # in glimmer/dsl
+    # TODO rename to dynamic_expressions in the future when supporting static expressions
     Engine.expressions = %w[
       observe
       display

@@ -1,40 +1,44 @@
-require_relative 'g_swt'
+require_relative 'swt_proxy'
+require_relative 'display_proxy'
 
 module Glimmer
   module SWT
-    class GFont
+    # Proxy for org.eclipse.swt.graphics.Font
+    #
+    # This class is meant to be used with WidgetProxy to manipulate
+    # an SWT widget font.
+    #
+    # It is not meant to create new SWT fonts form scratch without
+    # a widget proxy.
+    #
+    # Invoking `#swt_font` returns the SWT Font object wrapped by this proxy
+    #
+    # Follows the Proxy Design Pattern
+    class FontProxy
       ERROR_INVALID_FONT_STYLE = " is an invalid font style! Valid values are :normal, :bold, and :italic"
       FONT_STYLES = [:normal, :bold, :italic]
+
       include_package 'org.eclipse.swt.graphics'
 
-      attr_reader :g_widget
-      attr_accessor :display
+      attr_reader :widget_proxy, :swt_font
 
-      class << self
-        def for(g_widget)
-          @instances ||= {}
-          unless @instances[g_widget]
-            @instances[g_widget] = new(g_widget)
-            g_widget.on_widget_disposed do |dispose_event|
-              @instances.delete(g_widget)
-            end
-          end
-          @instances[g_widget]
+      # Builds a new font proxy from passed in widget_proxy and font_properties hash,
+      #
+      # It begins with existing SWT widget font and amends it with font properties.
+      #
+      # Font properties consist of: :name, :height, and :style (one needed minimum)
+      #
+      # Style (:style value) can only be one of FontProxy::FONT_STYLES values:
+      # that is :normal, :bold, or :italic
+      def initialize(widget_proxy, font_properties)
+        @widget_proxy = widget_proxy
+        detect_invalid_font_property(font_properties)
+        font_properties[:style] = SWTProxy[*font_properties[:style]]
+        font_data_args = [:name, :height, :style].map do |font_property_name|
+          font_properties[font_property_name] || send(font_property_name)
         end
-      end
-
-      def initialize(g_widget, display = nil)
-        @g_widget = g_widget
-        @display = display || @g_widget.widget.display
-      end
-
-      def g_widget=(a_widget)
-        @g_widget = a_widget
-        @font_datum = nil
-      end
-
-      def font_datum
-        @font_datum ||= @g_widget.widget.getFont.getFontData[0]
+        font_datum = FontData.new(*font_data_args)
+        @swt_font = Font.new(DisplayProxy.instance.swt_display, font_datum)
       end
 
       def name
@@ -49,14 +53,10 @@ module Glimmer
         font_datum.getStyle
       end
 
-      def font(font_properties)
-        detect_invalid_font_property(font_properties)
-        font_properties[:style] = GSWT[*font_properties[:style]]
-        font_data_args = [:name, :height, :style].map do |font_property_name|
-          font_properties[font_property_name] || send(font_property_name)
-        end
-        font_datum = FontData.new(*font_data_args)
-        Font.new(@display, font_datum)
+      private
+
+      def font_datum
+        @font_datum ||= @widget_proxy.widget.getFont.getFontData[0]
       end
 
       def detect_invalid_font_property(font_properties)
