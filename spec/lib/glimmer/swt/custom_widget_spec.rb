@@ -244,12 +244,12 @@ module GlimmerSpec
       expect(@multi_color_label.widget.getChildren[0].getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
       expect(@multi_color_label.widget.getChildren[0].getFont.getFontData[0].getHeight).to eq(62)
       expect(@multi_color_label.widget.getChildren[0].getText).to eq("Hello,")
-      expect(@multi_color_label.widget.getChildren[0].getStyle & Glimmer::SWT::GSWT[:center]).to eq(Glimmer::SWT::GSWT[:center])
+      expect(@multi_color_label.widget.getChildren[0].getStyle & Glimmer::SWT::SWTProxy[:center]).to eq(Glimmer::SWT::SWTProxy[:center])
       expect(@multi_color_label.widget.getChildren[1]).to be_a(Label)
       expect(@multi_color_label.widget.getChildren[1].getBackground).to eq(Glimmer::SWT::GColor.color_for(:blue))
       expect(@multi_color_label.widget.getChildren[1].getFont.getFontData[0].getHeight).to eq(73)
       expect(@multi_color_label.widget.getChildren[1].getText).to eq("World!")
-      expect(@multi_color_label.widget.getChildren[1].getStyle & Glimmer::SWT::GSWT[:center]).to eq(Glimmer::SWT::GSWT[:center])
+      expect(@multi_color_label.widget.getChildren[1].getStyle & Glimmer::SWT::SWTProxy[:center]).to eq(Glimmer::SWT::SWTProxy[:center])
     end
 
     it 'observes custom widget custom property' do

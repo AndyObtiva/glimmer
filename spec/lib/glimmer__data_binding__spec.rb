@@ -291,7 +291,7 @@ module GlimmerSpec
       expect(@check_box.widget.getSelection).to eq(false)
 
       @check_box.widget.setSelection(true)
-      @check_box.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
+      @check_box.widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
       expect(person.adult).to eq(true)
     end
 
@@ -313,7 +313,7 @@ module GlimmerSpec
       expect(@radio.widget.getSelection).to eq(false)
 
       @radio.widget.setSelection(true)
-      @radio.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
+      @radio.widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
       expect(person.adult).to eq(true)
     end
 
@@ -335,7 +335,7 @@ module GlimmerSpec
       expect(@spinner.widget.getSelection).to eq(20)
 
       @spinner.widget.setSelection(34)
-      @spinner.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
+      @spinner.widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
       expect(person.age).to eq(34)
     end
 
@@ -469,7 +469,7 @@ module GlimmerSpec
       expect(person.age).to eq(30)
 
       @check_box.widget.setSelection(true)
-      @check_box.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
+      @check_box.widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
       expect(person.adult).to eq(true)
     end
 

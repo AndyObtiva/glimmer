@@ -18,12 +18,10 @@ module Glimmer
       def interpret(parent, keyword, *args, &block)
         if args.first.is_a?(Display) || args.first.nil?
           display = args.delete_at(0)
-        elsif widget?(parent)
-          display = parent.swt_display
         else
           display = SWT::DisplayProxy.instance.swt_display
         end
-        SWT::ColorProxy.new(display, *args)
+        SWT::ColorProxy.new(*args)
       end
     end
   end

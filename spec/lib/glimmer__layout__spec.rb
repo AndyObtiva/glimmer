@@ -24,7 +24,7 @@ module GlimmerSpec
         widget = @composite.widget
         layout = widget.getLayout
         expect(layout.is_a?(FillLayout)).to eq(true)
-        expect(layout.type).to eq(Glimmer::SWT::GSWT[:horizontal])
+        expect(layout.type).to eq(Glimmer::SWT::SWTProxy[:horizontal])
         expect(layout.marginWidth).to eq(30)
         expect(layout.marginHeight).to eq(50)
         expect(layout.spacing).to eq(5)
@@ -40,7 +40,7 @@ module GlimmerSpec
         widget = @composite.widget
         layout = widget.getLayout
         expect(layout.is_a?(FillLayout)).to eq(true)
-        expect(layout.type).to eq(Glimmer::SWT::GSWT[:horizontal])
+        expect(layout.type).to eq(Glimmer::SWT::SWTProxy[:horizontal])
       end
     end
 
@@ -68,7 +68,7 @@ module GlimmerSpec
         expect(layout.wrap).to eq(true)
         expect(layout.pack).to eq(false)
         expect(layout.justify).to eq(true)
-        expect(layout.type).to eq(Glimmer::SWT::GSWT[:vertical])
+        expect(layout.type).to eq(Glimmer::SWT::SWTProxy[:vertical])
         expect(layout.marginLeft).to eq(1)
         expect(layout.marginTop).to eq(2)
         expect(layout.marginRight).to eq(3)
@@ -86,7 +86,7 @@ module GlimmerSpec
         widget = @composite.widget
         layout = widget.getLayout
         expect(layout.is_a?(RowLayout)).to eq(true)
-        expect(layout.type).to eq(Glimmer::SWT::GSWT[:horizontal])
+        expect(layout.type).to eq(Glimmer::SWT::SWTProxy[:horizontal])
       end
     end
 

@@ -4,19 +4,13 @@ module GlimmerSpec
   describe "Glimmer Color" do
     include Glimmer
 
-    before do
-      @rspec_display_method = method(:display)
-      self.class.send(:undef_method, :display)
-    end
-
     after do
       @target.dispose if @target
-      self.class.send(:define_method, :display, @rspec_display_method)
     end
 
     it "tests label with RGBAlpha background/foreground color" do
       @foreground = rgba(4, 40, 244, 50) # get singleton display
-      @foreground_color = @foreground.color
+      @foreground_color = @foreground.swt_color
       @target = shell {
         @label = label {
           background rgba(4, 40, 244, 50) # get parent display
@@ -24,7 +18,7 @@ module GlimmerSpec
         }
       }
 
-      color = @label.widget.getBackground
+      color = @label.swt_widget.getBackground
       expect(color.getRed).to eq(4)
       expect(color.getGreen).to eq(40)
       expect(color.getBlue).to eq(244)
@@ -34,14 +28,14 @@ module GlimmerSpec
       expect(@foreground_color.getGreen).to eq(40)
       expect(@foreground_color.getBlue).to eq(244)
       expect(@foreground_color.getAlpha).to eq(50)
-      expect(@foreground_color.getDevice).to eq(Glimmer::SWT::GDisplay.instance.swt_display)
+      expect(@foreground_color.getDevice).to eq(Glimmer::SWT::DisplayProxy.instance.swt_display)
 
       expect(@foreground_color.getDevice).to eq(Glimmer::SWT::DisplayProxy.instance.swt_display)
     end
 
     it "tests label with RGB (no alpha) background/foreground color" do
       @foreground = rgb(4, 40, 244) # get singleton display
-      @foreground_color = @foreground.color
+      @foreground_color = @foreground.swt_color
       @target = shell {
         @label = label {
           background rgb(4, 40, 244) # get parent display
@@ -49,7 +43,7 @@ module GlimmerSpec
         }
       }
 
-      color = @label.widget.getBackground
+      color = @label.swt_widget.getBackground
       expect(color.getRed).to eq(4)
       expect(color.getGreen).to eq(40)
       expect(color.getBlue).to eq(244)
@@ -57,7 +51,7 @@ module GlimmerSpec
       expect(@foreground_color.getRed).to eq(4)
       expect(@foreground_color.getGreen).to eq(40)
       expect(@foreground_color.getBlue).to eq(244)
-      expect(@foreground_color.getDevice).to eq(Glimmer::SWT::GDisplay.instance.swt_display)
+      expect(@foreground_color.getDevice).to eq(Glimmer::SWT::DisplayProxy.instance.swt_display)
 
       expect(@foreground_color.getDevice).to eq(Glimmer::SWT::DisplayProxy.instance.swt_display)
     end
@@ -77,9 +71,9 @@ module GlimmerSpec
           }
         }
 
-        background = @label.widget.getBackground
-        foreground = @label.widget.getForeground
-        swt_color_constant = Glimmer::SWT::GSWT['color_' + standard_color.to_s.sub(/^color_/, '')]
+        background = @label.swt_widget.getBackground
+        foreground = @label.swt_widget.getForeground
+        swt_color_constant = Glimmer::SWT::SWTProxy['color_' + standard_color.to_s.sub(/^color_/, '')]
         expected_color = Glimmer::SWT::DisplayProxy.instance.swt_display.getSystemColor(swt_color_constant)
         expect(background).to eq(expected_color)
         expect(foreground).to eq(expected_color)
@@ -95,7 +89,7 @@ module GlimmerSpec
         }
       }
 
-      color = @label.widget.getBackground
+      color = @label.swt_widget.getBackground
       expect(color.getRed).to eq(4)
       expect(color.getGreen).to eq(40)
       expect(color.getBlue).to eq(244)
@@ -111,7 +105,7 @@ module GlimmerSpec
         }
       }
 
-      color = @label.widget.getBackground
+      color = @label.swt_widget.getBackground
       expect(color.getRed).to eq(4)
       expect(color.getGreen).to eq(40)
       expect(color.getBlue).to eq(244)
@@ -126,7 +120,7 @@ module GlimmerSpec
         }
       }
 
-      color = @label.widget.getBackground
+      color = @label.swt_widget.getBackground
       expect(color.getRed).to eq(4)
       expect(color.getGreen).to eq(40)
       expect(color.getBlue).to eq(244)
@@ -141,7 +135,7 @@ module GlimmerSpec
         }
       }
 
-      color = @label.widget.getBackground
+      color = @label.swt_widget.getBackground
       expect(color.getRed).to eq(4)
       expect(color.getGreen).to eq(40)
       expect(color.getBlue).to eq(244)

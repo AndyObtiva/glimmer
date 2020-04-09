@@ -67,7 +67,7 @@ module GlimmerSpec
       expect(@combo.widget.text).to eq("")
 
       @combo.widget.select(2)
-      @combo.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
+      @combo.widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
       expect(person.country).to eq("US")
 
       person.country = "Canada"
@@ -117,7 +117,7 @@ module GlimmerSpec
       expect(@combo.widget.text).to eq("")
 
       @combo.widget.select(8)
-      @combo.widget.notifyListeners(Glimmer::SWT::GSWT[:selection], nil)
+      @combo.widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
       expect(person.country).to eq("Australia")
 
       person.country = "Canada"

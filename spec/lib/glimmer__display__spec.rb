@@ -23,7 +23,7 @@ module GlimmerSpec
       it "instantiates display" do
         @target = display
 
-        expect(@target).to be_a(Glimmer::SWT::GDisplay)
+        expect(@target).to be_a(Glimmer::SWT::DisplayProxy)
         expect(@target.swt_display).to be_a(Display)
         expect(@target.swt_display.isDisposed).to be_falsey
 
