@@ -20,10 +20,10 @@ module Glimmer
       # Instantiates ShellProxy with same arguments expected by SWT Shell
       def initialize(*args)
         if args.first.nil? || !args.first.is_a?(Display) && !args.first.is_a?(Shell)
-          @display = DisplayProxy.instance.display
+          @display = DisplayProxy.instance.swt_display
           args = [@display] + args
         end
-        args = SWTProxy.constantify_args(args)
+        args = SWTProxy.constantify_args(args).compact
         @swt_widget = Shell.new(*args)
         @display ||= @swt_widget.getDisplay
         @swt_widget.setLayout(FillLayout.new)
@@ -71,6 +71,10 @@ module Glimmer
       # Setting to true opens/shows shell. Setting to false hides the shell.
       def visible=(visibility)
         visibility ? show : hide
+      end
+
+      def content(&block)
+        Glimmer::DSL::Engine.add_content(self, ShellExpression.new, &block)
       end
 
       # (happens as part of `#open`)

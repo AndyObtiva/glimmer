@@ -17,7 +17,7 @@ module Glimmer
       class << self
         # Returns singleton instance
         def instance(*args)
-          if @instance.nil? || @instance.display.isDisposed
+          if @instance.nil? || @instance.swt_display.isDisposed
             @instance = new(*args)
           end
           @instance
@@ -28,21 +28,21 @@ module Glimmer
       attr_reader :swt_display
 
       def initialize(*args)
-        @display = Display.new(*args)
+        @swt_display = Display.new(*args)
       end
 
       def dispose
-        @display.dispose
+        @swt_display.dispose
       end
 
       # Executes code block asynchronously with respect to SWT UI thread
       def async_exec(&block)
-        @display.asyncExec(&block)
+        @swt_display.asyncExec(&block)
       end
 
       # Executes code block synchronously with respect to SWT UI thread
       def sync_exec(&block)
-        @display.syncExec(&block)
+        @swt_display.syncExec(&block)
       end
     end
   end

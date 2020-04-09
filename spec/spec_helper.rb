@@ -13,7 +13,7 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 module GlimmerSpec
-  include Glimmer::SwtPackages # makes SWT packages available to namespace containing specs
+  include Glimmer::SWT::Packages # makes SWT packages available to namespace containing specs
 end
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'samples'))
@@ -68,7 +68,7 @@ RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
   config.after do
-    Glimmer.parent_stack.clear # ensures no conflict in using Glimmer across tests
+    Glimmer::DSL::Engine.parent_stack.clear # ensures no conflict in using Glimmer across tests
   end
   # config.profile_examples = 20
   # config.fail_fast = true
@@ -129,6 +129,6 @@ RSpec.configure do |config|
 end
 RSpec::Matchers.define :have_style do |style|
   match do |widget|
-    expect(widget.getStyle & Glimmer::SWT::GSWT[style]).to eq(Glimmer::SWT::GSWT[style])
+    expect(widget.getStyle & Glimmer::SWT::SWTProxy[style]).to eq(Glimmer::SWT::SWTProxy[style])
   end
 end

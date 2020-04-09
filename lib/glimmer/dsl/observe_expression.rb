@@ -1,15 +1,15 @@
-require 'glimmer/dsl/expression'
+require 'glimmer/dsl/static_expression'
 require 'glimmer/data_binding/observer'
 require 'glimmer/data_binding/model_binding'
 
 module Glimmer
   module DSL
-    class ObserveExpression < Expression
+    class ObserveExpression < StaticExpression
       REGEX_NESTED_OR_INDEXED_PROPERTY = /([^\[]+)(\[[^\]]+\])?/
 
       def can_interpret?(parent, keyword, *args, &block)
         keyword == 'observe' &&
-          !block.nil? &&
+          block_given? &&
           (args.size == 2) &&
           textual?(args[1])
       end

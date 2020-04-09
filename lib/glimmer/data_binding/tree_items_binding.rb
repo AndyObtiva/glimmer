@@ -5,7 +5,7 @@ require_relative 'observable'
 require_relative 'observer'
 
 module Glimmer
-  module SWT
+  module DataBinding
     class TreeItemsBinding
       include Glimmer
       include Observable

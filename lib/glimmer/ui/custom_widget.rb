@@ -2,18 +2,18 @@ require 'glimmer'
 require 'glimmer/swt/swt_proxy'
 require 'glimmer/swt/display_proxy'
 require 'glimmer/util/proc_tracker'
-require 'glimmer/data_binding/observable_model/'
+require 'glimmer/data_binding/observable_model'
 require 'glimmer/data_binding/observable_widget'
 
 module Glimmer
   module UI
     module CustomWidget
       include SuperModule
-      include ObservableModel
+      include DataBinding::ObservableModel
 
       super_module_included do |klass|
         klass.include(Glimmer) unless klass.name.include?('Glimmer::SWT::CustomShell')
-        klass.prepend ObservableWidget
+        klass.prepend DataBinding::ObservableWidget
       end
 
       class << self
@@ -167,18 +167,18 @@ module Glimmer
 
 
       def has_style?(style)
-        (swt_style & SWTProxy[style]) == SWTProxy[style]
+        (swt_style & SWT::SWTProxy[style]) == SWT::SWTProxy[style]
       end
 
       # TODO see if it is worth it to eliminate duplication of async_exec/sync_exec
       # delegation to DisplayProxy, via a module
 
       def async_exec(&block)
-        DisplayProxy.instance.async_exec(&block)
+        SWT::DisplayProxy.instance.async_exec(&block)
       end
 
       def sync_exec(&block)
-        DisplayProxy.instance.sync_exec(&block)
+        SWT::DisplayProxy.instance.sync_exec(&block)
       end
 
       # Returns content block if used as an attribute reader (no args)

@@ -12,7 +12,7 @@ module Glimmer
         # Gets SWT constants as if calling SWT::CONSTANT where constant is
         # passed in as a lower case symbol
         def [](*symbols)
-          symbols = symbols.first if symbols.size == 1 && symbols.is_a?(Array)
+          symbols = symbols.first if symbols.size == 1 && symbols.first.is_a?(Array)
           symbols.compact.reduce(0) do |output, symbol|
             constant_value = constant(symbol)
             if constant_value.is_a?(Integer)

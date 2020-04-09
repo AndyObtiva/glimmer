@@ -10,7 +10,7 @@ module Glimmer
 
       def can_interpret?(parent, keyword, *args, &block)
         keyword == 'selection' &&
-          block == nil &&
+          block.nil? &&
           widget?(parent) &&
           parent.widget.is_a?(List) &&
           args.size == 1 &&

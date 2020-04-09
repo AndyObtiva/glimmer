@@ -1,5 +1,5 @@
 module Glimmer
-  module SWT
+  module DataBinding
     module Observable
       # TODO rename methods to observe/unobserve
       def add_observer(observer, property_or_properties=nil)

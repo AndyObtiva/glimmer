@@ -1,5 +1,5 @@
 module Glimmer
-  module SWT
+  module DataBinding
     module ObservableWidget
       # TODO see if it is worth it to eliminate duplication of method_missing
       # from GWidget using a module

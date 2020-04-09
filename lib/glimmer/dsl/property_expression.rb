@@ -4,7 +4,7 @@ module Glimmer
   module DSL
     class PropertyExpression < Expression
       def can_interpret?(parent, keyword, *args, &block)
-        block == nil &&
+        block.nil? &&
           args.size > 0 &&
           parent.respond_to?(:set_attribute) &&
           parent.respond_to?(:has_attribute?) &&

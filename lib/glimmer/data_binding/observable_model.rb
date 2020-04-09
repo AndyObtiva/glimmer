@@ -4,7 +4,7 @@ require_relative 'observable'
 require_relative 'observer'
 
 module Glimmer
-  module SWT
+  module DataBinding
     # TODO prefix utility methods with double-underscore
     module ObservableModel
       include Observable

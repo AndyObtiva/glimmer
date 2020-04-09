@@ -1,4 +1,5 @@
-Dir['glimmer/dsl/**/*_expression.rb'].each {|f| require f}
+require 'glimmer'
+Dir[File.expand_path('../*_expression.rb', __FILE__)].each {|f| require f}
 require 'glimmer/dsl/expression_handler'
 
 module Glimmer
@@ -24,8 +25,8 @@ module Glimmer
         # Pattern when interpretting a DSL expression
         #
         # TODO rename to dynamic_expressions in the future when supporting static expressions
-        def expressions=(expression_names)
-          @expression_chain_of_responsibility = expression_names.reverse.reduce(nil) do |last_expresion_handler, expression_name|
+        def dynamic_expressions=(expression_names)
+          @dynamic_expression_chain_of_responsibility = expression_names.reverse.reduce(nil) do |last_expresion_handler, expression_name|
             Glimmer.logger.debug "Loading #{expression_class_name(expression_name)}..."
             expression = expression_class(expression_name).new
             expression_handler = ExpressionHandler.new(expression)
@@ -35,7 +36,7 @@ module Glimmer
         end
 
         def expression_class(expression_name)
-          const_get(expression_class_name(expression_name).to_sym)
+          DSL.const_get(expression_class_name(expression_name).to_sym)
         end
 
         def expression_class_name(expression_name)
@@ -45,9 +46,9 @@ module Glimmer
         # Interprets Glimmer DSL keyword, args, and block (e.g. shell(:no_resize) { ... })
         def interpret(keyword, *args, &block)
           keyword = keyword.to_s
-          expression = @expression_chain_of_responsibility.handle(current_parent, keyword, *args, &block)
+          expression = @dynamic_expression_chain_of_responsibility.handle(current_parent, keyword, *args, &block)
           expression.interpret(current_parent, keyword, *args, &block).tap do |ui_object|
-            add_content(ui_object, &block)
+            add_content(ui_object, expression, &block)
           end
         end
 
@@ -56,9 +57,9 @@ module Glimmer
         # This allows evaluating parent UI object properties and children
         #
         # For example, a shell widget would get properties set and children added
-        def add_content(parent, &block)
+        def add_content(parent, expression, &block)
           parent_stack.push(parent)
-          expression.add_content(&block)
+          expression.add_content(parent, &block) if block_given?
           parent_stack.pop
         end
 
@@ -69,8 +70,6 @@ module Glimmer
         def current_parent
           parent_stack.last
         end
-
-        private
 
         def parent_stack
           @parent_stack ||= []

@@ -9,7 +9,7 @@ module Glimmer
 
       def can_interpret?(parent, keyword, *args, &block)
         keyword == 'selection' &&
-          block == nil &&
+          block.nil? &&
           widget?(parent) &&
           parent.swt_widget.is_a?(Combo) &&
           args.size == 1 &&

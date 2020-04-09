@@ -27,7 +27,7 @@ Here is a list of tasks to do (please delete once done):
 - Upgrade jruby
 - Upgrade SWT
 - Proxy java/jruby options to launcher
-- Rename GWidget.widget, DisplayProxy.display, and GColor.color methods to just swt_object
+- Rename GWidget.widget, DisplayProxy.display, and GColor.color methods to just swt_widget, swt_display, and swt_color
 - Use right requires in relation to load_path everywhere
 - Implement Glimmer sample launcher
 - Add Glossary
@@ -61,7 +61,6 @@ bind(model, 'addresses').each { |address|
 - Enhance XML DSL support (special characters, CDATA, escaped characters (#, {, }, .))
 - Build a sample demonstrating how to use Glimmer from Java only for the View layer in a desktop MVC SWT app
 - Support data binding translator option via a block
-- Consider using Ruby Refinements for Glimmer
 - Simplify API for async_exec and sync_exec (putting directly on Glimmer)
 - Restore badges for README
 - Look into what to do regarding Glimmer silent failures (when things fall off the chain of command)

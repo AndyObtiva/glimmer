@@ -1,3 +1,6 @@
+require 'glimmer/swt/widget_proxy'
+require 'glimmer/ui/custom_widget'
+
 module Glimmer
   module DSL
     # Represents a Glimmer DSL expression (e.g. label(:center) { ... })
@@ -27,7 +30,7 @@ module Glimmer
 
       # Checks if parent object is a widget
       def widget?(parent)
-        parent.is_a?(GWidget) || parent.is_a?(CustomWidget)
+        parent.is_a?(SWT::WidgetProxy) || parent.is_a?(UI::CustomWidget)
       end
 
       # Checks if object is a Symbol or a String

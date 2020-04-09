@@ -3,6 +3,7 @@ require 'glimmer/swt/widget_listener_proxy'
 require 'glimmer/swt/color_proxy'
 require 'glimmer/swt/font_proxy'
 require 'glimmer/swt/swt_proxy'
+require 'glimmer/data_binding/observable_widget'
 
 module Glimmer
   module SWT
@@ -16,8 +17,8 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class WidgetProxy
-      include ObservableWidget
       include Packages
+      include DataBinding::ObservableWidget
 
       attr_reader :swt_widget
 
@@ -199,7 +200,7 @@ module Glimmer
       end
 
       def content(&block)
-        Glimmer::DSL::Engine.add_content(self, &block)
+        Glimmer::DSL::Engine.add_content(self, WidgetExpression.new, &block)
       end
 
       private

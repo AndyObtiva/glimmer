@@ -5,51 +5,46 @@ module GlimmerSpec
     include Glimmer
 
     before do
-      @rspec_display_method = method(:display)
-      self.class.send(:undef_method, :display)
       @target = nil
     end
 
     after do
       @target.dispose if @target
-      self.class.send(:define_method, :display, @rspec_display_method)
       Glimmer.import_swt_packages = true
     end
 
     it "tests shell with no args having default layout and singleton display instance" do
-      @display = Glimmer::SWT::GDisplay.instance.display
+      @display = Glimmer::SWT::DisplayProxy.instance.swt_display
       @target = shell
 
       expect(@target).to_not be_nil
-      expect(@target.widget).to_not be_nil
-      expect(@target.widget).to be_instance_of(Shell)
-      expect(@target.widget.getLayout).to_not be_nil
-      expect(@target.widget.getLayout).to be_instance_of(FillLayout)
+      expect(@target.swt_widget).to_not be_nil
+      expect(@target.swt_widget).to be_instance_of(Shell)
+      expect(@target.swt_widget.getLayout).to_not be_nil
+      expect(@target.swt_widget.getLayout).to be_instance_of(FillLayout)
       expect(@target.has_style?(:shell_trim)).to eq(true)
-      expect(@target.display).to eq(@display)
     end
 
     it "tests shell with one arg of unresizable style bit combination" do
       @display = display.display #alternative syntax to grab default display instance
-      @target = shell(Glimmer::SWT::GSWT[:shell_trim] & (~Glimmer::SWT::GSWT[:resize]))
+      @target = shell(Glimmer::SWT::SWTProxy[:shell_trim] & (~Glimmer::SWT::SWTProxy[:resize]))
 
       expect(@target).to_not be_nil
-      expect(@target.widget).to_not be_nil
-      expect(@target.widget).to be_instance_of(Shell)
+      expect(@target.swt_widget).to_not be_nil
+      expect(@target.swt_widget).to be_instance_of(Shell)
       expect(@target.has_style?(:close)).to eq(true)
       expect(@target.has_style?(:title)).to eq(true)
       expect(@target.has_style?(:min)).to eq(true)
       expect(@target.has_style?(:max)).to eq(true)
       expect(@target.has_style?(:resize)).to eq(false)
-      expect(@target.display).to eq(@display)
     end
 
     it "tests shell with one arg of convenience no_resize style bit" do
       @target = shell(:no_resize)
 
       expect(@target).to_not be_nil
-      expect(@target.widget).to_not be_nil
-      expect(@target.widget).to be_instance_of(Shell)
+      expect(@target.swt_widget).to_not be_nil
+      expect(@target.swt_widget).to be_instance_of(Shell)
       expect(@target.has_style?(:close)).to eq(true)
       expect(@target.has_style?(:title)).to eq(true)
       expect(@target.has_style?(:min)).to eq(true)
@@ -58,28 +53,26 @@ module GlimmerSpec
     end
 
     it "tests shell with one arg of display" do
-      @display = Glimmer::SWT::GDisplay.instance.display
+      @display = Glimmer::SWT::DisplayProxy.instance.display
       @target = shell(@display)
 
       expect(@target).to_not be_nil
-      expect(@target.widget).to_not be_nil
-      expect(@target.widget).to be_instance_of(Shell)
-      expect(@target.widget.getLayout).to_not be_nil
-      expect(@target.widget.getLayout).to be_instance_of(FillLayout)
+      expect(@target.swt_widget).to_not be_nil
+      expect(@target.swt_widget).to be_instance_of(Shell)
+      expect(@target.swt_widget.getLayout).to_not be_nil
+      expect(@target.swt_widget.getLayout).to be_instance_of(FillLayout)
       expect(@target.has_style?(:shell_trim)).to eq(true)
-      expect(@target.display).to eq(@display)
     end
 
     it "tests shell with two args of display and style bit" do
-      @display = Glimmer::SWT::GDisplay.instance.display
+      @display = Glimmer::SWT::DisplayProxy.instance.display
       @target = shell(@display, :title)
 
       expect(@target).to_not be_nil
-      expect(@target.widget).to_not be_nil
-      expect(@target.widget).to be_instance_of(Shell)
-      expect(@target.widget.getLayout).to_not be_nil
-      expect(@target.widget.getLayout).to be_instance_of(FillLayout)
-      expect(@target.display).to eq(@display)
+      expect(@target.swt_widget).to_not be_nil
+      expect(@target.swt_widget).to be_instance_of(Shell)
+      expect(@target.swt_widget.getLayout).to_not be_nil
+      expect(@target.swt_widget.getLayout).to be_instance_of(FillLayout)
       expect(@target.has_style?(:close)).to eq(false)
       expect(@target.has_style?(:title)).to eq(true)
       expect(@target.has_style?(:min)).to eq(false)
@@ -89,27 +82,25 @@ module GlimmerSpec
 
     it "tests shell with one arg of parent shell" do
       @target = shell
-      @dialog_shell = shell(@target.widget)
+      @dialog_shell = shell(@target.swt_widget)
 
       expect(@dialog_shell).to_not be_nil
-      expect(@dialog_shell.widget).to_not be_nil
-      expect(@dialog_shell.widget).to be_instance_of(Shell)
-      expect(@dialog_shell.widget.getLayout).to_not be_nil
-      expect(@dialog_shell.widget.getLayout).to be_instance_of(FillLayout)
-      expect(@dialog_shell.display).to eq(@target.display)
+      expect(@dialog_shell.swt_widget).to_not be_nil
+      expect(@dialog_shell.swt_widget).to be_instance_of(Shell)
+      expect(@dialog_shell.swt_widget.getLayout).to_not be_nil
+      expect(@dialog_shell.swt_widget.getLayout).to be_instance_of(FillLayout)
       expect(@dialog_shell.has_style?(:dialog_trim)).to eq(true)
     end
 
     it "tests shell with two args of parent shell and style bit" do
       @target = shell
-      @dialog_shell = shell(@target.widget, :title)
+      @dialog_shell = shell(@target.swt_widget, :title)
 
       expect(@dialog_shell).to_not be_nil
-      expect(@dialog_shell.widget).to_not be_nil
-      expect(@dialog_shell.widget).to be_instance_of(Shell)
-      expect(@dialog_shell.widget.getLayout).to_not be_nil
-      expect(@dialog_shell.widget.getLayout).to be_instance_of(FillLayout)
-      expect(@dialog_shell.display).to eq(@target.display)
+      expect(@dialog_shell.swt_widget).to_not be_nil
+      expect(@dialog_shell.swt_widget).to be_instance_of(Shell)
+      expect(@dialog_shell.swt_widget.getLayout).to_not be_nil
+      expect(@dialog_shell.swt_widget.getLayout).to be_instance_of(FillLayout)
       expect(@dialog_shell.has_style?(:dialog_trim)).to eq(false)
       expect(@dialog_shell.has_style?(:title)).to eq(true)
     end
@@ -121,8 +112,8 @@ module GlimmerSpec
         layout shell_layout
       }
 
-      expect(@target.widget.getText).to eq( "Title")
-      expect(@target.widget.getLayout).to eq( shell_layout)
+      expect(@target.swt_widget.getText).to eq( "Title")
+      expect(@target.swt_widget.getLayout).to eq( shell_layout)
     end
 
     it "tests shell_with_bounds" do
@@ -130,7 +121,7 @@ module GlimmerSpec
         bounds 50, 75, 800, 600
       }
 
-      expect(@target.widget.getBounds).to eq( Rectangle.new(50, 75, 800, 600) )
+      expect(@target.swt_widget.getBounds).to eq( Rectangle.new(50, 75, 800, 600) )
     end
 
     it "tests shell_with_size" do
@@ -138,7 +129,7 @@ module GlimmerSpec
         size 800, 600
       }
 
-      expect(@target.widget.getSize).to eq( Point.new(800, 600) )
+      expect(@target.swt_widget.getSize).to eq( Point.new(800, 600) )
     end
 
     it "tests shell_and_composite_with_default_style_and_layout" do
@@ -146,9 +137,9 @@ module GlimmerSpec
         composite
       }
 
-      expect(@target.widget.children.size).to eq( 1)
-      expect(@target.widget.children[0]).to be_instance_of(Composite)
-      composite_widget = @target.widget.children[0]
+      expect(@target.swt_widget.children.size).to eq( 1)
+      expect(@target.swt_widget.children[0]).to be_instance_of(Composite)
+      composite_widget = @target.swt_widget.children[0]
       expect(composite_widget).to have_style(:none)
       expect(composite_widget.getLayout).to be_instance_of(GridLayout)
       grid_layout = composite_widget.getLayout
@@ -163,9 +154,9 @@ module GlimmerSpec
         }
       }
 
-      expect(@target.widget.children.size).to eq( 1)
-      expect(@target.widget.children[0]).to be_instance_of(Java::OrgEclipseSwtWidgets::Group)
-      group_widget = @target.widget.children[0]
+      expect(@target.swt_widget.children.size).to eq( 1)
+      expect(@target.swt_widget.children[0]).to be_instance_of(Java::OrgEclipseSwtWidgets::Group)
+      group_widget = @target.swt_widget.children[0]
       expect(group_widget).to have_style(:none)
       expect(group_widget.getLayout).to be_instance_of(GridLayout)
       grid_layout = group_widget.getLayout
@@ -182,9 +173,9 @@ module GlimmerSpec
         }
       }
 
-      expect(@target.widget.children.size).to eq( 1)
-      expect(@target.widget.children[0]).to be_instance_of(Composite)
-      composite_widget = @target.widget.children[0]
+      expect(@target.swt_widget.children.size).to eq( 1)
+      expect(@target.swt_widget.children[0]).to be_instance_of(Composite)
+      composite_widget = @target.swt_widget.children[0]
       expect(composite_widget).to have_style(:no_focus)
       expect(composite_widget.getLayout).to eq( composite_layout)
     end
@@ -196,7 +187,7 @@ module GlimmerSpec
         }
       }
 
-      composite_widget = @target.widget.children[0]
+      composite_widget = @target.swt_widget.children[0]
       expect(composite_widget.children.size).to eq( 1)
       expect(composite_widget.children[0]).to be_instance_of(Text)
       text_widget = composite_widget.children[0]
@@ -212,7 +203,7 @@ module GlimmerSpec
         }
       }
 
-      composite_widget = @target.widget.children[0]
+      composite_widget = @target.swt_widget.children[0]
       expect(composite_widget.getLayout).to eq( composite_layout)
       expect(composite_widget.children.size).to eq( 1)
       expect(composite_widget.children[0]).to be_instance_of(Text)
@@ -229,7 +220,7 @@ module GlimmerSpec
         }
       }
 
-      composite_widget = @target.widget.children[0]
+      composite_widget = @target.swt_widget.children[0]
       expect(composite_widget.children.size).to eq( 1)
       expect(composite_widget.children[0]).to be_instance_of(Text)
       text_widget = composite_widget.children[0]
@@ -244,9 +235,9 @@ module GlimmerSpec
         }
       }
 
-      expect(@spinner.widget).to be_instance_of(Spinner)
-      expect(@spinner.widget).to have_style(:border)
-      expect(@spinner.widget.getSelection).to eq( 55)
+      expect(@spinner.swt_widget).to be_instance_of(Spinner)
+      expect(@spinner.swt_widget).to have_style(:border)
+      expect(@spinner.swt_widget.getSelection).to eq( 55)
     end
 
     it "tests shell_and_list_default" do
@@ -255,10 +246,10 @@ module GlimmerSpec
         }
       }
 
-      expect(@list.widget).to be_instance_of(List)
-      expect(@list.widget).to have_style(:border)
-      expect(@list.widget).to have_style(:single)
-      expect(@list.widget).to have_style(:v_scroll)
+      expect(@list.swt_widget).to be_instance_of(List)
+      expect(@list.swt_widget).to have_style(:border)
+      expect(@list.swt_widget).to have_style(:single)
+      expect(@list.swt_widget).to have_style(:v_scroll)
     end
 
     it "tests shell_and_button_default" do
@@ -268,9 +259,9 @@ module GlimmerSpec
         }
       }
 
-      expect(@button.widget).to be_instance_of(Button)
-      expect(@button.widget).to have_style(:push)
-      expect(@button.widget.text).to eq( "Push Me")
+      expect(@button.swt_widget).to be_instance_of(Button)
+      expect(@button.swt_widget).to have_style(:push)
+      expect(@button.swt_widget.text).to eq( "Push Me")
     end
 
     it "tests shell and browser default" do
@@ -288,11 +279,11 @@ module GlimmerSpec
           </html>
           HTML
           on_completed {
-            expect(@browser.widget.evaluate("document.getElementById('answer').value")).to eq('42')
+            expect(@browser.swt_widget.evaluate("document.getElementById('answer').value")).to eq('42')
           }
         }
       }
-      expect(@browser.widget.is_a?(Browser)).to be_truthy
+      expect(@browser.swt_widget.is_a?(Browser)).to be_truthy
     end
 
     it "tests shell_and_table_and_table_column_defaults" do
@@ -302,10 +293,10 @@ module GlimmerSpec
         }
       }
 
-      expect(@table.widget).to have_style(:border)
-      expect(@table.widget.getHeaderVisible).to eq(true)
-      expect(@table.widget.getLinesVisible).to eq(true)
-      expect(@table_column.widget.getWidth).to eq( 80)
+      expect(@table.swt_widget).to have_style(:border)
+      expect(@table.swt_widget.getHeaderVisible).to eq(true)
+      expect(@table.swt_widget.getLinesVisible).to eq(true)
+      expect(@table_column.swt_widget.getWidth).to eq( 80)
     end
 
     it "tests shell_containing_undefined_command" do
@@ -313,30 +304,10 @@ module GlimmerSpec
         expect do
           undefined_command(:undefined_parameter) {
           }
-        end.to raise_error(RuntimeError)
+        end.to raise_error(NoMethodError)
       }
     end
 
-
-    it "adds content to existing widget (shell)" do
-      @target = shell {
-      }
-
-      add_content(@target) {
-        composite {
-          text(:password) {
-            text "Hello"
-          }
-        }
-      }
-
-      composite_widget = @target.widget.children[0]
-      expect(composite_widget.children.size).to eq( 1)
-      expect(composite_widget.children[0]).to be_instance_of(Text)
-      text_widget = composite_widget.children[0]
-      expect(text_widget).to have_style(:password)
-      expect(text_widget.getText).to eq( "Hello")
-    end
 
     it 'sets background image via image path' do
       @target = shell {
@@ -345,7 +316,7 @@ module GlimmerSpec
         }
       }
 
-      expect(@composite.widget.getBackgroundImage.is_a?(Image)).to eq(true)
+      expect(@composite.swt_widget.getBackgroundImage.is_a?(Image)).to eq(true)
     end
 
     it 'sets background image via image object' do
@@ -357,7 +328,7 @@ module GlimmerSpec
         }
       }
 
-      expect(@composite.widget.getBackgroundImage).to eq(image)
+      expect(@composite.swt_widget.getBackgroundImage).to eq(image)
     end
 
     context 'focus' do
@@ -382,8 +353,8 @@ module GlimmerSpec
         }
 
         @target.async_exec do
-          expect(@text1.widget.isFocusControl).to eq(true)
-          expect(@text2.widget.isFocusControl).to eq(false)
+          expect(@text1.swt_widget.isFocusControl).to eq(true)
+          expect(@text2.swt_widget.isFocusControl).to eq(false)
         end
       end
 
@@ -400,8 +371,8 @@ module GlimmerSpec
         }
 
         @target.async_exec do
-          expect(@text1.widget.isFocusControl).to eq(true)
-          expect(@text2.widget.isFocusControl).to eq(false)
+          expect(@text1.swt_widget.isFocusControl).to eq(true)
+          expect(@text2.swt_widget.isFocusControl).to eq(false)
         end
       end
 
@@ -418,8 +389,8 @@ module GlimmerSpec
         }
 
         @target.async_exec do
-          expect(@text1.widget.isFocusControl).to eq(false)
-          expect(@text2.widget.isFocusControl).to eq(true)
+          expect(@text1.swt_widget.isFocusControl).to eq(false)
+          expect(@text2.swt_widget.isFocusControl).to eq(true)
         end
       end
     end

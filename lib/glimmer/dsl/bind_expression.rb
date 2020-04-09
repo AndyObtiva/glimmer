@@ -1,4 +1,4 @@
-require 'glimmer/dsl/expression'
+require 'glimmer/dsl/static_expression'
 require 'glimmer/data_binding/model_binding'
 
 # TODO consider turning static keywords like bind into methods
@@ -9,11 +9,11 @@ module Glimmer
     # as a ModelBinding. It is then used by another command handler like
     # DataBindingCommandHandler for text and selection properties on Text and Spinner
     # or TableItemsDataBindingCommandHandler for items in a Table
-    class BindExpression < Expression
+    class BindExpression < StaticExpression
       def can_interpret?(parent, keyword, *args, &block)
         (
           keyword == 'bind' &&
-            block == nil &&
+            block.nil? &&
             widget?(parent) &&
             (
               (

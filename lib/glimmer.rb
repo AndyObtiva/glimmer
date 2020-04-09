@@ -9,9 +9,7 @@ require 'logger'
 require 'java'
 require 'set'
 require 'nested_inherited_jruby_include_package'
-
-require 'glimmer/swt/packages'
-require 'glimmer/dsl'
+require 'puts_debuggerer'
 
 # Glimmer provides a JRuby Desktop UI DSL + Data-Binding functionality
 #
@@ -20,7 +18,7 @@ require 'glimmer/dsl'
 # Glimmer DSL static keywords (e.g. rgb, bind, etc..) are available as inherited methods
 # Glimmer DSL dynamic keywords (e.g. label, combo, etc...) are available via method_missing
 module Glimmer
-   #TODO make it configurable to include or not include perhaps reverting to using included
+  #TODO make it configurable to include or not include perhaps reverting to using included
   REGEX_METHODS_EXCLUDED = /^(to_|\[)/
 
   class << self
@@ -50,22 +48,30 @@ module Glimmer
       end
       @@logger
     end
-
-    alias method_missing_without_glimmer method_missing
-    def method_missing(method_symbol, *args, &block)
-      # This if statement speeds up Glimmer in girb or whenever directly including on main object
-      if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
-        return method_missing_without_glimmer(method_symbol, *args, &block)
-      end
-      Glimmer.logger.debug "method: " + method_symbol.to_s + " and args: " + args.to_s
-      Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
-    rescue => e
-      Glimmer.logger.error message
-      method_missing_without_glimmer(method_symbol, *args, &block)
-    end
   end
 
+  alias method_missing_without_glimmer method_missing
   def method_missing(method_symbol, *args, &block)
-    Glimmer.method_missing(method_symbol, *args, &block)
+    # This if statement speeds up Glimmer in girb or whenever directly including on main object
+    if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
+      raise "Glimmer excluded method: #{method_symbol}"
+    end
+    Glimmer.logger.debug "method: " + method_symbol.to_s + " and args: " + args.to_s
+    pd method_symbol
+    v = Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
+    pd v
+    v
+  rescue => e
+    if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
+      Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"
+    else
+      Glimmer.logger.error "#{e.message}\n#{e.backtrace.join("\n")}"
+    end
+    method_missing_without_glimmer(method_symbol, *args, &block)
   end
 end
+
+$LOAD_PATH.unshift(File.expand_path('..', __FILE__))
+
+require 'glimmer/swt/packages'
+require 'glimmer/dsl'

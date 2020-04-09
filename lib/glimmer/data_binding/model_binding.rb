@@ -2,7 +2,7 @@ require 'glimmer/data_binding/observable'
 require 'glimmer/data_binding/observer'
 
 module Glimmer
-  module SWT
+  module DataBinding
     class ModelBinding
       include Observable
       include Observer

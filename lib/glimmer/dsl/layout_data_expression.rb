@@ -1,12 +1,12 @@
 require 'glimmer'
-require 'glimmer/dsl/expression'
+require 'glimmer/dsl/static_expression'
 require 'glimmer/swt/layout_data_proxy'
 
 # TODO consider turning static keywords like layout_data into methods
 
 module Glimmer
   module DSL
-    class LayoutDataExpression < Expression
+    class LayoutDataExpression < StaticExpression
       def can_interpret?(parent, keyword, *args, &block)
         keyword == 'layout_data' &&
           widget?(parent)

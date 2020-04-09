@@ -28,7 +28,7 @@ module Glimmer
       #
       # rgba is 4 arguments representing Red, Green, Blue, and Alpha numeric values
       #
-      def initialize(standard_color = nil, red, green, blue, alpha = nil)
+      def initialize(standard_color = nil, red = nil, green = nil, blue = nil, alpha = nil)
         if standard_color
           standard_color = "color_#{standard_color}".to_sym unless standard_color.to_s.downcase.include?('color_')
           @swt_color = DisplayProxy.instance.swt_display.getSystemColor(SWTProxy[standard_color])

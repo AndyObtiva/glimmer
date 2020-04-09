@@ -6,7 +6,7 @@ require 'glimmer/swt/tab_item_proxy'
 module Glimmer
   module DSL
     class TabItemExpression < Expression
-      include_package 'org.eclipse.swt.widgets' #TODO move to DSL
+      include_package 'org.eclipse.swt.widgets'
 
       def can_interpret?(parent, keyword, *args, &block)
         initial_condition = (keyword == 'tab_item') && widget?(parent)

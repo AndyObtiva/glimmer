@@ -1,7 +1,7 @@
 require 'set'
 
 module Glimmer
-  module SWT
+  module DataBinding
     # Mixin representing Observer trait from Observer Design Pattern
     # Allows classes to include without interfering with their
     # inheritance hierarchy.

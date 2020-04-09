@@ -9,21 +9,13 @@ module Glimmer
     # Every expression has a corresponding AbstractExpression subclass
     # in glimmer/dsl
     # TODO rename to dynamic_expressions in the future when supporting static expressions
-    Engine.expressions = %w[
-      observe
-      display
-      shell
-      layout_data
+    Engine.dynamic_expressions = %w[
       layout
       widget_listener
-      bind
-      tab_item
       combo_selection_data_binding
       list_selection_data_binding
       tree_items_data_binding
-      tree_properties_data_binding
       table_items_data_binding
-      table_column_properties_data_binding
       data_binding
       color
       property

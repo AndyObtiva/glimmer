@@ -3,7 +3,7 @@ require 'set'
 require_relative 'observable'
 
 module Glimmer
-  module SWT
+  module DataBinding
     # TODO prefix utility methods with double-underscore
     module ObservableArray
       include Observable
