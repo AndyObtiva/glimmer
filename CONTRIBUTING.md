@@ -30,6 +30,12 @@ To run a specific spec, run:
 rake SPEC=spec_file_path:line_number
 ```
 
+To display Glimmer debug information, run:
+```
+GLIMMER_DEBUG=true rake SPEC=spec_file_path:line_number
+```
+
+
 Note: make sure not to use the keyword or mouse while tests are running since they bring up UI elements behind the scenes (invisible). This avoids fudging them and causing false test failures. If you get obscure failures related to focus of widgets, they are most likely false negatives. Just rerun the specs without touching the keyboard or mouse and they should pass assuming they are not really broken.
 
 ### build
