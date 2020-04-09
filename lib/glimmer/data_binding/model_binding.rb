@@ -1,5 +1,5 @@
-require_relative 'observable'
-require_relative 'observer'
+require 'glimmer/data_binding/observable'
+require 'glimmer/data_binding/observer'
 
 module Glimmer
   module SWT
@@ -8,11 +8,13 @@ module Glimmer
       include Observer
 
       attr_reader :property_type, :binding_options
-      @@property_type_converters = {
+
+      PROPERTY_TYPE_CONVERTERS = {
         :undefined => lambda { |value| value },
         :fixnum => lambda { |value| value.to_i },
         :array => lambda { |value| value.to_a }
       }
+
       def initialize(base_model, property_name_expression, property_type = :undefined, binding_options = nil)
         property_type = :undefined if property_type.nil?
         @base_model = base_model
@@ -25,9 +27,11 @@ module Glimmer
           end
         end
       end
+
       def model
         nested_property? ? nested_model : base_model
       end
+
       # e.g. person.address.state returns [person, person.address]
       def nested_models
         @nested_models = [base_model]
@@ -42,15 +46,19 @@ module Glimmer
         end
         @nested_models
       end
+
       def nested_model
         nested_models.last
       end
+
       def base_model
         @base_model
       end
+
       def property_name
         nested_property? ? nested_property_name : property_name_expression
       end
+
       # All nested property names
       # e.g. property name expression "address.state" gives ['address', 'state']
       # If there are any indexed property names, this returns indexes as properties.
@@ -58,31 +66,39 @@ module Glimmer
       def nested_property_names
         @nested_property_names ||= property_name_expression.split(".").map {|pne| pne.match(/([^\[]+)(\[[^\]]+\])?/).to_a.drop(1)}.flatten.compact
       end
+
       # Final nested property name
       # e.g. property name expression "address.state" gives :state
       def nested_property_name
         nested_property_names.last
       end
+
       # Model representing nested property names
       # e.g. property name expression "address.state" gives [:address]
       def model_property_names
         nested_property_names[0...-1]
       end
+
       def nested_property?
         property_name_expression.match(/[.\[]/)
       end
+
       def property_name_expression
         @property_name_expression
       end
+
       def computed?
         !computed_by.empty?
       end
+
       def computed_by
         [@binding_options[:computed_by]].flatten.compact
       end
+
       def computed_binding_options
         @binding_options.reject {|k,v| k == :computed_by}
       end
+
       def nested_property_observers_for(observer)
         @nested_property_observers_collection ||= {}
         unless @nested_property_observers_collection.has_key?(observer)
@@ -98,6 +114,7 @@ module Glimmer
         end
         @nested_property_observers_collection[observer]
       end
+
       def add_observer(observer)
         if computed?
           add_computed_observers(observer)
@@ -109,6 +126,7 @@ module Glimmer
           observer.add_dependent(my_registration => observer_registration)
         end
       end
+
       def remove_observer(observer)
         if computed?
           @computed_model_bindings.each do |computed_model_binding|
@@ -121,6 +139,7 @@ module Glimmer
           observer.unobserve(model, property_name)
         end
       end
+
       def computed_observer_for(observer)
         @computed_observer_collection ||= {}
         unless @computed_observer_collection.has_key?(observer)
@@ -130,6 +149,7 @@ module Glimmer
         end
         @computed_observer_collection[observer]
       end
+
       def add_computed_observers(observer)
         @computed_model_bindings.each do |computed_model_binding|
           observer_registration = computed_observer_for(observer).observe(computed_model_binding)
@@ -137,6 +157,7 @@ module Glimmer
           observer.add_dependent(my_registration => observer_registration)
         end
       end
+
       def add_nested_observers(observer)
         nested_property_observers = nested_property_observers_for(observer)
         nested_models.zip(nested_property_names).each_with_index do |zip, i|
@@ -159,23 +180,29 @@ module Glimmer
           end
         end
       end
+
       def call(value)
         return if model.nil?
-        converted_value = @@property_type_converters[@property_type].call(value)
+        converted_value = PROPERTY_TYPE_CONVERTERS[@property_type].call(value)
         invoke_property_writer(model, "#{property_name}=", converted_value) unless evaluate_property == converted_value
       end
+
       def evaluate_property
         invoke_property_reader(model, property_name) unless model.nil?
       end
+
       def evaluate_options_property
         model.send(options_property_name) unless model.nil?
       end
+
       def options_property_name
         self.property_name + "_options"
       end
+
       def property_indexed?(property_expression)
         property_expression.start_with?('[')
       end
+
       def invoke_property_reader(object, property_expression)
         if property_indexed?(property_expression)
           property_method = '[]'
@@ -186,6 +213,7 @@ module Glimmer
           object.send(property_expression)
         end
       end
+
       def invoke_property_writer(object, property_expression, value)
         if property_indexed?(property_expression)
           property_method = '[]='

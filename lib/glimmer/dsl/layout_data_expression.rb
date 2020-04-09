@@ -1,3 +1,4 @@
+require 'glimmer'
 require 'glimmer/dsl/expression'
 require 'glimmer/swt/layout_data_proxy'
 

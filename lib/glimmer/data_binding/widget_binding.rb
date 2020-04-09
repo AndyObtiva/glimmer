@@ -1,3 +1,4 @@
+require 'glimmer'
 require_relative 'observable'
 require_relative 'observer'
 

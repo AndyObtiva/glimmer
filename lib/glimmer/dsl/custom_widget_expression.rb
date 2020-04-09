@@ -1,3 +1,4 @@
+require 'glimmer'
 require 'glimmer/dsl/expression'
 require 'glimmer/ui/custom_widget'
 require 'glimmer/ui/custom_shell'

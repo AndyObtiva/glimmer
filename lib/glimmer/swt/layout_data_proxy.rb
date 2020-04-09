@@ -1,3 +1,4 @@
+require 'glimmer'
 require 'glimmer/swt/swt_proxy'
 
 module Glimmer

@@ -1,20 +1,23 @@
-require_relative 'observable'
-require_relative 'observer'
+require 'glimmer'
+require 'glimmer/data_binding/observable'
+require 'glimmer/data_binding/observer'
 
 module Glimmer
-  module SWT
+  module DataBinding
     # SWT List widget selection binding
     class ListSelectionBinding
       include Glimmer
       include Observable
       include Observer
 
-      attr_reader :widget
-      @@property_type_updaters = {
-        :string => lambda { |widget, value| widget.widget.select(widget.widget.index_of(value.to_s)) },
-        :array => lambda { |widget, value| widget.widget.selection=((value or []).to_java :string) }
+      attr_reader :widget_proxy
+
+      PROPERTY_TYPE_UPDATERS = {
+        :string => lambda { |widget_proxy, value| widget_proxy.swt_widget.select(widget_proxy.swt_widget.index_of(value.to_s)) },
+        :array => lambda { |widget_proxy, value| widget_proxy.swt_widget.selection=(value || []).to_java(:string) }
       }
-      @@property_evaluators = {
+
+      PROPERTY_EVALUATORS = {
         :string => lambda do |selection_array|
           return nil if selection_array.empty?
           selection_array[0]
@@ -23,24 +26,26 @@ module Glimmer
           selection_array
         end
       }
+
       # Initialize with list widget and property_type
       # property_type :string represents default list single selection
       # property_type :array represents list multi selection
-      def initialize(widget, property_type)
+      def initialize(widget_proxy, property_type)
         property_type = :string if property_type.nil? or property_type == :undefined
-        @widget = widget
+        @widget_proxy = widget_proxy
         @property_type = property_type
-        @widget.on_widget_disposed do |dispose_event|
+        @widget_proxy.on_widget_disposed do |dispose_event|
           unregister_all_observables
         end
       end
+
       def call(value)
-        @@property_type_updaters[@property_type].call(@widget, value) unless evaluate_property == value
+        PROPERTY_TYPE_UPDATERS[@property_type].call(@widget_proxy, value) unless evaluate_property == value
       end
+
       def evaluate_property
-        selection_array = @widget.widget.send("selection").to_a
-        property_value = @@property_evaluators[@property_type].call(selection_array)
-        return property_value
+        selection_array = @widget_proxy.swt_widget.send('selection').to_a
+        PROPERTY_EVALUATORS[@property_type].call(selection_array)
       end
     end
   end

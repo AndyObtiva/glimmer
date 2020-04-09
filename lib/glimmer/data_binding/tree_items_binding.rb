@@ -1,3 +1,4 @@
+require 'glimmer'
 require_relative 'observable_array'
 require_relative 'observable_model'
 require_relative 'observable'

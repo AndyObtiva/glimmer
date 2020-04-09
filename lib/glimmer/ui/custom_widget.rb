@@ -1,3 +1,4 @@
+require 'glimmer'
 require 'glimmer/swt/swt_proxy'
 require 'glimmer/swt/display_proxy'
 require 'glimmer/util/proc_tracker'

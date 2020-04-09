@@ -1,3 +1,4 @@
+require 'glimmer'
 require 'glimmer/dsl/expression'
 require 'glimmer/swt/widget_proxy'
 require 'glimmer/swt/tab_item_proxy'
