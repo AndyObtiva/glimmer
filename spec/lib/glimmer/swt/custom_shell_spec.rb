@@ -1,12 +1,12 @@
 require "spec_helper"
 
 module GlimmerSpec
-  describe Glimmer::SWT::CustomShell do
+  describe Glimmer::UI::CustomShell do
     include Glimmer
 
     before(:all) do
       class ::TimeShell
-        include Glimmer::SWT::CustomShell
+        include Glimmer::UI::CustomShell
 
         def body
           shell {
@@ -18,7 +18,7 @@ module GlimmerSpec
       end
 
       class ::InvalidCustomShell
-        include Glimmer::SWT::CustomShell
+        include Glimmer::UI::CustomShell
 
         def body
           composite {}
@@ -48,9 +48,9 @@ module GlimmerSpec
 
     it 'opens and closes' do
       @target = time_shell
-      @target.widget.setAlpha(0) # keep invisible while running specs
-      expect(@target.widget.children.first.is_a?(Label)).to eq(true)
-      expect(@target.widget.children.first.getText).to eq("It is always beer'o'clock!")
+      @target.swt_widget.setAlpha(0) # keep invisible while running specs
+      expect(@target.swt_widget.children.first.is_a?(Label)).to eq(true)
+      expect(@target.swt_widget.children.first.getText).to eq("It is always beer'o'clock!")
       expect(@target.visible?).to eq(false)
       @target.async_exec do
         expect(@target.visible?).to eq(true)

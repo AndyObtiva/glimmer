@@ -1,6 +1,5 @@
 require 'glimmer'
 require 'glimmer/dsl/expression'
-require 'glimmer/swt/widget_proxy'
 
 module Glimmer
   module DSL
@@ -24,3 +23,5 @@ module Glimmer
     end
   end
 end
+
+require 'glimmer/swt/widget_proxy'

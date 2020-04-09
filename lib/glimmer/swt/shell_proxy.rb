@@ -1,6 +1,7 @@
 require 'glimmer/swt/swt_proxy'
 require 'glimmer/swt/widget_proxy'
 require 'glimmer/swt/display_proxy'
+require 'glimmer/dsl/shell_expression'
 
 module Glimmer
   module SWT
@@ -74,7 +75,7 @@ module Glimmer
       end
 
       def content(&block)
-        Glimmer::DSL::Engine.add_content(self, ShellExpression.new, &block)
+        Glimmer::DSL::Engine.add_content(self, DSL::ShellExpression.new, &block)
       end
 
       # (happens as part of `#open`)

@@ -10,11 +10,10 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class LayoutProxy
-      include_package 'org.eclipse.swt.layout'
-
       attr_reader :widget_proxy, :swt_layout
 
       class << self
+        include_package 'org.eclipse.swt.layout'
         include_package 'org.eclipse.swt.widgets'
 
         def layout_exists?(underscored_layout_name)
@@ -35,7 +34,8 @@ module Glimmer
           end
           swt_layout_class
         rescue => e
-          Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"
+          Glimmer.logger.debug e.message
+          # Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"
           raise e
         end
       end

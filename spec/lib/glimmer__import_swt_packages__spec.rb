@@ -22,7 +22,7 @@ describe Glimmer do
       include Glimmer
     end
 
-    expect(SomeApp::Label).to eq(org.eclipse.swt.widgets.Label)
+    expect(SomeApp::Label).to eq(org.eclipse.swt.swt_widgets.Label)
 
     Glimmer.import_swt_packages = false
 
@@ -35,15 +35,15 @@ describe Glimmer do
 
   it 'disables automatic include of SWT packages in Glimmer custom widgets' do
     class SomeWidget
-      include Glimmer::SWT::CustomWidget
+      include Glimmer::UI::CustomWidget
     end
 
-    expect(SomeWidget::Label).to eq(org.eclipse.swt.widgets.Label)
+    expect(SomeWidget::Label).to eq(org.eclipse.swt.swt_widgets.Label)
 
     Glimmer.import_swt_packages = false
 
     class AnotherWidget
-      include Glimmer::SWT::CustomWidget
+      include Glimmer::UI::CustomWidget
     end
 
     expect {AnotherWidget::Label}.to raise_error(NameError)
@@ -51,15 +51,15 @@ describe Glimmer do
 
   it 'disables automatic include of SWT packages in Glimmer custom shells' do
     class SomeShell
-      include Glimmer::SWT::CustomShell
+      include Glimmer::UI::CustomShell
     end
 
-    expect(SomeShell::Label).to eq(org.eclipse.swt.widgets.Label)
+    expect(SomeShell::Label).to eq(org.eclipse.swt.swt_widgets.Label)
 
     Glimmer.import_swt_packages = false
 
     class AnotherShell
-      include Glimmer::SWT::CustomShell
+      include Glimmer::UI::CustomShell
     end
 
     expect {AnotherShell::Label}.to raise_error(NameError)

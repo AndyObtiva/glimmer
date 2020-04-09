@@ -10,7 +10,7 @@ module GlimmerSpec
       end
 
       class ::RedButton
-        include Glimmer::SWT::CustomWidget
+        include Glimmer::UI::CustomWidget
 
         def body
           button(swt_style) {
@@ -41,11 +41,11 @@ module GlimmerSpec
         }
       }
 
-      @text.widget.setText("Hi")
-      expect(@text.widget.getText).to eq("Hi")
+      @text.swt_widget.setText("Hi")
+      expect(@text.swt_widget.getText).to eq("Hi")
 
-      @text.widget.setText("Hello")
-      expect(@text.widget.getText).to eq("Hi")
+      @text.swt_widget.setText("Hello")
+      expect(@text.swt_widget.getText).to eq("Hi")
     end
 
     it "tests button widget selection listener" do
@@ -62,8 +62,8 @@ module GlimmerSpec
         }
       }
       expect(person.name).to eq("Bruce Ting")
-      @button.widget.setSelection(true)
-      @button.widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
+      @button.swt_widget.setSelection(true)
+      @button.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
       expect(person.name).to eq("Bruce Lao")
     end
 
@@ -81,10 +81,10 @@ module GlimmerSpec
         }
       }
 
-      expect(@button.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
+      expect(@button.swt_widget.getBackground).to eq(Glimmer::SWT::GColor.new(:red).color)
       expect(person.name).to eq("Bruce Ting")
-      @button.widget.setSelection(true)
-      @button.widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
+      @button.swt_widget.setSelection(true)
+      @button.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
       expect(person.name).to eq("Bruce Lao")
     end
 
@@ -105,7 +105,7 @@ module GlimmerSpec
         }
 
         expect(@button_shown).to eq(nil)
-        @button.widget.setVisible(true)
+        @button.swt_widget.setVisible(true)
         expect(@button_shown).to eq(true)
       end
       it "fails in adding button SWT.invalid event listener" do

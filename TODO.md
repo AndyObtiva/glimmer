@@ -8,7 +8,6 @@ Here is a list of tasks to do (please delete once done):
 - Basic RDoc documentation
 - Turn static keywords like bind/rgb/rgba into methods
 - Support swt keyword for style
-- Support color keyword for standard colors and unsupport passing strings/symbols directly
 - Support async_exec/sync_exec keywords
 - Rename commands to keywords in Glimmer
 - Correct attribute/property naming (unify as attributes)

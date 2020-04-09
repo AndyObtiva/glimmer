@@ -496,13 +496,13 @@ You may check out all available standard colors in `SWT` over here (having `COLO
 https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
 
 
-##### `#color`
+##### `#swt_color`
 
-Glimmer color objects come with an instance method `#color` that returns the actual SWT `Color` object wrapped by the Glimmer color object. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
+Glimmer color objects come with an instance method `#swt_color` that returns the actual SWT `Color` object wrapped by the Glimmer color object. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
 
-##### `GColor.color_for(display = nil, standard_color)`
+##### `Glimmer::SWT::ColorProxy.new(display = nil, standard_color).color`
 
-Glimmer `GColor` class comes with `.color_for` method that builds an actual SWT `Color` object from a standard color string or symbol. Passing a `display` is optional. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
+Glimmer `ColorProxy` class comes with `.color_for` method that builds an actual SWT `Color` object from a standard color string or symbol. Passing a `display` is optional. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
 
 #### Fonts
 

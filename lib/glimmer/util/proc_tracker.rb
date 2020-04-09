@@ -1,5 +1,5 @@
 module Glimmer
-  module SWT
+  module Util
     class ProcTracker < DelegateClass(Proc)
       def initialize(proc)
         super(proc)

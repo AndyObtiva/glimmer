@@ -4,6 +4,7 @@ require 'glimmer/swt/color_proxy'
 require 'glimmer/swt/font_proxy'
 require 'glimmer/swt/swt_proxy'
 require 'glimmer/data_binding/observable_widget'
+require 'glimmer/dsl/widget_expression'
 
 module Glimmer
   module SWT
@@ -132,10 +133,12 @@ module Glimmer
         end
         swt_widget_class
       rescue NameError => e
-        Glimmer.logger.debug("#{e.message}\n#{e.backtrace.join("\n")}")
+        Glimmer.logger.debug e.message
+        # Glimmer.logger.debug("#{e.message}\n#{e.backtrace.join("\n")}")
         nil
       rescue => e
-        Glimmer.logger.debug("#{e.message}\n#{e.backtrace.join("\n")}")
+        Glimmer.logger.debug e.message
+        # Glimmer.logger.debug("#{e.message}\n#{e.backtrace.join("\n")}")
         nil
       end
 
@@ -200,7 +203,7 @@ module Glimmer
       end
 
       def content(&block)
-        Glimmer::DSL::Engine.add_content(self, WidgetExpression.new, &block)
+        Glimmer::DSL::Engine.add_content(self, DSL::WidgetExpression.new, &block)
       end
 
       private

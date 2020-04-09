@@ -54,13 +54,13 @@ module GlimmerSpec
         }
 
         @target.async_exec do
-          @text.widget.setText("text2")
+          @text.swt_widget.setText("text2")
         end
 
-        expect(@text.widget.getText).to_not eq("text2")
+        expect(@text.swt_widget.getText).to_not eq("text2")
 
         @target.async_exec do
-          expect(@text.widget.getText).to eq("text2")
+          expect(@text.swt_widget.getText).to eq("text2")
         end
       end
 
@@ -72,12 +72,12 @@ module GlimmerSpec
         }
 
         @target.async_exec do
-          expect(@text.widget.getText).to eq("text2")
+          expect(@text.swt_widget.getText).to eq("text2")
         end
 
         # This takes prioerity over async_exec
         @target.sync_exec do
-          @text.widget.setText("text2")
+          @text.swt_widget.setText("text2")
         end
       end
     end

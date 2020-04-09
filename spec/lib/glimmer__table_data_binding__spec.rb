@@ -26,7 +26,7 @@ module GlimmerSpec
       end
 
       class ::RedTable
-        include Glimmer::SWT::CustomWidget
+        include Glimmer::UI::CustomWidget
 
         def body
           table(swt_style) {
@@ -103,27 +103,27 @@ module GlimmerSpec
         }
       }
 
-      expect(@table.widget.getColumnCount).to eq(3)
-      expect(@table.widget.getItems.size).to eq(2)
+      expect(@table.swt_widget.getColumnCount).to eq(3)
+      expect(@table.swt_widget.getItems.size).to eq(2)
 
-      expect(@table.widget.getItems[0].getText(0)).to eq("Bruce Ting")
-      expect(@table.widget.getItems[0].getText(1)).to eq("45")
-      expect(@table.widget.getItems[0].getText(2)).to eq("true")
+      expect(@table.swt_widget.getItems[0].getText(0)).to eq("Bruce Ting")
+      expect(@table.swt_widget.getItems[0].getText(1)).to eq("45")
+      expect(@table.swt_widget.getItems[0].getText(2)).to eq("true")
 
-      expect(@table.widget.getItems[1].getText(0)).to eq("Julia Fang")
-      expect(@table.widget.getItems[1].getText(1)).to eq("17")
-      expect(@table.widget.getItems[1].getText(2)).to eq("false")
+      expect(@table.swt_widget.getItems[1].getText(0)).to eq("Julia Fang")
+      expect(@table.swt_widget.getItems[1].getText(1)).to eq("17")
+      expect(@table.swt_widget.getItems[1].getText(2)).to eq("false")
 
-      expect(@table_nested_indexed.widget.getColumnCount).to eq(3)
-      expect(@table_nested_indexed.widget.getItems.size).to eq(2)
+      expect(@table_nested_indexed.swt_widget.getColumnCount).to eq(3)
+      expect(@table_nested_indexed.swt_widget.getItems.size).to eq(2)
 
-      expect(@table_nested_indexed.widget.getItems[0].getText(0)).to eq("Bruce Ting")
-      expect(@table_nested_indexed.widget.getItems[0].getText(1)).to eq("45")
-      expect(@table_nested_indexed.widget.getItems[0].getText(2)).to eq("true")
+      expect(@table_nested_indexed.swt_widget.getItems[0].getText(0)).to eq("Bruce Ting")
+      expect(@table_nested_indexed.swt_widget.getItems[0].getText(1)).to eq("45")
+      expect(@table_nested_indexed.swt_widget.getItems[0].getText(2)).to eq("true")
 
-      expect(@table_nested_indexed.widget.getItems[1].getText(0)).to eq("Julia Fang")
-      expect(@table_nested_indexed.widget.getItems[1].getText(1)).to eq("17")
-      expect(@table_nested_indexed.widget.getItems[1].getText(2)).to eq("false")
+      expect(@table_nested_indexed.swt_widget.getItems[1].getText(0)).to eq("Julia Fang")
+      expect(@table_nested_indexed.swt_widget.getItems[1].getText(1)).to eq("17")
+      expect(@table_nested_indexed.swt_widget.getItems[1].getText(2)).to eq("false")
 
       person3 = Person.new
       person3.name = "Andrea Shingle"
@@ -132,44 +132,44 @@ module GlimmerSpec
 
       group.people << person3
 
-      expect(@table.widget.getItems.size).to eq(3)
-      expect(@table.widget.getItems[2].getText(0)).to eq("Andrea Shingle")
-      expect(@table.widget.getItems[2].getText(1)).to eq("23")
-      expect(@table.widget.getItems[2].getText(2)).to eq("true")
+      expect(@table.swt_widget.getItems.size).to eq(3)
+      expect(@table.swt_widget.getItems[2].getText(0)).to eq("Andrea Shingle")
+      expect(@table.swt_widget.getItems[2].getText(1)).to eq("23")
+      expect(@table.swt_widget.getItems[2].getText(2)).to eq("true")
 
       group.people.delete person2
 
-      expect(@table.widget.getItems.size).to eq(2)
-      expect(@table.widget.getItems[1].getText(0)).to eq("Andrea Shingle")
-      expect(@table.widget.getItems[1].getText(1)).to eq("23")
-      expect(@table.widget.getItems[1].getText(2)).to eq("true")
+      expect(@table.swt_widget.getItems.size).to eq(2)
+      expect(@table.swt_widget.getItems[1].getText(0)).to eq("Andrea Shingle")
+      expect(@table.swt_widget.getItems[1].getText(1)).to eq("23")
+      expect(@table.swt_widget.getItems[1].getText(2)).to eq("true")
 
       group.people.delete_at(0)
 
-      expect(@table.widget.getItems.size).to eq(1)
-      expect(@table.widget.getItems[0].getText(0)).to eq("Andrea Shingle")
-      expect(@table.widget.getItems[0].getText(1)).to eq("23")
-      expect(@table.widget.getItems[0].getText(2)).to eq("true")
+      expect(@table.swt_widget.getItems.size).to eq(1)
+      expect(@table.swt_widget.getItems[0].getText(0)).to eq("Andrea Shingle")
+      expect(@table.swt_widget.getItems[0].getText(1)).to eq("23")
+      expect(@table.swt_widget.getItems[0].getText(2)).to eq("true")
 
       group.people.clear
 
-      expect(0).to eq(@table.widget.getItems.size)
+      expect(0).to eq(@table.swt_widget.getItems.size)
 
       group.people = [person2, person1]
 
-      expect(2).to eq(@table.widget.getItems.size)
+      expect(2).to eq(@table.swt_widget.getItems.size)
 
-      expect(@table.widget.getItems[0].getText(0)).to eq("Julia Fang")
-      expect(@table.widget.getItems[0].getText(1)).to eq("17")
-      expect(@table.widget.getItems[0].getText(2)).to eq("false")
+      expect(@table.swt_widget.getItems[0].getText(0)).to eq("Julia Fang")
+      expect(@table.swt_widget.getItems[0].getText(1)).to eq("17")
+      expect(@table.swt_widget.getItems[0].getText(2)).to eq("false")
 
-      expect(@table.widget.getItems[1].getText(0)).to eq("Bruce Ting")
-      expect(@table.widget.getItems[1].getText(1)).to eq("45")
-      expect(@table.widget.getItems[1].getText(2)).to eq("true")
+      expect(@table.swt_widget.getItems[1].getText(0)).to eq("Bruce Ting")
+      expect(@table.swt_widget.getItems[1].getText(1)).to eq("45")
+      expect(@table.swt_widget.getItems[1].getText(2)).to eq("true")
 
       person1.name = "Bruce Flee"
 
-      expect(@table.widget.getItems[1].getText(0)).to eq("Bruce Flee")
+      expect(@table.swt_widget.getItems[1].getText(0)).to eq("Bruce Flee")
     end
 
     it "data binds text widget to a string property for a custom widget table" do
@@ -208,17 +208,17 @@ module GlimmerSpec
         }
       }
 
-      expect(@table.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
-      expect(@table.widget.getColumnCount).to eq(3)
-      expect(@table.widget.getItems.size).to eq(2)
+      expect(@table.swt_widget.getBackground).to eq(Glimmer::SWT::GColor.new(:red).color)
+      expect(@table.swt_widget.getColumnCount).to eq(3)
+      expect(@table.swt_widget.getItems.size).to eq(2)
 
-      expect(@table.widget.getItems[0].getText(0)).to eq("Bruce Ting")
-      expect(@table.widget.getItems[0].getText(1)).to eq("45")
-      expect(@table.widget.getItems[0].getText(2)).to eq("true")
+      expect(@table.swt_widget.getItems[0].getText(0)).to eq("Bruce Ting")
+      expect(@table.swt_widget.getItems[0].getText(1)).to eq("45")
+      expect(@table.swt_widget.getItems[0].getText(2)).to eq("true")
 
-      expect(@table.widget.getItems[1].getText(0)).to eq("Julia Fang")
-      expect(@table.widget.getItems[1].getText(1)).to eq("17")
-      expect(@table.widget.getItems[1].getText(2)).to eq("false")
+      expect(@table.swt_widget.getItems[1].getText(0)).to eq("Julia Fang")
+      expect(@table.swt_widget.getItems[1].getText(1)).to eq("17")
+      expect(@table.swt_widget.getItems[1].getText(2)).to eq("false")
     end
   end
 end

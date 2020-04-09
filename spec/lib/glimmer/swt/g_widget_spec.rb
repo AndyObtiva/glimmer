@@ -16,11 +16,11 @@ module GlimmerSpec
         }
       }
 
-      @text.widget.setText("Hi")
-      expect(@text.widget.getText).to eq("Hi")
+      @text.swt_widget.setText("Hi")
+      expect(@text.swt_widget.getText).to eq("Hi")
 
-      @text.widget.setText("Hello")
-      expect(@text.widget.getText).to eq("Hi")
+      @text.swt_widget.setText("Hello")
+      expect(@text.swt_widget.getText).to eq("Hi")
     end
 
     it 'adds content' do
@@ -37,9 +37,9 @@ module GlimmerSpec
         }
       }
 
-      expect(@target.widget.getMinimumSize.x).to eq(300)
-      expect(@target.widget.getMinimumSize.y).to eq(200)
-      expect(@text.widget.getText).to eq("Howdy")
+      expect(@target.swt_widget.getMinimumSize.x).to eq(300)
+      expect(@target.swt_widget.getMinimumSize.y).to eq(200)
+      expect(@text.swt_widget.getText).to eq("Howdy")
     end
 
     context 'UI code execution' do
@@ -60,12 +60,12 @@ module GlimmerSpec
         }
 
         @target.async_exec do
-          expect(@text.widget.getText).to eq("text2")
+          expect(@text.swt_widget.getText).to eq("text2")
         end
 
         # This takes prioerity over async_exec
         @target.sync_exec do
-          @text.widget.setText("text2")
+          @text.swt_widget.setText("text2")
         end
       end
     end

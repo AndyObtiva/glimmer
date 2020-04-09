@@ -21,7 +21,7 @@ module GlimmerSpec
           }
         }
 
-        widget = @composite.widget
+        widget = @composite.swt_widget
         layout = widget.getLayout
         expect(layout.is_a?(FillLayout)).to eq(true)
         expect(layout.type).to eq(Glimmer::SWT::SWTProxy[:horizontal])
@@ -37,7 +37,7 @@ module GlimmerSpec
           }
         }
 
-        widget = @composite.widget
+        widget = @composite.swt_widget
         layout = widget.getLayout
         expect(layout.is_a?(FillLayout)).to eq(true)
         expect(layout.type).to eq(Glimmer::SWT::SWTProxy[:horizontal])
@@ -62,7 +62,7 @@ module GlimmerSpec
           }
         }
 
-        widget = @composite.widget
+        widget = @composite.swt_widget
         layout = widget.getLayout
         expect(layout.is_a?(RowLayout)).to eq(true)
         expect(layout.wrap).to eq(true)
@@ -83,7 +83,7 @@ module GlimmerSpec
           }
         }
 
-        widget = @composite.widget
+        widget = @composite.swt_widget
         layout = widget.getLayout
         expect(layout.is_a?(RowLayout)).to eq(true)
         expect(layout.type).to eq(Glimmer::SWT::SWTProxy[:horizontal])
@@ -109,7 +109,7 @@ module GlimmerSpec
           }
         }
 
-        widget = @composite.widget
+        widget = @composite.swt_widget
         layout = widget.getLayout
         expect(layout.is_a?(GridLayout)).to eq(true)
         expect(layout.makeColumnsEqualWidth).to eq(true)
@@ -131,7 +131,7 @@ module GlimmerSpec
           }
         }
 
-        widget = @composite.widget
+        widget = @composite.swt_widget
         layout = widget.getLayout
         expect(layout.is_a?(GridLayout)).to eq(true)
         expect(layout.makeColumnsEqualWidth).to eq(true)

@@ -7,7 +7,7 @@
 #   include Glimmer
 #
 # 	include_package 'org.eclipse.swt'
-# 	include_package 'org.eclipse.swt.widgets'
+# 	include_package 'org.eclipse.swt.swt_widgets'
 # 	include_package 'org.eclipse.swt.layout'
 #
 # 	after do
@@ -31,12 +31,12 @@
 #
 #     [@text, :text] <=> [person, :name]
 #
-#     expect(@text.widget.getText).to eq( "Bruce Ting")
+#     expect(@text.swt_widget.getText).to eq( "Bruce Ting")
 #
 #     person.name = "Lady Butterfly"
-#     expect(@text.widget.getText).to eq( "Lady Butterfly")
+#     expect(@text.swt_widget.getText).to eq( "Lady Butterfly")
 #
-#     @text.widget.setText("Allen Cork")
+#     @text.swt_widget.setText("Allen Cork")
 #     expect(person.name).to eq( "Allen Cork")
 #
 #     comparison = ["he"] <=> ["he"]
@@ -61,24 +61,24 @@
 #     [@text,      :text]      <=> [person, :age, :fixnum]
 #     [@check_box, :selection] <=> [person, :adult]
 #
-#     expect(@label.widget.getText).to eq( "Nancy")
-#     expect(@text.widget.getText).to eq( "15")
-#     expect(@check_box.widget.getSelection).to eq( true)
+#     expect(@label.swt_widget.getText).to eq( "Nancy")
+#     expect(@text.swt_widget.getText).to eq( "15")
+#     expect(@check_box.swt_widget.getSelection).to eq( true)
 #
 #     person.name = "Drew"
-#     expect(@label.widget.getText).to eq( "Drew")
+#     expect(@label.swt_widget.getText).to eq( "Drew")
 #
 #     person.age = 27
-#     expect(@text.widget.getText).to eq( "27")
+#     expect(@text.swt_widget.getText).to eq( "27")
 #
 #     person.adult = false
-#     expect(@check_box.widget.getSelection).to eq( false)
+#     expect(@check_box.swt_widget.getSelection).to eq( false)
 #
-#     @text.widget.setText("30")
+#     @text.swt_widget.setText("30")
 #     expect(person.age).to eq( 30)
 #
-#     @check_box.widget.setSelection(true)
-#     @check_box.widget.notifyListeners(SWT::Selection, nil)
+#     @check_box.swt_widget.setSelection(true)
+#     @check_box.swt_widget.notifyListeners(SWT::Selection, nil)
 #     expect(person.adult).to eq( true)
 #   end
 #

@@ -11,12 +11,12 @@ module Glimmer
       include_package 'org.eclipse.swt.widgets'
 
       def can_interpret?(parent, keyword, *args, &block)
-        ['rgba', 'rgb'].include?(keyword) and
-          (3..5).include?(args.count)
+        ['color', 'rgba', 'rgb'].include?(keyword) and
+          (1..4).include?(args.count)
       end
 
       def interpret(parent, keyword, *args, &block)
-        if args.first.is_a?(Display) || args.first.nil?
+        if args.first.is_a?(Display) or args.first.nil?
           display = args.delete_at(0)
         else
           display = SWT::DisplayProxy.instance.swt_display

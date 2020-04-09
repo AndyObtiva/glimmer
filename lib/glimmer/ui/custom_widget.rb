@@ -2,6 +2,7 @@ require 'glimmer'
 require 'glimmer/swt/swt_proxy'
 require 'glimmer/swt/display_proxy'
 require 'glimmer/util/proc_tracker'
+require 'glimmer/data_binding/observer'
 require 'glimmer/data_binding/observable_model'
 require 'glimmer/data_binding/observable_widget'
 
@@ -12,7 +13,7 @@ module Glimmer
       include DataBinding::ObservableModel
 
       super_module_included do |klass|
-        klass.include(Glimmer) unless klass.name.include?('Glimmer::SWT::CustomShell')
+        klass.include(Glimmer) unless klass.name.include?('Glimmer::UI::CustomShell')
         klass.prepend DataBinding::ObservableWidget
       end
 
@@ -23,7 +24,7 @@ module Glimmer
             split(/__/).map do |namespace|
               namespace.camelcase(:upper)
             end
-          custom_widget_class = [Object, Glimmer::SWT].reduce([]) do |found, base|
+          custom_widget_class = [Object, Glimmer::UI].reduce([]) do |found, base|
             if found.empty?
               found << namespaces.reduce(base) do |result, namespace|
                 namespace = namespace.to_sym
@@ -33,16 +34,17 @@ module Glimmer
                 begin
                   result.const_get(namespace)
                 rescue => e
-                  Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"
-                  nil
+                  # Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"
+                  result
                 end
               end
             end
             found.compact
           end.first
           raise "#{underscored_custom_widget_name} has no custom widget class!" if custom_widget_class.nil?
-          custom_widget_class if custom_widget_class.ancestors.include?(Glimmer::SWT::CustomWidget)
+          custom_widget_class if custom_widget_class.ancestors.include?(Glimmer::UI::CustomWidget)
         rescue => e
+          Glimmer.logger.debug e.message
           Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"
           nil
         end
@@ -96,10 +98,10 @@ module Glimmer
 
       def initialize(parent, *swt_constants, options, &content)
         @parent = parent
-        @swt_style = SWTProxy[*swt_constants]
+        @swt_style = SWT::SWTProxy[*swt_constants]
         options ||= {}
         @options = self.class.options.merge(options)
-        @content = ProcTracker.new(content) if content
+        @content = Util::ProcTracker.new(content) if content
         execute_hooks('before_body')
         @body_root = body
         execute_hooks('after_body')
@@ -122,7 +124,7 @@ module Glimmer
       def handle_observation_request(observation_request, &block)
         if observation_request.start_with?('on_updated_')
           property = observation_request.sub(/^on_updated_/, '')
-          add_observer(Observer.proc(&block), property) if can_add_observer?(property)
+          add_observer(DataBinding::Observer.proc(&block), property) if can_add_observer?(property)
         else
           body_root.handle_observation_request(observation_request, &block)
         end

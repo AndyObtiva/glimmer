@@ -114,7 +114,7 @@ module Glimmer
       def browser_body_background
         color = background
         if color.is_a?(Symbol) || color.is_a?(String)
-          color = ColorProxy.color_for(parent.widget.getDisplay, color)
+          color = ColorProxy.new(parent.widget.getDisplay, color).swt_color
         elsif color.is_a?(ColorProxy)
           color = color.color
         end

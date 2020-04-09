@@ -6,7 +6,7 @@ module GlimmerSpec
 
     before(:all) do
       class ::RedTabFolder
-        include Glimmer::SWT::CustomWidget
+        include Glimmer::UI::CustomWidget
 
         def body
           tab_folder {
@@ -35,13 +35,13 @@ module GlimmerSpec
       }
 
       expect(@target).to_not be_nil
-      expect(@target.widget).to_not be_nil
-      expect(@tab_folder.widget.items.size).to eq(1)
-      expect(@tab_item_composite.widget).to be_instance_of(Composite)
-      expect(@tab_folder.widget.items[0].control).to eq(@tab_item_composite.widget)
-      expect(@tab_item_composite.tab_item.widget.text).to eq("Tab 1")
-      expect(@tab_item_composite.widget.getLayout).to_not be_nil
-      expect(@tab_item_composite.widget.getLayout).to be_instance_of(GridLayout)
+      expect(@target.swt_widget).to_not be_nil
+      expect(@tab_folder.swt_widget.items.size).to eq(1)
+      expect(@tab_item_composite.swt_widget).to be_instance_of(Composite)
+      expect(@tab_folder.swt_widget.items[0].control).to eq(@tab_item_composite.swt_widget)
+      expect(@tab_item_composite.tab_item.swt_widget.text).to eq("Tab 1")
+      expect(@tab_item_composite.swt_widget.getLayout).to_not be_nil
+      expect(@tab_item_composite.swt_widget.getLayout).to be_instance_of(GridLayout)
     end
 
     it "tests tab item composite with invalid parent (not a tab folder)" do
@@ -70,13 +70,13 @@ module GlimmerSpec
       }
 
       expect(@target).to_not be_nil
-      expect(@target.widget).to_not be_nil
-      expect(@tab_folder.widget.items.size).to eq(1)
-      expect(@tab_item_composite.widget).to be_instance_of(Composite)
-      expect(@tab_folder.widget.items[0].control).to eq(@tab_item_composite.widget)
-      expect(@tab_item_composite.tab_item.widget.text).to eq("Tab 2")
-      expect(@tab_item_composite.widget.getLayout).to_not be_nil
-      expect(@tab_item_composite.widget.getLayout).to be_instance_of(FillLayout)
+      expect(@target.swt_widget).to_not be_nil
+      expect(@tab_folder.swt_widget.items.size).to eq(1)
+      expect(@tab_item_composite.swt_widget).to be_instance_of(Composite)
+      expect(@tab_folder.swt_widget.items[0].control).to eq(@tab_item_composite.swt_widget)
+      expect(@tab_item_composite.tab_item.swt_widget.text).to eq("Tab 2")
+      expect(@tab_item_composite.swt_widget.getLayout).to_not be_nil
+      expect(@tab_item_composite.swt_widget.getLayout).to be_instance_of(FillLayout)
     end
 
     it "builds custom widget tab" do
@@ -88,13 +88,13 @@ module GlimmerSpec
         }
       }
 
-      expect(@tab_folder.widget.items.size).to eq(1)
-      expect(@tab_folder.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
-      expect(@tab_item_composite.widget).to be_instance_of(Composite)
-      expect(@tab_folder.widget.items[0].control).to eq(@tab_item_composite.widget)
-      expect(@tab_item_composite.tab_item.widget.text).to eq("Tab 1")
-      expect(@tab_item_composite.widget.getLayout).to_not be_nil
-      expect(@tab_item_composite.widget.getLayout).to be_instance_of(GridLayout)
+      expect(@tab_folder.swt_widget.items.size).to eq(1)
+      expect(@tab_folder.swt_widget.getBackground).to eq(Glimmer::SWT::GColor.new(:red).color)
+      expect(@tab_item_composite.swt_widget).to be_instance_of(Composite)
+      expect(@tab_folder.swt_widget.items[0].control).to eq(@tab_item_composite.swt_widget)
+      expect(@tab_item_composite.tab_item.swt_widget.text).to eq("Tab 1")
+      expect(@tab_item_composite.swt_widget.getLayout).to_not be_nil
+      expect(@tab_item_composite.swt_widget.getLayout).to be_instance_of(GridLayout)
     end
   end
 end

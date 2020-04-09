@@ -23,7 +23,7 @@ module Glimmer
                 (
                   (args.size == 3) and
                     textual?(args[1]) and
-                    (textual?(args[2]) || args[2].is_a?(Hash))
+                    (textual?(args[2]) or args[2].is_a?(Hash))
                 ) ||
                 (
                   (args.size == 4) and

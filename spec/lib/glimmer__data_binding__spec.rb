@@ -47,7 +47,7 @@ module GlimmerSpec
       end
 
       class ::RedComposite
-        include Glimmer::SWT::CustomWidget
+        include Glimmer::UI::CustomWidget
 
         def body
           composite(swt_style) {
@@ -57,7 +57,7 @@ module GlimmerSpec
       end
 
       class ::RedText
-        include Glimmer::SWT::CustomWidget
+        include Glimmer::UI::CustomWidget
 
         def body
           text(swt_style) {
@@ -68,7 +68,7 @@ module GlimmerSpec
 
       module ::Red
         class Text
-          include Glimmer::SWT::CustomWidget
+          include Glimmer::UI::CustomWidget
 
           def body
             red_composite {
@@ -79,11 +79,11 @@ module GlimmerSpec
           end
 
           def text=(value)
-            @red_text.widget.setText value.to_s
+            @red_text.swt_widget.setText value.to_s
           end
 
           def text
-            @red_text.widget.getText
+            @red_text.swt_widget.getText
           end
 
           def add_observer(observer, attribute_name)
@@ -130,12 +130,12 @@ module GlimmerSpec
         }
       }
 
-      expect(@text.widget.getText).to eq("Bruce Ting")
+      expect(@text.swt_widget.getText).to eq("Bruce Ting")
 
       person.name = "Lady Butterfly"
-      expect(@text.widget.getText).to eq("Lady Butterfly")
+      expect(@text.swt_widget.getText).to eq("Lady Butterfly")
 
-      @text.widget.setText("Allen Cork")
+      @text.swt_widget.setText("Allen Cork")
       expect(person.name).to eq("Allen Cork")
     end
 
@@ -165,19 +165,19 @@ module GlimmerSpec
         }
       }
 
-      expect(@red_text.widget.getText).to eq("Bruce Ting")
+      expect(@red_text.swt_widget.getText).to eq("Bruce Ting")
       person.name = "Lady Butterfly"
-      expect(@red_text.widget.getText).to eq("Lady Butterfly")
-      @red_text.widget.setText("Allen Cork")
+      expect(@red_text.swt_widget.getText).to eq("Lady Butterfly")
+      @red_text.swt_widget.setText("Allen Cork")
       expect(person.name).to eq("Allen Cork")
 
-      expect(@red_text2.widget.getText).to eq("Bruce Ting")
+      expect(@red_text2.swt_widget.getText).to eq("Bruce Ting")
       person2.name = "Lady Butterfly"
-      expect(@red_text2.widget.getText).to eq("Lady Butterfly")
-      @red_text2.widget.setText("Allen Cork")
+      expect(@red_text2.swt_widget.getText).to eq("Lady Butterfly")
+      @red_text2.swt_widget.setText("Allen Cork")
       expect(person2.name).to eq("Allen Cork")
 
-      red_text3_widget = @red_text3.widget
+      red_text3_widget = @red_text3.swt_widget
       red_text3_widget = red_text3_widget.getChildren.first
       expect(red_text3_widget.getText).to eq("Bruce Ting")
       expect(@red_text3.text).to eq("Bruce Ting")
@@ -202,12 +202,12 @@ module GlimmerSpec
         }
       }
 
-      expect(@text.widget.getText).to eq("15")
+      expect(@text.swt_widget.getText).to eq("15")
 
       person.age = 27
-      expect(@text.widget.getText).to eq("27")
+      expect(@text.swt_widget.getText).to eq("27")
 
-      @text.widget.setText("30")
+      @text.swt_widget.setText("30")
       expect(person.age).to eq(30)
     end
 
@@ -226,11 +226,11 @@ module GlimmerSpec
         }
       }
 
-      expect(@label1.widget.getText).to eq("839728")
-      expect(@label2.widget.getText).to eq("Bruce Ting")
+      expect(@label1.swt_widget.getText).to eq("839728")
+      expect(@label2.swt_widget.getText).to eq("Bruce Ting")
 
       person.name = "Lady Butterfly"
-      expect(@label2.widget.getText).to eq("Lady Butterfly")
+      expect(@label2.swt_widget.getText).to eq("Lady Butterfly")
     end
 
     it "tests label widget computed value data binding string property" do
@@ -246,13 +246,13 @@ module GlimmerSpec
         }
       }
 
-      expect(@label.widget.getText).to eq("McFly, Marty")
+      expect(@label.swt_widget.getText).to eq("McFly, Marty")
 
       person.first_name = "Martin"
-      expect(@label.widget.getText).to eq("McFly, Martin")
+      expect(@label.swt_widget.getText).to eq("McFly, Martin")
 
       person.last_name = "MacFly"
-      expect(@label.widget.getText).to eq("MacFly, Martin")
+      expect(@label.swt_widget.getText).to eq("MacFly, Martin")
     end
 
     it "tests label widget computed value data binding fixnum property" do
@@ -267,10 +267,10 @@ module GlimmerSpec
         }
       }
 
-      expect(@label.widget.getText).to eq("40")
+      expect(@label.swt_widget.getText).to eq("40")
 
       person.year_of_birth = Time.now.year - 41
-      expect(@label.widget.getText).to eq("41")
+      expect(@label.swt_widget.getText).to eq("41")
     end
 
     it "tests checkbox widget data binding boolean property" do
@@ -285,13 +285,13 @@ module GlimmerSpec
         }
       }
 
-      expect(@check_box.widget.getSelection).to eq(true)
+      expect(@check_box.swt_widget.getSelection).to eq(true)
 
       person.adult = false
-      expect(@check_box.widget.getSelection).to eq(false)
+      expect(@check_box.swt_widget.getSelection).to eq(false)
 
-      @check_box.widget.setSelection(true)
-      @check_box.widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
+      @check_box.swt_widget.setSelection(true)
+      @check_box.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
       expect(person.adult).to eq(true)
     end
 
@@ -307,13 +307,13 @@ module GlimmerSpec
         }
       }
 
-      expect(@radio.widget.getSelection).to eq(true)
+      expect(@radio.swt_widget.getSelection).to eq(true)
 
       person.adult = false
-      expect(@radio.widget.getSelection).to eq(false)
+      expect(@radio.swt_widget.getSelection).to eq(false)
 
-      @radio.widget.setSelection(true)
-      @radio.widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
+      @radio.swt_widget.setSelection(true)
+      @radio.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
       expect(person.adult).to eq(true)
     end
 
@@ -329,13 +329,13 @@ module GlimmerSpec
         }
       }
 
-      expect(@spinner.widget.getSelection).to eq(17)
+      expect(@spinner.swt_widget.getSelection).to eq(17)
 
       person.age = 20
-      expect(@spinner.widget.getSelection).to eq(20)
+      expect(@spinner.swt_widget.getSelection).to eq(20)
 
-      @spinner.widget.setSelection(34)
-      @spinner.widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
+      @spinner.swt_widget.setSelection(34)
+      @spinner.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
       expect(person.age).to eq(34)
     end
 
@@ -365,19 +365,19 @@ module GlimmerSpec
         }
 
         @target.async_exec do
-          expect(@text1.widget.isFocusControl).to eq(true)
-          expect(@text2.widget.isFocusControl).to eq(false)
+          expect(@text1.swt_widget.isFocusControl).to eq(true)
+          expect(@text2.swt_widget.isFocusControl).to eq(false)
 
           person.adult = true
 
-          expect(@text1.widget.isFocusControl).to eq(false)
-          expect(@text2.widget.isFocusControl).to eq(true)
+          expect(@text1.swt_widget.isFocusControl).to eq(false)
+          expect(@text2.swt_widget.isFocusControl).to eq(true)
 
-          expect(@text1.widget.setFocus).to eq(true)
+          expect(@text1.swt_widget.setFocus).to eq(true)
 
           expect(person.adult).to eq(false)
 
-          expect(@text2.widget.setFocus).to eq(true)
+          expect(@text2.swt_widget.setFocus).to eq(true)
 
           expect(person.adult).to eq(true)
         end
@@ -398,10 +398,10 @@ module GlimmerSpec
         }
       }
 
-      expect(@text.widget.isEnabled).to eq(true)
+      expect(@text.swt_widget.isEnabled).to eq(true)
 
       person.adult = false
-      expect(@text.widget.isEnabled).to eq(false)
+      expect(@text.swt_widget.isEnabled).to eq(false)
     end
 
     it "tests multiple widget data binding enablement to same model property" do
@@ -422,14 +422,14 @@ module GlimmerSpec
         }
       }
 
-      expect(@text.widget.isEnabled).to eq(true)
-      expect(@text2.widget.isEnabled).to eq(true)
-      expect(@text3.widget.isEnabled).to eq(true)
+      expect(@text.swt_widget.isEnabled).to eq(true)
+      expect(@text2.swt_widget.isEnabled).to eq(true)
+      expect(@text3.swt_widget.isEnabled).to eq(true)
 
       person.adult = false
-      expect(@text.widget.isEnabled).to eq(false)
-      expect(@text2.widget.isEnabled).to eq(false)
-      expect(@text3.widget.isEnabled).to eq(false)
+      expect(@text.swt_widget.isEnabled).to eq(false)
+      expect(@text2.swt_widget.isEnabled).to eq(false)
+      expect(@text3.swt_widget.isEnabled).to eq(false)
     end
 
     it "tests multiple widget data bindings to different model properties" do
@@ -452,24 +452,24 @@ module GlimmerSpec
         }
       }
 
-      expect(@label.widget.getText).to eq("Nancy")
-      expect(@text.widget.getText).to eq("15")
-      expect(@check_box.widget.getSelection).to eq(true)
+      expect(@label.swt_widget.getText).to eq("Nancy")
+      expect(@text.swt_widget.getText).to eq("15")
+      expect(@check_box.swt_widget.getSelection).to eq(true)
 
       person.name = "Drew"
-      expect(@label.widget.getText).to eq("Drew")
+      expect(@label.swt_widget.getText).to eq("Drew")
 
       person.age = 27
-      expect(@text.widget.getText).to eq("27")
+      expect(@text.swt_widget.getText).to eq("27")
 
       person.adult = false
-      expect(@check_box.widget.getSelection).to eq(false)
+      expect(@check_box.swt_widget.getSelection).to eq(false)
 
-      @text.widget.setText("30")
+      @text.swt_widget.setText("30")
       expect(person.age).to eq(30)
 
-      @check_box.widget.setSelection(true)
-      @check_box.widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
+      @check_box.swt_widget.setSelection(true)
+      @check_box.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
       expect(person.adult).to eq(true)
     end
 
@@ -497,13 +497,13 @@ module GlimmerSpec
           }
         }
 
-        expect(@address1_street_text_widget.widget.getText).to eq("20 Naper Ave")
+        expect(@address1_street_text_widget.swt_widget.getText).to eq("20 Naper Ave")
 
-        expect(@address2_street_text_widget.widget.getText).to eq("101 Confession St")
+        expect(@address2_street_text_widget.swt_widget.getText).to eq("101 Confession St")
 
-        @address1_street_text_widget.widget.setText "101 Confession St"
+        @address1_street_text_widget.swt_widget.setText "101 Confession St"
 
-        @address2_street_text_widget.widget.setText "20 Naper Ave"
+        @address2_street_text_widget.swt_widget.setText "20 Naper Ave"
 
         expect(person.address1.street).to eq("101 Confession St")
 
@@ -513,27 +513,27 @@ module GlimmerSpec
 
         person.address2.street = "100 Park Ave"
 
-        expect(@address1_street_text_widget.widget.getText).to eq("123 Main St")
+        expect(@address1_street_text_widget.swt_widget.getText).to eq("123 Main St")
 
-        expect(@address2_street_text_widget.widget.getText).to eq("100 Park Ave")
+        expect(@address2_street_text_widget.swt_widget.getText).to eq("100 Park Ave")
 
         person.address2 = person.address1
 
-        expect(@address2_street_text_widget.widget.getText).to eq("123 Main St")
+        expect(@address2_street_text_widget.swt_widget.getText).to eq("123 Main St")
 
         person.address2 = nil
 
-        expect(@address2_street_text_widget.widget.getText).to eq("")
+        expect(@address2_street_text_widget.swt_widget.getText).to eq("")
 
         person.address2 = Address.new
 
         person.address2.street = "101 Confession St"
 
-        expect(@address2_street_text_widget.widget.getText).to eq("101 Confession St")
+        expect(@address2_street_text_widget.swt_widget.getText).to eq("101 Confession St")
 
         person.address2.street = "123 Main St"
 
-        expect(@address2_street_text_widget.widget.getText).to eq("123 Main St")
+        expect(@address2_street_text_widget.swt_widget.getText).to eq("123 Main St")
       end
 
       it "tests text widget data binding to nested indexed string property" do
@@ -558,11 +558,11 @@ module GlimmerSpec
           }
         }
 
-        expect(@name1.widget.getText).to eq("")
-        expect(@address1_street_text_widget.widget.getText).to eq("")
+        expect(@name1.swt_widget.getText).to eq("")
+        expect(@address1_street_text_widget.swt_widget.getText).to eq("")
 
-        expect(@name2.widget.getText).to eq("")
-        expect(@address2_street_text_widget.widget.getText).to eq("")
+        expect(@name2.swt_widget.getText).to eq("")
+        expect(@address2_street_text_widget.swt_widget.getText).to eq("")
 
         person.names = []
         person.names[0] = 'Robert'
@@ -576,17 +576,17 @@ module GlimmerSpec
 
         person.addresses[1].street = "101 Confession St"
 
-        expect(@name1.widget.getText).to eq("Robert")
-        expect(@address1_street_text_widget.widget.getText).to eq("20 Naper Ave")
+        expect(@name1.swt_widget.getText).to eq("Robert")
+        expect(@address1_street_text_widget.swt_widget.getText).to eq("20 Naper Ave")
 
-        expect(@name2.widget.getText).to eq("Bob")
-        expect(@address2_street_text_widget.widget.getText).to eq("101 Confession St")
+        expect(@name2.swt_widget.getText).to eq("Bob")
+        expect(@address2_street_text_widget.swt_widget.getText).to eq("101 Confession St")
 
-        @name1.widget.setText "Roberto"
-        @address1_street_text_widget.widget.setText "101 Confession St"
+        @name1.swt_widget.setText "Roberto"
+        @address1_street_text_widget.swt_widget.setText "101 Confession St"
 
-        @name2.widget.setText "Bobo"
-        @address2_street_text_widget.widget.setText "20 Naper Ave"
+        @name2.swt_widget.setText "Bobo"
+        @address2_street_text_widget.swt_widget.setText "20 Naper Ave"
 
         expect(person.names[0]).to eq("Roberto")
         expect(person.addresses[0].street).to eq("101 Confession St")
@@ -600,40 +600,40 @@ module GlimmerSpec
         person.names[1] = "Bobissimo"
         person.addresses[1].street = "100 Park Ave"
 
-        expect(@name1.widget.getText).to eq("Robertissimo")
-        expect(@address1_street_text_widget.widget.getText).to eq("123 Main St")
+        expect(@name1.swt_widget.getText).to eq("Robertissimo")
+        expect(@address1_street_text_widget.swt_widget.getText).to eq("123 Main St")
 
-        expect(@name2.widget.getText).to eq("Bobissimo")
-        expect(@address2_street_text_widget.widget.getText).to eq("100 Park Ave")
+        expect(@name2.swt_widget.getText).to eq("Bobissimo")
+        expect(@address2_street_text_widget.swt_widget.getText).to eq("100 Park Ave")
 
         person.names[1] = person.names[0]
         original_address2 = person.addresses[1]
         person.addresses[1] = person.addresses[0]
 
-        expect(@name2.widget.getText).to eq("Robertissimo")
-        expect(@address2_street_text_widget.widget.getText).to eq("123 Main St")
+        expect(@name2.swt_widget.getText).to eq("Robertissimo")
+        expect(@address2_street_text_widget.swt_widget.getText).to eq("123 Main St")
 
         # Ensure data-binding observers are removed when address value changed
         original_address2.street = '838 Newman'
-        expect(@address2_street_text_widget.widget.getText).to_not eq('838 Newman')
+        expect(@address2_street_text_widget.swt_widget.getText).to_not eq('838 Newman')
         person.addresses[1].street = '838 Newman'
-        expect(@address2_street_text_widget.widget.getText).to eq('838 Newman')
+        expect(@address2_street_text_widget.swt_widget.getText).to eq('838 Newman')
 
         person.names[1] = nil
         person.addresses[1] = nil
 
-        expect(@name2.widget.getText).to eq("")
-        expect(@address2_street_text_widget.widget.getText).to eq("")
+        expect(@name2.swt_widget.getText).to eq("")
+        expect(@address2_street_text_widget.swt_widget.getText).to eq("")
 
         person.addresses[1] = Address.new
 
         person.addresses[1].street = "101 Confession St"
 
-        expect(@address2_street_text_widget.widget.getText).to eq("101 Confession St")
+        expect(@address2_street_text_widget.swt_widget.getText).to eq("101 Confession St")
 
         person.addresses[1].street = "123 Main St"
 
-        expect(@address2_street_text_widget.widget.getText).to eq("123 Main St")
+        expect(@address2_street_text_widget.swt_widget.getText).to eq("123 Main St")
 
         # test removal of observers on severed nested chains
         old_address2 = person.addresses[1]
@@ -705,20 +705,20 @@ module GlimmerSpec
           }
         }
 
-        expect(@label1.widget.getText).to eq("2")
-        expect(@label2.widget.getText).to eq("3")
+        expect(@label1.swt_widget.getText).to eq("2")
+        expect(@label2.swt_widget.getText).to eq("3")
 
         person.addresses[0].streets = []
-        expect(@label1.widget.getText).to eq("0")
+        expect(@label1.swt_widget.getText).to eq("0")
 
         person.addresses[0].streets = ['8376 Erie']
-        expect(@label1.widget.getText).to eq("1")
+        expect(@label1.swt_widget.getText).to eq("1")
 
         person.addresses[0].streets.clear
-        expect(@label1.widget.getText).to eq("0")
+        expect(@label1.swt_widget.getText).to eq("0")
 
         person.addresses[1].streets << '923 Huron'
-        expect(@label2.widget.getText).to eq("4")
+        expect(@label2.swt_widget.getText).to eq("4")
       end
 
       it 'removes observers upon disposing a widget' do
@@ -733,8 +733,8 @@ module GlimmerSpec
           }
         }
 
-        expect(@radio.widget.getSelection).to eq(true)
-        @radio.widget.dispose
+        expect(@radio.swt_widget.getSelection).to eq(true)
+        @radio.swt_widget.dispose
         expect {person.adult = false}.to_not raise_error
       end
 
@@ -758,12 +758,12 @@ module GlimmerSpec
           }
         }
 
-        @address1_street_text_widget.widget.dispose
+        @address1_street_text_widget.swt_widget.dispose
         expect {person.addresses[0].street = "123 Main St"}.to_not raise_error
-        expect(@address1b_street_text_widget.widget.getText).to eq("123 Main St")
+        expect(@address1b_street_text_widget.swt_widget.getText).to eq("123 Main St")
 
         person.addresses[1].street = "79 Park Ave"
-        expect(@address2_street_text_widget.widget.getText).to eq("79 Park Ave")
+        expect(@address2_street_text_widget.swt_widget.getText).to eq("79 Park Ave")
       end
     end
   end

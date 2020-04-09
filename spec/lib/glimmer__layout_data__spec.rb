@@ -6,7 +6,7 @@ module GlimmerSpec
 
     before(:all) do
       class ::RedLabel
-        include Glimmer::SWT::CustomWidget
+        include Glimmer::UI::CustomWidget
 
         def body
           label(swt_style) {
@@ -39,7 +39,7 @@ module GlimmerSpec
           }
         }
 
-        widget = @label.widget
+        widget = @label.swt_widget
         layout_data = widget.getLayoutData
         expect(layout_data.is_a?(RowData)).to eq(true)
         expect(layout_data.exclude).to eq(true)
@@ -57,7 +57,7 @@ module GlimmerSpec
           }
         }
 
-        widget = @label.widget
+        widget = @label.swt_widget
         layout_data = widget.getLayoutData
         expect(layout_data.is_a?(RowData)).to eq(true)
         expect(layout_data.height).to eq(30)
@@ -75,7 +75,7 @@ module GlimmerSpec
           }
         }
 
-        widget = @label.widget
+        widget = @label.swt_widget
         layout_data = widget.getLayoutData
         expect(layout_data.is_a?(RowData)).to eq(true)
         expect(layout_data.height).to eq(30)
@@ -93,7 +93,7 @@ module GlimmerSpec
           }
         }
 
-        widget = @label.widget
+        widget = @label.swt_widget
         layout_data = widget.getLayoutData
         expect(layout_data.is_a?(RowData)).to eq(true)
         expect(layout_data.height).to eq(30)
@@ -114,7 +114,7 @@ module GlimmerSpec
           }
         }
 
-        widget = @label.widget
+        widget = @label.swt_widget
         layout_data = widget.getLayoutData
         expect(layout_data.is_a?(RowData)).to eq(true)
         expect(layout_data.exclude).to eq(true)
@@ -148,7 +148,7 @@ module GlimmerSpec
           }
         }
 
-        widget = @label.widget
+        widget = @label.swt_widget
         layout_data = widget.getLayoutData
         expect(layout_data.is_a?(GridData)).to eq(true)
         expect(layout_data.exclude).to eq(true)
@@ -176,7 +176,7 @@ module GlimmerSpec
           }
         }
 
-        widget = @label.widget
+        widget = @label.swt_widget
         layout_data = widget.getLayoutData
         expect(layout_data.is_a?(GridData)).to eq(true)
         expect(layout_data.widthHint).to eq(50)
@@ -193,7 +193,7 @@ module GlimmerSpec
           }
         }
 
-        widget = @label.widget
+        widget = @label.swt_widget
         layout_data = widget.getLayoutData
         expect(layout_data.is_a?(GridData)).to eq(true)
         expect(layout_data.grabExcessHorizontalSpace).to eq(true)
@@ -212,7 +212,7 @@ module GlimmerSpec
           }
         }
 
-        widget = @label.widget
+        widget = @label.swt_widget
         layout_data = widget.getLayoutData
         expect(layout_data.is_a?(GridData)).to eq(true)
         expect(layout_data.grabExcessHorizontalSpace).to eq(true)
@@ -233,7 +233,7 @@ module GlimmerSpec
           }
         }
 
-        widget = @label.widget
+        widget = @label.swt_widget
         layout_data = widget.getLayoutData
         expect(layout_data.is_a?(GridData)).to eq(true)
         expect(layout_data.grabExcessHorizontalSpace).to eq(true)

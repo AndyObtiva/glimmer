@@ -21,7 +21,7 @@ module GlimmerSpec
         }
       }
 
-      font_data = @label.widget.getFont.getFontData
+      font_data = @label.swt_widget.getFont.getFontData
       font_datum = font_data.first
       expect(font_datum.getName).to eq('Arial')
       expect(font_datum.getHeight).to eq(36)
@@ -35,7 +35,7 @@ module GlimmerSpec
         }
       }
 
-      font_data = @label.widget.getFont.getFontData
+      font_data = @label.swt_widget.getFont.getFontData
       font_datum = font_data.first
       expect(font_datum.getStyle).to eq(Glimmer::SWT::SWTProxy[:bold, :italic])
     end
@@ -57,7 +57,7 @@ module GlimmerSpec
         }
       }
 
-      font_data = @label.widget.getFont.getFontData
+      font_data = @label.swt_widget.getFont.getFontData
       font_datum = font_data.first
       expect(font_datum.getStyle).to eq(Glimmer::SWT::SWTProxy[:bold])
     end
@@ -72,7 +72,7 @@ module GlimmerSpec
         }
       }
 
-      font_data = @label.widget.getFont.getFontData
+      font_data = @label.swt_widget.getFont.getFontData
       font_datum = font_data.first
       expect(font_datum.getName).to eq('Arial')
       expect(font_datum.getHeight).to eq(36)

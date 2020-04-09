@@ -1,12 +1,12 @@
 require "spec_helper"
 
 module GlimmerSpec
-  describe Glimmer::SWT::CustomWidget do
+  describe Glimmer::UI::CustomWidget do
     include Glimmer
 
     before(:all) do
       class ::RedLabel
-        include Glimmer::SWT::CustomWidget
+        include Glimmer::UI::CustomWidget
         def body
           label(swt_style) {
             background :red
@@ -15,7 +15,7 @@ module GlimmerSpec
       end
 
       class ::ColoredLabel
-        include Glimmer::SWT::CustomWidget
+        include Glimmer::UI::CustomWidget
 
         def body
           label(swt_style) {
@@ -25,20 +25,20 @@ module GlimmerSpec
       end
 
       class ::MultiColorLabel
-        include Glimmer::SWT::CustomWidget
+        include Glimmer::UI::CustomWidget
 
         options :color1, :color2
         options "font1", "font2"
 
         def text=(value)
           half_size = value.size/2
-          @label1.widget.setText value[0...half_size]
-          @label2.widget.setText value[half_size...value.size]
+          @label1.swt_widget.setText value[0...half_size]
+          @label2.swt_widget.setText value[half_size...value.size]
         end
 
         def text
-          value1 = @label1.widget.getText
-          value2 = @label2.widget.getText
+          value1 = @label1.swt_widget.getText
+          value2 = @label2.swt_widget.getText
           "#{value1}#{value2}"
         end
 
@@ -59,7 +59,7 @@ module GlimmerSpec
 
       module Red
         class Composite
-          include Glimmer::SWT::CustomWidget
+          include Glimmer::UI::CustomWidget
 
           def body
             composite(swt_style) {
@@ -69,7 +69,7 @@ module GlimmerSpec
         end
 
         class Label
-          include Glimmer::SWT::CustomWidget
+          include Glimmer::UI::CustomWidget
 
           def body
             label(swt_style) {
@@ -80,7 +80,7 @@ module GlimmerSpec
       end
 
       class Sandwich
-        include Glimmer::SWT::CustomWidget
+        include Glimmer::UI::CustomWidget
 
         def body
           composite(swt_style) {
@@ -98,14 +98,14 @@ module GlimmerSpec
       end
 
       class ::BeforeAndAfter
-        include Glimmer::SWT::CustomWidget
+        include Glimmer::UI::CustomWidget
 
         before_body do
           @background = :red
         end
 
         after_body do
-          @label.widget.setText "Before and After"
+          @label.swt_widget.setText "Before and After"
         end
 
         def body
@@ -119,7 +119,7 @@ module GlimmerSpec
         end
 
         after_body do
-          @label.widget.setEnabled(false)
+          @label.swt_widget.setEnabled(false)
         end
 
         before_body do
@@ -153,8 +153,8 @@ module GlimmerSpec
         @red_label = red_label
       }
 
-      expect(@red_label.widget.getParent).to eq(@target.widget)
-      expect(@red_label.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
+      expect(@red_label.swt_widget.getParent).to eq(@target.swt_widget)
+      expect(@red_label.swt_widget.getBackground).to eq(Glimmer::SWT::ColorProxy.new(:red).swt_color)
     end
 
     it "builds custom widget with no namespace having attributes" do
@@ -164,9 +164,9 @@ module GlimmerSpec
         }
       }
 
-      expect(@red_label.widget.getParent).to eq(@target.widget)
-      expect(@red_label.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
-      expect(@red_label.widget.getText).to eq('Red Label')
+      expect(@red_label.swt_widget.getParent).to eq(@target.swt_widget)
+      expect(@red_label.swt_widget.getBackground).to eq(Glimmer::SWT::ColorProxy.new(:red).swt_color)
+      expect(@red_label.swt_widget.getText).to eq('Red Label')
     end
 
     it "builds custom widget with an option" do
@@ -174,8 +174,8 @@ module GlimmerSpec
         @colored_label = colored_label(color: :blue)
       }
 
-      expect(@colored_label.widget.getParent).to eq(@target.widget)
-      expect(@colored_label.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:blue))
+      expect(@colored_label.swt_widget.getParent).to eq(@target.swt_widget)
+      expect(@colored_label.swt_widget.getBackground).to eq(Glimmer::SWT::ColorProxy.new(:blue).swt_color)
     end
 
     it "builds custom widget with namespace" do
@@ -185,9 +185,9 @@ module GlimmerSpec
         }
       }
 
-      expect(@red_label.widget.getParent).to eq(@target.widget)
-      expect(@red_label.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
-      expect(@red_label.widget.getText).to eq('Red Label')
+      expect(@red_label.swt_widget.getParent).to eq(@target.swt_widget)
+      expect(@red_label.swt_widget.getBackground).to eq(Glimmer::SWT::ColorProxy.new(:red).swt_color)
+      expect(@red_label.swt_widget.getText).to eq('Red Label')
     end
 
     it "builds custom widget with namespace and content" do
@@ -199,12 +199,12 @@ module GlimmerSpec
         }
       }
 
-      expect(@sandwich.widget.getParent).to eq(@target.widget)
-      expect(@sandwich.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:white))
-      expect(@sandwich.widget.getChildren.size).to eq(3)
-      expect(@sandwich.widget.getChildren[0].getText).to eq('SANDWICH TOP')
-      expect(@sandwich.widget.getChildren[1].getText).to eq('SANDWICH CONTENT')
-      expect(@sandwich.widget.getChildren[2].getText).to eq('SANDWICH BOTTOM')
+      expect(@sandwich.swt_widget.getParent).to eq(@target.swt_widget)
+      expect(@sandwich.swt_widget.getBackground).to eq(Glimmer::SWT::ColorProxy.new(:white).swt_color)
+      expect(@sandwich.swt_widget.getChildren.size).to eq(3)
+      expect(@sandwich.swt_widget.getChildren[0].getText).to eq('SANDWICH TOP')
+      expect(@sandwich.swt_widget.getChildren[1].getText).to eq('SANDWICH CONTENT')
+      expect(@sandwich.swt_widget.getChildren[2].getText).to eq('SANDWICH BOTTOM')
     end
 
     it "builds nested custom widgets" do
@@ -217,12 +217,12 @@ module GlimmerSpec
         }
       }
 
-      expect(@red_composite.widget.getParent).to eq(@target.widget)
-      expect(@red_composite.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
-      expect(@red_composite.widget.getLayout.is_a?(RowLayout)).to be_truthy
-      expect(@red_label.widget.getParent).to eq(@red_composite.widget)
-      expect(@red_label.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
-      expect(@red_label.widget.getText).to eq('Red Label')
+      expect(@red_composite.swt_widget.getParent).to eq(@target.swt_widget)
+      expect(@red_composite.swt_widget.getBackground).to eq(Glimmer::SWT::ColorProxy.new(:red).swt_color)
+      expect(@red_composite.swt_widget.getLayout.is_a?(RowLayout)).to be_truthy
+      expect(@red_label.swt_widget.getParent).to eq(@red_composite.swt_widget)
+      expect(@red_label.swt_widget.getBackground).to eq(Glimmer::SWT::ColorProxy.new(:red).swt_color)
+      expect(@red_label.swt_widget.getText).to eq('Red Label')
     end
 
     it "builds composite custom widgets having options" do
@@ -238,18 +238,18 @@ module GlimmerSpec
         }
       }
 
-      expect(@multi_color_label.widget.getParent).to eq(@target.widget)
-      expect(@multi_color_label.widget.getChildren.size).to eq(2)
-      expect(@multi_color_label.widget.getChildren[0]).to be_a(Label)
-      expect(@multi_color_label.widget.getChildren[0].getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
-      expect(@multi_color_label.widget.getChildren[0].getFont.getFontData[0].getHeight).to eq(62)
-      expect(@multi_color_label.widget.getChildren[0].getText).to eq("Hello,")
-      expect(@multi_color_label.widget.getChildren[0].getStyle & Glimmer::SWT::SWTProxy[:center]).to eq(Glimmer::SWT::SWTProxy[:center])
-      expect(@multi_color_label.widget.getChildren[1]).to be_a(Label)
-      expect(@multi_color_label.widget.getChildren[1].getBackground).to eq(Glimmer::SWT::GColor.color_for(:blue))
-      expect(@multi_color_label.widget.getChildren[1].getFont.getFontData[0].getHeight).to eq(73)
-      expect(@multi_color_label.widget.getChildren[1].getText).to eq("World!")
-      expect(@multi_color_label.widget.getChildren[1].getStyle & Glimmer::SWT::SWTProxy[:center]).to eq(Glimmer::SWT::SWTProxy[:center])
+      expect(@multi_color_label.swt_widget.getParent).to eq(@target.swt_widget)
+      expect(@multi_color_label.swt_widget.getChildren.size).to eq(2)
+      expect(@multi_color_label.swt_widget.getChildren[0]).to be_a(Label)
+      expect(@multi_color_label.swt_widget.getChildren[0].getBackground).to eq(Glimmer::SWT::ColorProxy.new(:red).swt_color)
+      expect(@multi_color_label.swt_widget.getChildren[0].getFont.getFontData[0].getHeight).to eq(62)
+      expect(@multi_color_label.swt_widget.getChildren[0].getText).to eq("Hello,")
+      expect(@multi_color_label.swt_widget.getChildren[0].getStyle & Glimmer::SWT::SWTProxy[:center]).to eq(Glimmer::SWT::SWTProxy[:center])
+      expect(@multi_color_label.swt_widget.getChildren[1]).to be_a(Label)
+      expect(@multi_color_label.swt_widget.getChildren[1].getBackground).to eq(Glimmer::SWT::ColorProxy.new(:blue).swt_color)
+      expect(@multi_color_label.swt_widget.getChildren[1].getFont.getFontData[0].getHeight).to eq(73)
+      expect(@multi_color_label.swt_widget.getChildren[1].getText).to eq("World!")
+      expect(@multi_color_label.swt_widget.getChildren[1].getStyle & Glimmer::SWT::SWTProxy[:center]).to eq(Glimmer::SWT::SWTProxy[:center])
     end
 
     it 'observes custom widget custom property' do
@@ -303,10 +303,10 @@ module GlimmerSpec
       @target = shell {
         @before_and_after = before_and_after
       }
-      expect(@before_and_after.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
-      @label = @before_and_after.widget.getChildren.first
-      expect(@label.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
-      expect(@label.getForeground).to eq(Glimmer::SWT::GColor.color_for(:green))
+      expect(@before_and_after.swt_widget.getBackground).to eq(Glimmer::SWT::ColorProxy.new(:red).swt_color)
+      @label = @before_and_after.swt_widget.getChildren.first
+      expect(@label.getBackground).to eq(Glimmer::SWT::ColorProxy.new(:red).swt_color)
+      expect(@label.getForeground).to eq(Glimmer::SWT::ColorProxy.new(:green).swt_color)
       expect(@label.getText).to eq('Before and After')
       expect(@label.isEnabled).to eq(false)
     end
@@ -322,8 +322,8 @@ module GlimmerSpec
         }
       }
 
-      expect(@red_composite.widget.getChildren.first).to eq(@text.widget)
-      expect(@text.widget.getText).to eq('Howdy')
+      expect(@red_composite.swt_widget.getChildren.first).to eq(@text.swt_widget)
+      expect(@text.swt_widget.getText).to eq('Howdy')
     end
 
     context 'UI code execution' do
@@ -344,12 +344,12 @@ module GlimmerSpec
         }
 
         @red_label.async_exec do
-          expect(@red_label.widget.getText).to eq("text2")
+          expect(@red_label.swt_widget.getText).to eq("text2")
         end
 
         # This takes prioerity over async_exec
         @red_label.sync_exec do
-          @red_label.widget.setText("text2")
+          @red_label.swt_widget.setText("text2")
         end
       end
     end

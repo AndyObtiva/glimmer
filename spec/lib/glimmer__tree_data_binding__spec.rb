@@ -34,7 +34,7 @@ module GlimmerSpec
       end
 
       class ::RedTree
-        include Glimmer::SWT::CustomWidget
+        include Glimmer::UI::CustomWidget
 
         def body
           tree(swt_style) {
@@ -92,10 +92,10 @@ module GlimmerSpec
         }
       }
 
-      expect(@tree.widget.getItems.size).to eq(1)
-      expect(@tree_nested_indexed.widget.getItems.size).to eq(1)
+      expect(@tree.swt_widget.getItems.size).to eq(1)
+      expect(@tree_nested_indexed.swt_widget.getItems.size).to eq(1)
 
-      root_node = @tree.widget.getItems[0]
+      root_node = @tree.swt_widget.getItems[0]
       expect(root_node.getText()).to eq("Tim Harkins")
 
       expect(root_node.getItems.size).to eq(2)
@@ -106,21 +106,21 @@ module GlimmerSpec
 
       manager.name = "Tim Lee Harkins"
 
-      root_node = @tree.widget.getItems[0]
+      root_node = @tree.swt_widget.getItems[0]
       expect(root_node.getText()).to eq("Tim Lee Harkins")
-      root_node_nested_indexed = @tree_nested_indexed.widget.getItems[0]
+      root_node_nested_indexed = @tree_nested_indexed.swt_widget.getItems[0]
       expect(root_node_nested_indexed.getText()).to eq("Tim Lee Harkins")
 
       person1.name = "Bruce A. Ting"
-      node1 = @tree.widget.getItems.first.getItems.first
+      node1 = @tree.swt_widget.getItems.first.getItems.first
       expect(node1.getText()).to eq("Bruce A. Ting")
-      node1_nested_indexed = @tree_nested_indexed.widget.getItems.first.getItems.first
+      node1_nested_indexed = @tree_nested_indexed.swt_widget.getItems.first.getItems.first
       expect(node1_nested_indexed.getText()).to eq("Bruce A. Ting")
 
       person2.name = "Julia Katherine Fang"
-      node2 = @tree.widget.getItems.first.getItems.last
+      node2 = @tree.swt_widget.getItems.first.getItems.last
       expect(node2.getText()).to eq("Julia Katherine Fang")
-      node2_nested_indexed = @tree_nested_indexed.widget.getItems.first.getItems.last
+      node2_nested_indexed = @tree_nested_indexed.swt_widget.getItems.first.getItems.last
       expect(node2_nested_indexed.getText()).to eq("Julia Katherine Fang")
 
       person3 = Person.new
@@ -131,24 +131,24 @@ module GlimmerSpec
       manager.people << person3
       manager.people = manager.people
 
-      root_node = @tree.widget.getItems.first
+      root_node = @tree.swt_widget.getItems.first
       expect(root_node.getItems.size).to eq(3)
       node3 = root_node.getItems.last
       expect(node3.getText()).to eq("Bob David Kennith")
-      root_node_nested_indexed = @tree_nested_indexed.widget.getItems.first
+      root_node_nested_indexed = @tree_nested_indexed.swt_widget.getItems.first
       expect(root_node_nested_indexed.getItems.size).to eq(3)
       node3_nested_indexed = root_node_nested_indexed.getItems.last
       expect(node3_nested_indexed.getText()).to eq("Bob David Kennith")
 
       manager.people.delete_at(0)
 
-      root_node = @tree.widget.getItems.first
+      root_node = @tree.swt_widget.getItems.first
       expect(root_node.getItems.size).to eq(2)
       node1 = root_node.getItems.first
       node2 = root_node.getItems.last
       expect(node1.getText()).to eq("Julia Katherine Fang")
       expect(node2.getText()).to eq("Bob David Kennith")
-      root_node_nested_indexed = @tree_nested_indexed.widget.getItems.first
+      root_node_nested_indexed = @tree_nested_indexed.swt_widget.getItems.first
       expect(root_node_nested_indexed.getItems.size).to eq(2)
       node1_nested_indexed = root_node_nested_indexed.getItems.first
       node2_nested_indexed = root_node_nested_indexed.getItems.last
@@ -186,10 +186,10 @@ module GlimmerSpec
         }
       }
 
-      expect(@tree.widget.getBackground).to eq(Glimmer::SWT::GColor.color_for(:red))
-      expect(@tree.widget.getItems.size).to eq(1)
+      expect(@tree.swt_widget.getBackground).to eq(Glimmer::SWT::GColor.new(:red).color)
+      expect(@tree.swt_widget.getItems.size).to eq(1)
 
-      root_node = @tree.widget.getItems[0]
+      root_node = @tree.swt_widget.getItems[0]
       expect(root_node.getText()).to eq("Tim Harkins")
 
       expect(root_node.getItems.size).to eq(2)

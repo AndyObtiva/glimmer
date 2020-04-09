@@ -58,11 +58,10 @@ module Glimmer
     Glimmer.logger.debug "method: " + method_symbol.to_s + " and args: " + args.to_s
     Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
   rescue => e
-    if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
-      Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"
-    else
-      Glimmer.logger.error "#{e.message}\n#{e.backtrace.join("\n")}"
+    if !method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
+      Glimmer.logger.error e.message
     end
+    Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"
     method_missing_without_glimmer(method_symbol, *args, &block)
   end
 end

@@ -66,8 +66,8 @@ module GlimmerSpec
       it "tests label with standard #{standard_color} background color passed as a Ruby symbol" do
         @target = shell {
           @label = label {
-            background standard_color
-            foreground standard_color
+            background color(standard_color)
+            foreground color(standard_color)
           }
         }
 
@@ -78,22 +78,6 @@ module GlimmerSpec
         expect(background).to eq(expected_color)
         expect(foreground).to eq(expected_color)
       end
-    end
-
-    it "tests label with RGBA background color utilizing existing display" do
-      @display = display
-      @background = rgba(@display.swt_display, 4, 40, 244, 100)
-      @target = shell {
-        @label = label {
-          background @background
-        }
-      }
-
-      color = @label.swt_widget.getBackground
-      expect(color.getRed).to eq(4)
-      expect(color.getGreen).to eq(40)
-      expect(color.getBlue).to eq(244)
-      expect(color.getAlpha).to eq(100)
     end
 
     it "tests label with RGB background color utilizing existing display" do
