@@ -8,7 +8,7 @@ module Glimmer
   module DSL
     class LayoutDataExpression < StaticExpression
       def can_interpret?(parent, keyword, *args, &block)
-        keyword == 'layout_data' &&
+        keyword == 'layout_data' and
           widget?(parent)
       end
 

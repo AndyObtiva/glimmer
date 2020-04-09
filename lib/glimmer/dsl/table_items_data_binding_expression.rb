@@ -9,13 +9,13 @@ module Glimmer
       include_package 'org.eclipse.swt.widgets'
 
       def can_interpret?(parent, keyword, *args, &block)
-        keyword == "items" &&
-          block.nil? &&
-          widget?(parent) &&
-          parent.widget.is_a?(Table) &&
-          args.size == 2 &&
-          args[0].is_a?(DataBinding::ModelBinding) &&
-          args[0].evaluate_property.is_a?(Array) &&
+        keyword == "items" and
+          block.nil? and
+          widget?(parent) and
+          parent.swt_widget.is_a?(Table) and
+          args.size == 2 and
+          args[0].is_a?(DataBinding::ModelBinding) and
+          args[0].evaluate_property.is_a?(Array) and
           args[1].is_a?(Array)
       end
 

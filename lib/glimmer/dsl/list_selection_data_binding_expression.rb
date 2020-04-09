@@ -9,12 +9,12 @@ module Glimmer
       include_package 'org.eclipse.swt.widgets'
 
       def can_interpret?(parent, keyword, *args, &block)
-        keyword == 'selection' &&
-          block.nil? &&
-          widget?(parent) &&
-          parent.widget.is_a?(List) &&
-          args.size == 1 &&
-          args[0].is_a?(DataBinding::ModelBinding) &&
+        keyword == 'selection' and
+          block.nil? and
+          widget?(parent) and
+          parent.swt_widget.is_a?(List) and
+          args.size == 1 and
+          args[0].is_a?(DataBinding::ModelBinding) and
           args[0].evaluate_options_property.is_a?(Array)
       end
 

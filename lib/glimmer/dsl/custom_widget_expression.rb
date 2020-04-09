@@ -9,7 +9,7 @@ module Glimmer
     class CustomWidgetExpression < Expression
       def can_interpret?(parent, keyword, *args, &block)
         custom_widget_class = UI::CustomWidget.for(keyword)
-        custom_widget_class &&
+        custom_widget_class and
           (widget?(parent) || custom_widget_class.ancestors.include?(UI::CustomShell))
       end
 

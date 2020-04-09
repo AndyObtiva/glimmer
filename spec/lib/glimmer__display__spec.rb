@@ -24,15 +24,15 @@ module GlimmerSpec
         @target = display
 
         expect(@target).to be_a(Glimmer::SWT::GDisplay)
-        expect(@target.display).to be_a(Display)
-        expect(@target.display.isDisposed).to be_falsey
+        expect(@target.swt_display).to be_a(Display)
+        expect(@target.swt_display.isDisposed).to be_falsey
 
         @target2 = display
-        expect(@target2.display).to eq(@target.display)
+        expect(@target2.swt_display).to eq(@target.swt_display)
 
         @target2.dispose
         @target2 = display
-        expect(@target2.display).to_not eq(@target.display)
+        expect(@target2.swt_display).to_not eq(@target.swt_display)
       end
     end
 

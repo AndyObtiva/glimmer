@@ -34,9 +34,9 @@ module GlimmerSpec
       expect(@foreground_color.getGreen).to eq(40)
       expect(@foreground_color.getBlue).to eq(244)
       expect(@foreground_color.getAlpha).to eq(50)
-      expect(@foreground_color.getDevice).to eq(Glimmer::SWT::GDisplay.instance.display)
+      expect(@foreground_color.getDevice).to eq(Glimmer::SWT::GDisplay.instance.swt_display)
 
-      expect(@foreground_color.getDevice).to eq(@target.display)
+      expect(@foreground_color.getDevice).to eq(Glimmer::SWT::DisplayProxy.instance.swt_display)
     end
 
     it "tests label with RGB (no alpha) background/foreground color" do
@@ -57,9 +57,9 @@ module GlimmerSpec
       expect(@foreground_color.getRed).to eq(4)
       expect(@foreground_color.getGreen).to eq(40)
       expect(@foreground_color.getBlue).to eq(244)
-      expect(@foreground_color.getDevice).to eq(Glimmer::SWT::GDisplay.instance.display)
+      expect(@foreground_color.getDevice).to eq(Glimmer::SWT::GDisplay.instance.swt_display)
 
-      expect(@foreground_color.getDevice).to eq(@target.display)
+      expect(@foreground_color.getDevice).to eq(Glimmer::SWT::DisplayProxy.instance.swt_display)
     end
 
     # Standard colors: not an exhaustive list. Sample taken from here: https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
@@ -80,7 +80,7 @@ module GlimmerSpec
         background = @label.widget.getBackground
         foreground = @label.widget.getForeground
         swt_color_constant = Glimmer::SWT::GSWT['color_' + standard_color.to_s.sub(/^color_/, '')]
-        expected_color = @target.display.getSystemColor(swt_color_constant)
+        expected_color = Glimmer::SWT::DisplayProxy.instance.swt_display.getSystemColor(swt_color_constant)
         expect(background).to eq(expected_color)
         expect(foreground).to eq(expected_color)
       end
@@ -88,7 +88,7 @@ module GlimmerSpec
 
     it "tests label with RGBA background color utilizing existing display" do
       @display = display
-      @background = rgba(@display.display, 4, 40, 244, 100)
+      @background = rgba(@display.swt_display, 4, 40, 244, 100)
       @target = shell {
         @label = label {
           background @background
@@ -104,7 +104,7 @@ module GlimmerSpec
 
     it "tests label with RGB background color utilizing existing display" do
       @display = display
-      @background = rgb(@display.display, 4, 40, 244)
+      @background = rgb(@display.swt_display, 4, 40, 244)
       @target = shell {
         @label = label {
           background @background

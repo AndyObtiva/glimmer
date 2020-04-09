@@ -10,10 +10,10 @@ module Glimmer
       include_package 'org.eclipse.swt.widgets'
 
       def can_interpret?(parent, keyword, *args, &block)
-        keyword == "tree_properties" &&
-          block.nil? &&
-          widget?(parent) &&
-          parent.widget.is_a?(Tree)
+        keyword == "tree_properties" and
+          block.nil? and
+          widget?(parent) and
+          parent.swt_widget.is_a?(Tree)
       end
 
       def interpret(parent, keyword, *args, &block)

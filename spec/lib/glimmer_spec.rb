@@ -14,7 +14,6 @@ module GlimmerSpec
     end
 
     it "tests shell with no args having default layout and singleton display instance" do
-      @display = Glimmer::SWT::DisplayProxy.instance.swt_display
       @target = shell
 
       expect(@target).to_not be_nil
@@ -26,7 +25,6 @@ module GlimmerSpec
     end
 
     it "tests shell with one arg of unresizable style bit combination" do
-      @display = display.display #alternative syntax to grab default display instance
       @target = shell(Glimmer::SWT::SWTProxy[:shell_trim] & (~Glimmer::SWT::SWTProxy[:resize]))
 
       expect(@target).to_not be_nil
@@ -53,7 +51,7 @@ module GlimmerSpec
     end
 
     it "tests shell with one arg of display" do
-      @display = Glimmer::SWT::DisplayProxy.instance.display
+      @display = Glimmer::SWT::DisplayProxy.instance.swt_display
       @target = shell(@display)
 
       expect(@target).to_not be_nil
@@ -65,7 +63,7 @@ module GlimmerSpec
     end
 
     it "tests shell with two args of display and style bit" do
-      @display = Glimmer::SWT::DisplayProxy.instance.display
+      @display = Glimmer::SWT::DisplayProxy.instance.swt_display
       @target = shell(@display, :title)
 
       expect(@target).to_not be_nil
@@ -321,7 +319,7 @@ module GlimmerSpec
 
     it 'sets background image via image object' do
       image_data = ImageData.new(File.expand_path(File.join(__FILE__, '..', '..', '..', 'images', 'glimmer-hello-world.png')))
-      image = Image.new(display.display, image_data)
+      image = Image.new(display.swt_display, image_data)
       @target = shell {
         @composite = composite {
           background_image image

@@ -57,10 +57,7 @@ module Glimmer
       raise "Glimmer excluded method: #{method_symbol}"
     end
     Glimmer.logger.debug "method: " + method_symbol.to_s + " and args: " + args.to_s
-    pd method_symbol
-    v = Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
-    pd v
-    v
+    Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
   rescue => e
     if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
       Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"

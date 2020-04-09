@@ -8,9 +8,9 @@ module Glimmer
       REGEX_NESTED_OR_INDEXED_PROPERTY = /([^\[]+)(\[[^\]]+\])?/
 
       def can_interpret?(parent, keyword, *args, &block)
-        keyword == 'observe' &&
-          block_given? &&
-          (args.size == 2) &&
+        keyword == 'observe' and
+          block_given? and
+          (args.size == 2) and
           textual?(args[1])
       end
 

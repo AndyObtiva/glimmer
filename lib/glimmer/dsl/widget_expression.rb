@@ -8,23 +8,12 @@ module Glimmer
       EXCLUDED_KEYWORDS = %w[shell display]
 
       def can_interpret?(parent, keyword, *args, &block)
-        pd keyword
-        pd parent
-        pd args
-        pd block
-        pd !EXCLUDED_KEYWORDS.include?(keyword)
-        pd widget?(parent)
-        pd SWT::WidgetProxy.widget_exists?(keyword)
-        !EXCLUDED_KEYWORDS.include?(keyword) &&
-          widget?(parent) &&
+        !EXCLUDED_KEYWORDS.include?(keyword) and
+          widget?(parent) and
           SWT::WidgetProxy.widget_exists?(keyword)
       end
 
       def interpret(parent, keyword, *args, &block)
-        pd keyword
-        pd parent
-        pd args
-        pd block
         Glimmer.logger.debug "widget styles are: " + args.inspect
         SWT::WidgetProxy.new(keyword, parent.swt_widget, args)
       end

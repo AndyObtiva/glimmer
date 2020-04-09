@@ -9,9 +9,9 @@ module Glimmer
       include_package 'org.eclipse.swt.widgets'
 
       def can_interpret?(parent, keyword, *args, &block)
-        initial_condition = (keyword == 'tab_item') && widget?(parent)
+        initial_condition = (keyword == 'tab_item') and widget?(parent)
         if initial_condition
-          if parent.widget.is_a?(TabFolder)
+          if parent.swt_widget.is_a?(TabFolder)
             return true
           else
             Glimmer.logger.error "tab_item widget may only be used directly under a tab_folder widget!"

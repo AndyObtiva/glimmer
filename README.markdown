@@ -281,7 +281,23 @@ shell {
 }.open
 ```
 
-#### `#content`
+#### SWT Proxies
+
+Glimmer follows Proxy Design Pattern by having Ruby proxy wrappers for all SWT objects:
+- `Glimmer::SWT:WidgetProxy` wraps all descendants of `org.eclipse.swt.widgets.Widget` except the ones that have their own wrappers.
+- `Glimmer::SWT::ShellProxy` wraps `org.eclipse.swt.widgets.Shell`
+- `Glimmer::SWT:TabItemProxy` wraps `org.eclipse.swt.widget.TabItem` (also adds a composite to enable adding content under tab items directly in Glimmer)
+- `Glimmer::SWT:LayoutProxy` wraps all descendants of `org.eclipse.swt.widget.Layout`
+- `Glimmer::SWT:LayoutDataProxy` wraps all layout data objects
+- `Glimmer::SWT:DisplayProxy` wraps `org.eclipse.swt.widget.Display` (manages displaying UI)
+- `Glimmer::SWT:ColorProxy` wraps `org.eclipse.swt.graphics.Color`
+- `Glimmer::SWT:FontProxy` wraps `org.eclipse.swt.graphics.Font`
+- `Glimmer::SWT::WidgetListenerProxy` wraps all widget listeners
+
+These proxy objects have an API and provide some convenience methods, some of which are mentioned below.
+
+
+##### `#content { ... }`
 
 Glimmer allows re-opening any widget and adding properties or extra content after it has been constructed already by using the `#content` method.
 
@@ -307,7 +323,7 @@ Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 @shell.open
 ```
 
-#### `#swt_widget`
+##### `#swt_widget`
 
 Glimmer widget objects come with an instance method `#swt_widget` that returns the actual SWT `Widget` object wrapped by the Glimmer widget object. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
 
@@ -328,7 +344,7 @@ Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 @shell.open
 ```
 
-#### Shell widget proxy methods
+##### Shell widget proxy methods
 
 Shell widget proxy has extra methods specific to SWT Shell:
 - `#open`: Opens the shell, making it visible and active, and starting the SWT Event Loop (you may learn more about it here: https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/widgets/Display.html). If shell was already open, but hidden, it makes the shell visible.

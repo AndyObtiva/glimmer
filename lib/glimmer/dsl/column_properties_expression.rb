@@ -8,10 +8,10 @@ module Glimmer
       include_package 'org.eclipse.swt.widgets'
 
       def can_interpret?(parent, keyword, *args, &block)
-        keyword == 'column_properties' &&
-          block.nil? &&
-          widget?(parent) &&
-          parent.widget.is_a?(Table)
+        keyword == 'column_properties' and
+          block.nil? and
+          widget?(parent) and
+          parent.swt_widget.is_a?(Table)
       end
 
       def interpret(parent, keyword, *args, &block)

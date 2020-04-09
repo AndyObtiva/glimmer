@@ -65,7 +65,7 @@ module GlimmerSpec
     it "tests label with specified font as SWT object" do
       @display = display
       font_datum = FontData.new('Arial', 36, Glimmer::SWT::GSWT[:normal])
-      @font = Font.new(@display.display, font_datum);
+      @font = Font.new(@display.swt_display, font_datum);
       @target = shell {
         @label = label {
           font @font

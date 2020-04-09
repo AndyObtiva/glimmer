@@ -8,9 +8,9 @@ module Glimmer
       include_package 'org.eclipse.swt.widgets'
 
       def can_interpret?(parent, keyword, *args, &block)
-        keyword.to_s.end_with?('_layout') &&
-          widget?(parent) &&
-          parent.widget.is_a?(Composite) &&
+        keyword.to_s.end_with?('_layout') and
+          widget?(parent) and
+          parent.swt_widget.is_a?(Composite) and
           SWT::LayoutProxy.layout_exists?(keyword.to_s)
       end
 

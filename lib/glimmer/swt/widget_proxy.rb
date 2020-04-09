@@ -20,8 +20,6 @@ module Glimmer
       include Packages
       include DataBinding::ObservableWidget
 
-      attr_reader :swt_widget
-
       DEFAULT_STYLES = {
         "text"    => [:border],
         "table"   => [:border],
@@ -46,12 +44,14 @@ module Glimmer
         end,
       }
 
+      attr_reader :swt_widget
+
       # Initializes a new SWT Widget
       #
       # Styles is a comma separate list of symbols representing SWT styles in lower case
       def initialize(underscored_widget_name, parent, styles, &contents)
         @swt_widget = self.class.swt_widget_class_for(underscored_widget_name).new(parent, style(underscored_widget_name, styles))
-        DEFAULT_INITIALIZERS[underscored_widget_name].call(@swt_widget) if DEFAULT_INITIALIZERS[underscored_widget_name]
+        DEFAULT_INITIALIZERS[underscored_widget_name]&.call(@swt_widget)
       end
 
       def has_attribute?(attribute_name, *args)

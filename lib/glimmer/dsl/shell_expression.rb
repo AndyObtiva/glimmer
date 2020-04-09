@@ -9,8 +9,6 @@ module Glimmer
       end
 
       def add_content(parent, &block)
-        pd parent
-        pd Glimmer::DSL::Engine.current_parent
         block.call(parent)
       end
     end

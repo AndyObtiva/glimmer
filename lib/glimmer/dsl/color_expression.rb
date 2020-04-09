@@ -11,7 +11,7 @@ module Glimmer
       include_package 'org.eclipse.swt.widgets'
 
       def can_interpret?(parent, keyword, *args, &block)
-        ['rgba', 'rgb'].include?(keyword) &&
+        ['rgba', 'rgb'].include?(keyword) and
           (3..5).include?(args.count)
       end
 
