@@ -156,17 +156,21 @@ bin/glimmer samples/hello_world.rb
 glimmer [[-jruby-option]...] application.rb [[application2.rb]...]
 ```
 
-Example:
+Accepts JRuby options and multiple Glimmer applications to run simultaneously, each in a JRuby thread.
+
+Example (JRuby option):
 ```
 glimmer --debug samples/hello_world.rb
 ```
 
 Runs Glimmer application with JRuby debug option to enable JRuby debugging.
 
-Example:
+Example (Multiple apps):
 ```
 glimmer samples/hello_world.rb samples/hello_tab.rb
 ```
+
+Launches samples/hello_world.rb and samples/hello_tab.rb at the same time, each in a separate JRuby thread.
 
 ## Girb (Glimmer irb) Command
 
