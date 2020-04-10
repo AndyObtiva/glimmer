@@ -4,10 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Upgraded jruby
-
-## Soon
-
 - Make WidgetProxys and custom widgets proxy method calls to wrapped widget
 - Correct attribute/property naming (unify as attributes)
 - Recapture all of readme's sample screenshots on Mac, Windows, and Linux (except the general widget listing for now)

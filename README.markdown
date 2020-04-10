@@ -92,13 +92,13 @@ https://www.eclipse.org/swt/faq.php
 ## Pre-requisites
 
 * Java SE Runtime Environment 7 or higher (find at https://www.oracle.com/java/technologies/javase-downloads.html)
-* JRuby 9.2.10.0 (supporting Ruby 2.5.x syntax) (find at https://www.jruby.org/download)
+* JRuby 9.2.11.1 (supporting Ruby 2.5.x syntax) (find at https://www.jruby.org/download)
 * SWT 4.15 (comes included in Glimmer gem)
 
 On **Mac** and **Linux**, an easy way to obtain JRuby is through [RVM](http://rvm.io) by running:
 
 ```bash
-rvm install jruby-9.2.10.0
+rvm install jruby-9.2.11.1
 ```
 
 Glimmer might still work on lower versions of Java, JRuby and SWT, but there are no guarantees, so it is best to stick to the pre-requisites outlined above.

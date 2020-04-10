@@ -3,21 +3,18 @@
 ## 0.5.0
 
 - Upgraded SWT to version 4.15
-- Refurbished/refactored Glimmer code design and APIs getting a performance improvement
+- Upgraded to JRuby 9.2.11.1
+- Refurbished/refactored Glimmer code design and APIs getting a performance boost
 - Scraped XML and multi-DSL support
 - Renamed `#add_contents` to `#content`
-- make it configurable to include SWT Packages or not
-- Support color keyword for standard colors
-- Reorder file namespaces and directories
-- Basic RDoc documentation
-- Turn static keywords like bind/rgb/rgba into methods
-- Rename commands to keywords in Glimmer
-- Make Glimmer::Launcher automatically figure out dev mode when run as bin/glimmer locally
-- Rename WidgetProxy.widget, DisplayProxy.display, and GColor.color methods to just swt_widget, swt_display, and swt_color
-- Use right requires in relation to load_path everywhere
-- Support swt keyword for style
-- Support async_exec/sync_exec keywords in Glimmer DSL directly
-- Change "def body" to body { } in custom widget/shell
+- made it configurable to include SWT Packages or not
+- Supported color keyword for standard colors
+- Supported swt keyword for style
+- Supported async_exec/sync_exec keywords in Glimmer DSL directly
+- Changed "def body" to body { } in custom widget/shell
+- Renamed commands to keywords in Glimmer
+- Made Glimmer::Launcher automatically figure out dev mode when run as bin/glimmer locally
+- Added LOAD_PATH explicitly
 
 ## 0.4.9
 - Added `org.eclipse.swt.custom` to default list of Glimmer SWT packages
