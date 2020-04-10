@@ -28,11 +28,11 @@ module GlimmerSpec
       class ::RedTable
         include Glimmer::UI::CustomWidget
 
-        def body
+        body {
           table(swt_style) {
             background :red
           }
-        end
+        }
       end
     end
 

@@ -35,7 +35,7 @@ module Glimmer
       alias fit_to_width? fit_to_width
       alias fit_to_height? fit_to_height
 
-      def body
+      body {
         browser {
           text <<~HTML
             <html>
@@ -71,7 +71,7 @@ module Glimmer
             </html>
           HTML
         }
-      end
+      }
 
       def source
         file ? "file://#{file}" : url

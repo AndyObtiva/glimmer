@@ -49,34 +49,34 @@ module GlimmerSpec
       class ::RedComposite
         include Glimmer::UI::CustomWidget
 
-        def body
+        body {
           composite(swt_style) {
             background :red
           }
-        end
+        }
       end
 
       class ::RedText
         include Glimmer::UI::CustomWidget
 
-        def body
+        body {
           text(swt_style) {
             background :red
           }
-        end
+        }
       end
 
       module ::Red
         class Text
           include Glimmer::UI::CustomWidget
 
-          def body
+          body {
             red_composite {
               @red_text = red_text {
                 # NOOP
               }
             }
-          end
+          }
 
           def text=(value)
             @red_text.swt_widget.setText value.to_s

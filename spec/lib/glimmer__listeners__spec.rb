@@ -12,11 +12,11 @@ module GlimmerSpec
       class ::RedButton
         include Glimmer::UI::CustomWidget
 
-        def body
+        body {
           button(swt_style) {
             background :red
           }
-        end
+        }
       end
     end
 

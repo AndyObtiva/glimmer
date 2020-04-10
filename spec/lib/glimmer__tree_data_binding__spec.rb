@@ -36,11 +36,11 @@ module GlimmerSpec
       class ::RedTree
         include Glimmer::UI::CustomWidget
 
-        def body
+        body {
           tree(swt_style) {
             background :red
           }
-        end
+        }
       end
     end
 

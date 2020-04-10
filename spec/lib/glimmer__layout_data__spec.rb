@@ -8,11 +8,11 @@ module GlimmerSpec
       class ::RedLabel
         include Glimmer::UI::CustomWidget
 
-        def body
+        body {
           label(swt_style) {
             background :red
           }
-        end
+        }
       end
     end
 

@@ -16,6 +16,7 @@
 - Use right requires in relation to load_path everywhere
 - Support swt keyword for style
 - Support async_exec/sync_exec keywords in Glimmer DSL directly
+- Change "def body" to body { } in custom widget/shell
 
 ## 0.4.9
 - Added `org.eclipse.swt.custom` to default list of Glimmer SWT packages

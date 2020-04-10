@@ -89,6 +89,11 @@ module Glimmer
           @before_body_blocks << block
         end
 
+        # TODO rename to content as well as before and after blocks
+        def body(&block)
+          @body_block = block
+        end
+
         def after_body(&block)
           @after_body_blocks ||= []
           @after_body_blocks << block
@@ -104,13 +109,11 @@ module Glimmer
         @options = self.class.options.merge(options)
         @content = Util::ProcTracker.new(content) if content
         execute_hooks('before_body')
-        @body_root = body
+        body_block = self.class.instance_variable_get("@body_block")
+        raise Glimmer::Error, 'Invalid custom widget for having no body! Please define body block!' if body_block.nil?
+        @body_root = instance_exec(&body_block)
         execute_hooks('after_body')
         @swt_widget = @body_root.swt_widget
-      end
-
-      def body
-        raise Error, 'Not implemented!'
       end
 
       def can_handle_observation_request?(observation_request)
@@ -201,11 +204,8 @@ module Glimmer
       private
 
       def execute_hooks(hook_name)
-        self.class.instance_variable_get("@#{hook_name}_blocks")&.each_with_index do |hook_block, i|
-          hook_block_number = i + 1
-          self.class.define_method("__#{hook_name}#{hook_block_number}", hook_block)
-          send("__#{hook_name}#{hook_block_number}")
-          self.class.send(:undef_method, "__#{hook_name}#{hook_block_number}")
+        self.class.instance_variable_get("@#{hook_name}_blocks")&.each do |hook_block|
+          instance_exec(&hook_block)
         end
       end
     end

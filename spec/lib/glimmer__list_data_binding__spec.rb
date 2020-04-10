@@ -32,11 +32,11 @@ module GlimmerSpec
 
       class ::RedList
         include Glimmer::UI::CustomWidget
-        def body
+        body {
           list(swt_style) {
             background :red
           }
-        end
+        }
       end
     end
 

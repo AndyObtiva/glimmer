@@ -8,11 +8,11 @@ module GlimmerSpec
       class ::RedTabFolder
         include Glimmer::UI::CustomWidget
 
-        def body
+        body {
           tab_folder {
             background :red
           }
-        end
+        }
       end
     end
 

@@ -16,11 +16,11 @@ module GlimmerSpec
       class ::RedCombo
         include Glimmer::UI::CustomWidget
 
-        def body
+        body {
           combo(swt_style) {
             background :red
           }
-        end
+        }
       end
     end
 

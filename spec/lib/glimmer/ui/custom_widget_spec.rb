@@ -7,21 +7,22 @@ module GlimmerSpec
     before(:all) do
       class ::RedLabel
         include Glimmer::UI::CustomWidget
-        def body
+
+        body {
           label(swt_style) {
             background :red
           }
-        end
+        }
       end
 
       class ::ColoredLabel
         include Glimmer::UI::CustomWidget
 
-        def body
+        body {
           label(swt_style) {
             background options[:color]
           }
-        end
+        }
       end
 
       class ::MultiColorLabel
@@ -42,7 +43,7 @@ module GlimmerSpec
           "#{value1}#{value2}"
         end
 
-        def body
+        body {
           composite {
             fill_layout :horizontal
             @label1 = label(swt_style) {
@@ -54,35 +55,35 @@ module GlimmerSpec
               font font2
             }
           }
-        end
+        }
       end
 
       module Red
         class Composite
           include Glimmer::UI::CustomWidget
 
-          def body
+          body {
             composite(swt_style) {
               background :red
             }
-          end
+          }
         end
 
         class Label
           include Glimmer::UI::CustomWidget
 
-          def body
+          body {
             label(swt_style) {
               background :red
             }
-          end
+          }
         end
       end
 
       class Sandwich
         include Glimmer::UI::CustomWidget
 
-        def body
+        body {
           composite(swt_style) {
             fill_layout :vertical
             background :white
@@ -94,21 +95,21 @@ module GlimmerSpec
               text 'SANDWICH BOTTOM'
             }
           }
-        end
+        }
       end
 
       class ::BeforeAndAfter
         include Glimmer::UI::CustomWidget
 
-        before_body do
+        before_body {
           @background = :red
-        end
+        }
 
-        after_body do
+        after_body {
           @label.swt_widget.setText "Before and After"
-        end
+        }
 
-        def body
+        body {
           composite {
             background @background
             @label = label {
@@ -116,19 +117,24 @@ module GlimmerSpec
               foreground @foreground
             }
           }
-        end
+        }
 
-        after_body do
+        after_body {
           @label.swt_widget.setEnabled(false)
-        end
+        }
 
-        before_body do
+        before_body {
           @foreground = :green
-        end
+        }
+      end
+
+      class ::InvalidCustomWidget
+        include Glimmer::UI::CustomWidget
       end
     end
 
     after(:all) do
+      Object.send(:remove_const, :InvalidCustomWidget) if Object.const_defined?(:InvalidCustomWidget)
       Object.send(:remove_const, :RedLabel) if Object.const_defined?(:RedLabel)
       Object.send(:remove_const, :ColoredLabel) if Object.const_defined?(:ColoredLabel)
       Object.send(:remove_const, :MultiColorLabel) if Object.const_defined?(:MultiColorLabel)
@@ -318,6 +324,12 @@ module GlimmerSpec
 
       expect(@red_composite.swt_widget.getChildren.first).to eq(@text.swt_widget)
       expect(@text.swt_widget.getText).to eq('Howdy')
+    end
+
+    it 'returns Glimmer error if custom widget has no body in its definition' do
+      @target = shell {
+        expect {invalid_custom_widget}.to raise_error(Glimmer::Error)
+      }
     end
 
     context 'UI code execution' do

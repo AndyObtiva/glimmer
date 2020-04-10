@@ -8,21 +8,21 @@ module GlimmerSpec
       class ::TimeShell
         include Glimmer::UI::CustomShell
 
-        def body
+        body {
           shell {
             label {
               text "It is always beer'o'clock!"
             }
           }
-        end
+        }
       end
 
       class ::InvalidCustomShell
         include Glimmer::UI::CustomShell
 
-        def body
+        body {
           composite
-        end
+        }
       end
     end
 
