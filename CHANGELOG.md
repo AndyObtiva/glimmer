@@ -2,7 +2,7 @@
 
 ## 0.5.0
 
-- Refurbished/refactored Glimmer code design and APIs
+- Refurbished/refactored Glimmer code design and APIs getting a performance improvement
 - Scraped XML and multi-DSL support
 - Renamed `#add_contents` to `#content`
 - make it configurable to include SWT Packages or not
@@ -15,6 +15,7 @@
 - Rename WidgetProxy.widget, DisplayProxy.display, and GColor.color methods to just swt_widget, swt_display, and swt_color
 - Use right requires in relation to load_path everywhere
 - Support swt keyword for style
+- Support async_exec/sync_exec keywords in Glimmer DSL directly
 
 ## 0.4.9
 - Added `org.eclipse.swt.custom` to default list of Glimmer SWT packages

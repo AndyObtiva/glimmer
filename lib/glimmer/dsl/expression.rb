@@ -12,12 +12,12 @@ module Glimmer
     class Expression
       # Checks if it can interpret parameters (subclass must override)
       def can_interpret?(parent, keyword, *args, &block)
-        raise Error, "must be implemented by a class"
+        raise Error, "#can_interpret? must be implemented by an Expression subclass"
       end
 
       # Interprets parameters (subclass must override)
       def interpret(parent, keyword, *args, &block)
-        raise Error, "must be implemented by a class"
+        raise Error, "#interpret must be implemented by an Expression subclass"
       end
 
       # Adds block content to specified parent UI object (Optional)

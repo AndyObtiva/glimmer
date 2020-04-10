@@ -4,7 +4,7 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Support async_exec/sync_exec keywords
+- Refactor specs to move include Glimmer to spec_helper.rb
 - Change "def body" to body { } in custom widget/shell
 - Proxy java/jruby options to launcher
 - Document Glimmer::Launcher
