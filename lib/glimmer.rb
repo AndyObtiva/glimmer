@@ -55,7 +55,7 @@ module Glimmer
     if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
       raise InvalidKeywordError, "Glimmer excluded keyword: #{method_symbol}"
     end
-    Glimmer.logger.debug "method: " + method_symbol.to_s + " and args: " + args.to_s
+    Glimmer.logger.debug "keyword: " + method_symbol.to_s + " and args: " + args.to_s
     Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
   rescue InvalidKeywordError => e
     if !method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)

@@ -51,7 +51,8 @@ module Glimmer
       #
       # Styles is a comma separate list of symbols representing SWT styles in lower case
       def initialize(underscored_widget_name, parent, styles, &contents)
-        @swt_widget = self.class.swt_widget_class_for(underscored_widget_name).new(parent, style(underscored_widget_name, styles))
+        swt_widget_class = self.class.swt_widget_class_for(underscored_widget_name)
+        @swt_widget = swt_widget_class.new(parent.swt_widget, style(underscored_widget_name, styles))
         DEFAULT_INITIALIZERS[underscored_widget_name]&.call(@swt_widget)
       end
 
@@ -209,6 +210,7 @@ module Glimmer
       private
 
       def style(underscored_widget_name, styles)
+        styles = [styles].flatten.compact
         styles.empty? ? default_style(underscored_widget_name) : SWTProxy[*styles]
       end
 

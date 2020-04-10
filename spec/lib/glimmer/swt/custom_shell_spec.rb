@@ -31,11 +31,6 @@ module GlimmerSpec
       Object.send(:remove_const, :InvalidCustomShell) if Object.const_defined?(:InvalidCustomShell)
     end
 
-    before do
-      @rspec_display_method = method(:display)
-      self.class.send(:undef_method, :display)
-    end
-
     after do
       if @target
         @target.async_exec do
@@ -43,7 +38,6 @@ module GlimmerSpec
         end
         @target.open
       end
-      self.class.send(:define_method, :display, @rspec_display_method)
     end
 
     it 'opens and closes' do
@@ -60,7 +54,7 @@ module GlimmerSpec
     it 'rejects a non shell body root' do
       expect do
         time_composite_custom_shell
-      end.to raise_error(RuntimeError)
+      end.to raise_error(NameError)
     end
   end
 end

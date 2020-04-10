@@ -40,7 +40,7 @@ module Glimmer
                 end
               end
             end
-            found.compact
+            found - [Object, Glimmer::UI]
           end.first
           raise "#{underscored_custom_widget_name} has no custom widget class!" if custom_widget_class.nil?
           custom_widget_class if custom_widget_class.ancestors.include?(Glimmer::UI::CustomWidget)

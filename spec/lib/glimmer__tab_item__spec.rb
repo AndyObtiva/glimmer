@@ -39,7 +39,7 @@ module GlimmerSpec
       expect(@tab_folder.swt_widget.items.size).to eq(1)
       expect(@tab_item_composite.swt_widget).to be_instance_of(Composite)
       expect(@tab_folder.swt_widget.items[0].control).to eq(@tab_item_composite.swt_widget)
-      expect(@tab_item_composite.tab_item.swt_widget.text).to eq("Tab 1")
+      expect(@tab_item_composite.swt_tab_item.getText).to eq("Tab 1")
       expect(@tab_item_composite.swt_widget.getLayout).to_not be_nil
       expect(@tab_item_composite.swt_widget.getLayout).to be_instance_of(GridLayout)
     end
@@ -74,7 +74,7 @@ module GlimmerSpec
       expect(@tab_folder.swt_widget.items.size).to eq(1)
       expect(@tab_item_composite.swt_widget).to be_instance_of(Composite)
       expect(@tab_folder.swt_widget.items[0].control).to eq(@tab_item_composite.swt_widget)
-      expect(@tab_item_composite.tab_item.swt_widget.text).to eq("Tab 2")
+      expect(@tab_item_composite.swt_tab_item.getText).to eq("Tab 2")
       expect(@tab_item_composite.swt_widget.getLayout).to_not be_nil
       expect(@tab_item_composite.swt_widget.getLayout).to be_instance_of(FillLayout)
     end
@@ -89,10 +89,10 @@ module GlimmerSpec
       }
 
       expect(@tab_folder.swt_widget.items.size).to eq(1)
-      expect(@tab_folder.swt_widget.getBackground).to eq(Glimmer::SWT::GColor.new(:red).color)
+      expect(@tab_folder.swt_widget.getBackground).to eq(Glimmer::SWT::ColorProxy.new(:red).swt_color)
       expect(@tab_item_composite.swt_widget).to be_instance_of(Composite)
       expect(@tab_folder.swt_widget.items[0].control).to eq(@tab_item_composite.swt_widget)
-      expect(@tab_item_composite.tab_item.swt_widget.text).to eq("Tab 1")
+      expect(@tab_item_composite.swt_tab_item.getText).to eq("Tab 1")
       expect(@tab_item_composite.swt_widget.getLayout).to_not be_nil
       expect(@tab_item_composite.swt_widget.getLayout).to be_instance_of(GridLayout)
     end

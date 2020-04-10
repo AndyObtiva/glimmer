@@ -12,7 +12,7 @@ Here is a list of tasks to do (please delete once done):
 - Rename commands to keywords in Glimmer
 - Correct attribute/property naming (unify as attributes)
 - Change "def body" to body { } in custom widget/shell
-- Make gwidgets and custom widgets proxy method calls to wrapped widget
+- Make WidgetProxys and custom widgets proxy method calls to wrapped widget
 - Recapture all of readme's sample screenshots on Mac, Windows, and Linux (except the general widget listing for now)
 - Document custom shell widget
 - Document Glimmer::Launcher
@@ -26,7 +26,7 @@ Here is a list of tasks to do (please delete once done):
 - Upgrade jruby
 - Upgrade SWT
 - Proxy java/jruby options to launcher
-- Rename GWidget.widget, DisplayProxy.display, and GColor.color methods to just swt_widget, swt_display, and swt_color
+- Rename WidgetProxy.widget, DisplayProxy.display, and GColor.color methods to just swt_widget, swt_display, and swt_color
 - Use right requires in relation to load_path everywhere
 - Implement Glimmer sample launcher
 - Add Glossary
@@ -76,11 +76,10 @@ bind(model, 'addresses').each { |address|
 - Get rid of dispose widget error upon quitting a Glimmer app
 - Make observers 'method?' friendly
 - Compose ModelBinding out of another ModelBinding (nesting deeper)
-- add a `#shell` method to gwidget and custom widget classes to get gshell containing them (or custom shell [think about the implications of this one])
+- add a `#shell` method to WidgetProxy and custom widget classes to get ShellProxy containing them (or custom shell [think about the implications of this one])
 - Support proper `dispose` of widgets across the board (already support garbage collecting observers upon dispose... check if anything else is missing, like nested widget disposal)
 
 ## Documentation Tasks
-- Document G*** classes like GWidget and GShell
 - Document custom widget custom properties/observers
 - Document how to build 3rd party library custom widgets and custom shells for distribution and consumption
 - Explain MVC and MVP

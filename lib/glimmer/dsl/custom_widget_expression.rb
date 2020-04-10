@@ -1,5 +1,6 @@
 require 'glimmer'
 require 'glimmer/dsl/expression'
+require 'glimmer/dsl/parent_expression'
 require 'glimmer/ui/custom_widget'
 require 'glimmer/ui/custom_shell'
 require 'glimmer/ui/video' # this is interpreted here since it's a custom widget
@@ -7,6 +8,7 @@ require 'glimmer/ui/video' # this is interpreted here since it's a custom widget
 module Glimmer
   module DSL
     class CustomWidgetExpression < Expression
+      include ParentExpression
       def can_interpret?(parent, keyword, *args, &block)
         custom_widget_class = UI::CustomWidget.for(keyword)
         custom_widget_class and
@@ -25,7 +27,7 @@ module Glimmer
         if block.source_location == parent.content&.__getobj__.source_location
           parent.content.call(parent) unless parent.content.called?
         else
-          block.call(parent)
+          super
         end
       end
     end

@@ -114,9 +114,9 @@ module Glimmer
       def browser_body_background
         color = background
         if color.is_a?(Symbol) || color.is_a?(String)
-          color = ColorProxy.new(parent.widget.getDisplay, color).swt_color
-        elsif color.is_a?(ColorProxy)
-          color = color.color
+          color = SWT::ColorProxy.new(color).swt_color
+        elsif color.is_a?(SWT::ColorProxy)
+          color = color.swt_color
         end
         "rgba(#{color.getRed}, #{color.getGreen}, #{color.getBlue}, #{color.getAlpha})"
       end

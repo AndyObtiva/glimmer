@@ -81,7 +81,7 @@ module GlimmerSpec
         }
       }
 
-      expect(@button.swt_widget.getBackground).to eq(Glimmer::SWT::GColor.new(:red).color)
+      expect(@button.swt_widget.getBackground).to eq(Glimmer::SWT::ColorProxy.new(:red).swt_color)
       expect(person.name).to eq("Bruce Ting")
       @button.swt_widget.setSelection(true)
       @button.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
@@ -120,7 +120,7 @@ module GlimmerSpec
                 on_event_invalid do
                   @button_shown = true
                 end
-              end.to raise_error(RuntimeError)
+              end.to raise_error(NoMethodError)
             }
           }
         }

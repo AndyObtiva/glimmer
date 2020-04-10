@@ -138,14 +138,8 @@ module GlimmerSpec
       GlimmerSpec.send(:remove_const, :Sandwich) if GlimmerSpec.const_defined?(:Sandwich)
     end
 
-    before do
-      @rspec_display_method = method(:display)
-      self.class.send(:undef_method, :display)
-    end
-
     after do
       @target.dispose if @target
-      self.class.send(:define_method, :display, @rspec_display_method)
     end
 
     it "builds custom widget with no namespace" do

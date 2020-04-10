@@ -1,15 +1,14 @@
-require 'glimmer'
-require_relative 'observable_array'
-require_relative 'observable_model'
-require_relative 'observable'
-require_relative 'observer'
+require 'glimmer/data_binding/observable_array'
+require 'glimmer/data_binding/observable_model'
+require 'glimmer/data_binding/observable'
+require 'glimmer/data_binding/observer'
+require 'glimmer/swt/swt_proxy'
 
 module Glimmer
   module DataBinding
     class TableItemsBinding
-      include Glimmer
-      include Observable
-      include Observer
+      include DataBinding::Observable
+      include DataBinding::Observer
       include_package 'org.eclipse.swt'
       include_package 'org.eclipse.swt.widgets'
 
@@ -24,6 +23,7 @@ module Glimmer
           unregister_all_observables
         end
       end
+
       def call(model_collection=nil)
         if model_collection and model_collection.is_a?(Array)
           observe(model_collection, @column_properties)
@@ -31,16 +31,16 @@ module Glimmer
         end
         populate_table(@model_collection, @table, @column_properties)
       end
+
       def populate_table(model_collection, parent, column_properties)
-        parent.widget.removeAll
+        parent.swt_widget.removeAll
         model_collection.each do |model|
-          table_item = TableItem.new(parent.widget, SWTProxy[:none])
+          table_item = TableItem.new(parent.swt_widget, SWT::SWTProxy[:none])
           for index in 0..(column_properties.size-1)
             table_item.setText(index, model.send(column_properties[index]).to_s)
           end
         end
       end
-
     end
   end
 end

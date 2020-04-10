@@ -11,16 +11,22 @@ module Glimmer
     #
     # In order to get the SWT TabItem object, one must call `#swt_tab_item`.
     #
+    # Behinds the scenes, this creates a tab item widget proxy separately from a composite that
+    # is set as the control of the tab item and `#swt_widget`.
+    #
+    # In order to retrieve the tab item widget proxy, one must call `#widget_proxy`
+    #
     # Follows the Proxy Design Pattern
     class TabItemProxy < WidgetProxy
       include_package 'org.eclipse.swt.widgets'
 
-      attr_reader :swt_tab_item
+      attr_reader :widget_proxy, :swt_tab_item
 
       def initialize(parent, style, &contents)
         super("composite", parent, style, &contents)
-        @swt_tab_item = SWT::WidgetProxy.new('tab_item', parent.swt_widget, args)
-        @swt_tab_item.swt_widget.control = self.swt_widget
+        @widget_proxy = SWT::WidgetProxy.new('tab_item', parent, style)
+        @swt_tab_item = @widget_proxy.swt_widget
+        @widget_proxy.swt_widget.control = self.swt_widget
       end
 
       def has_attribute?(attribute_name, *args)
@@ -32,9 +38,10 @@ module Glimmer
       end
 
       def set_attribute(attribute_name, *args)
+        attribute_name
         if attribute_name.to_s == "text"
           text_value = args[0]
-          @swt_tab_item.swt_widget.text = text_value
+          @swt_tab_item.setText text_value
         else
           super(attribute_name, *args)
         end
@@ -42,7 +49,7 @@ module Glimmer
 
       def get_attribute(attribute_name)
         if attribute_name.to_s == "text"
-          @swt_tab_item.swt_widget.text
+          @swt_tab_item.getText
         else
           super(attribute_name)
         end

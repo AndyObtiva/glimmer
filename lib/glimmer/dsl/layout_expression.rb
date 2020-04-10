@@ -1,10 +1,13 @@
 require 'glimmer'
 require 'glimmer/dsl/expression'
+require 'glimmer/dsl/parent_expression'
 require 'glimmer/swt/layout_proxy'
 
 module Glimmer
   module DSL
     class LayoutExpression < Expression
+      include ParentExpression
+
       include_package 'org.eclipse.swt.widgets'
 
       def can_interpret?(parent, keyword, *args, &block)
@@ -17,10 +20,6 @@ module Glimmer
       def interpret(parent, keyword, *args, &block)
         Glimmer.logger.debug "Layout #{keyword} args are: #{args.inspect}"
         SWT::LayoutProxy.new(keyword, parent, args)
-      end
-
-      def add_content(parent, &block)
-        block.call(parent)
       end
     end
   end

@@ -2,7 +2,7 @@ module Glimmer
   module DataBinding
     module ObservableWidget
       # TODO see if it is worth it to eliminate duplication of method_missing
-      # from GWidget using a module
+      # from WidgetProxy using a module
 
       def method_missing(method, *args, &block)
         method_name = method.to_s

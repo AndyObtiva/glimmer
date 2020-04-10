@@ -208,7 +208,7 @@ module GlimmerSpec
         }
       }
 
-      expect(@table.swt_widget.getBackground).to eq(Glimmer::SWT::GColor.new(:red).color)
+      expect(@table.swt_widget.getBackground).to eq(Glimmer::SWT::ColorProxy.new(:red).swt_color)
       expect(@table.swt_widget.getColumnCount).to eq(3)
       expect(@table.swt_widget.getItems.size).to eq(2)
 

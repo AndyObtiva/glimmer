@@ -7,6 +7,7 @@
 - Renamed `#add_contents` to `#content`
 - make it configurable to include SWT Packages or not
 - Support color keyword for standard colors
+- Document Proxy classes like WidgetProxy and ShellProxy
 
 ## 0.4.9
 - Added `org.eclipse.swt.custom` to default list of Glimmer SWT packages
@@ -15,7 +16,7 @@
 - Implement shell `#hide` method
 - Alias shell `#open` as `#show`
 - Support CustomWidget/CustomShell Custom Property Observers
-- Support on_*** observers on GWidget's directly
+- Support on_*** observers on WidgetProxy's directly
 - Support on_event_*** observers for SWT.constant event listeners (like show and hide)
 - Added widget focus listener and data-binding support
 - Support Glimmer DSL observe keyword and make it return observer registration object to unregister later on (unobserve)
@@ -63,7 +64,7 @@
 - Changed `BlockObserver` into `Observer.proc`
 - Added `Observer#proc` to create simple block-based observers.
 - Updated Observer API renaming `#update` to `#call`
-- Renamed `R` prefixed classes (i.e. Ruby) to `G` prefixed classes (i.e. Glimmer) (e.g. `RWidget` becomes `GWidget`)
+- Renamed `R` prefixed classes (i.e. Ruby) to `G` prefixed classes (i.e. Glimmer) (e.g. `RWidget` becomes `WidgetProxy`)
 - Namespaced all of Glimmer's classes and modules under `Glimmer`
 - Added `display` Glimmer DSL keyword to instantiate an SWT Display
 - Removed `String` and `Symbol` monkey-patching

@@ -1,14 +1,14 @@
 require "spec_helper"
 
 module GlimmerSpec
-  describe Glimmer::SWT::ObservableModel do
+  describe Glimmer::DataBinding::ObservableModel do
     before(:all) do
       class Person
         attr_accessor :name
       end
 
       class SpecObserver
-        include Glimmer::SWT::Observer
+        include Glimmer::DataBinding::Observer
         attr_reader :observed_name
         def call(name)
           @observed_name = name

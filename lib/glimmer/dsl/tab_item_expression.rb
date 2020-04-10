@@ -1,11 +1,14 @@
 require 'glimmer'
-require 'glimmer/dsl/expression'
+require 'glimmer/dsl/static_expression'
+require 'glimmer/dsl/parent_expression'
 require 'glimmer/swt/widget_proxy'
 require 'glimmer/swt/tab_item_proxy'
 
 module Glimmer
   module DSL
-    class TabItemExpression < Expression
+    class TabItemExpression < StaticExpression
+      include ParentExpression
+
       include_package 'org.eclipse.swt.widgets'
 
       def can_interpret?(parent, keyword, *args, &block)

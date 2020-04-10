@@ -6,7 +6,7 @@ module Glimmer
   module DSL
     # Responsible for providing a readable keyword (command symbol) to capture
     # and return tree properties for use in TreeItemsDataBindingCommandHandler
-    class TreePropertiesExpression < Expression
+    class TreePropertiesExpression < StaticExpression
       include_package 'org.eclipse.swt.widgets'
 
       def can_interpret?(parent, keyword, *args, &block)

@@ -250,7 +250,7 @@ module GlimmerSpec
         }
       }
 
-      expect(@list.swt_widget.getBackground).to eq(Glimmer::SWT::GColor.new(:red).color)
+      expect(@list.swt_widget.getBackground).to eq(Glimmer::SWT::ColorProxy.new(:red).swt_color)
       expect(@list.swt_widget.item_count).to eq(4)
       expect(@list.swt_widget.selection_index).to eq(-1)
       expect(@list.swt_widget.selection.to_a).to eq([])

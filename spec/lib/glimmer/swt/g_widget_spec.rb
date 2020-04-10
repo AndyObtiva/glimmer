@@ -1,7 +1,7 @@
 require "spec_helper"
 
 module GlimmerSpec
-  describe Glimmer::SWT::GWidget do
+  describe Glimmer::SWT::WidgetProxy do
     include Glimmer
 
     it 'adds listener' do

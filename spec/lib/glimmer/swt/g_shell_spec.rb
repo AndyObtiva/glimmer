@@ -1,7 +1,7 @@
 require "spec_helper"
 
 module GlimmerSpec
-  describe Glimmer::SWT::GShell do
+  describe Glimmer::SWT::ShellProxy do
     include Glimmer
 
     describe '#visible?' do

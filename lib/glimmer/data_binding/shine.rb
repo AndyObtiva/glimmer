@@ -8,7 +8,7 @@
 #   alias original_compare <=>
 #
 #   def <=>(other)
-#     if (self[0].class.name == "GWidget")
+#     if (self[0].class.name == "WidgetProxy")
 #       content(self[0]) {
 #         if (other.size == 2)
 #           eval("#{self[1]} bind (other[0], other[1])")

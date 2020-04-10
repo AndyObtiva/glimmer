@@ -4,13 +4,7 @@ module GlimmerSpec
   describe "Glimmer Video" do
     include Glimmer
 
-    before do
-      @rspec_display_method = method(:display)
-      self.class.send(:undef_method, :display)
-    end
-
     after do
-      self.class.send(:define_method, :display, @rspec_display_method)
       if @target
         @target.async_exec do
           @target.dispose

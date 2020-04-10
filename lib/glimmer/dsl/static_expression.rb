@@ -21,6 +21,7 @@ module Glimmer
           if !static_expression.can_interpret?(parent, keyword, *args, &block)
             raise Error, "Invalid use of Glimmer keyword #{keyword} with args #{args.inspect} under parent #{parent.inspect}"
           else
+            Glimmer.logger.debug "#{base.name} will handle expression keyword #{keyword} with arguments #{args}"
             static_expression.interpret(parent, keyword, *args, &block).tap do |ui_object|
               Glimmer::DSL::Engine.add_content(ui_object, static_expression, &block) unless block.nil?
             end

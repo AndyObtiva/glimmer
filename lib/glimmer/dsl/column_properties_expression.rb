@@ -1,10 +1,10 @@
-require 'glimmer/dsl/expression'
+require 'glimmer/dsl/static_expression'
 
 module Glimmer
   module DSL
     # Responsible for providing a readable keyword (command symbol) to capture
     # and return column properties for use in TreeItemsDataBindingCommandHandler
-    class ColumnPropertiesExpression < Expression
+    class ColumnPropertiesExpression < StaticExpression
       include_package 'org.eclipse.swt.widgets'
 
       def can_interpret?(parent, keyword, *args, &block)

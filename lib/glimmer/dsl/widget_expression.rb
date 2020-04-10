@@ -1,10 +1,13 @@
 require 'glimmer'
 require 'glimmer/dsl/expression'
+require 'glimmer/dsl/parent_expression'
 
 module Glimmer
   module DSL
     class WidgetExpression < Expression
-      EXCLUDED_KEYWORDS = %w[shell display]
+      include ParentExpression
+      
+      EXCLUDED_KEYWORDS = %w[shell display tab_item]
 
       def can_interpret?(parent, keyword, *args, &block)
         !EXCLUDED_KEYWORDS.include?(keyword) and
@@ -14,11 +17,7 @@ module Glimmer
 
       def interpret(parent, keyword, *args, &block)
         Glimmer.logger.debug "widget styles are: " + args.inspect
-        SWT::WidgetProxy.new(keyword, parent.swt_widget, args)
-      end
-
-      def add_content(parent, &block)
-        block.call(parent)
+        SWT::WidgetProxy.new(keyword, parent, args)
       end
     end
   end
