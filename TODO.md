@@ -4,7 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Move dispose after hook call in specs to spec helper
 - Support async_exec/sync_exec keywords
 - Change "def body" to body { } in custom widget/shell
 - Proxy java/jruby options to launcher
