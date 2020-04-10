@@ -15,7 +15,6 @@ describe Glimmer do
     end
   end
 
-  #TODO clean up SOmeApp and AnotherApp
   it 'disables automatic include of SWT packages in Glimmer apps' do
     class SomeApp
       include Glimmer

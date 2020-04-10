@@ -49,7 +49,6 @@ module Glimmer
     end
   end
 
-  alias method_missing_without_glimmer method_missing
   def method_missing(method_symbol, *args, &block)
     # This if statement speeds up Glimmer in girb or whenever directly including on main object
     if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
@@ -62,7 +61,7 @@ module Glimmer
       Glimmer.logger.error e.message
     end
     Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"
-    method_missing_without_glimmer(method_symbol, *args, &block)
+    super(method_symbol, *args, &block)
   end
 end
 

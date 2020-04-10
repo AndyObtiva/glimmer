@@ -10,6 +10,7 @@ module GlimmerSpec
 
         body {
           shell {
+            alpha 0 # keep invisible while running specs
             label {
               text "It is always beer'o'clock!"
             }
@@ -55,6 +56,19 @@ module GlimmerSpec
       expect do
         time_composite_custom_shell
       end.to raise_error(NameError)
+    end
+
+    it 'handles events' do
+      @target = time_shell
+      @target.on_event_hide do
+        @time_shell_hidden = true
+      end
+      @target.async_exec do
+        @target.hide
+      end
+      @target.async_exec do
+        expect(@time_shell_hidden).to eq(true)
+      end
     end
   end
 end

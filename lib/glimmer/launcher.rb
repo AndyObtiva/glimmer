@@ -17,6 +17,8 @@ module Glimmer
     GLIMMER_LIB_LOCAL = File.expand_path(File.join(__FILE__, '..', '..', 'glimmer.rb'))
     GLIMMER_LIB_GEM = 'glimmer'
 
+    @@mutex = Mutex.new
+
     class << self
       def platform_os
         OPERATING_SYSTEMS_SUPPORTED.detect {|os| OS.send("#{os}?")}
@@ -34,13 +36,21 @@ module Glimmer
         "#{jruby_os_specific_options} -J-classpath \"#{swt_jar_file}\""
       end
 
-      def launch(application, options = [])
-        glimmer_lib = GLIMMER_LIB_GEM
-        glimmer_gem_listing = `jgem list #{GLIMMER_LIB_GEM}`
-        if !glimmer_gem_listing.include?(GLIMMER_LIB_GEM) && File.exists?(GLIMMER_LIB_LOCAL)
-          glimmer_lib = GLIMMER_LIB_LOCAL
-          puts "[DEVELOPMENT MODE] (detected #{glimmer_lib})"
+      def glimmer_lib
+        @@mutex.synchronize do
+          unless @glimmer_lib
+            @glimmer_lib = GLIMMER_LIB_GEM
+            glimmer_gem_listing = `jgem list #{GLIMMER_LIB_GEM}`
+            if !glimmer_gem_listing.include?(GLIMMER_LIB_GEM) && File.exists?(GLIMMER_LIB_LOCAL)
+              @glimmer_lib = GLIMMER_LIB_LOCAL
+              puts "[DEVELOPMENT MODE] (detected #{@glimmer_lib})"
+            end
+          end
         end
+        @glimmer_lib
+      end
+
+      def launch(application, options = [])
         options_string = options.join(' ') + ' ' if options.any?
         system "jruby #{options_string}#{jruby_swt_options} -r #{glimmer_lib} -S #{application}"
       end

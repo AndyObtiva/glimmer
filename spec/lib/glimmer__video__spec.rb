@@ -182,6 +182,23 @@ module GlimmerSpec
       }
     end
 
+    it "plays/stops video manually" do
+      @target = shell
+      @target.content {
+        alpha 0 # keep invisible while running specs
+        @video = video(file: video_file, autoplay: false) {
+          on_completed {
+            @video.play
+            expect(@video.swt_widget.evaluate("return document.getElementById('video').paused")).to eq(false)
+            @video.pause
+            expect(@video.swt_widget.evaluate("return document.getElementById('video').paused")).to eq(true)
+            @target.dispose
+          }
+        }
+      }
+      @target.open
+    end
+
     it 'sets offset_x to 0 by default' do
       @target = shell
       @target.content {

@@ -88,7 +88,7 @@ module Glimmer
       private
 
       def video_action(action)
-        widget.execute("document.getElementById('video').#{action}()")
+        swt_widget.execute("document.getElementById('video').#{action}()")
       end
 
       def browser_video_autoplay

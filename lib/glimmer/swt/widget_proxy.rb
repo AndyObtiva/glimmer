@@ -234,48 +234,60 @@ module Glimmer
       # add_listener knowing it will be called for sure afterwards
 
       def can_add_listener?(underscored_listener_name)
-        listener_method_name = underscored_listener_name.camelcase(:lower)
-        @swt_widget.getClass.getMethods.each do |widget_method|
-          if widget_method.getName.match(/add.*Listener/)
-            widget_method.getParameterTypes.each do |listener_type|
-              listener_type.getMethods.each do |listener_method|
-                if (listener_method.getName == listener_method_name)
-                  return true
-                end
-              end
-            end
-          end
-        end
-        return false
+        !self.class.find_listener(@swt_widget.getClass, underscored_listener_name).empty?
       end
 
       def add_listener(underscored_listener_name, &block)
-        listener_method_name = underscored_listener_name.camelcase(:lower)
-        @swt_widget.getClass.getMethods.each do |widget_method|
-          if widget_method.getName.match(/add.*Listener/)
-            widget_method.getParameterTypes.each do |listener_type|
-              listener_type.getMethods.each do |listener_method|
-                if (listener_method.getName == listener_method_name)
-                  listener_class = Class.new(Object)
-                  listener_class.send :include, (eval listener_type.to_s.sub("interface", ""))
-                  listener = listener_class.new
-                  listener_type.getMethods.each do |t_method|
-                    # TODO consider define_method instead
-                    eval "def listener.#{t_method.getName}(event) end"
+        widget_add_listener_method, listener_class, listener_method = self.class.find_listener(@swt_widget.getClass, underscored_listener_name)
+        listener = listener_class.new(listener_method.getName => block)
+        @swt_widget.send(widget_add_listener_method.getName, listener)
+        WidgetListenerProxy.new(listener)
+      end
+
+      # Looks through SWT class add***Listener methods till it finds one for which
+      # the argument is a listener class that has an event method matching
+      # underscored_listener_name
+      def self.find_listener(swt_widget_class, underscored_listener_name)
+        @listeners ||= {}
+        listener_key = [swt_widget_class.name, underscored_listener_name]
+        unless @listeners.has_key?(listener_key)
+          listener_method_name = underscored_listener_name.camelcase(:lower)
+          swt_widget_class.getMethods.each do |widget_add_listener_method|
+            if widget_add_listener_method.getName.match(/add.*Listener/)
+              widget_add_listener_method.getParameterTypes.each do |listener_type|
+                listener_type.getMethods.each do |listener_method|
+                  if (listener_method.getName == listener_method_name)
+                    @listeners[listener_key] = [widget_add_listener_method, listener_class(listener_type), listener_method]
+                    return @listeners[listener_key]
                   end
-                  def listener.block=(block)
-                    @block = block
-                  end
-                  listener.block=block
-                  # TODO consider define_method instead
-                  eval "def listener.#{listener_method.getName}(event) @block.call(event) if @block end"
-                  @swt_widget.send(widget_method.getName, listener)
-                  return WidgetListenerProxy.new(listener)
                 end
               end
             end
           end
+          @listeners[listener_key] = []
         end
+        @listeners[listener_key]
+      end
+
+      # Returns a Ruby class that implements listener type Java interface with ability to easily
+      # install a block that gets called upon calling a listener event method
+      def self.listener_class(listener_type)
+        @listener_classes ||= {}
+        listener_class_key = listener_type.name
+        unless @listener_classes.has_key?(listener_class_key)
+          @listener_classes[listener_class_key] = Class.new(Object).tap do |listener_class|
+            listener_class.send :include, (eval listener_type.name.sub("interface", ""))
+            listener_class.define_method('initialize') do |event_method_block_mapping|
+              @event_method_block_mapping = event_method_block_mapping
+            end
+            listener_type.getMethods.each do |event_method|
+              listener_class.define_method(event_method.getName) do |event|
+                @event_method_block_mapping[event_method.getName]&.call(event)
+              end
+            end
+          end
+        end
+        @listener_classes[listener_class_key]
       end
 
       def add_swt_event_listener(swt_constant, &block)

@@ -17,7 +17,6 @@ module Glimmer
         return unless args.empty?
         result = parent.can_handle_observation_request?(keyword)
         Glimmer.logger.debug "can add listener? #{result}"
-        result
       end
 
       def interpret(parent, keyword, *args, &block)

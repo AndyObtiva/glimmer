@@ -63,6 +63,7 @@ bind(model, 'addresses').each { |address|
 - Compose ModelBinding out of another ModelBinding (nesting deeper)
 - add a `#shell` method to WidgetProxy and custom widget classes to get ShellProxy containing them (or custom shell [think about the implications of this one])
 - Support proper `dispose` of widgets across the board (already support garbage collecting observers upon dispose... check if anything else is missing, like nested widget disposal)
+- Support reading Bundler Gemfile in glimmer command if available
 
 ## Documentation Tasks
 - Document custom widget custom properties/observers

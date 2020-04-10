@@ -6,13 +6,6 @@ module Glimmer
       include SuperModule
       include Glimmer::UI::CustomWidget
 
-      # super_module_included do |klass|
-      #   if Glimmer.import_swt_packages
-      #     klass.include(SwtPackages)
-      #   end
-      #   klass.include(Glimmer)
-      # end
-
       def initialize(parent, *swt_constants, options, &content)
         super
         raise Error, 'Invalid custom shell body root! Must be a shell or another custom shell.' unless body_root.is_a?(SWT::ShellProxy) || body_root.is_a?(CustomShell)

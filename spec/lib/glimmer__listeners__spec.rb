@@ -116,7 +116,7 @@ module GlimmerSpec
                 on_event_invalid do
                   @button_shown = true
                 end
-              end.to raise_error(NoMethodError)
+              end.to raise_error(Glimmer::Error)
             }
           }
         }
