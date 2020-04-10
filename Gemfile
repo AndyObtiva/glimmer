@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 gem 'facets', '3.1.0'
 gem 'os', '1.0.0'
 gem 'super_module', '1.4.0'
-gem 'nested_inherited_jruby_include_package', '0.2.0'
+gem 'nested_inherited_jruby_include_package', '0.3.0'
 
 group :development do
   gem "rspec-mocks", "~> 3.5.0"
