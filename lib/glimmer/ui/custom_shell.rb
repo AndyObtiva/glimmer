@@ -1,5 +1,5 @@
 module Glimmer
-  module SWT
+  module UI
     module CustomShell
       include SuperModule
       include Glimmer::UI::CustomWidget

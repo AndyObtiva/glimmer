@@ -1,6 +1,6 @@
 require "spec_helper"
 
-java_import 'org.eclipse.swt.swt_widgets.Composite'
+java_import 'org.eclipse.swt.widgets.Composite'
 
 module GlimmerSpec
   describe "Glimmer Constant" do

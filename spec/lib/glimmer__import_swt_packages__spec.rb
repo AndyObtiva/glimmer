@@ -22,7 +22,7 @@ describe Glimmer do
       include Glimmer
     end
 
-    expect(SomeApp::Label).to eq(org.eclipse.swt.swt_widgets.Label)
+    expect(SomeApp::Label).to eq(org.eclipse.swt.widgets.Label)
 
     Glimmer.import_swt_packages = false
 
@@ -38,7 +38,7 @@ describe Glimmer do
       include Glimmer::UI::CustomWidget
     end
 
-    expect(SomeWidget::Label).to eq(org.eclipse.swt.swt_widgets.Label)
+    expect(SomeWidget::Label).to eq(org.eclipse.swt.widgets.Label)
 
     Glimmer.import_swt_packages = false
 
@@ -54,7 +54,7 @@ describe Glimmer do
       include Glimmer::UI::CustomShell
     end
 
-    expect(SomeShell::Label).to eq(org.eclipse.swt.swt_widgets.Label)
+    expect(SomeShell::Label).to eq(org.eclipse.swt.widgets.Label)
 
     Glimmer.import_swt_packages = false
 
