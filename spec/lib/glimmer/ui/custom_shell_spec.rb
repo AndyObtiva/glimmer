@@ -21,7 +21,7 @@ module GlimmerSpec
         include Glimmer::UI::CustomShell
 
         def body
-          composite {}
+          composite
         end
       end
     end

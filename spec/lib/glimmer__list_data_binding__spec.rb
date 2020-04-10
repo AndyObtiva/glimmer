@@ -45,10 +45,6 @@ module GlimmerSpec
       Object.send(:remove_const, :RedList) if Object.const_defined?(:RedList)
     end
 
-    after do
-      @target.dispose if @target
-    end
-
     it "tests single selection property" do
       person = Person.new
 

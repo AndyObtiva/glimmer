@@ -6,10 +6,6 @@ module GlimmerSpec
   describe "Glimmer Constant" do
     include Glimmer
 
-    after do
-      @target.dispose if @target
-    end
-
     it "test shell with default layout and composite" do
       @target = shell {
         composite(:border, :no_focus) {

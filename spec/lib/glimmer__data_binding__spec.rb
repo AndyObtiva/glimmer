@@ -114,10 +114,6 @@ module GlimmerSpec
       end
     end
 
-    after do
-      @target.dispose if @target
-    end
-
     it "tests text widget data binding string property" do
       person = Person.new
       person.name = "Bruce Ting"

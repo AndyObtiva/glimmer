@@ -6,7 +6,6 @@ module GlimmerSpec
 
     context 'standard operation' do
       after do
-        @target.dispose if @target
         @target2.dispose if @target2
       end
 

@@ -20,10 +20,6 @@ module GlimmerSpec
       Object.send(:remove_const, :RedLabel) if Object.const_defined?(:RedLabel)
     end
 
-    after do
-      @target.dispose if @target
-    end
-
     describe 'RowData' do
       it "sets RowData with all properties specified via property methods" do
         @target = shell {

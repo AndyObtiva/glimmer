@@ -4,10 +4,6 @@ module GlimmerSpec
   describe "Glimmer Color" do
     include Glimmer
 
-    after do
-      @target.dispose if @target
-    end
-
     it "tests label with RGBAlpha background/foreground color" do
       @foreground = rgba(4, 40, 244, 50) # get singleton display
       @foreground_color = @foreground.swt_color

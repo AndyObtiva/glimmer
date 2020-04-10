@@ -4,15 +4,6 @@ module GlimmerSpec
   describe Glimmer do
     include Glimmer
 
-    before do
-      @target = nil
-    end
-
-    after do
-      @target.dispose if @target
-      Glimmer.import_swt_packages = true
-    end
-
     it "tests shell with no args having default layout and singleton display instance" do
       @target = shell
 

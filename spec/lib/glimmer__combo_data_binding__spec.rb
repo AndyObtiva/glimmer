@@ -29,10 +29,6 @@ module GlimmerSpec
       Object.send(:remove_const, :RedCombo) if Object.const_defined?(:RedCombo)
     end
 
-    after do
-      @target.dispose if @target
-    end
-
     it "tests data binding selection property" do
       person = Person.new
 

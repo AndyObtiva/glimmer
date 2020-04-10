@@ -4,10 +4,6 @@ module GlimmerSpec
   describe "Glimmer Layout" do
     include Glimmer
 
-    after do
-      @target.dispose if @target
-    end
-
     describe 'FillLayout' do
       it "sets FillLayout with all properties specified via property methods" do
         @target = shell {

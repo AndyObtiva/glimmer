@@ -20,10 +20,6 @@ module GlimmerSpec
       Object.send(:remove_const, :RedTabFolder) if Object.const_defined?(:RedTabFolder)
     end
 
-    after do
-      @target.dispose if @target
-    end
-
     it "tests tab item composite with default layout" do
       @target = shell {
         @tab_folder = tab_folder {

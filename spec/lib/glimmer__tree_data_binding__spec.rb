@@ -55,10 +55,6 @@ module GlimmerSpec
       end
     end
 
-    after do
-      @target.dispose if @target
-    end
-
     it "data binds text widget to a string property" do
       person1 = Person.new
       person1.name = "Bruce Ting"

@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe Glimmer do
-
   after do
     Glimmer.import_swt_packages = true
     %w[

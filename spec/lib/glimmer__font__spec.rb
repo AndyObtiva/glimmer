@@ -4,10 +4,6 @@ module GlimmerSpec
   describe "Glimmer Color" do
     include Glimmer
 
-    after do
-      @target.dispose if @target
-    end
-
     it "tests label with specified font name, height, and style" do
       @target = shell {
         @label = label {

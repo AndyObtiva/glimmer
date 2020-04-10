@@ -25,10 +25,6 @@ module GlimmerSpec
       Object.send(:remove_const, :RedButton) if Object.const_defined?(:RedButton)
     end
 
-    after do
-      @target.dispose if @target
-    end
-
     it "tests text widget verify listener" do
       @target = shell {
         composite {
