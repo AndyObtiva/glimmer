@@ -2,6 +2,7 @@
 
 ## 0.5.0
 
+- Upgraded SWT to version 4.15
 - Refurbished/refactored Glimmer code design and APIs getting a performance improvement
 - Scraped XML and multi-DSL support
 - Renamed `#add_contents` to `#content`

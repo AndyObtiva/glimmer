@@ -4,8 +4,7 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Upgrade jruby
-- Upgrade SWT
+- Upgraded jruby
 
 ## Soon
 
