@@ -4,30 +4,25 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Reorder file namespaces and directories
-- Basic RDoc documentation
-- Turn static keywords like bind/rgb/rgba into methods
-- Support swt keyword for style
+- Move dispose after hook call in specs to spec helper
 - Support async_exec/sync_exec keywords
-- Rename commands to keywords in Glimmer
-- Correct attribute/property naming (unify as attributes)
 - Change "def body" to body { } in custom widget/shell
-- Make WidgetProxys and custom widgets proxy method calls to wrapped widget
-- Recapture all of readme's sample screenshots on Mac, Windows, and Linux (except the general widget listing for now)
-- Document custom shell widget
+- Proxy java/jruby options to launcher
 - Document Glimmer::Launcher
-- Make Glimmer::Launcher automatically figure out dev mode when run as bin/glimmer locally
+- Upgrade jruby
+- Upgrade SWT
+
+## Soon
+
+- Make WidgetProxys and custom widgets proxy method calls to wrapped widget
+- Correct attribute/property naming (unify as attributes)
+- Recapture all of readme's sample screenshots on Mac, Windows, and Linux (except the general widget listing for now)
 - Provide girb option to run without including Glimmer. Useful when testing an application that is not a "hello, world!" sort of example
 - Image custom widget similar to video, and supporting gif
 - Scaffold a Glimmer app: provide a standard structure for building a Glimmer app (models, views, and assets [images, videos, sounds])
 - Scaffold a View/View-Model pair
 - Scaffold a custom widget
 - Scaffold a custom shell
-- Upgrade jruby
-- Upgrade SWT
-- Proxy java/jruby options to launcher
-- Rename WidgetProxy.widget, DisplayProxy.display, and GColor.color methods to just swt_widget, swt_display, and swt_color
-- Use right requires in relation to load_path everywhere
 - Implement Glimmer sample launcher
 - Add Glossary
 
