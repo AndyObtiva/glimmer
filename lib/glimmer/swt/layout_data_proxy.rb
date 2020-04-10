@@ -26,7 +26,7 @@ module Glimmer
 
       # Inititalizes with owning widget proxy and layout data arguments
       def initialize(widget_proxy, args)
-        @widget_proxy = widget_roxy
+        @widget_proxy = widget_proxy
         args = SWTProxy.constantify_args(args)
         begin
           @swt_layout_data = swt_layout_data_class.new(*args)
@@ -61,6 +61,7 @@ module Glimmer
       end
 
       def set_attribute(attribute_name, *args)
+        args = SWTProxy.constantify_args(args)
         @swt_layout_data.send(attribute_setter(attribute_name), *args)
       end
 

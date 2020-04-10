@@ -1,3 +1,5 @@
+require 'glimmer/invalid_keyword_error'
+
 module Glimmer
   module DSL
     # Expression handler for a Glimmer DSL specific expression
@@ -33,7 +35,7 @@ module Glimmer
           message += " inside parent #{parent.inspect}" if parent
           message += "! Check the validity of the code."
           # Glimmer.logger.error message
-          raise message
+          raise InvalidKeywordError, message
         end
       end
 

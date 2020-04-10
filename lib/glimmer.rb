@@ -53,13 +53,11 @@ module Glimmer
   def method_missing(method_symbol, *args, &block)
     # This if statement speeds up Glimmer in girb or whenever directly including on main object
     if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
-      raise "Glimmer excluded method: #{method_symbol}"
+      raise InvalidKeywordError, "Glimmer excluded keyword: #{method_symbol}"
     end
     Glimmer.logger.debug "method: " + method_symbol.to_s + " and args: " + args.to_s
     Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
-  rescue Error => e
-    raise e
-  rescue => e
+  rescue InvalidKeywordError => e
     if !method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
       Glimmer.logger.error e.message
     end
@@ -73,3 +71,4 @@ $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 require 'glimmer/swt/packages'
 require 'glimmer/dsl'
 require 'glimmer/error'
+require 'glimmer/invalid_keyword_error'
