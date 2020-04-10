@@ -4,14 +4,8 @@ module GlimmerSpec
   describe "Glimmer Color" do
     include Glimmer
 
-    before do
-      @rspec_display_method = method(:display)
-      self.class.send(:undef_method, :display)
-    end
-
     after do
       @target.dispose if @target
-      self.class.send(:define_method, :display, @rspec_display_method)
     end
 
     it "tests label with specified font name, height, and style" do

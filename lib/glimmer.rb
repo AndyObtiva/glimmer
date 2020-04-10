@@ -57,6 +57,8 @@ module Glimmer
     end
     Glimmer.logger.debug "method: " + method_symbol.to_s + " and args: " + args.to_s
     Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
+  rescue Error => e
+    raise e
   rescue => e
     if !method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
       Glimmer.logger.error e.message
@@ -70,3 +72,4 @@ $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 
 require 'glimmer/swt/packages'
 require 'glimmer/dsl'
+require 'glimmer/error'

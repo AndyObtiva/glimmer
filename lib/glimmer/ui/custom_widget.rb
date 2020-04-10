@@ -1,4 +1,5 @@
 require 'glimmer'
+require 'glimmer/error'
 require 'glimmer/swt/swt_proxy'
 require 'glimmer/swt/display_proxy'
 require 'glimmer/util/proc_tracker'
@@ -109,7 +110,7 @@ module Glimmer
       end
 
       def body
-        raise 'Not implemented!'
+        raise Error, 'Not implemented!'
       end
 
       def can_handle_observation_request?(observation_request)

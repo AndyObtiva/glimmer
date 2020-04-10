@@ -4,20 +4,10 @@ module GlimmerSpec
   describe "Glimmer Display" do
     include Glimmer
 
-    before do
-      @rspec_display_method = method(:display)
-      self.class.send(:undef_method, :display)
-    end
-
-    after do
-      self.class.send(:define_method, :display, @rspec_display_method)
-    end
-
     context 'standard operation' do
       after do
         @target.dispose if @target
         @target2.dispose if @target2
-        self.class.send(:define_method, :display, @rspec_display_method)
       end
 
       it "instantiates display" do

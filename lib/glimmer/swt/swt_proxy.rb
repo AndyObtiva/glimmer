@@ -1,3 +1,5 @@
+require 'glimmer/error'
+
 module Glimmer
   module SWT # TODO Consider making this the class below to ease calling it
     # Proxy for org.eclipse.swt.SWT
@@ -18,7 +20,7 @@ module Glimmer
             if constant_value.is_a?(Integer)
               output | constant(symbol)
             else
-              raise symbol.to_s + ERROR_INVALID_STYLE
+              raise Error, symbol.to_s + ERROR_INVALID_STYLE
             end
           end
         end

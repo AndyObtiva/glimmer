@@ -1,3 +1,5 @@
+require 'glimmer/error'
+
 module Glimmer
   module DSL
     # Represents a Glimmer DSL expression (e.g. label(:center) { ... })
@@ -10,12 +12,12 @@ module Glimmer
     class Expression
       # Checks if it can interpret parameters (subclass must override)
       def can_interpret?(parent, keyword, *args, &block)
-        raise "must be implemented by a class"
+        raise Error, "must be implemented by a class"
       end
 
       # Interprets parameters (subclass must override)
       def interpret(parent, keyword, *args, &block)
-        raise "must be implemented by a class"
+        raise Error, "must be implemented by a class"
       end
 
       # Adds block content to specified parent UI object (Optional)

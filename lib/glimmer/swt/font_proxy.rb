@@ -1,3 +1,4 @@
+require 'glimmer/error'
 require 'glimmer/swt/swt_proxy'
 require 'glimmer/swt/display_proxy'
 
@@ -63,7 +64,7 @@ module Glimmer
         [font_properties[:style]].flatten.select do |style|
           style.is_a?(Symbol) || style.is_a?(String)
         end.each do |style|
-          raise style.to_s + ERROR_INVALID_FONT_STYLE if !FONT_STYLES.include?(style.to_sym)
+          raise Error, style.to_s + ERROR_INVALID_FONT_STYLE if !FONT_STYLES.include?(style.to_sym)
         end
       end
     end

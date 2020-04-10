@@ -1,4 +1,4 @@
-require 'set'
+require 'glimmer/error'
 
 module Glimmer
   module DataBinding
@@ -117,7 +117,7 @@ module Glimmer
       end
 
       def call(new_value)
-        raise 'Not implemented!'
+        raise Error, 'Not implemented!'
       end
     end
   end
