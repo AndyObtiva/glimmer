@@ -4,8 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Proxy java/jruby options to launcher
-- Document Glimmer::Launcher
 - Upgrade jruby
 - Upgrade SWT
 

@@ -128,7 +128,8 @@ bundle install
 
 ## Glimmer Command
 
-Usage:
+### Basic Usage
+
 ```
 glimmer application.rb
 ```
@@ -149,6 +150,23 @@ Example:
 bin/glimmer samples/hello_world.rb
 ```
 
+### Advanced Usage
+
+```
+glimmer [[-jruby-option]...] application.rb [[application2.rb]...]
+```
+
+Example:
+```
+glimmer --debug samples/hello_world.rb
+```
+
+Runs Glimmer application with JRuby debug option to enable JRuby debugging.
+
+Example:
+```
+glimmer samples/hello_world.rb samples/hello_tab.rb
+```
 
 ## Girb (Glimmer irb) Command
 

@@ -4,13 +4,15 @@ module Glimmer
   class Launcher
     OPERATING_SYSTEMS_SUPPORTED = ["mac", "windows", "linux"]
     TEXT_USAGE = <<-MULTILINE
-  Usage: glimmer application.rb
+  Usage: glimmer [[-jruby-option]...] application.rb [[application2.rb]...]
 
-  Runs a Glimmer application using JRuby, automatically preloading
+  Runs Glimmer applications using JRuby, automatically preloading
   the glimmer ruby gem and SWT jar dependency.
 
-  Example: glimmer hello_world.rb
-  This runs the Glimmer application hello_world.rb
+  Optionally, JRuby options may be passed in.
+
+  Example: glimmer samples/hello_world.rb
+  This runs the Glimmer application samples/hello_world.rb
     MULTILINE
     GLIMMER_LIB_LOCAL = File.expand_path(File.join(__FILE__, '..', '..', 'glimmer.rb'))
     GLIMMER_LIB_GEM = 'glimmer'
@@ -32,41 +34,44 @@ module Glimmer
         "#{jruby_os_specific_options} -J-classpath \"#{swt_jar_file}\""
       end
 
-      def launch(application, debug_mode = false)
+      def launch(application, options = [])
         glimmer_lib = GLIMMER_LIB_GEM
         glimmer_gem_listing = `jgem list #{GLIMMER_LIB_GEM}`
         if !glimmer_gem_listing.include?(GLIMMER_LIB_GEM) && File.exists?(GLIMMER_LIB_LOCAL)
           glimmer_lib = GLIMMER_LIB_LOCAL
           puts "[DEVELOPMENT MODE] (detected #{glimmer_lib})"
         end
-        debug_option = ''
-        if debug_mode
-          debug_option = '--debug '
-          puts "[DEBUG MODE]"
-        end
-        system "jruby #{debug_option}#{jruby_swt_options} -r #{glimmer_lib} -S #{application}"
+        options_string = options.join(' ') + ' ' if options.any?
+        system "jruby #{options_string}#{jruby_swt_options} -r #{glimmer_lib} -S #{application}"
       end
     end
 
     def initialize(options)
-      # TODO proxy java/jruby options
-      @debug_mode = !!options.delete('--debug')
-      @application_path = options.first
+      @application_paths = options.select {|option| !option.start_with?('-')}
+      @application_paths.each do |application_path|
+        options.delete(application_path)
+      end
+      @options = options
     end
 
     def launch
-      if @application_path
-        launch_application
-      else
+      if @application_paths.empty?
         display_usage
+      else
+        launch_application
       end
     end
 
     private
 
     def launch_application
-      puts "Launching Glimmer Application: #{@application_path}" unless @application_path.to_s.include?('irb')
-      self.class.launch(@application_path, @debug_mode)
+      threads = @application_paths.map do |application_path|
+        puts "Launching Glimmer Application: #{application_path}" unless application_path.to_s.include?('irb')
+        Thread.new do
+          self.class.launch(application_path, @options)
+        end
+      end
+      threads.each(&:join)
     end
 
     def display_usage
