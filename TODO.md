@@ -4,8 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Support publishing a Glimmer app as a Mac/Windows/Linux executable or installer quickly and easily via a command (https://github.com/jruby/jruby/wiki/StandaloneJarsAndClasses - https://github.com/jruby/warbler - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/packager.html ) See if there is anything to contribute to JRuby in the process
-
 - Alert user when they use a property on a custom widget that is a reserved glimmer name (document at least)
 - DSL syntax for MessageBox
 message_box {
@@ -71,7 +69,9 @@ bind(model, 'addresses').each { |address|
 - add a `#shell` method to WidgetProxy and custom widget classes to get ShellProxy containing them (or custom shell [think about the implications of this one])
 - Support proper `dispose` of widgets across the board (already support garbage collecting observers upon dispose... check if anything else is missing, like nested widget disposal)
 - Support reading Bundler Gemfile in glimmer command if available
-
+- Support publishing a Glimmer app for Windows (exe file)
+- Support publishing a Glimmer app for Linux
+(https://github.com/jruby/jruby/wiki/StandaloneJarsAndClasses - https://github.com/jruby/warbler - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/packager.html )
 ## Documentation Tasks
 - Document custom widget custom properties/observers
 - Document how to build 3rd party library custom widgets and custom shells for distribution and consumption

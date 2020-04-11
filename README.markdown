@@ -1542,6 +1542,30 @@ Example:
 jruby -J-XstartOnFirstThread -J-classpath "path_to/swt.jar" -r glimmer -S application.rb
 ```
 
+## Packaging
+
+Glimmer apps may be packaged and distributed on the Mac, Windows, and Linux via these tools:
+- Warbler (https://github.com/jruby/warbler): Enables bundling a Glimmer app into a JAR file
+- javapackager (https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html): Enables packaging a JAR file as a DMG file on Mac, EXE on Windows, and multiple Linux supported formats on Linux.
+
+Glimmer simplifies the process for general packaging on the Mac by providing a rake task.
+
+- Create `Rakefile` in your app root directory
+- Add the following line to it: `require 'glimmer/rake_task'`
+
+Now, you can run the following command to package your app into a Mac DMG file (using both Warbler and javapackager):
+```
+rake glimmer:package
+```
+
+This will generate a JAR file under `./dist` directory and DMG file under `./packages/bundles`. Both will match your application local directory name (e.g. `MathBowling.jar` and `MathBowling-1.0.dmg` for `~/code/MathBowling`)
+
+By default, the package only includes these directories: app, config, db, lib, script, bin, images, sounds, videos
+
+After running once, you will find a `config/warble.rb` file. It has the JAR packaging configuration. You may adjust included directories in it if needed, and then rerun `rake glimmer:package` and it will pick up your custom configuration.
+
+Otherwise, you may find more advanced instructions for javapackager (https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGICFDB) and (https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html) in order to sign your Mac app and distribute on the App Store.
+
 ## Resources
 
 * [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer)

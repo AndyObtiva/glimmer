@@ -2,8 +2,10 @@
 
 ## 0.5.1
 
+- Support publishing a Glimmer app for the Mac (package as dmg file)
 - Fix background_image widget property support to accept files in a JAR file
 - Fix video widget support to accept files in a JAR file
+
 
 ## 0.5.0
 
