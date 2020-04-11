@@ -1566,6 +1566,8 @@ After running once, you will find a `config/warble.rb` file. It has the JAR pack
 
 Otherwise, you may find more advanced instructions for javapackager (https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGICFDB) and (https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html) in order to sign your Mac app and distribute on the App Store.
 
+Additionally, read their documentation on how to set an icon/assets for the application: https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html
+
 ## Resources
 
 * [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer)
