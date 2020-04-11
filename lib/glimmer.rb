@@ -2,13 +2,13 @@
 # interfaces using the robust platform-independent Eclipse SWT library. Glimmer
 # comes with built-in data-binding support to greatly facilitate synchronizing
 # UI with domain models.
-
 require 'facets'
 require 'super_module'
 require 'logger'
 require 'java'
 require 'set'
 require 'nested_inherited_jruby_include_package'
+require 'fileutils'
 
 # Glimmer provides a JRuby Desktop UI DSL + Data-Binding functionality
 #

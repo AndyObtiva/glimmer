@@ -74,7 +74,25 @@ module Glimmer
       }
 
       def source
-        file ? "file://#{file}" : url
+        file_source = file
+        if file_source
+          if file_source.start_with?('uri:classloader')
+            file_path = file_source.split(/\/\//).last
+            file_name = File.basename(file_source)
+            # supporting windows ENV['temp'] or mac/unix /tmp
+            tmp_dir = ENV['temp'] ? File.expand_path(ENV['temp']) : '/tmp'
+            tmp_dir += '/glimmer/lib/glimmer/ui/video'
+            FileUtils.mkdir_p(tmp_dir)
+            tmp_file = File.join(tmp_dir, file_name)
+            file_content = File.binread(file_source) rescue File.binread(file_path)
+            File.binwrite(tmp_file, file_content)
+            "file://#{tmp_file}"
+          else
+            "file://#{file_source}"
+          end
+        else
+          url
+        end
       end
 
       def play

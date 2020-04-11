@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.5.1
+
+- Fix background_image widget property support to accept files in a JAR file
+- Fix video widget support to accept files in a JAR file
+
 ## 0.5.0
 
 - Upgraded SWT to version 4.15

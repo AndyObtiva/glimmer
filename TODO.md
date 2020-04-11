@@ -4,6 +4,14 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
+- Support publishing a Glimmer app as a Mac/Windows/Linux executable or installer quickly and easily via a command (https://github.com/jruby/jruby/wiki/StandaloneJarsAndClasses - https://github.com/jruby/warbler - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/packager.html ) See if there is anything to contribute to JRuby in the process
+
+- Alert user when they use a property on a custom widget that is a reserved glimmer name (document at least)
+- DSL syntax for MessageBox
+message_box {
+  text 'Red Label'
+  message 'This is a red label'
+}.open
 - Make WidgetProxys and custom widgets proxy method calls to wrapped widget
 - Correct attribute/property naming (unify as attributes)
 - Recapture all of readme's sample screenshots on Mac, Windows, and Linux (except the general widget listing for now)
@@ -13,7 +21,7 @@ Here is a list of tasks to do (please delete once done):
 - Scaffold a View/View-Model pair
 - Scaffold a custom widget
 - Scaffold a custom shell
-- Implement Glimmer sample launcher
+- Implement a Graphical Glimmer sample launcher
 - Add Glossary
 
 
@@ -54,7 +62,6 @@ bind(model, 'addresses').each { |address|
 - Provide general DSL to construct any object with Glimmer even if not a widget. Useful for easily setting style_range on a StyledText widget. Maybe make it work like layout_data where it knows type to instantiate automatically. With style_range, that's easy since it can be inferred from args.
 - Consider implementing Glimmer.app_dir as Pathname object referring to app root path of Glimmer application project (not Glimmer library)
 - Consider implementing Glimmer.__lib_dir__ as Pathname object referring to root path of Glimmer library
-- Support publishing a Glimmer app as a Mac/Windows/Linux executable or installer quickly and easily via a command (https://github.com/jruby/jruby/wiki/StandaloneJarsAndClasses - https://github.com/jruby/warbler - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/packager.html ) See if there is anything to contribute to JRuby in the process
 - Support a Glimmer custom widget (custom shell) publishing/consumption mechanism that bypasses Ruby gems by pre-downloading their code directly by convention of custom widget name and github repository name (e.g. containing word glimmer or a special prefix like 'glimmer_public__some_widget_name'). Also, gets packaged when shipping a product or a gem. This should make 100s if not 1000s of widget available very easily online as authors won't be required beyond following a GitHub hosting convention from creating Ruby gems
 - Support a Glimmer ruby gem generator for custom widgets to easily and quickly wrap and publish as a Ruby gem if desired (despite option of github convention consumption mentioned above)
 - Put Glimmer on Travis CI and test on many platforms and with many jruby versions

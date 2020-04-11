@@ -4,6 +4,10 @@ module GlimmerSpec
   describe "Glimmer Video" do
     include Glimmer
 
+    before do
+      @original_temp = ENV['temp']
+    end
+
     after do
       if @target
         @target.async_exec do
@@ -11,9 +15,10 @@ module GlimmerSpec
         end
         @target.start_event_loop
       end
+      ENV['temp'] = @original_temp
     end
 
-    let(:video_file) { File.expand_path('../../../fixtures/videos/Pepa-creativeCommonsMp4956_512kb.mp4', __FILE__) }
+    let(:video_file) { File.expand_path('../../fixtures/videos/Pepa-creativeCommonsMp4956_512kb.mp4', __FILE__) }
     let(:video_url) { "http://www.youtube.com/fdajiew" }
     let(:video_url_truncated) { "www.youtube.com/fdajiew" }
 
@@ -34,6 +39,31 @@ module GlimmerSpec
         @video = video(url: video_url) {
           on_completed {
             expect(@video.swt_widget.evaluate("return document.getElementById('source').src")).to eq(video_url)
+          }
+        }
+      }
+    end
+
+    it 'sets video source by uri:classloader file (JAR file path)' do
+      @target = shell
+      @target.content {
+        @video = video(file: "uri:classloader://#{video_file}") {
+          on_completed {
+            expect(@video.swt_widget.evaluate("return document.getElementById('source').src")).to eq("file:///tmp/glimmer/lib/glimmer/ui/video/#{video_file}")
+            expect(Dir['/tmp/glimmer/lib/glimmer/ui/video/*'].to_a.size).to be > 0
+          }
+        }
+      }
+    end
+
+    it 'sets video source by uri:classloader file (JAR file path) with ENV["temp"] set for windows' do
+      ENV['temp'] = '/tmp/tmp'
+      @target = shell
+      @target.content {
+        @video = video(file: "uri:classloader://#{video_file}") {
+          on_completed {
+            expect(@video.swt_widget.evaluate("return document.getElementById('source').src")).to eq("file:///tmp/tmp/glimmer/lib/glimmer/ui/video/#{video_file}")
+            expect(Dir['/tmp/tmp/glimmer/lib/glimmer/ui/video/*'].to_a.size).to be > 0
           }
         }
       }

@@ -239,8 +239,8 @@ module Glimmer
 
       def add_listener(underscored_listener_name, &block)
         widget_add_listener_method, listener_class, listener_method = self.class.find_listener(@swt_widget.getClass, underscored_listener_name)
-        listener = listener_class.new(listener_method.getName => block)
-        @swt_widget.send(widget_add_listener_method.getName, listener)
+        listener = listener_class.new(listener_method => block)
+        @swt_widget.send(widget_add_listener_method, listener)
         WidgetListenerProxy.new(listener)
       end
 
@@ -257,7 +257,7 @@ module Glimmer
               widget_add_listener_method.getParameterTypes.each do |listener_type|
                 listener_type.getMethods.each do |listener_method|
                   if (listener_method.getName == listener_method_name)
-                    @listeners[listener_key] = [widget_add_listener_method, listener_class(listener_type), listener_method]
+                    @listeners[listener_key] = [widget_add_listener_method.getName, listener_class(listener_type), listener_method.getName]
                     return @listeners[listener_key]
                   end
                 end
@@ -329,6 +329,12 @@ module Glimmer
           :background => color_converter,
           :background_image => proc do |value|
             if value.is_a?(String)
+              if value.start_with?('uri:classloader')
+                value = value.sub(/^uri\:classloader\:\//, '')
+                object = java.lang.Object.new
+                value = object.java_class.resource_as_stream(value)
+                value = java.io.BufferedInputStream.new(value)
+              end
               image_data = ImageData.new(value)
               # TODO in the future, look into unregistering this listener when no longer needed
               on_event_Resize do |resize_event|
