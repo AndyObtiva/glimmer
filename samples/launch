@@ -1,0 +1,15 @@
+# Launches all samples
+export DIR=`echo $0 | sed "s/launch//"`
+${DIR}/../bin/glimmer \
+  "${DIR}hello_browser.rb" \
+  "${DIR}hello_combo.rb" \
+  "${DIR}hello_list_multi_selection.rb" \
+  "${DIR}hello_list_single_selection.rb" \
+  "${DIR}hello_tab.rb" \
+  "${DIR}hello_world.rb" \
+  "${DIR}login.rb" \
+  "${DIR}contactmanager/contact_manager.rb" \
+  "${DIR}hellocomputed/hello_computed.rb" \
+  "${DIR}tictactoe/tic_tac_toe.rb" \
+  "${DIR}video/hello_looped_video_with_black_background.rb" \
+  "${DIR}video/hello_video.rb" \
