@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["AndyMaleh".freeze]
-  s.date = "2020-04-11"
+  s.date = "2020-04-12"
   s.description = "JRuby Desktop UI DSL + Data-Binding cross-platform library that enables productive and efficient authoring of desktop user-interfaces using the robust platform-native Eclipse SWT library".freeze
   s.email = "andy.am@gmail.com".freeze
   s.executables = ["glimmer".freeze, "girb".freeze]
@@ -67,6 +67,7 @@ Gem::Specification.new do |s|
     "lib/glimmer/error.rb",
     "lib/glimmer/invalid_keyword_error.rb",
     "lib/glimmer/launcher.rb",
+    "lib/glimmer/rake_task.rb",
     "lib/glimmer/swt/color_proxy.rb",
     "lib/glimmer/swt/display_proxy.rb",
     "lib/glimmer/swt/font_proxy.rb",
@@ -95,10 +96,11 @@ Gem::Specification.new do |s|
     s.specification_version = 4
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<facets>.freeze, ["= 3.1.0"])
-      s.add_runtime_dependency(%q<os>.freeze, ["= 1.0.0"])
-      s.add_runtime_dependency(%q<super_module>.freeze, ["= 1.4.0"])
-      s.add_runtime_dependency(%q<nested_inherited_jruby_include_package>.freeze, ["= 0.3.0"])
+      s.add_runtime_dependency(%q<facets>.freeze, ["~> 3.1.0"])
+      s.add_runtime_dependency(%q<os>.freeze, ["~> 1.0.0"])
+      s.add_runtime_dependency(%q<super_module>.freeze, ["~> 1.4.0"])
+      s.add_runtime_dependency(%q<nested_inherited_jruby_include_package>.freeze, ["~> 0.3.0"])
+      s.add_runtime_dependency(%q<rake>.freeze, [">= 0"])
       s.add_development_dependency(%q<rspec-mocks>.freeze, ["~> 3.5.0"])
       s.add_development_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
       s.add_development_dependency(%q<rdoc>.freeze, ["~> 2.3.0"])
@@ -107,10 +109,11 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<simplecov>.freeze, ["~> 0.10.0"])
       s.add_development_dependency(%q<puts_debuggerer>.freeze, ["~> 0.8.1"])
     else
-      s.add_dependency(%q<facets>.freeze, ["= 3.1.0"])
-      s.add_dependency(%q<os>.freeze, ["= 1.0.0"])
-      s.add_dependency(%q<super_module>.freeze, ["= 1.4.0"])
-      s.add_dependency(%q<nested_inherited_jruby_include_package>.freeze, ["= 0.3.0"])
+      s.add_dependency(%q<facets>.freeze, ["~> 3.1.0"])
+      s.add_dependency(%q<os>.freeze, ["~> 1.0.0"])
+      s.add_dependency(%q<super_module>.freeze, ["~> 1.4.0"])
+      s.add_dependency(%q<nested_inherited_jruby_include_package>.freeze, ["~> 0.3.0"])
+      s.add_dependency(%q<rake>.freeze, [">= 0"])
       s.add_dependency(%q<rspec-mocks>.freeze, ["~> 3.5.0"])
       s.add_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
       s.add_dependency(%q<rdoc>.freeze, ["~> 2.3.0"])
@@ -120,10 +123,11 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<puts_debuggerer>.freeze, ["~> 0.8.1"])
     end
   else
-    s.add_dependency(%q<facets>.freeze, ["= 3.1.0"])
-    s.add_dependency(%q<os>.freeze, ["= 1.0.0"])
-    s.add_dependency(%q<super_module>.freeze, ["= 1.4.0"])
-    s.add_dependency(%q<nested_inherited_jruby_include_package>.freeze, ["= 0.3.0"])
+    s.add_dependency(%q<facets>.freeze, ["~> 3.1.0"])
+    s.add_dependency(%q<os>.freeze, ["~> 1.0.0"])
+    s.add_dependency(%q<super_module>.freeze, ["~> 1.4.0"])
+    s.add_dependency(%q<nested_inherited_jruby_include_package>.freeze, ["~> 0.3.0"])
+    s.add_dependency(%q<rake>.freeze, [">= 0"])
     s.add_dependency(%q<rspec-mocks>.freeze, ["~> 3.5.0"])
     s.add_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
     s.add_dependency(%q<rdoc>.freeze, ["~> 2.3.0"])
