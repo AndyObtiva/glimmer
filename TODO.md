@@ -4,7 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Alert user when they use a property on a custom widget that is a reserved glimmer name (document at least)
 - DSL syntax for MessageBox
 message_box {
   text 'Red Label'

@@ -1188,6 +1188,36 @@ Last but not least, these are the available hooks:
 - `before_body`: takes a block that executes in the custom widget instance scope before calling `body`. Useful for initializing variables to later use in `body`
 - `after_body`: takes a block that executes in the custom widget instance scope after calling `body`. Useful for setting up observers on widgets built in `body` (set in instance variables) and linking to other shells.
 
+#### Gotcha
+
+Beware of defining a custom attribute that is a common SWT widget property name.
+For example, if you define `text=` and `text` methods to accept a custom text and then later you write this body:
+
+```ruby
+# ...
+def text
+  # ...
+end
+
+def text=(value)
+  # ...
+end
+
+body {
+  composite {
+    label {
+      text "Hello"
+    }
+    label {
+      text "World"
+    }
+  }
+}
+# ...
+```
+
+The `text` method invoked in the custom widget body will call the one you defined above it. To avoid this gotcha, simply name the text property above something else, like `custom_text`.
+
 ### Custom Shells
 
 Custom shells are a kind of custom widgets that have shells only as the body root. They can be self-contained applications that may be opened and hidden/closed independently of the main app.
