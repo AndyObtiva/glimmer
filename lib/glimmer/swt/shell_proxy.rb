@@ -52,7 +52,6 @@ module Glimmer
           center
           @swt_widget.open
           start_event_loop
-          @display.dispose # TODO consider if it's more performant to reuse instead of disposing
         end
       end
       alias show open

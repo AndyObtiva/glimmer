@@ -186,27 +186,6 @@ module GlimmerSpec
       expect(person3.name).to eq("Sean McFaun")
     end
 
-    it "tests text widget data binding fixnum property" do
-      person = Person.new
-      person.age = 15
-
-      @target = shell {
-        composite {
-          @text = text {
-            text bind(person, :age, :fixnum)
-          }
-        }
-      }
-
-      expect(@text.swt_widget.getText).to eq("15")
-
-      person.age = 27
-      expect(@text.swt_widget.getText).to eq("27")
-
-      @text.swt_widget.setText("30")
-      expect(person.age).to eq(30)
-    end
-
     it "tests label widget data binding string property" do
       person = Person.new(839728)
       person.name = "Bruce Ting"
@@ -251,14 +230,14 @@ module GlimmerSpec
       expect(@label.swt_widget.getText).to eq("MacFly, Martin")
     end
 
-    it "tests label widget computed value data binding fixnum property" do
+    it "tests label widget computed value data binding integer property" do
       person = PersonWithComputedValues.new
       person.year_of_birth = Time.now.year - 40 #TODO TimeCop gem ?
 
       @target = shell {
         composite {
           @label = label {
-            text bind(person, :age, :fixnum, computed_by: :year_of_birth)
+            text bind(person, :age, on_write: :to_i, computed_by: :year_of_birth)
           }
         }
       }
@@ -313,7 +292,7 @@ module GlimmerSpec
       expect(person.adult).to eq(true)
     end
 
-    it "tests spinner widget data binding fixnum property" do
+    it "tests spinner widget data binding integer property" do
       person = Person.new
       person.age = 17
 
@@ -439,9 +418,6 @@ module GlimmerSpec
           @label = label {
             text bind(person, :name)
           }
-          @text = text {
-            text bind(person, :age, :fixnum)
-          }
           @check_box = button(:check) {
             selection bind(person, :adult)
           }
@@ -449,20 +425,13 @@ module GlimmerSpec
       }
 
       expect(@label.swt_widget.getText).to eq("Nancy")
-      expect(@text.swt_widget.getText).to eq("15")
       expect(@check_box.swt_widget.getSelection).to eq(true)
 
       person.name = "Drew"
       expect(@label.swt_widget.getText).to eq("Drew")
 
-      person.age = 27
-      expect(@text.swt_widget.getText).to eq("27")
-
       person.adult = false
       expect(@check_box.swt_widget.getSelection).to eq(false)
-
-      @text.swt_widget.setText("30")
-      expect(person.age).to eq(30)
 
       @check_box.swt_widget.setSelection(true)
       @check_box.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)

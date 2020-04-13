@@ -55,7 +55,7 @@ class HelloComputed
         }
         label {text "Age: "}
         label {
-          text bind(@contact, :age, :fixnum, computed_by: [:year_of_birth])
+          text bind(@contact, :age, on_write: :to_i, computed_by: [:year_of_birth])
           layout_data {
             horizontalAlignment :fill
             grabExcessHorizontalSpace true

@@ -7,23 +7,15 @@ module Glimmer
       include Observable
       include Observer
 
-      attr_reader :property_type, :binding_options
+      attr_reader :binding_options
 
-      PROPERTY_TYPE_CONVERTERS = {
-        :undefined => lambda { |value| value },
-        :fixnum => lambda { |value| value.to_i },
-        :array => lambda { |value| value.to_a }
-      }
-
-      def initialize(base_model, property_name_expression, property_type = :undefined, binding_options = nil)
-        property_type = :undefined if property_type.nil?
+      def initialize(base_model, property_name_expression, binding_options = nil)
         @base_model = base_model
         @property_name_expression = property_name_expression
-        @property_type = property_type
         @binding_options = binding_options || {}
         if computed?
           @computed_model_bindings = computed_by.map do |computed_by_property_expression|
-            self.class.new(base_model, computed_by_property_expression, :undefined, computed_binding_options)
+            self.class.new(base_model, computed_by_property_expression)
           end
         end
       end
@@ -57,6 +49,30 @@ module Glimmer
 
       def property_name
         nested_property? ? nested_property_name : property_name_expression
+      end
+
+      def convert_on_read(value)
+        apply_converter(@binding_options[:on_read], value)
+      end
+
+      def convert_on_write(value)
+        apply_converter(@binding_options[:on_write], value)
+      end
+
+      def apply_converter(converter, value)
+        if converter.nil?
+          value
+        elsif converter.is_a?(String) || converter.is_a?(Symbol)
+          if value.respond_to?(converter)
+            value.send(converter)
+          else
+            raise Glimmer::Error, "Unsupported bind converter: #{converter.inspect}"
+          end
+        elsif converter.respond_to?(:call, value)
+          converter.call(value)
+        else
+          raise Glimmer::Error, "Unsupported bind converter: #{converter.inspect}"
+        end
       end
 
       # All nested property names
@@ -95,10 +111,6 @@ module Glimmer
         [@binding_options[:computed_by]].flatten.compact
       end
 
-      def computed_binding_options
-        @binding_options.reject {|k,v| k == :computed_by}
-      end
-
       def nested_property_observers_for(observer)
         @nested_property_observers_collection ||= {}
         unless @nested_property_observers_collection.has_key?(observer)
@@ -121,7 +133,10 @@ module Glimmer
         elsif nested_property?
           add_nested_observers(observer)
         else
-          observer_registration = observer.observe(model, property_name)
+          model_binding_observer = Observer.proc do |new_value|
+            observer.call(evaluate_property)
+          end
+          observer_registration = model_binding_observer.observe(model, property_name)
           my_registration = observer.registration_for(self)
           observer.add_dependent(my_registration => observer_registration)
         end
@@ -183,7 +198,7 @@ module Glimmer
 
       def call(value)
         return if model.nil?
-        converted_value = PROPERTY_TYPE_CONVERTERS[@property_type].call(value)
+        converted_value = value
         invoke_property_writer(model, "#{property_name}=", converted_value) unless evaluate_property == converted_value
       end
 
@@ -200,21 +215,24 @@ module Glimmer
       end
 
       def property_indexed?(property_expression)
-        property_expression.start_with?('[')
+        property_expression.to_s.start_with?('[')
       end
 
       def invoke_property_reader(object, property_expression)
+        value = nil
         if property_indexed?(property_expression)
           property_method = '[]'
           property_argument = property_expression[1...-1]
           property_argument = property_argument.to_i if property_argument.match(/\d+/)
-          object.send(property_method, property_argument)
+          value = object.send(property_method, property_argument)
         else
-          object.send(property_expression)
+          value = object.send(property_expression)
         end
+        convert_on_read(value)
       end
 
       def invoke_property_writer(object, property_expression, value)
+        value = convert_on_write(value)
         if property_indexed?(property_expression)
           property_method = '[]='
           property_argument = property_expression[1...-2]

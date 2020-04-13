@@ -11,7 +11,6 @@ module Glimmer
       def can_interpret?(parent, keyword, *args, &block)
         (
           keyword == 'bind' and
-            block.nil? and
             widget?(parent) and
             (
               (
@@ -21,23 +20,16 @@ module Glimmer
                 (
                   (args.size == 3) and
                     textual?(args[1]) and
-                    (textual?(args[2]) or args[2].is_a?(Hash))
-                ) ||
-                (
-                  (args.size == 4) and
-                    textual?(args[1]) and
-                    textual?(args[2]) and
-                    (args[3].is_a?(Hash))
+                    (args[2].is_a?(Hash))
                 )
             )
         )
       end
 
       def interpret(parent, keyword, *args, &block)
-        property_type = args[2] if (args.size == 3) and !args[2].is_a?(Hash)
-        binding_options = args[2] if args[2].is_a?(Hash)
-        binding_options = args[3] if args[3].is_a?(Hash)
-        DataBinding::ModelBinding.new(args[0], args[1].to_s, property_type, binding_options)
+        binding_options = args[2] || {}
+        binding_options[:on_read] = binding_options.delete(:on_read) || binding_options.delete('on_read') || block
+        DataBinding::ModelBinding.new(args[0], args[1].to_s, binding_options)
       end
     end
   end

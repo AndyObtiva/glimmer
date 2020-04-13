@@ -57,7 +57,7 @@ module Glimmer
     Glimmer.logger.debug "keyword: " + method_symbol.to_s + " and args: " + args.to_s
     Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
   rescue InvalidKeywordError => e
-    if !method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
+    if !method_symbol.to_s.match(REGEX_METHODS_EXCLUDED) && !method_symbol.to_s.start_with?('on_')
       Glimmer.logger.error e.message
     end
     Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"

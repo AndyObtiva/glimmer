@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.5.3
+
+- Upgraded rake dependency to 10.1.0 to avoid conflicting dependencies
+- Stopped disposing display upon closing a shell to allow reuse
+- Support custom data-binding property converters
+
 ## 0.5.2
 
 - Support publishing a Glimmer app for the Mac (package as dmg file)

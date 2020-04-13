@@ -71,7 +71,7 @@ module Glimmer
           widget_custom_attribute[:setter][:invoker].call(@swt_widget, args)
         else
           apply_property_type_converters(attribute_name, args)
-          @swt_widget.send(attribute_setter(attribute_name), *args)
+          @swt_widget.send(attribute_setter(attribute_name), *args) unless @swt_widget.send(attribute_getter(attribute_name)) == args.first
         end
       end
 
@@ -325,6 +325,7 @@ module Glimmer
             value
           end
         end
+        # TODO consider detecting type on widget method and automatically invoking right converter (e.g. :to_s for String, :to_i for Integer)
         @property_type_converters ||= {
           :background => color_converter,
           :background_image => proc do |value|

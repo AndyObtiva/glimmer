@@ -4,6 +4,11 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
+- Automatic repacking of parent components when layout or layout data is updated with data-binding
+
+## Soon
+
+- Pre-generate bin/launcher.rb when packaging
 - DSL syntax for MessageBox
 message_box {
   text 'Red Label'
@@ -25,8 +30,14 @@ message_box {
 ## Feature Suggestions
 - Glimmer Wizard: provide a standard structure for building a Glimmer wizard (multi-step/multi-screen process)
 - bind_collection: an iterator that enables spawning widgets based on a variable collection (e.g. `bind_collection('user.addresses') { |address| address_widget {...} }` spawns 3 `AddressWidget`s if `user.addresses` is set with 3 addresses; and replaces with 2 `AddressWidget`s if `user.addresses` is reset with 2 addresses only). Needs further thought on naming and functionality.
-Another idea:
-bind(model, 'addresses').each { |address|
+Another idea in which each is triggered upon every update to bind's content:
+bind(model, 'username').content { |username|
+  label {
+    text username
+  }
+}
+
+bind(model, 'addresses').each.content { |address|
   label {
     bind(address, :street)
   }
@@ -71,6 +82,10 @@ bind(model, 'addresses').each { |address|
 - Support publishing a Glimmer app for Windows (exe file)
 - Support publishing a Glimmer app for Linux
 (https://github.com/jruby/jruby/wiki/StandaloneJarsAndClasses - https://github.com/jruby/warbler - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/packager.html )
+- Support question mark ending data-binding properties
+- Automatically repack parent when data-binding layout or layout data properties have changes
+- consider detecting type on widget property method and automatically invoking right converter (e.g. :to_s for String text property, :to_i for Integer property, etc...)
+
 ## Documentation Tasks
 - Document custom widget custom properties/observers
 - Document how to build 3rd party library custom widgets and custom shells for distribution and consumption
@@ -81,3 +96,4 @@ bind(model, 'addresses').each { |address|
 - Make a video documenting how to build Tic Tac Toe (no AI) step by step
 - Document on_ SWT event listeners for events declared on SWT constant like show and hide
 - Document Glimmer DSL in full detail by generating translated documentation from SWT API (write a program) and adding to it
+- Document how to use Glimmer as the View layer only of a Java app rebuilding tic tac toe following that kind of application architecture.

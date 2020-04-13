@@ -58,7 +58,7 @@
 #     }
 #
 #     [@label,     :text]      <=> [person, :name]
-#     [@text,      :text]      <=> [person, :age, :fixnum]
+#     [@text,      :text]      <=> [person, :age, on_write: :to_i]
 #     [@check_box, :selection] <=> [person, :adult]
 #
 #     expect(@label.swt_widget.getText).to eq( "Nancy")
