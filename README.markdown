@@ -1517,6 +1517,12 @@ Glimmer simplifies the process for general packaging on the Mac by providing a r
 
 - Create `Rakefile` in your app root directory
 - Add the following line to it: `require 'glimmer/rake_task'`
+- Create a Ruby script under bin to launch your application (e.g. `bin/math_bowling`) with the following content (replacing `'../app/my_application.rb'` with your application path):
+```ruby
+require 'glimmer/launcher'
+require Glimmer::Launcher.swt_jar_file
+require_relative '../app/my_application.rb'
+```
 
 Now, you can run the following command to package your app into a Mac DMG file (using both Warbler and javapackager):
 ```
