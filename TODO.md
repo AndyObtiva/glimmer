@@ -6,6 +6,7 @@ Here is a list of tasks to do (please delete once done):
 
 - Add command line glimmer logger level option
 - Provide girb option to run without including Glimmer. Useful when testing an application that is not a "hello, world!" sort of example
+- Pre-generate bin/launcher.rb when packaging
 - Support publishing a Glimmer app for Windows (exe file)
 - Support publishing a Glimmer app for Linux
 (https://github.com/jruby/jruby/wiki/StandaloneJarsAndClasses - https://github.com/jruby/warbler - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/packager.html )
@@ -27,7 +28,6 @@ message_box {
 - Scaffold a custom shell
 - Implement a Graphical Glimmer sample launcher
 - Add Glossary
-- Pre-generate bin/launcher.rb when packaging
 
 
 ## Feature Suggestions

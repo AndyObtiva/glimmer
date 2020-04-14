@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.4
+
+- Support custom data-binding property converters for nested/index data-binding
+
 ## 0.5.3
 
 - Upgraded rake dependency to 10.1.0 to avoid conflicting dependencies

@@ -203,7 +203,10 @@ module Glimmer
       end
 
       def evaluate_property
-        invoke_property_reader(model, property_name) unless model.nil?
+        unless model.nil?
+          value = invoke_property_reader(model, property_name)
+          convert_on_read(value)        
+        end
       end
 
       def evaluate_options_property
@@ -219,16 +222,14 @@ module Glimmer
       end
 
       def invoke_property_reader(object, property_expression)
-        value = nil
         if property_indexed?(property_expression)
           property_method = '[]'
           property_argument = property_expression[1...-1]
           property_argument = property_argument.to_i if property_argument.match(/\d+/)
-          value = object.send(property_method, property_argument)
+          object.send(property_method, property_argument)
         else
-          value = object.send(property_expression)
+          object.send(property_expression)
         end
-        convert_on_read(value)
       end
 
       def invoke_property_writer(object, property_expression, value)
