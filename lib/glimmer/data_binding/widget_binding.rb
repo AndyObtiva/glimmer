@@ -15,8 +15,13 @@ module Glimmer
         @property = property
         @translator = translator || proc {|value| value}
 
-        @widget.on_widget_disposed do |dispose_event|
-          unregister_all_observables
+        begin
+          @widget.on_widget_disposed do |dispose_event|
+            unregister_all_observables
+          end
+        rescue => e
+          # No Op
+          Glimmer.logger&.debug("#{e.message}\n#{e.backtrace.join("\n")}")
         end
       end
       def call(value)

@@ -16,7 +16,7 @@ module Glimmer
       end
 
       def interpret(parent, keyword, *args, &block)
-        Glimmer.logger.debug "widget styles are: " + args.inspect
+        Glimmer.logger&.debug "widget styles are: " + args.inspect
         SWT::WidgetProxy.new(keyword, parent, args)
       end
     end

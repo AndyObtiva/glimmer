@@ -76,7 +76,7 @@ module Glimmer
         end
       rescue => e
         # ignore writing if no property writer exists
-        Glimmer.logger.debug "No need to observe property writer: #{property_writer_name}\n#{e.message}\n#{e.backtrace.join("\n")}"
+        Glimmer.logger&.debug "No need to observe property writer: #{property_writer_name}\n#{e.message}\n#{e.backtrace.join("\n")}"
       end
 
       def unregister_dependent_observers(property_name, old_value)

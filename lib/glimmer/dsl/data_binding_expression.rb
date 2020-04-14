@@ -14,8 +14,7 @@ module Glimmer
     class DataBindingExpression < Expression
       def can_interpret?(parent, keyword, *args, &block)
         args.size == 1 and
-        args[0].is_a?(DataBinding::ModelBinding) and
-        widget?(parent)
+        args[0].is_a?(DataBinding::ModelBinding)
       end
 
       def interpret(parent, keyword, *args, &block)
@@ -26,7 +25,7 @@ module Glimmer
         #TODO make this options observer dependent and all similar observers in widget specific data binding handlers
         widget_binding.observe(model_binding)
         # TODO simplify this logic and put it where it belongs
-        parent.add_observer(model_binding, keyword)
+        parent.add_observer(model_binding, keyword) if parent.respond_to?(:add_observer, [model_binding, keyword])
       end
     end
   end

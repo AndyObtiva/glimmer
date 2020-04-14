@@ -4,9 +4,11 @@ require 'bundler'
 require 'puts_debuggerer' unless ENV['puts_debuggerer'] == 'false'
 require_relative '../lib/glimmer'
 if ENV['GLIMMER_DEBUG'].to_s.downcase == 'true'
-  Glimmer.logger.level = Logger::DEBUG
+  Glimmer.enable_logging
+  Glimmer.logger&.level = Logger::DEBUG
 else
-  Glimmer.logger.level = Logger::UNKNOWN #disable logging (used case by case)
+  Glimmer.enable_logging
+  Glimmer.logger&.level = Logger::UNKNOWN #disable logging (used case by case)
 end
 begin
   Bundler.require(:default, :development)

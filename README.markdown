@@ -587,6 +587,8 @@ composite {
 # ...
 ```
 
+If you data-bind any layout properties, when they change, the shell containing their widget re-packs its children (calls `#pack` method automatically) to ensure proper relayout of all widgets.
+
 Alternatively, a layout may be constructed by following the SWT API for the layout object. For example, a `RowLayout` can be constructed by passing it an SWT style constant (Glimmer automatically accepts symbols (e.g. `:horizontal`) for SWT style arguments like `SWT::HORIZONTAL`.)
 
 ```ruby
@@ -657,9 +659,9 @@ Check out the samples directory for more advanced examples of layouts in Glimmer
 
 **Defaults**:
 
-Glimmer composites always come with grid_layout by default, but you can still specify explicitly if you'd like to set specific properties on it.
+Glimmer composites always come with `grid_layout` by default, but you can still specify explicitly if you'd like to set specific properties on it.
 
-Glimmer shell always comes with fill_layout having :horizontal type.
+Glimmer shell always comes with `fill_layout` having `:horizontal` type.
 
 This is a great guide for learning more about SWT layouts:
 
@@ -726,6 +728,8 @@ composite {
 # ...
 ```
 
+If you data-bind any layout data properties, when they change, the shell containing their widget re-packs its children (calls `#pack` method automatically) to ensure proper relayout of all widgets.
+
 **NOTE**: Layout data must never be reused between widgets. Always specify or clone again for every widget.
 
 This is a great guide for learning more about SWT layouts:
@@ -741,25 +745,43 @@ https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/
 Data-binding is done with `bind` command following widget property to bind and taking model and bindable attribute as arguments.
 
 Data-binding examples:
-- `text bind(contact, :first_name)`
-- `text bind(contact, 'address.street')`
-- `text bind(contact, 'addresses[1].street')`
-- `text bind(contact, :age, computed_by: :date_of_birth)`
-- `text bind(contact, :name, computed_by: [:first_name, :last_name])`
-- `text bind(contact, 'profiles[0].name', computed_by: ['profiles[0].first_name', 'profiles[0].last_name'])`
 
-The 1st example binds the text property of a widget like `label` to the first name of a contact model.
+`text bind(contact, :first_name)`
 
-The 2nd example binds the text property of a widget like `label` to the nested street of
+This example binds the text property of a widget like `label` to the first name of a contact model.
+
+`text bind(contact, 'address.street')`
+
+This example binds the text property of a widget like `label` to the nested street of
 the address of a contact. This is called nested property data binding.
 
-The 3rd example binds the text property of a widget like `label` to the nested indexed address street of a contact. This is called nested indexed property data binding.
+`text bind(contact, 'address.street', on_read: :upcase, on_write: :downcase)`
 
-The 4th example demonstrates computed value data binding whereby the value of `age` depends on changes to `date_of_birth`.
+This example adds on the one above it by specifying converters on read and write of the model property, like in the case of a `text` widget. The text widget will then displays the street upper case and the model will store it lower case. When specifying converters, read and write operations must be symmetric (to avoid an infinite update loop between the widget and the model since the widget checks first if value changed before updating)
 
-The 5th example demonstrates computed value data binding whereby the value of `name` depends on changes to both `first_name` and `last_name`.
+`text bind(contact, 'address.street', on_read: lambda { |s| s[0..10] })`
 
-The 6th example demonstrates nested indexed computed value data binding whereby the value of `profiles[0].name` depends on changes to both nested `profiles[0].first_name` and `profiles[0].last_name`.
+This example also specifies a converter on read of the model property, but via a lambda, which truncates the street to 10 characters only. Note that the read and write operations are assymetric. This is fine in the case of formatting data for a read-only widget like `label`
+
+`text bind(contact, 'address.street') { |s| s[0..10] }`
+
+This is a block shortcut version of the syntax above it. It facilitates formatting model data for read-only widgets since it's a very common view concern. It also saves the developer from having to create a separate formatter/presenter for the model when the view can be an active view that handles common simple formatting operations directly.
+
+`text bind(contact, 'addresses[1].street')`
+
+This example binds the text property of a widget like `label` to the nested indexed address street of a contact. This is called nested indexed property data binding.
+
+`text bind(contact, :age, computed_by: :date_of_birth)`
+
+This example demonstrates computed value data binding whereby the value of `age` depends on changes to `date_of_birth`.
+
+`text bind(contact, :name, computed_by: [:first_name, :last_name])`
+
+This example demonstrates computed value data binding whereby the value of `name` depends on changes to both `first_name` and `last_name`.
+
+`text bind(contact, 'profiles[0].name', computed_by: ['profiles[0].first_name', 'profiles[0].last_name'])`
+
+This example demonstrates nested indexed computed value data binding whereby the value of `profiles[0].name` depends on changes to both nested `profiles[0].first_name` and `profiles[0].last_name`.
 
 Example from [samples/hello_combo.rb](samples/hello_combo.rb) sample (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
@@ -1462,7 +1484,7 @@ Glimmer comes with a Ruby Logger accessible via `Glimmer.logger`
 Its level of logging defaults to `Logger::WARN`
 It may be configured to show a different level of logging as follows:
 ```ruby
-Glimmer.logger.level = Logger::DEBUG
+Glimmer.logger&.level = Logger::DEBUG
 ```
 This results in more verbose debugging log to `STDOUT`, which is helpful in troubleshooting Glimmer DSL syntax when needed.
 

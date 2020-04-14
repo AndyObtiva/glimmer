@@ -17,7 +17,7 @@ module Glimmer
           if parent.swt_widget.is_a?(TabFolder)
             return true
           else
-            Glimmer.logger.error "tab_item widget may only be used directly under a tab_folder widget!"
+            Glimmer.logger&.error "tab_item widget may only be used directly under a tab_folder widget!"
           end
         end
         false

@@ -18,7 +18,7 @@ module Glimmer
 
       def interpret(parent, keyword, *args, &block)
         options = args.last.is_a?(Hash) ? args.pop : {}
-        Glimmer.logger.debug "Custom widget #{keyword} styles are: [" + args.inspect + "] and options are: #{options}"
+        Glimmer.logger&.debug "Custom widget #{keyword} styles are: [" + args.inspect + "] and options are: #{options}"
         UI::CustomWidget.for(keyword).new(parent, *args, options, &block)
       end
 

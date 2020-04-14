@@ -23,9 +23,9 @@ module Glimmer
       # Otherwise, it forwards to the next handler configured via `#next=` method
       # If there is no handler next, then it raises an error
       def handle(parent, keyword, *args, &block)
-        Glimmer.logger.debug "Attempting to handle #{keyword}(#{args}) with #{@expression.class.name.split(":").last}"
+        Glimmer.logger&.debug "Attempting to handle #{keyword}(#{args}) with #{@expression.class.name.split(":").last}"
         if @expression.can_interpret?(parent, keyword, *args, &block)
-          Glimmer.logger.debug "#{@expression.class.name} will handle expression keyword #{keyword} with arguments #{args}"
+          Glimmer.logger&.debug "#{@expression.class.name} will handle expression keyword #{keyword} with arguments #{args}"
           return @expression
         elsif @next_expression_handler
           return @next_expression_handler.handle(parent, keyword, *args, &block)
@@ -34,7 +34,7 @@ module Glimmer
           message = "Glimmer keyword #{keyword} with args #{args} cannot be handled"
           message += " inside parent #{parent.inspect}" if parent
           message += "! Check the validity of the code."
-          # Glimmer.logger.error message
+          # Glimmer.logger&.error message
           raise InvalidKeywordError, message
         end
       end

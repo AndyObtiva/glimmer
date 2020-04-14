@@ -35,7 +35,7 @@ module Glimmer
                 begin
                   result.const_get(namespace)
                 rescue => e
-                  # Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"
+                  # Glimmer.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
                   result
                 end
               end
@@ -45,8 +45,8 @@ module Glimmer
           raise "#{underscored_custom_widget_name} has no custom widget class!" if custom_widget_class.nil?
           custom_widget_class if custom_widget_class.ancestors.include?(Glimmer::UI::CustomWidget)
         rescue => e
-          Glimmer.logger.debug e.message
-          Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"
+          Glimmer.logger&.debug e.message
+          Glimmer.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
           nil
         end
 

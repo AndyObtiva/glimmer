@@ -11,7 +11,6 @@ module Glimmer
       def can_interpret?(parent, keyword, *args, &block)
         (
           keyword == 'bind' and
-            widget?(parent) and
             (
               (
                 (args.size == 2) and

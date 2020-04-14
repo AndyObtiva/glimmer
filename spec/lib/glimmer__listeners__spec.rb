@@ -104,6 +104,7 @@ module GlimmerSpec
         @button.swt_widget.setVisible(true)
         expect(@button_shown).to eq(true)
       end
+
       it "fails in adding button SWT.invalid event listener" do
         person = Person.new
         person.name = "Bruce Ting"

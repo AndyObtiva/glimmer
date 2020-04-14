@@ -129,17 +129,17 @@ module Glimmer
         swt_widget_name = underscored_widget_name.camelcase(:upper)
         swt_widget_class = eval(swt_widget_name)
         unless swt_widget_class.ancestors.include?(org.eclipse.swt.widgets.Widget)
-          Glimmer.logger.debug("Class #{swt_widget_class} matching #{underscored_widget_name} is not a subclass of org.eclipse.swt.widgets.Widget")
+          Glimmer.logger&.debug("Class #{swt_widget_class} matching #{underscored_widget_name} is not a subclass of org.eclipse.swt.widgets.Widget")
           return nil
         end
         swt_widget_class
       rescue NameError => e
-        Glimmer.logger.debug e.message
-        # Glimmer.logger.debug("#{e.message}\n#{e.backtrace.join("\n")}")
+        Glimmer.logger&.debug e.message
+        # Glimmer.logger&.debug("#{e.message}\n#{e.backtrace.join("\n")}")
         nil
       rescue => e
-        Glimmer.logger.debug e.message
-        # Glimmer.logger.debug("#{e.message}\n#{e.backtrace.join("\n")}")
+        Glimmer.logger&.debug e.message
+        # Glimmer.logger&.debug("#{e.message}\n#{e.backtrace.join("\n")}")
         nil
       end
 

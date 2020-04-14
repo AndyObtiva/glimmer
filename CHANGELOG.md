@@ -5,6 +5,7 @@
 - Upgraded rake dependency to 10.1.0 to avoid conflicting dependencies
 - Stopped disposing display upon closing a shell to allow reuse
 - Support custom data-binding property converters
+- Automatic re-packing of shell when layout or layout data is updated with data-binding
 
 ## 0.5.2
 

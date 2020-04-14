@@ -42,10 +42,14 @@ module Glimmer
 
     # Returns Glimmer logger (standard Ruby logger)
     def logger
-      unless defined? @@logger
-        @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}
-      end
-      @@logger
+      # unless defined? @@logger
+      #   @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}
+      # end
+      @@logger if defined? @@logger
+    end
+
+    def enable_logging
+      @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}
     end
   end
 
@@ -54,13 +58,13 @@ module Glimmer
     if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
       raise InvalidKeywordError, "Glimmer excluded keyword: #{method_symbol}"
     end
-    Glimmer.logger.debug "keyword: " + method_symbol.to_s + " and args: " + args.to_s
+    Glimmer.logger&.debug "keyword: " + method_symbol.to_s + " and args: " + args.to_s
     Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
   rescue InvalidKeywordError => e
-    if !method_symbol.to_s.match(REGEX_METHODS_EXCLUDED) && !method_symbol.to_s.start_with?('on_')
-      Glimmer.logger.error e.message
+    if !method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
+      Glimmer.logger&.error e.message
     end
-    Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"
+    Glimmer.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
     super(method_symbol, *args, &block)
   end
 end

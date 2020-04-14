@@ -34,8 +34,8 @@ module Glimmer
           end
           swt_layout_class
         rescue => e
-          Glimmer.logger.debug e.message
-          # Glimmer.logger.debug "#{e.message}\n#{e.backtrace.join("\n")}"
+          Glimmer.logger&.debug e.message
+          # Glimmer.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
           raise e
         end
       end
@@ -54,7 +54,15 @@ module Glimmer
 
       def set_attribute(attribute_name, *args)
         apply_property_type_converters(attribute_name, args)
-        @swt_layout.send(attribute_setter(attribute_name), *args)
+        if args.first != @swt_layout.send(attribute_getter(attribute_name))
+          @swt_layout.send(attribute_setter(attribute_name), *args)
+          @widget_proxy.swt_widget.getShell.pack
+          # TODO see if pack(true) is needed
+        end
+      end
+
+      def get_attribute(attribute_name)
+        @swt_layout.send(attribute_getter(attribute_name))
       end
 
       def apply_property_type_converters(attribute_name, args)
@@ -65,6 +73,10 @@ module Glimmer
 
       def attribute_setter(attribute_name)
         "#{attribute_name.to_s.camelcase(:lower)}="
+      end
+
+      def attribute_getter(attribute_name)
+        "#{attribute_name.to_s.camelcase(:lower)}"
       end
     end
   end

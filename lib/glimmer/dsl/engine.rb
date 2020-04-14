@@ -27,7 +27,7 @@ module Glimmer
         # TODO rename to dynamic_expressions in the future when supporting static expressions
         def dynamic_expressions=(expression_names)
           @dynamic_expression_chain_of_responsibility = expression_names.reverse.reduce(nil) do |last_expresion_handler, expression_name|
-            Glimmer.logger.debug "Loading #{expression_class_name(expression_name)}..."
+            Glimmer.logger&.debug "Loading #{expression_class_name(expression_name)}..."
             expression = expression_class(expression_name).new
             expression_handler = ExpressionHandler.new(expression)
             expression_handler.next = last_expresion_handler if last_expresion_handler

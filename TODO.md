@@ -4,20 +4,22 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Automatic repacking of parent components when layout or layout data is updated with data-binding
+- Add command line glimmer logger level option
+- Provide girb option to run without including Glimmer. Useful when testing an application that is not a "hello, world!" sort of example
+- Support publishing a Glimmer app for Windows (exe file)
+- Support publishing a Glimmer app for Linux
+(https://github.com/jruby/jruby/wiki/StandaloneJarsAndClasses - https://github.com/jruby/warbler - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/packager.html )
 
 ## Soon
 
-- Pre-generate bin/launcher.rb when packaging
 - DSL syntax for MessageBox
 message_box {
   text 'Red Label'
   message 'This is a red label'
 }.open
-- Make WidgetProxys and custom widgets proxy method calls to wrapped widget
+- Make WidgetProxy and custom widgets proxy method calls to wrapped widget
 - Correct attribute/property naming (unify as attributes)
 - Recapture all of readme's sample screenshots on Mac, Windows, and Linux (except the general widget listing for now)
-- Provide girb option to run without including Glimmer. Useful when testing an application that is not a "hello, world!" sort of example
 - Image custom widget similar to video, and supporting gif
 - Scaffold a Glimmer app: provide a standard structure for building a Glimmer app (models, views, and assets [images, videos, sounds])
 - Scaffold a View/View-Model pair
@@ -25,6 +27,7 @@ message_box {
 - Scaffold a custom shell
 - Implement a Graphical Glimmer sample launcher
 - Add Glossary
+- Pre-generate bin/launcher.rb when packaging
 
 
 ## Feature Suggestions
@@ -48,7 +51,6 @@ bind(model, 'addresses').each.content { |address|
 - Automatic relayout of "glimmer components" when disposing one or as an option
 - Consider easy rerendering support for Glimmer upon processing events
 - Support re-rendering when updating a layout file for development.
-- Provide friendly error messages for all failures
 
 ## Technical Tasks
 
@@ -58,7 +60,6 @@ bind(model, 'addresses').each.content { |address|
 - Consider need for a startup progress dialog (with Glimmer branding)
 - Externalize constants to make easily configurable
 - Extract ListenerParent into its own file from WidgetListenerCommandHandler
-- Enhance XML DSL support (special characters, CDATA, escaped characters (#, {, }, .))
 - Build a sample demonstrating how to use Glimmer from Java only for the View layer in a desktop MVC SWT app
 - Support data binding translator option via a block
 - Simplify API for async_exec and sync_exec (putting directly on Glimmer)
@@ -79,9 +80,6 @@ bind(model, 'addresses').each.content { |address|
 - add a `#shell` method to WidgetProxy and custom widget classes to get ShellProxy containing them (or custom shell [think about the implications of this one])
 - Support proper `dispose` of widgets across the board (already support garbage collecting observers upon dispose... check if anything else is missing, like nested widget disposal)
 - Support reading Bundler Gemfile in glimmer command if available
-- Support publishing a Glimmer app for Windows (exe file)
-- Support publishing a Glimmer app for Linux
-(https://github.com/jruby/jruby/wiki/StandaloneJarsAndClasses - https://github.com/jruby/warbler - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/packager.html )
 - Support question mark ending data-binding properties
 - Automatically repack parent when data-binding layout or layout data properties have changes
 - consider detecting type on widget property method and automatically invoking right converter (e.g. :to_s for String text property, :to_i for Integer property, etc...)
