@@ -11,8 +11,6 @@ module Glimmer
     class ColorProxy
       include_package 'org.eclipse.swt.graphics'
 
-      attr_reader :swt_color
-
       # Initializes a proxy for an SWT Color object
       #
       # Takes a standard color single argument, rgba 3 args, or rgba 4 args
@@ -29,19 +27,26 @@ module Glimmer
       # rgba is 4 arguments representing Red, Green, Blue, and Alpha numeric values
       #
       def initialize(*args)
-        case args.size
-        when 1
-          if args.first.is_a?(String) || args.first.is_a?(Symbol)
-            standard_color = args.first
-            standard_color = "color_#{standard_color}".to_sym unless standard_color.to_s.downcase.include?('color_')
-            @swt_color = DisplayProxy.instance.swt_display.getSystemColor(SWTProxy[standard_color])
-          else
-            @swt_color = args.first
+        @args = args
+      end
+
+      def swt_color
+        unless @swt_color
+          case @args.size
+          when 1
+            if @args.first.is_a?(String) || @args.first.is_a?(Symbol)
+              standard_color = @args.first
+              standard_color = "color_#{standard_color}".to_sym unless standard_color.to_s.downcase.include?('color_')
+              @swt_color = DisplayProxy.instance.swt_display.getSystemColor(SWTProxy[standard_color])
+            else
+              @swt_color = @args.first
+            end
+          when 3..4
+            red, green, blue, alpha = @args
+            @swt_color = Color.new(DisplayProxy.instance.swt_display, *[red, green, blue, alpha].compact)
           end
-        when 3..4
-          red, green, blue, alpha = args
-          @swt_color = Color.new(DisplayProxy.instance.swt_display, *[red, green, blue, alpha].compact)
         end
+        @swt_color
       end
     end
   end

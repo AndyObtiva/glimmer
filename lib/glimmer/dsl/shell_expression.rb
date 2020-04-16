@@ -8,6 +8,7 @@ module Glimmer
       include ParentExpression
 
       def interpret(parent, keyword, *args, &block)
+        args = [parent] + args unless parent.nil?
         SWT::ShellProxy.send(:new, *args)
       end
     end

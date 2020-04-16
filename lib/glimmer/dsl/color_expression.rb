@@ -2,8 +2,7 @@ require 'glimmer/dsl/expression'
 require 'glimmer/swt/color_proxy'
 require 'glimmer/swt/display_proxy'
 
-# TODO consider turning static keywords like rgba/rgb into methods
-# Support color keyword
+# TODO consider turning in static expressions rgb/rgba/color
 
 module Glimmer
   module DSL
@@ -16,11 +15,6 @@ module Glimmer
       end
 
       def interpret(parent, keyword, *args, &block)
-        if args.first.is_a?(Display) or args.first.nil?
-          display = args.delete_at(0)
-        else
-          display = SWT::DisplayProxy.instance.swt_display
-        end
         SWT::ColorProxy.new(*args)
       end
     end

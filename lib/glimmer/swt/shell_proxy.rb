@@ -20,7 +20,10 @@ module Glimmer
 
       # Instantiates ShellProxy with same arguments expected by SWT Shell
       def initialize(*args)
-        if args.first.nil? || !args.first.is_a?(Display) && !args.first.is_a?(Shell)
+        if args.first.is_a?(ShellProxy)
+          args[0] = args[0].swt_widget
+        end
+        if args.first.nil? || (!args.first.is_a?(Display) && !args.first.is_a?(Shell))
           @display = DisplayProxy.instance.swt_display
           args = [@display] + args
         end
