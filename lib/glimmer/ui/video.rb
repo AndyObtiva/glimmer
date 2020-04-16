@@ -170,7 +170,7 @@ module Glimmer
         def function(arguments)
           @observer_proc.call
         rescue => e
-          Glimmer.logger.error "#{e.message}\n#{e.backtrace.join("\n")}"
+          Glimmer.logger&.error "#{e.message}\n#{e.backtrace.join("\n")}"
         ensure
           nil
         end
