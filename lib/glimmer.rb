@@ -42,10 +42,14 @@ module Glimmer
 
     # Returns Glimmer logger (standard Ruby logger)
     def logger
-      unless defined? @@logger
-        @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}
-      end
-      @@logger
+      # unless defined? @@logger
+      #   @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}
+      # end
+      @@logger if defined? @@logger
+    end
+
+    def enable_logging
+      @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}
     end
   end
 
@@ -54,7 +58,7 @@ module Glimmer
     if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
       raise InvalidKeywordError, "Glimmer excluded keyword: #{method_symbol}"
     end
-    Glimmer.logger&.debug "keyword: " + method_symbol.to_s + " and args: " + args.to_s
+    Glimmer.logger&.debug "keyword: #{method_symbol} and args: #{args}"
     Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
   rescue InvalidKeywordError => e
     if !method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
@@ -65,7 +69,10 @@ module Glimmer
   end
 end
 
-Glimmer.logger.level = ENV['GLIMMER_LOGGER_LEVEL'].downcase if ENV['GLIMMER_LOGGER_LEVEL']
+if ENV['GLIMMER_LOGGER_LEVEL']
+  Glimmer.enable_logging
+  Glimmer.logger.level = ENV['GLIMMER_LOGGER_LEVEL'].downcase
+end
 
 $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 
