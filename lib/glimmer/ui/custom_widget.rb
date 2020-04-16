@@ -135,7 +135,7 @@ module Glimmer
       end
 
       def can_add_observer?(attribute_name)
-        respond_to?(attribute_name) || @body_root.can_add_observer?(attribute_name)
+        respond_to?(attribute_name) || respond_to?("#{attribute_name}?") || @body_root.can_add_observer?(attribute_name)
       end
 
       def add_observer(observer, attribute_name)

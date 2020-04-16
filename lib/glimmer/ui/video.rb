@@ -70,6 +70,9 @@ module Glimmer
               </body>
             </html>
           HTML
+          on_completed {
+            @completed = true
+          }
         }
       }
 
@@ -107,10 +110,122 @@ module Glimmer
         video_action('load')
       end
 
+      def paused?
+        video_attribute('paused')
+      end
+
+      def playing?
+        !paused?
+      end
+
+      def ended?
+        video_attribute('ended')
+      end
+
+      # Video fully loaded and ready for playback
+      def canplay?
+        video_attribute('canplay')
+      end
+
+      def position
+        video_attribute('currentTime')
+      end
+
+      def position=(new_position)
+        video_attribute_set('currentTime', new_position)
+      end
+
+      def duration
+        video_attribute('duration')
+      end
+
+      def can_handle_observation_request?(observation_request)
+        result = false
+        if observation_request.start_with?('on_video_')
+          attribute = observation_request.sub(/^on_video_/, '')
+          result = can_add_observer?(attribute)
+        end
+        result || super
+      end
+
+      def handle_observation_request(observation_request, &block)
+        if observation_request.start_with?('on_video_')
+          attribute = observation_request.sub(/^on_video_/, '')
+          add_video_observer(block, attribute) if can_add_observer?(attribute)
+        else
+          super
+        end
+      end
+
       private
 
+      class VideoObserverBrowserFunction < BrowserFunction
+        def initialize(video, observer_proc, attribute)
+          @observer_proc = observer_proc
+          @attribute = attribute
+          name = self.class.generate_name(@attribute)
+          super(video.swt_widget, name)
+        end
+
+        def function(arguments)
+          @observer_proc.call
+        rescue => e
+          Glimmer.logger.error "#{e.message}\n#{e.backtrace.join("\n")}"
+        ensure
+          nil
+        end
+
+        private
+
+        class << self
+          def generate_name(attribute)
+            "video#{attribute}#{generate_attribute_id(attribute)}"
+          end
+
+          def generate_attribute_id(attribute)
+            attribute_max_ids[attribute] = attribute_max_id(attribute) + 1
+          end
+
+          def attribute_max_id(attribute)
+            attribute_max_ids[attribute] ||= 0
+          end
+
+          def attribute_max_ids
+            @attribute_max_ids ||= {}
+          end
+        end
+      end
+
       def video_action(action)
-        swt_widget.execute("document.getElementById('video').#{action}()")
+        run_on_completed do
+          swt_widget.execute("document.getElementById('video').#{action}()")
+        end
+      end
+
+      def video_attribute(attribute)
+        swt_widget.evaluate("return document.getElementById('video').#{attribute}") if @completed
+      end
+
+      def video_attribute_set(attribute, value)
+        value = "'#{value}'" if value.is_a?(String) || value.is_a?(Symbol)
+        run_on_completed do
+          swt_widget.execute("document.getElementById('video').#{attribute} = #{value}")
+        end
+      end
+
+      def add_video_observer(observer_proc, attribute)
+        run_on_completed do
+          video_observer_browser_function = VideoObserverBrowserFunction.new(self, observer_proc, attribute)
+          swt_widget.execute("document.getElementById('video').addEventListener('#{attribute}', function() {#{video_observer_browser_function.getName}()})")
+        end
+      end
+
+      def run_on_completed(&block)
+        if @completed
+          block.call
+        else
+          on_completed(&block)
+        end
       end
 
       def browser_video_autoplay
