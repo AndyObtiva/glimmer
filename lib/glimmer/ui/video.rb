@@ -10,15 +10,6 @@ module Glimmer
 
       include_package 'org.eclipse.swt.browser'
 
-      PROPERTIES_OBSERVED = [
-        'playing',
-        'paused',
-        'ended',
-        'started',
-        'remaining',
-        'current_time',
-      ]
-
       options :file, :url
       option :autoplay, true
       option :controls, true
@@ -123,8 +114,8 @@ module Glimmer
       end
 
       # Video fully loaded and ready for playback
-      def canplay?
-        video_attribute('canplay')
+      def loaded?
+        !!@completed
       end
 
       def position
@@ -141,19 +132,23 @@ module Glimmer
 
       def can_handle_observation_request?(observation_request)
         result = false
-        if observation_request.start_with?('on_video_')
-          attribute = observation_request.sub(/^on_video_/, '')
-          result = can_add_observer?(attribute)
+        if observation_request.start_with?('on_')
+          attribute = observation_request.sub(/^on_/, '')
+          result = OBSERVED_ATTRIBUTE_TO_PROPERTY_MAPPING.keys.include?(attribute)
         end
         result || super
       end
 
       def handle_observation_request(observation_request, &block)
-        if observation_request.start_with?('on_video_')
-          attribute = observation_request.sub(/^on_video_/, '')
-          add_video_observer(block, attribute) if can_add_observer?(attribute)
-        else
-          super
+        if observation_request.start_with?('on_')
+          attribute = observation_request.sub(/^on_/, '')
+          if attribute == 'loaded' && !@completed
+            super('on_completed', &block)
+          elsif OBSERVED_ATTRIBUTE_TO_PROPERTY_MAPPING.keys.include?(attribute)
+            add_video_observer(block, OBSERVED_ATTRIBUTE_TO_PROPERTY_MAPPING[attribute])
+          else
+            super
+          end
         end
       end
 
@@ -195,6 +190,13 @@ module Glimmer
           end
         end
       end
+
+      OBSERVED_ATTRIBUTE_TO_PROPERTY_MAPPING = {
+        'playing' => 'play',
+        'paused' => 'pause',
+        'ended' => 'ended',
+        'loaded' => 'canplay',
+      }
 
       def video_action(action)
         run_on_completed do

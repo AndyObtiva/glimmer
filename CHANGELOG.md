@@ -3,8 +3,9 @@
 ## 0.5.4
 
 - Support custom data-binding property converters for nested/index data-binding
-- Add command line glimmer logger level option
-- Add command line glimmer env var support
+- Add glimmer command --log-level option
+- Add glimmer command env var support
+- Improvements to video widget (new methods and events to listen to)
 
 ## 0.5.3
 

@@ -153,7 +153,7 @@ bin/glimmer samples/hello_world.rb
 ### Advanced Usage
 
 ```
-glimmer [[-jruby-option]...] [--log-level=VALUE] application.rb [[application2.rb]...]
+glimmer [--log-level=VALUE] [[ENV_VAR=VALUE]...] [[-jruby-option]...] application.rb [[application2.rb]...]
 ```
 
 Accepts JRuby options and multiple Glimmer applications to run simultaneously, each in a JRuby thread.
@@ -356,7 +356,7 @@ Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
   button {
     text "Press Me"
     on_widget_selected {
-      message_box = MessageBox.new(@shell.widget) # passing SWT Shell widget
+      message_box = MessageBox.new(@shell.swt_widget) # passing SWT Shell widget
       message_box.setText("Surprise")
       message_box.setMessage("You have won $1,000,000!")
       message_box.open      
@@ -481,7 +481,7 @@ In the above example, the `text` widget `enabled` property was data-bound to `#e
 
 #### Colors
 
-Colors make up a subset of widget properties. SWT accepts color objects created with RGB (Red Green Blue) or RGBA (Red Green Blue Alpha). Glimmer supports constructing color objects using the `rgb` and `rgba` DSL methods.
+Colors make up a subset of widget properties. SWT accepts color objects created with RGB (Red Green Blue) or RGBA (Red Green Blue Alpha). Glimmer supports constructing color objects using the `rgb` and `rgba` DSL keywords.
 
 Example:
 
@@ -494,21 +494,21 @@ label {
 # ...
 ```
 
-SWT also supports standard colors available as constants under the `SWT` namespace with the `COLOR_` prefix (e.g. `SWT::COLOR_BLUE`, `SWT::COLOR_WHITE`, `SWT::COLOR_RED`)
+SWT also supports standard colors available as constants under the `SWT` namespace with the `COLOR_` prefix (e.g. `SWT::COLOR_BLUE`)
 
-Glimmer accepts these constants as lowercase Ruby symbols with or without `color_` prefix.
+Glimmer supports constructing colors for these constants as lowercase Ruby symbols (with or without `color_` prefix) passed to `color` DSL keyword
 
 Example:
 
 ```ruby
 # ...
 label {
-  background :black
-  foreground :yellow
+  background color(:black)
+  foreground color(:yellow)
 }
 label {
-  background :color_white
-  foreground :color_red
+  background color(:color_white)
+  foreground color(:color_red)
 }
 # ...
 ```
@@ -522,9 +522,11 @@ https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/
 
 Glimmer color objects come with an instance method `#swt_color` that returns the actual SWT `Color` object wrapped by the Glimmer color object. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
 
-##### `Glimmer::SWT::ColorProxy.new(display = nil, standard_color).swt_color`
+Example:
 
-Glimmer `ColorProxy` class comes with `.color_for` method that builds an actual SWT `Color` object from a standard color string or symbol. Passing a `display` is optional. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
+```ruby
+color(:black).swt_color # returns SWT Color object
+```
 
 #### Fonts
 
@@ -976,20 +978,20 @@ shell {
     text "Show 2nd Button"
     visible true
     on_event_show {
-      @button2.widget.setVisible(false)
+      @button2.swt_widget.setVisible(false)
     }
     on_widget_selected {
-      @button2.widget.setVisible(true)
+      @button2.swt_widget.setVisible(true)
     }
   }
   @button2 = button {
     text "Show 1st Button"
     visible false
     on_event_show {
-      @button1.widget.setVisible(false)
+      @button1.swt_widget.setVisible(false)
     }
     on_widget_selected {
-      @button1.widget.setVisible(true)        
+      @button1.swt_widget.setVisible(true)        
     }
   }
 }.open
@@ -1077,7 +1079,7 @@ class TicTacToe
   end
 
   def display_game_over_message(message)
-    message_box = MessageBox.new(@shell.widget)
+    message_box = MessageBox.new(@shell.swt_widget)
     message_box.setText("Game Over")
     message_box.setMessage(message)
     message_box.open
@@ -1313,7 +1315,7 @@ shell { |app_shell|
 
 Glimmer comes with a video widget not in SWT. It comes with very basic video functionality at the moment, such as autoplay by default, displaying controls, looping, and setting background.
 
-Attributes (passed in an options hash as arguments to video widget):
+Options (passed in an options hash as arguments to video widget):
 - `autoplay` (true [default] or false): plays video automatically as soon as loaded
 - `controls` (true [default] or false): displays controls
 - `looped` (true or false [default]): plays video in looped mode
@@ -1324,8 +1326,22 @@ Attributes (passed in an options hash as arguments to video widget):
 - `offset_y` (integer [default: 0]): offset from top border. Could be a negative number if you want to show only an area of the video. Useful when fit_to_height is false to pick an area of the video to display.
 
 Methods:
-- `play`: plays video
-- `pause`: pauses video
+- `#play`: plays video
+- `#pause`: pauses video
+- `#reload`: reloads video restarting from beginning
+- `#position`: position in seconds (and fractions)
+- `#position=`: seeks a new position in video
+- `#duration`: length of video, maximum video position possible
+- `#loaded?`: returns true when video has been initially loaded or reloaded
+- `#playing?`: returns true when video is actively playing
+- `#paused?`: returns true when video is not playing
+- `#ended?`: returns true when video has reached the end (position == duration)
+
+Events (to observe):
+- `on_loaded`: invoked when video `#loaded?` becomes true
+- `on_ended`: invoked when video `#ended?` becomes true
+- `on_playing`: invoked when video `#playing?` becomes true
+- `on_paused`: invoked when video `#paused?` becomes true
 
 Example ([samples/video/hello_video.rb](samples/video/hello_video.rb)):
 
@@ -1344,6 +1360,36 @@ shell {
   minimum_size 1024, 640
   video(file: video_file, looped: true, background: :black)
 }.open
+```
+
+Example ([samples/video/hello_video_observers.rb](samples/video/hello_video_observers.rb)):
+
+```ruby
+# ...
+def display_video_status(video, status)
+  message_box = MessageBox.new(video.swt_widget.getShell)
+  message_box.setText(status)
+  message = "Video Position: #{video.position} seconds\n"
+  message += "Video Duration: #{video.duration} seconds"
+  message_box.setMessage(message)
+  message_box.open
+end
+
+@shell = shell {
+  minimum_size 800, 500
+  @video = video(file: video_file, background: :black) {
+    on_playing {
+      display_video_status(@video, 'Playing')
+    }
+    on_paused {
+      display_video_status(@video, 'Paused')
+    }
+    on_ended {
+      display_video_status(@video, 'Ended')
+    }
+  }
+}
+@shell.open
 ```
 
 #### Browser Widget
@@ -1377,7 +1423,7 @@ shell {
       </html>
     HTML
     on_completed { # on load of the page execute this JavaScript
-      @browser.widget.execute("alert('Hello, World!');")
+      @browser.swt_widget.execute("alert('Hello, World!');")
     }
   }
 }.open

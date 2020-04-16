@@ -3,9 +3,6 @@ Coveralls.wear!
 require 'bundler'
 require 'puts_debuggerer' unless ENV['puts_debuggerer'] == 'false'
 require_relative '../lib/glimmer'
-if !ENV['GLIMMER_LOGGER_LEVEL']
-  Glimmer.logger&.level = Logger::UNKNOWN #disable logging (used case by case)
-end
 begin
   Bundler.require(:default, :development)
 rescue Bundler::BundlerError => e

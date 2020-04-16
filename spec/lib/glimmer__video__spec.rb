@@ -20,7 +20,7 @@ module GlimmerSpec
     end
 
     after do
-      if @target
+      if @target && !@target.swt_widget.isDisposed
         @target.open
       end
       @timeout.kill
@@ -288,13 +288,25 @@ module GlimmerSpec
       }
     end
 
+    it 'listens to video loaded event' do
+      @target.content {
+        @video = video(file: video_file) {
+          on_loaded {
+            expect(@video.loaded?).to eq(true)
+            @target.dispose
+          }
+        }
+      }
+      expect(@video.loaded?).to eq(false)
+    end
+
     it 'listens to video ended event and ensures position == duration at the end, then reloads' do
       @target.content {
         @video = video(file: video_file) {
-          on_video_ended {
+          on_ended {
             expect(@video.ended?).to eq(true)
             expect(@video.position).to eq(@video.duration)
-            @video.on_video_canplay {
+            @video.on_loaded {
               @target.dispose
             }
             @video.reload
@@ -306,7 +318,7 @@ module GlimmerSpec
     it 'listens to video play event' do
       @target.content {
         @video = video(file: video_file, autoplay: false) {
-          on_video_play {
+          on_playing {
             expect(@video.playing?).to eq(true)
             @target.dispose
           }
@@ -320,7 +332,7 @@ module GlimmerSpec
     it 'listens to video pause event' do
       @target.content {
         @video = video(file: video_file) {
-          on_video_pause {
+          on_paused {
             expect(@video.paused?).to eq(true)
             @target.dispose
           }

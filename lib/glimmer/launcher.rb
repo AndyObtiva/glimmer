@@ -4,7 +4,7 @@ module Glimmer
   class Launcher
     OPERATING_SYSTEMS_SUPPORTED = ["mac", "windows", "linux"]
     TEXT_USAGE = <<-MULTILINE
-  Usage: glimmer [[-jruby-option]...] [--log-level=VALUE] application.rb [[application2.rb]...]
+  Usage: glimmer [--log-level=VALUE] [[ENV_VAR=VALUE]...] [[-jruby-option]...] application.rb [[application2.rb]...]
 
   Runs Glimmer applications using JRuby, automatically preloading
   the glimmer ruby gem and SWT jar dependency.

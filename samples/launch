@@ -13,3 +13,4 @@ ${DIR}/../bin/glimmer \
   "${DIR}tictactoe/tic_tac_toe.rb" \
   "${DIR}video/hello_looped_video_with_black_background.rb" \
   "${DIR}video/hello_video.rb" \
+  "${DIR}video/hello_video_observers.rb" \

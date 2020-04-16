@@ -38,7 +38,7 @@ class TicTacToe
   end
 
   def display_game_over_message(message)
-    message_box = MessageBox.new(@shell.widget)
+    message_box = MessageBox.new(@shell.swt_widget)
     message_box.setText("Game Over")
     message_box.setMessage(message)
     message_box.open
