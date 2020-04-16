@@ -64,7 +64,6 @@ module Glimmer
         jruby_options_string = jruby_options.join(' ') + ' ' if jruby_options.any?
         env_vars_string = env_vars.map {|k,v| "#{k}=#{v}"}.join(' ')
         env_vars_string = [env_vars_string, glimmer_option_env_vars(glimmer_options)].join(' ')
-        puts "#{env_vars_string} jruby #{jruby_options_string}#{jruby_os_specific_options} -r #{glimmer_lib} -S #{application}"
         system "#{env_vars_string} jruby #{jruby_options_string}#{jruby_os_specific_options} -r #{glimmer_lib} -S #{application}"
       end
     end
