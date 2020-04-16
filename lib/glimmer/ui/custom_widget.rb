@@ -25,6 +25,7 @@ module Glimmer
             split(/__/).map do |namespace|
               namespace.camelcase(:upper)
             end
+          #TODO update code to avoid using reduce and going through all of them, yet stop right when it finds something
           custom_widget_class = [Object, Glimmer::UI].reduce([]) do |found, base|
             if found.empty?
               found << namespaces.reduce(base) do |result, namespace|
