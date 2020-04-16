@@ -14,7 +14,7 @@ module Glimmer
         Glimmer.logger&.debug "block exists?: #{!block.nil?}"
         raise Glimmer::Error, "Listener is missing block for keyword: #{keyword}" unless block_given?
         Glimmer.logger&.debug "args are empty?: #{args.empty?}"
-        raise Glimmer::Error, "Invalid listener arguments for keyword: #{keyword}(#{args.inspect})" unless args.empty?
+        raise Glimmer::Error, "Invalid listener arguments for keyword: #{keyword}(#{args})" unless args.empty?
         result = parent.can_handle_observation_request?(keyword)
         Glimmer.logger&.debug "can add listener? #{result}"
         raise Glimmer::Error, "Invalid listener keyword: #{keyword}" unless result

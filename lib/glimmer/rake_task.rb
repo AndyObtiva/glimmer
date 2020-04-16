@@ -18,7 +18,6 @@ namespace :glimmer do
     end
     system('mkdir -p dist')
     system('warble')
-    puts("javapackager -deploy -native -outdir packages -outfile #{project_name} -srcdir dist -srcfiles #{project_name}.jar -appclass JarMain -name \"#{project_name}\" -title \"#{project_name}\" -BjvmOptions=-XstartOnFirstThread")
     system("javapackager -deploy -native -outdir packages -outfile #{project_name} -srcdir dist -srcfiles #{project_name}.jar -appclass JarMain -name \"#{project_name}\" -title \"#{project_name}\" -BjvmOptions=-XstartOnFirstThread")
   end
 end

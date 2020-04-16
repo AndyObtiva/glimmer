@@ -4,12 +4,14 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Add command line glimmer logger level option
+- Support Video restart
+- Support listening to end of video event
 - Provide girb option to run without including Glimmer. Useful when testing an application that is not a "hello, world!" sort of example
 - Pre-generate bin/launcher.rb when packaging
 - Support publishing a Glimmer app for Windows (exe file)
 - Support publishing a Glimmer app for Linux
 (https://github.com/jruby/jruby/wiki/StandaloneJarsAndClasses - https://github.com/jruby/warbler - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/packager.html )
+- Support data binding boolean properties ending with ?
 
 ## Soon
 
@@ -28,7 +30,7 @@ message_box {
 - Scaffold a custom shell
 - Implement a Graphical Glimmer sample launcher
 - Add Glossary
-
+- Support => syntax for computed_for data-binding
 
 ## Feature Suggestions
 - Glimmer Wizard: provide a standard structure for building a Glimmer wizard (multi-step/multi-screen process)
@@ -67,7 +69,6 @@ bind(model, 'addresses').each.content { |address|
 - Look into what to do regarding Glimmer silent failures (when things fall off the chain of command)
 - Check for need to recursively call dispose on widget descendants
 - Report a friendly error message for  can't modify frozen NilClass when mistakenly observing a nil model instead of doing a nested bind(self, 'model.property')
-- Support method_name? methods in data-binding just like standard attr readers
 - Provide general DSL to construct any object with Glimmer even if not a widget. Useful for easily setting style_range on a StyledText widget. Maybe make it work like layout_data where it knows type to instantiate automatically. With style_range, that's easy since it can be inferred from args.
 - Consider implementing Glimmer.app_dir as Pathname object referring to app root path of Glimmer application project (not Glimmer library)
 - Consider implementing Glimmer.__lib_dir__ as Pathname object referring to root path of Glimmer library

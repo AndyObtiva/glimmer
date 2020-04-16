@@ -19,7 +19,7 @@ module Glimmer
         Glimmer.define_method(keyword) do |*args, &block|
           parent = Glimmer::DSL::Engine.current_parent
           if !static_expression.can_interpret?(parent, keyword, *args, &block)
-            raise Error, "Invalid use of Glimmer keyword #{keyword} with args #{args.inspect} under parent #{parent.inspect}"
+            raise Error, "Invalid use of Glimmer keyword #{keyword} with args #{args} under parent #{parent}"
           else
             Glimmer.logger&.debug "#{base.name} will handle expression keyword #{keyword} with arguments #{args}"
             static_expression.interpret(parent, keyword, *args, &block).tap do |ui_object|

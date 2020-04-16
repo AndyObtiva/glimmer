@@ -32,7 +32,7 @@ module Glimmer
         else
           # TODO see if we need a better response here (e.g. dev mode error raising vs production mode silent failure)
           message = "Glimmer keyword #{keyword} with args #{args} cannot be handled"
-          message += " inside parent #{parent.inspect}" if parent
+          message += " inside parent #{parent}" if parent
           message += "! Check the validity of the code."
           # Glimmer.logger&.error message
           raise InvalidKeywordError, message

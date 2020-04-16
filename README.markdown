@@ -153,7 +153,7 @@ bin/glimmer samples/hello_world.rb
 ### Advanced Usage
 
 ```
-glimmer [[-jruby-option]...] application.rb [[application2.rb]...]
+glimmer [[-jruby-option]...] [--log-level=VALUE] application.rb [[application2.rb]...]
 ```
 
 Accepts JRuby options and multiple Glimmer applications to run simultaneously, each in a JRuby thread.
@@ -1539,10 +1539,8 @@ Glimmer simplifies the process for general packaging on the Mac by providing a r
 
 - Create `Rakefile` in your app root directory
 - Add the following line to it: `require 'glimmer/rake_task'`
-- Create a Ruby script under bin to launch your application (e.g. `bin/math_bowling`) with the following content (replacing `'../app/my_application.rb'` with your application path):
+- Create a Ruby script under bin (e.g. `bin/math_bowling`) to require the application file that uses Glimmer (e.g. `'../app/my_application.rb'`):
 ```ruby
-require 'glimmer/launcher'
-require Glimmer::Launcher.swt_jar_file
 require_relative '../app/my_application.rb'
 ```
 

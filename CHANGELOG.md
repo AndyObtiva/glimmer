@@ -3,6 +3,8 @@
 ## 0.5.4
 
 - Support custom data-binding property converters for nested/index data-binding
+- Add command line glimmer logger level option
+- Add command line glimmer env var support
 
 ## 0.5.3
 
