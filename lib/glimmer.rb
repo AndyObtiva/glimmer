@@ -69,8 +69,12 @@ module Glimmer
   end
 end
 
+Glimmer.logger.level = ENV['GLIMMER_LOGGER_LEVEL'].downcase if ENV['GLIMMER_LOGGER_LEVEL']
+
 $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 
+require 'glimmer/launcher'
+require Glimmer::Launcher.swt_jar_file
 require 'glimmer/swt/packages'
 require 'glimmer/dsl'
 require 'glimmer/error'

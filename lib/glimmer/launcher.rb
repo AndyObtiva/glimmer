@@ -52,7 +52,7 @@ module Glimmer
 
       def launch(application, options = [])
         options_string = options.join(' ') + ' ' if options.any?
-        system "jruby #{options_string}#{jruby_swt_options} -r #{glimmer_lib} -S #{application}"
+        system "jruby #{options_string}#{jruby_os_specific_options} -r #{glimmer_lib} -S #{application}"
       end
     end
 
