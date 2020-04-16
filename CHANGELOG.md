@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.5.5
+
+- shell widget DSL for setAppName in SWT Display
+- shell widget DSL for setAppVersion in SWT Display
+- Glimmer DSL Menu/MenuItem support
+
 ## 0.5.4
 
 - Support custom data-binding property converters for nested/index data-binding
