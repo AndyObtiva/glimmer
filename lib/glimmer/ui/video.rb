@@ -103,6 +103,10 @@ module Glimmer
         video_action('pause')
       end
 
+      def reload
+        video_action('load')
+      end
+
       private
 
       def video_action(action)
