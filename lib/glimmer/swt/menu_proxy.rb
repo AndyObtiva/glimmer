@@ -30,12 +30,12 @@ module Glimmer
       def initialize(parent, args)
         index = args.delete(args.last) if args.last.is_a?(Numeric)
         styles = args.map(&:to_sym)
-        if !styles.include?(:bar) && parent.is_a?(ShellProxy)
+        if !styles.include?(:bar) && parent.swt_widget.is_a?(Shell)
           styles = styles.unshift(:pop_up)
         end
 
         swt_widget_class = self.class.swt_widget_class_for('menu')
-        if parent.is_a?(MenuProxy)
+        if parent.swt_widget.is_a?(Menu)
           @menu_item_proxy = SWT::WidgetProxy.new('menu_item', parent, [:cascade] + [index].compact)
           @swt_menu_item = @menu_item_proxy.swt_widget
           @swt_widget = swt_widget_class.new(@menu_item_proxy.swt_widget)

@@ -1,7 +1,6 @@
 require 'glimmer'
 require 'glimmer/dsl/static_expression'
 require 'glimmer/dsl/parent_expression'
-require 'glimmer/swt/shell_proxy'
 require 'glimmer/swt/menu_proxy'
 
 module Glimmer
@@ -14,7 +13,7 @@ module Glimmer
       def can_interpret?(parent, keyword, *args, &block)
         initial_condition = (keyword == 'menu')
         if initial_condition
-          if parent.is_a?(SWT::ShellProxy) || parent.is_a?(SWT::MenuProxy)
+          if parent.swt_widget.is_a?(Shell) || parent.swt_widget.is_a?(Menu)
             return true
           else
             raise Glimmer::Error, "menu may only be nested under a shell or another menu!"
