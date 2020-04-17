@@ -14,12 +14,18 @@ module Glimmer
 
       WIDTH_MIN = 130
       HEIGHT_MIN = 0
+      CUSTOM_ATTRIBUTES = %w[app_name app_version]
 
       attr_reader :opened_before
       alias opened_before? opened_before
 
       # Instantiates ShellProxy with same arguments expected by SWT Shell
       def initialize(*args)
+        if args.last.is_a?(Hash)
+          app_attributes = args.delete(args.last)
+          Display.setAppName(app_attributes[:app_name])
+          Display.setAppVersion(app_attributes[:app_version])
+        end
         if args.first.is_a?(ShellProxy)
           args[0] = args[0].swt_widget
         end

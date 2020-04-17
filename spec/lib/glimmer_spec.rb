@@ -94,7 +94,7 @@ module GlimmerSpec
       expect(@dialog_shell.has_style?(:title)).to eq(true)
     end
 
-    it "tests shell_with_title_and_layout" do
+    it "renders shell with title and layout" do
       shell_layout = GridLayout.new
       @target = shell {
         text "Title"
@@ -103,6 +103,19 @@ module GlimmerSpec
 
       expect(@target.swt_widget.getText).to eq( "Title")
       expect(@target.swt_widget.getLayout).to eq( shell_layout)
+    end
+
+    it "renders shell with title, layout, app name, and app version" do
+      shell_layout = GridLayout.new
+      @target = shell(app_name: 'App Name', app_version: '1.0') {
+        text "Title"
+        layout shell_layout
+      }
+
+      expect(@target.swt_widget.getText).to eq( "Title")
+      expect(@target.swt_widget.getLayout).to eq( shell_layout)
+      expect(Display.getAppName).to eq('App Name')
+      expect(Display.getAppVersion).to eq('1.0')
     end
 
     it "tests shell_with_bounds" do
