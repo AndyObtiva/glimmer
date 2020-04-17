@@ -527,6 +527,23 @@ shell(:no_resize) {
 }
 ```
 
+#### Shell extra attributes
+
+Shell widget can receive a hash of extra attributes as the last argument (or alone):
+- app_name: name to show for app (especially on the Mac)
+- app_version: version to have OS recognize app by
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+shell(:no_resize, app_name: 'Glimmer Demo', app_version: '1.0') {
+  text "Glimmer"
+  label {
+    text "Hello, World!"
+  }
+}.open
+```
+
 ### Widget Properties
 
 Widget properties such as text value, enablement, visibility, and layout details are set within the widget block using methods matching SWT widget property names in lower snakecase. You may refer to SWT widget guide for details on available widget properties:
