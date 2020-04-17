@@ -121,16 +121,19 @@ module GlimmerSpec
 
       it "renders pop up menu" do
         @target = shell {
-          @pop_up_menu = menu {
-            menu {
-              text '&History'
+          @label = label {
+            text 'Right-Click Me'
+            @pop_up_menu = menu {
               menu {
-                text "&Recent"
-                menu_item {
-                  text "File 1"
-                }
-                menu_item {
-                  text "File 2"
+                text '&History'
+                menu {
+                  text "&Recent"
+                  menu_item {
+                    text "File 1"
+                  }
+                  menu_item {
+                    text "File 2"
+                  }
                 }
               }
             }
@@ -139,7 +142,7 @@ module GlimmerSpec
 
         expect(@pop_up_menu).to be_a(Glimmer::SWT::MenuProxy)
         expect(@pop_up_menu.swt_widget).to have_style(:pop_up)
-        expect(@target.swt_widget.getMenu).to eq(@pop_up_menu.swt_widget)
+        expect(@label.swt_widget.getMenu).to eq(@pop_up_menu.swt_widget)
         expect(@pop_up_menu.swt_widget.getItems.size).to eq(1)
 
         menu_item2 = @pop_up_menu.swt_widget.getItems[0]

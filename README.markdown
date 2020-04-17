@@ -303,6 +303,83 @@ shell {
 }.open
 ```
 
+#### Menus
+
+Glimmer DSL provides support for SWT Menu and MenuItem widgets.
+
+There are 2 main types of menus in SWT:
+- Menu Bar (shows up on top)
+- Pop Up Menu (shows up when right-clicking a widget)
+
+Underneath both types, there can be a 3rd menu type called Drop Down.
+
+Glimmer provides special support for Drop Down menus as it automatically instantiates associated Cascade menu items and wires together with proper parenting, swt styles, and calling setMenu.
+
+Example [Menu Bar] (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+shell {
+  menu_bar {
+    menu {
+      text "&File"
+      menu_item {
+        text "E&xit"
+      }
+      menu_item(0) {
+        text "&New"
+      }
+      menu(1) {
+        text "&Options"
+        menu_item(:radio) {
+          text "Option 1"
+        }
+        menu_item(:separator)
+        menu_item(:check) {
+          text "Option 3"
+        }
+      }
+    }
+    menu {
+      text "&History"
+      menu {
+        text "&Recent"
+        menu_item {
+          text "File 1"
+        }
+        menu_item {
+          text "File 2"
+        }
+      }
+    }
+  }
+}.open
+```
+
+Example [Pop Up Menu] (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+shell {
+  label {
+    text 'Right-Click Me'
+    menu {
+      menu {
+        text '&History'
+        menu {
+          text "&Recent"
+          menu_item {
+            text "File 1"
+          }
+          menu_item {
+            text "File 2"
+          }
+        }
+      }
+    }
+  }
+}.open
+```
+
+
 #### SWT Proxies
 
 Glimmer follows Proxy Design Pattern by having Ruby proxy wrappers for all SWT objects:

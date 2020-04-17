@@ -30,7 +30,7 @@ module Glimmer
       def initialize(parent, args)
         index = args.delete(args.last) if args.last.is_a?(Numeric)
         styles = args.map(&:to_sym)
-        if !styles.include?(:bar) && parent.swt_widget.is_a?(Shell)
+        if !styles.include?(:bar) && !parent.swt_widget.is_a?(Menu)
           styles = styles.unshift(:pop_up)
         end
 
@@ -40,8 +40,10 @@ module Glimmer
           @swt_menu_item = @menu_item_proxy.swt_widget
           @swt_widget = swt_widget_class.new(@menu_item_proxy.swt_widget)
           @swt_menu_item.setMenu(swt_widget)
-        else
+        elsif parent.swt_widget.is_a?(Shell)
           @swt_widget = swt_widget_class.new(parent.swt_widget, style('menu', styles))
+        else
+          @swt_widget = swt_widget_class.new(parent.swt_widget)
         end
         DEFAULT_INITIALIZERS['menu']&.call(swt_widget)
 
