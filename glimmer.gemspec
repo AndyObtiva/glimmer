@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["AndyMaleh".freeze]
-  s.date = "2020-04-16"
+  s.date = "2020-04-17"
   s.description = "JRuby Desktop UI DSL + Data-Binding cross-platform library that enables productive and efficient authoring of desktop user-interfaces using the robust platform-native Eclipse SWT library".freeze
   s.email = "andy.am@gmail.com".freeze
   s.executables = ["glimmer".freeze, "girb".freeze]
@@ -51,6 +51,8 @@ Gem::Specification.new do |s|
     "lib/glimmer/dsl/layout_data_expression.rb",
     "lib/glimmer/dsl/layout_expression.rb",
     "lib/glimmer/dsl/list_selection_data_binding_expression.rb",
+    "lib/glimmer/dsl/menu_bar_expression.rb",
+    "lib/glimmer/dsl/menu_expression.rb",
     "lib/glimmer/dsl/observe_expression.rb",
     "lib/glimmer/dsl/parent_expression.rb",
     "lib/glimmer/dsl/property_expression.rb",
@@ -73,6 +75,7 @@ Gem::Specification.new do |s|
     "lib/glimmer/swt/font_proxy.rb",
     "lib/glimmer/swt/layout_data_proxy.rb",
     "lib/glimmer/swt/layout_proxy.rb",
+    "lib/glimmer/swt/menu_proxy.rb",
     "lib/glimmer/swt/packages.rb",
     "lib/glimmer/swt/shell_proxy.rb",
     "lib/glimmer/swt/swt_proxy.rb",
