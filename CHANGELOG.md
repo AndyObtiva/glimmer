@@ -4,6 +4,7 @@
 
 - shell widget DSL for setAppName in SWT Display
 - shell widget DSL for setAppVersion in SWT Display
+- Glimmer DSL colors lazy initialize and don't have an SWT Display object dependency anymore
 - Glimmer DSL Menu/MenuItem support
 
 ## 0.5.4

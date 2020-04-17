@@ -76,22 +76,6 @@ module GlimmerSpec
       end
     end
 
-    it "tests label with RGB background color utilizing existing display" do
-      @display = display
-      @background = rgb(@display.swt_display, 4, 40, 244)
-      @target = shell {
-        @label = label {
-          background @background
-        }
-      }
-
-      color = @label.swt_widget.getBackground
-      expect(color.getRed).to eq(4)
-      expect(color.getGreen).to eq(40)
-      expect(color.getBlue).to eq(244)
-    end
-
-
     it "tests label with RGBA background color without a display nor a parent" do
       @background = rgba(4, 40, 244, 100)
       @target = shell {

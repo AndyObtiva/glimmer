@@ -11,7 +11,7 @@ module Glimmer
     #
     # In order to get the SWT TabItem object, one must call `#swt_tab_item`.
     #
-    # Behinds the scenes, this creates a tab item widget proxy separately from a composite that
+    # Behind the scenes, this creates a tab item widget proxy separately from a composite that
     # is set as the control of the tab item and `#swt_widget`.
     #
     # In order to retrieve the tab item widget proxy, one must call `#widget_proxy`

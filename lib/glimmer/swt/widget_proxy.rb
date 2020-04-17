@@ -22,11 +22,12 @@ module Glimmer
       include DataBinding::ObservableWidget
 
       DEFAULT_STYLES = {
-        "text"    => [:border],
-        "table"   => [:border],
-        "spinner" => [:border],
-        "list"    => [:border, :v_scroll],
-        "button"  => [:push],
+        "text"        => [:border],
+        "table"       => [:border],
+        "spinner"     => [:border],
+        "list"        => [:border, :v_scroll],
+        "button"      => [:push],
+        "menu_item"   => [:push],
       }
 
       DEFAULT_INITIALIZERS = {
@@ -50,10 +51,27 @@ module Glimmer
       # Initializes a new SWT Widget
       #
       # Styles is a comma separate list of symbols representing SWT styles in lower case
-      def initialize(underscored_widget_name, parent, styles, &contents)
+      def initialize(underscored_widget_name, parent, args)
+        styles, extra_options = extract_args(underscored_widget_name, args)
         swt_widget_class = self.class.swt_widget_class_for(underscored_widget_name)
-        @swt_widget = swt_widget_class.new(parent.swt_widget, style(underscored_widget_name, styles))
+        @swt_widget = swt_widget_class.new(parent.swt_widget, style(underscored_widget_name, styles), *extra_options)
         DEFAULT_INITIALIZERS[underscored_widget_name]&.call(@swt_widget)
+      end
+
+      def extract_args(underscored_widget_name, args)
+        @arg_extractor_mapping ||= {
+          'menu_item' => lambda do |args|
+            index = args.delete(args.last) if args.last.is_a?(Numeric)
+            extra_options = [index].compact
+            styles = args
+            [styles, extra_options]
+          end,
+        }
+        if @arg_extractor_mapping[underscored_widget_name]
+          @arg_extractor_mapping[underscored_widget_name].call(args)
+        else
+          [args, []]
+        end
       end
 
       def has_attribute?(attribute_name, *args)

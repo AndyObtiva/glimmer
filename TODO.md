@@ -4,6 +4,7 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
+- Add swt_ versions of proxy relationships
 - Support Video restart
 - Support listening to end of video event
 - Provide girb option to run without including Glimmer. Useful when testing an application that is not a "hello, world!" sort of example
