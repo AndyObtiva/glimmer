@@ -186,6 +186,8 @@ If you cloned this project locally, you may run `bin/girb` instead.
 bin/girb
 ```
 
+Watch out for hands-on examples in this README indicated by "you may copy/paste in [`girb`](#girb-glimmer-irb-command)"
+
 ## Glimmer DSL Syntax
 
 Glimmer DSL syntax consists of static keywords and dynamic keywords to build and bind user-interface objects.
@@ -1375,22 +1377,24 @@ shell { |app_shell|
 
 #### App Name and Version
 
-Application name (shows up on the Mac in top menu bar) and version may be specified upon [packaging](#packaging) by specifying "-Bmac.CFBundleName" and "-Bmac.CFBundleVersion" options
+Application name (shows up on the Mac in top menu bar) and version may be specified upon [packaging](#packaging--distribution) by specifying "-Bmac.CFBundleName" and "-Bmac.CFBundleVersion" options.
 
-Shell widget can receive a hash of extra attributes as the last argument (or alone):
-- app_name: name to show for app (especially on the Mac)
-- app_version: version to have OS recognize app by
+Still, if you would like proper application name to show up on the Mac top menu bar during development, you may do so by invoking the SWT Display.setAppName method before any Display object has been instantiated (i.e. before any Glimmer widget like shell has been declared).
 
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
-shell(:no_resize, app_name: 'Glimmer Demo', app_version: '1.0') {
+Display.setAppName('Glimmer Demo')
+
+shell(:no_resize) {
   text "Glimmer"
   label {
     text "Hello, World!"
   }
 }.open
 ```
+
+Also, you may invoke `Display.setAppVersion('1.0.0')` if needed for OS app version identification reasons during development, replacing `'1.0.0'` with your application version.
 
 #### Video Widget
 
