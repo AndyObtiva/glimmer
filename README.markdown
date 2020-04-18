@@ -1672,6 +1672,7 @@ To use:
 require_relative '../app/my_application.rb'
 ```
 - (Optional) If you'd like to include an icon for your app (.icns format on the Mac), place it under `package/macosx` matching your application local directory name (e.g. 'MathBowling.icns' for MathBowling). You may generate your Mac icon easily using tools like Image2Icon (http://www.img2icnsapp.com/) or manually using the Mac terminal command `iconutil` (iconutil guide: https://applehelpwriter.com/tag/iconutil/)
+- (Optional) You may optionally add the following to `Rakefile` to configure extra arguments for javapackager: `Glimmer::Packager.javapackager_extra_args = "..."` (Useful to avoid re-entering extra arguments on every run of rake task.)
 
 Now, you can run the following rake command to package your app into a Mac DMG file (using both Warbler and javapackager):
 ```
@@ -1690,20 +1691,69 @@ rake glimmer:package:config
 
 This will generate `config/warble.rb`, which you may configure and then run `rake glimmer:package` afterwards.
 
-In any case, you may find more advanced instructions for `javapackager` (https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html), (https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGICFDB) and (https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html) in order to pass extra options and sign your Mac app to distribute on the App Store.
+In any case, in order to pass extra options to configure Mac package and sign your Mac app to distribute on the App Store, you can read more advanced instructions for `javapackager` here:
+- https://docs.oracle.com/javase/9/tools/javapackager.htm#JSWOR719
+- https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html
+- https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGICFDB
+- https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html
 
-Glimmer allows passing extra options to the rake task via environment variable `JAVAPACKAGER_EXTRA_ARGS`
+Glimmer rake task allows passing extra options to javapackager via `Glimmer::Packager.javapackager_extra_args` in your application Rakefile or environment variable `JAVAPACKAGER_EXTRA_ARGS`
+
+Example (Rakefile):
+
+```ruby
+Glimmer::Package.javapackager_extra_args = '-srcfiles "LICENSE.txt" -BlicenseFile="LICENSE.txt" -BlicenseType="MIT" -Bmac.CFBundleVersion="1.0.0" -Bmac.category="arithmetic" -Bmac.signing-key-developer-id-app="Andy Maleh"'
+```
+
+Example (env var):
 
 ```
-JAVAPACKAGER_EXTRA_ARGS='-Bicon="package/macosx/MathBowling.icns"' rake glimmer:package
+JAVAPACKAGER_EXTRA_ARGS='-Bmac.CFBundleName="Math Bowling Game"' rake glimmer:package
 ```
 
-### Gotcha
+That overrides the default application display name.
+
+### Mac Application Distribution
+
+Recent macOS versions (starting with Catalina) have very stringent security requirements requiring all applications to be signed before running (unless the user goes to System Preferences -> Privacy -> General tab and clicks "Open Anyway" after failing to open application the first time they run it). So, to release a desktop application on the Mac, it is recommended to enroll in the [Apple Developer Program](https://developer.apple.com/programs/) to distribute on the [Mac App Store](https://developer.apple.com/distribute/) or otherwise request [app notarization from Apple](https://developer.apple.com/documentation/xcode/notarizing_macos_software_before_distribution) to distribute independently.
+
+### Self Signed Certificate
+
+You may still release a signed DMG file without enrolling into the Apple Developer Program with the caveat that users will always fail in opening the app the first time, and have to go to System Preferences -> Privacy -> General tab to "Open Anyway".
+
+To do so, you may follow these steps (abbreviated version from https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html#//apple_ref/doc/uid/TP40005929-CH4-SW2):
+- Open Keychain Access
+- Choose Keychain Access > Certificate Assistant > Create Certificate ...
+- Enter Name (referred to below as "CertificateName")
+- Set 'Certificate Type' to 'Code Signing'
+- Create (if you alternatively override defaults, make sure to enable all capabilities)
+- Add the following option to javapackager: `-Bmac.signing-key-developer-id-app="CertificateName"` via `Glimmer::Package.javapackager_extra_args` or `JAVAPACKAGER_EXTRA_ARGS`
+
+Example:
+
+```ruby
+Glimmer::Package.javapackager_extra_args = '-Bmac.signing-key-developer-id-app="Andy Maleh"'
+```
+
+Now, when you run `rake glimmer:package`, it builds a self-signed DMG file. When you make available online, and users download, upon launching application, they are presented with your certificate, which they have to sign if they trust you in order to use the application.
+
+### Gotchas
+
+1. Specifying License File
+
+The javapackager documentation states that a license file may be specified with "-BlicenseFile" javapackager option. However, in order for that to work, one must specify as a source file via "-srcfiles" javapackager option.
+
+Example:
+
+```ruby
+Glimmer::Package.javapackager_extra_args = '-srcfiles "LICENSE.txt" -BlicenseFile="LICENSE.txt" -BlicenseType="MIT"'
+```
+
+2. Mounted DMG Residue
 
 If you run `rake glimmer:package` multiple times, sometimes it leaves a mounted DMG project in your finder. Unmount before you run the command again or it might fail with an error saying: "Error: Bundler "DMG Installer" (dmg) failed to produce a bundle."
 
-BTW, keep in mind that during normal operation, it does indicate a false-negative failure while completing successfully regardless: "Exec failed with code 2 command [[/usr/bin/SetFile, -c, icnC, /var/folders/4_/g1sw__tx6mjdgyh3mky7vydc0000gp/T/fxbundler4076750801763032201/images/MathBowling/.VolumeIcon.icns] in unspecified directory"
-
+By the way, keep in mind that during normal operation, it does also indicate a false-negative while completing successfully (please ignore): "Exec failed with code 2 command [[/usr/bin/SetFile, -c, icnC, /var/folders/4_/g1sw__tx6mjdgyh3mky7vydc0000gp/T/fxbundler4076750801763032201/images/MathBowling/.VolumeIcon.icns] in unspecified directory"
 
 ## Resources
 

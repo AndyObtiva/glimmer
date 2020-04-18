@@ -4,8 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Remove app_name and app_version since they show up from plist file upon Mac packaging
-- Change default packaged app name (shows up in top menu bar on Mac) to humanized form (e.g. MathBowling becomes Math Bowling)
 - Support About and Preferences in Mac apps
 
 ## Soon

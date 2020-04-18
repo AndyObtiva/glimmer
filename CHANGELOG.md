@@ -3,6 +3,9 @@
 ## 0.5.7
 
 - Make mixing Glimmer into a class enable Glimmer DSL in both class instance scope and singleton class scope
+- Remove app_name and app_version since they show up from plist file upon Mac packaging
+- Change default packaged app name (shows up in top menu bar on Mac) to humanized form (e.g. MathBowling becomes Math Bowling)
+- Provide README instructions and easy packaging options for signing apps (Glimmer::Package.javapackager_extra_args)
 
 ## 0.5.6
 
