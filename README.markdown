@@ -1117,37 +1117,26 @@ The alternative syntax can be helpful if you prefer to separate Glimmer observer
 
 #### Observing Models
 
-The class that needs to observe a model object must include (mix in) the `Observer` module and implement the `#call(new_value)` method. The class to be observed doesn't need to do anything. It will automatically be enhanced by Glimmer for observation.
-
-To register observer, one has to call the `#observe` method and pass in the observable and the property(ies) to observe.
+Glimmer DSL includes an `observe` keyword used to register an observer by passing in the observable and the property(ies) to observe, and then specifying in a block what happens on notification.
 
 ```ruby
 class TicTacToe
   include Glimmer
-  include Observer
 
   def initialize
     # ...
-    observe(@tic_tac_toe_board, :game_status)
-  end
-
-  def call(game_status)
-    display_win_message if game_status == TicTacToeBoard::WIN
-    display_draw_message if game_status == TicTacToeBoard::DRAW
+    observe(@tic_tac_toe_board, :game_status) { |game_status|
+      display_win_message if game_status == TicTacToeBoard::WIN
+      display_draw_message if game_status == TicTacToeBoard::DRAW
+    }
   end
   # ...
 end
 ```
 
-Alternatively, one can use a default Observer.proc implementation via Observer.proc method:
-```ruby
-observer = Observer.proc { |new_value| puts new_value }
-observer.observe(@tic_tac_toe_board, :game_status)
-```
+Observers can be a good mechanism for displaying dialog messages in Glimmer (using SWT's `MessageBox`).
 
-Observers can be a good mechanism for displaying dialog messages with Glimmer (using SWT's `MessageBox`).
-
-Look at `samples/tictactoe/tic_tac_toe.rb` for an `Observer` dialog message example (sample below).
+Look at [`samples/tictactoe/tic_tac_toe.rb`](samples/tictactoe/tic_tac_toe.rb) for more details starting with the code included below.
 
 ```ruby
 class TicTacToe
@@ -1156,12 +1145,10 @@ class TicTacToe
 
   def initialize
     # ...
-    observe(@tic_tac_toe_board, :game_status)
-  end
-
-  def call(game_status)
-    display_win_message if game_status == TicTacToeBoard::WIN
-    display_draw_message if game_status == TicTacToeBoard::DRAW
+    observe(@tic_tac_toe_board, :game_status) { |game_status|
+      display_win_message if game_status == TicTacToeBoard::WIN
+      display_draw_message if game_status == TicTacToeBoard::DRAW
+    }
   end
 
   def display_win_message
