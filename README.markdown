@@ -1658,7 +1658,7 @@ Example:
 jruby -J-XstartOnFirstThread -J-classpath "path_to/swt.jar" -r glimmer -S application.rb
 ```
 
-## Packaging
+## Packaging & Distribution
 
 Glimmer apps may be packaged and distributed on the Mac, Windows, and Linux via these tools:
 - Warbler (https://github.com/jruby/warbler): Enables bundling a Glimmer app into a JAR file
