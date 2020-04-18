@@ -69,6 +69,7 @@ Gem::Specification.new do |s|
     "lib/glimmer/error.rb",
     "lib/glimmer/invalid_keyword_error.rb",
     "lib/glimmer/launcher.rb",
+    "lib/glimmer/package.rb",
     "lib/glimmer/rake_task.rb",
     "lib/glimmer/swt/color_proxy.rb",
     "lib/glimmer/swt/display_proxy.rb",
