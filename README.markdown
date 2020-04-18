@@ -1,4 +1,4 @@
-# Glimmer 0.5.7 Beta (JRuby Desktop UI DSL + Data-Binding)
+Glimmer Style Guide# Glimmer 0.5.7 Beta (JRuby Desktop UI DSL + Data-Binding)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master)
 
 Glimmer is a native-UI cross-platform desktop development library written in Ruby. Glimmer's main innovation is a JRuby DSL that enables productive and efficient authoring of desktop application user-interfaces while relying on the robust platform-native Eclipse SWT library. Glimmer additionally innovates by having built-in data-binding support to greatly facilitate synchronizing the UI with domain models. As a result, that achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about UI concerns, or alternatively drive development UI-first, and then write clean business components test-first afterwards.
@@ -230,7 +230,7 @@ In Glimmer DSL, widgets are declared with lowercase underscored names mirroring 
 - `list` instantiates `org.eclipse.swt.widgets.List`
 
 Every **widget** is sufficiently declared by name, but may optionally be accompanied with:
-- SWT **style** ***argument*** wrapped by parenthesis according to [Glimmer coding style](#glimmer-coding-style) (see [next section](#widget-styles) for details).
+- SWT **style** ***argument*** wrapped by parenthesis according to [Glimmer Style Guide](#glimmer-coding-style) (see [next section](#widget-styles) for details).
 - Ruby block containing **properties** (widget attributes) and **content** (nested widgets)
 
 For example, if we were to revisit `samples/hello_world.rb` above (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
@@ -257,7 +257,7 @@ Note that `shell` instantiates the outer shell **widget**, in other words, the w
 # ...
 ```
 
-The first line declares a **property** called `text`, which sets the title of the shell (window) to `"Glimmer"`. **Properties** always have ***arguments*** (not wrapped by parenthesis according to [Glimmer coding style](#glimmer-coding-style)), such as the text `"Glimmer"` in this case, and do **NOT** have a ***block*** (this distinguishes them from **widget** declarations).
+The first line declares a **property** called `text`, which sets the title of the shell (window) to `"Glimmer"`. **Properties** always have ***arguments*** (not wrapped by parenthesis according to [Glimmer Style Guide](#glimmer-coding-style)), such as the text `"Glimmer"` in this case, and do **NOT** have a ***block*** (this distinguishes them from **widget** declarations).
 
 The second line declares the `label` **widget**, which is followed by a Ruby **content** ***block*** that contains its `text` **property** with value `"Hello, World!"`
 
@@ -462,7 +462,7 @@ SWT widgets receive `SWT` styles in their constructor as per this guide:
 
 https://wiki.eclipse.org/SWT_Widget_Style_Bits
 
-Glimmer DSL facilitates that by passing symbols representing `SWT` constants as widget method arguments (i.e. inside widget `()` parentheses according to [Glimmer coding style](#glimmer-coding-style). See example below) in lower case version (e.g. `SWT::MULTI` becomes `:multi`).
+Glimmer DSL facilitates that by passing symbols representing `SWT` constants as widget method arguments (i.e. inside widget `()` parentheses according to [Glimmer Style Guide](#glimmer-coding-style). See example below) in lower case version (e.g. `SWT::MULTI` becomes `:multi`).
 
 These styles customize widget look, feel, and behavior.
 
@@ -525,23 +525,6 @@ Glimmer makes this easier by alternatively offering `:no_resize` extra SWT style
 shell(:no_resize) {
   # ...
 }
-```
-
-#### Shell extra attributes
-
-Shell widget can receive a hash of extra attributes as the last argument (or alone):
-- app_name: name to show for app (especially on the Mac)
-- app_version: version to have OS recognize app by
-
-Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
-
-```ruby
-shell(:no_resize, app_name: 'Glimmer Demo', app_version: '1.0') {
-  text "Glimmer"
-  label {
-    text "Hello, World!"
-  }
-}.open
 ```
 
 ### Widget Properties
@@ -1390,6 +1373,25 @@ shell { |app_shell|
 
 ### Miscellaneous
 
+#### App Name and Version
+
+Application name (shows up on the Mac in top menu bar) and version may be specified upon [packaging](#packaging) by specifying "-Bmac.CFBundleName" and "-Bmac.CFBundleVersion" options
+
+Shell widget can receive a hash of extra attributes as the last argument (or alone):
+- app_name: name to show for app (especially on the Mac)
+- app_version: version to have OS recognize app by
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+shell(:no_resize, app_name: 'Glimmer Demo', app_version: '1.0') {
+  text "Glimmer"
+  label {
+    text "Hello, World!"
+  }
+}.open
+```
+
 #### Video Widget
 
 ![Video Widget](images/glimmer-video-widget.png)
@@ -1510,7 +1512,7 @@ shell {
 }.open
 ```
 
-## Glimmer Coding Style
+## Glimmer Style Guide
 
 - Widgets are declared with underscored lowercase versions of their SWT names minus the SWT package name.
 - Widget declarations may optionally have arguments and be followed by a block (to contain properties and content)
@@ -1681,7 +1683,13 @@ rake glimmer:package
 
 This will generate a JAR file under `./dist` directory, which is then used to generate a DMG file (and pkg/app) under `./packages/bundles`. Both will match your application local directory name (e.g. `MathBowling.jar` and `MathBowling-1.0.dmg` for `~/code/MathBowling`)
 
-By default, the package only includes these directories: app, config, db, lib, script, bin, images, sounds, videos
+### Defaults
+
+Glimmer employs smart defaults in packaging.
+
+The package application name (shows up in top menu bar on the Mac) will be a human form of the app root directory name (e.g. "Math Bowling" for "MathBowling" or "math_bowling" app root directory name). However, application name and version may be specified explicitly via "-Bmac.CFBundleName" and "-Bmac.CFBundleVersion" options.
+
+Also, the package will only include these directories: app, config, db, lib, script, bin, images, sounds, videos
 
 After running once, you will find a `config/warble.rb` file. It has the JAR packaging configuration. You may adjust included directories in it if needed, and then rerun `rake glimmer:package` and it will pick up your custom configuration. Alternatively, if you'd like to customize the included directories to begin with, don't run `rake glimmer:package` right away. Run this command first:
 
@@ -1691,13 +1699,17 @@ rake glimmer:package:config
 
 This will generate `config/warble.rb`, which you may configure and then run `rake glimmer:package` afterwards.
 
-In any case, in order to pass extra options to configure Mac package and sign your Mac app to distribute on the App Store, you can read more advanced instructions for `javapackager` here:
+### javapackager Extra Arguments
+
+In order to explicitly configure javapackager, Mac package attributes, or sign your Mac app to distribute on the App Store, you can follow more advanced instructions for `javapackager` here:
 - https://docs.oracle.com/javase/9/tools/javapackager.htm#JSWOR719
 - https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html
 - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGICFDB
 - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html
 
-Glimmer rake task allows passing extra options to javapackager via `Glimmer::Packager.javapackager_extra_args` in your application Rakefile or environment variable `JAVAPACKAGER_EXTRA_ARGS`
+The Glimmer rake task allows passing extra options to javapackager via:
+- `Glimmer::Packager.javapackager_extra_args="..."` in your application Rakefile
+- Environment variable: `JAVAPACKAGER_EXTRA_ARGS`
 
 Example (Rakefile):
 
@@ -1716,6 +1728,8 @@ That overrides the default application display name.
 ### Mac Application Distribution
 
 Recent macOS versions (starting with Catalina) have very stringent security requirements requiring all applications to be signed before running (unless the user goes to System Preferences -> Privacy -> General tab and clicks "Open Anyway" after failing to open application the first time they run it). So, to release a desktop application on the Mac, it is recommended to enroll in the [Apple Developer Program](https://developer.apple.com/programs/) to distribute on the [Mac App Store](https://developer.apple.com/distribute/) or otherwise request [app notarization from Apple](https://developer.apple.com/documentation/xcode/notarizing_macos_software_before_distribution) to distribute independently.
+
+Afterwards, you may add developer-id/signing-key arguments to `javapackager` via `Glimmer::Package.javapackager_extra_args` or `JAVAPACKAGER_EXTRA_ARGS` according to this webpage: https://docs.oracle.com/javase/9/tools/javapackager.htm#JSWOR719
 
 ### Self Signed Certificate
 
