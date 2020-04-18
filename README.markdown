@@ -1731,6 +1731,22 @@ Recent macOS versions (starting with Catalina) have very stringent security requ
 
 Afterwards, you may add developer-id/signing-key arguments to `javapackager` via `Glimmer::Package.javapackager_extra_args` or `JAVAPACKAGER_EXTRA_ARGS` according to this webpage: https://docs.oracle.com/javase/9/tools/javapackager.htm#JSWOR719
 
+DMG signing key argument:
+```
+-Bmac.signing-key-developer-id-app="..."
+```
+
+PKG signing key argument:
+```
+-Bmac.signing-key-developer-id-installer="..."
+```
+
+Mac App Store signing key arguments:
+```
+-Bmac.signing-key-app="..."
+-Bmac.signing-key-pkg="..."
+```
+
 ### Self Signed Certificate
 
 You may still release a signed DMG file without enrolling into the Apple Developer Program with the caveat that users will always fail in opening the app the first time, and have to go to System Preferences -> Privacy -> General tab to "Open Anyway".
