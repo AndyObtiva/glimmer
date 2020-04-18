@@ -4,8 +4,8 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Update drop down menu DSL to happen through menu items instead, keeping menus only for
-top menu bar and pop up menus. It's more intuitive that way.
+- Remove app_name and app_version since they show up from plist file upon Mac packaging
+- Change default packaged app name (shows up in top menu bar on Mac) to humanized form (e.g. MathBowling becomes Math Bowling)
 - Add swt_ versions of proxy relationships
 - Support Video restart
 - Support listening to end of video event
@@ -14,7 +14,7 @@ top menu bar and pop up menus. It's more intuitive that way.
 - Support publishing a Glimmer app for Windows (exe file)
 - Support publishing a Glimmer app for Linux
 (https://github.com/jruby/jruby/wiki/StandaloneJarsAndClasses - https://github.com/jruby/warbler - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/packager.html )
-- Support data binding boolean properties ending with ?
+- Support data binding boolean properties ending with ? bidirectionally (already supported for read-only)
 
 ## Soon
 

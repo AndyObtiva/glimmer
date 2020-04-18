@@ -24,6 +24,8 @@ module Glimmer
     def included(klass)
       if import_swt_packages
         klass.include(SWT::Packages)
+        klass.extend(SWT::Packages)
+        klass.extend(Glimmer)
       end
     end
 

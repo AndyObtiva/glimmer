@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.7
+
+- Make mixing Glimmer into a class enable Glimmer DSL in both class instance scope and singleton class scope
+
 ## 0.5.6
 
 - Add `rake glimmer:package:config` command to generate JAR config file
