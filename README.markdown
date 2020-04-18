@@ -1713,7 +1713,7 @@ JAVAPACKAGER_EXTRA_ARGS='-Bicon="package/macosx/MathBowling.icns"' rake glimmer:
 
 ### Gotcha
 
-If you run `rake glimmer:config` multiple times, sometimes it leaves a mounted DMG project in your finder. Unmount before you run the command again or it might fail with an error saying: "Error: Bundler "DMG Installer" (dmg) failed to produce a bundle."
+If you run `rake glimmer:package` multiple times, sometimes it leaves a mounted DMG project in your finder. Unmount before you run the command again or it might fail with an error saying: "Error: Bundler "DMG Installer" (dmg) failed to produce a bundle."
 
 BTW, keep in mind that during normal operation, it does indicate a false-negative failure while completing successfully regardless: "Exec failed with code 2 command [[/usr/bin/SetFile, -c, icnC, /var/folders/4_/g1sw__tx6mjdgyh3mky7vydc0000gp/T/fxbundler4076750801763032201/images/MathBowling/.VolumeIcon.icns] in unspecified directory"
 
