@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.5.6
+
+- Add `rake glimmer:package:config` command to generate JAR config file
+- Enabling passing extra args to javapackager via `JAVAPACKAGER_EXTRA_ARGS="..." rake glimmer:package`
+
 ## 0.5.5
 
 - shell widget args for SWT Display app name and app version

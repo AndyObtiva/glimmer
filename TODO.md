@@ -4,6 +4,8 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
+- Update drop down menu DSL to happen through menu items instead, keeping menus only for
+top menu bar and pop up menus. It's more intuitive that way.
 - Add swt_ versions of proxy relationships
 - Support Video restart
 - Support listening to end of video event

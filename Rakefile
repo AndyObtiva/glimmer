@@ -47,8 +47,6 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.ruby_opts = ["#{Glimmer::Launcher.jruby_swt_options}"]
 end
 
-
-
 task :default => :spec
 
 task :no_puts_debuggerer do

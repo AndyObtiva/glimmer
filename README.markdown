@@ -1,4 +1,4 @@
-# Glimmer 0.5.5 Beta (JRuby Desktop UI DSL + Data-Binding)
+# Glimmer 0.5.6 Beta (JRuby Desktop UI DSL + Data-Binding)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master)
 
 Glimmer is a native-UI cross-platform desktop development library written in Ruby. Glimmer's main innovation is a JRuby DSL that enables productive and efficient authoring of desktop application user-interfaces while relying on the robust platform-native Eclipse SWT library. Glimmer additionally innovates by having built-in data-binding support to greatly facilitate synchronizing the UI with domain models. As a result, that achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about UI concerns, or alternatively drive development UI-first, and then write clean business components test-first afterwards.
@@ -111,14 +111,14 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.5.5
+jgem install glimmer -v 0.5.6
 ```
 
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.5.5'
+gem 'glimmer', '~> 0.5.6'
 ```
 
 And, then run:
@@ -1675,29 +1675,48 @@ Glimmer apps may be packaged and distributed on the Mac, Windows, and Linux via 
 - Warbler (https://github.com/jruby/warbler): Enables bundling a Glimmer app into a JAR file
 - javapackager (https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html): Enables packaging a JAR file as a DMG file on Mac, EXE on Windows, and multiple Linux supported formats on Linux.
 
-Glimmer simplifies the process for general packaging on the Mac by providing a rake task.
+Glimmer simplifies the process for Mac packaging by providing a rake task.
 
+To use:
 - Create `Rakefile` in your app root directory
 - Add the following line to it: `require 'glimmer/rake_task'`
 - Create a Ruby script under bin (e.g. `bin/math_bowling`) to require the application file that uses Glimmer (e.g. `'../app/my_application.rb'`):
 ```ruby
 require_relative '../app/my_application.rb'
 ```
+- (Optional) If you'd like to include an icon for your app (.icns format on the Mac), place it under `package/macosx` matching your application local directory name (e.g. 'MathBowling.icns' for MathBowling). You may generate your Mac icon easily using tools like Image2Icon (http://www.img2icnsapp.com/) or manually using the Mac terminal command `iconutil` (iconutil guide: https://applehelpwriter.com/tag/iconutil/)
 
-Now, you can run the following command to package your app into a Mac DMG file (using both Warbler and javapackager):
+Now, you can run the following rake command to package your app into a Mac DMG file (using both Warbler and javapackager):
 ```
 rake glimmer:package
 ```
 
-This will generate a JAR file under `./dist` directory and DMG file under `./packages/bundles`. Both will match your application local directory name (e.g. `MathBowling.jar` and `MathBowling-1.0.dmg` for `~/code/MathBowling`)
+This will generate a JAR file under `./dist` directory, which is then used to generate a DMG file (and pkg/app) under `./packages/bundles`. Both will match your application local directory name (e.g. `MathBowling.jar` and `MathBowling-1.0.dmg` for `~/code/MathBowling`)
 
 By default, the package only includes these directories: app, config, db, lib, script, bin, images, sounds, videos
 
-After running once, you will find a `config/warble.rb` file. It has the JAR packaging configuration. You may adjust included directories in it if needed, and then rerun `rake glimmer:package` and it will pick up your custom configuration.
+After running once, you will find a `config/warble.rb` file. It has the JAR packaging configuration. You may adjust included directories in it if needed, and then rerun `rake glimmer:package` and it will pick up your custom configuration. Alternatively, if you'd like to customize the included directories to begin with, don't run `rake glimmer:package` right away. Run this command first:
 
-Otherwise, you may find more advanced instructions for javapackager (https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGICFDB) and (https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html) in order to sign your Mac app and distribute on the App Store.
+```
+rake glimmer:package:config
+```
 
-Additionally, read their documentation on how to set an icon/assets for the application: https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html
+This will generate `config/warble.rb`, which you may configure and then run `rake glimmer:package` afterwards.
+
+In any case, you may find more advanced instructions for `javapackager` (https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html), (https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGICFDB) and (https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html) in order to pass extra options and sign your Mac app to distribute on the App Store.
+
+Glimmer allows passing extra options to the rake task via environment variable `JAVAPACKAGER_EXTRA_ARGS`
+
+```
+JAVAPACKAGER_EXTRA_ARGS='-Bicon="package/macosx/MathBowling.icns"' rake glimmer:package
+```
+
+### Gotcha
+
+If you run `rake glimmer:config` multiple times, sometimes it leaves a mounted DMG project in your finder. Unmount before you run the command again or it might fail with an error saying: "Error: Bundler "DMG Installer" (dmg) failed to produce a bundle."
+
+BTW, keep in mind that during normal operation, it does indicate a false-negative failure while completing successfully regardless: "Exec failed with code 2 command [[/usr/bin/SetFile, -c, icnC, /var/folders/4_/g1sw__tx6mjdgyh3mky7vydc0000gp/T/fxbundler4076750801763032201/images/MathBowling/.VolumeIcon.icns] in unspecified directory"
+
 
 ## Resources
 
