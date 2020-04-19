@@ -1,5 +1,7 @@
 # Change Log
 
+## 0.5.9
+
 ## 0.5.8
 
 - Support hooking into About and Preferences application menu items
