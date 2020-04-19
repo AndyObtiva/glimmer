@@ -1,4 +1,4 @@
-# Glimmer 0.5.7 Beta (JRuby Desktop UI DSL + Data-Binding)
+# Glimmer 0.5.8 Beta (JRuby Desktop UI DSL + Data-Binding)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master)
 
 Glimmer is a native-UI cross-platform desktop development library written in Ruby. Glimmer's main innovation is a JRuby DSL that enables productive and efficient authoring of desktop application user-interfaces while relying on the robust platform-native Eclipse SWT library. Glimmer additionally innovates by having built-in data-binding support to greatly facilitate synchronizing the UI with domain models. As a result, that achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about UI concerns, or alternatively drive development UI-first, and then write clean business components test-first afterwards.
@@ -67,6 +67,58 @@ Glimmer app:
 
 NOTE: Glimmer is in beta mode. Please help make better by adopting for small or low risk projects and providing feedback.
 
+## Table of Contents
+
+<!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
+- [Glimmer 0.5.8 Beta (JRuby Desktop UI DSL + Data-Binding)](#glimmer-058-beta-jruby-desktop-ui-dsl--data-binding)
+  - [Examples](#examples)
+    - [Hello World](#hello-world)
+    - [Tic Tac Toe](#tic-tac-toe)
+  - [Table of Contents](#table-of-contents)
+  - [Background](#background)
+  - [Platform Support](#platform-support)
+  - [Pre-requisites](#pre-requisites)
+  - [Setup](#setup)
+    - [Option 1: Direct Install](#option-1-direct-install)
+    - [Option 2: Bundler](#option-2-bundler)
+  - [Glimmer Command](#glimmer-command)
+    - [Basic Usage](#basic-usage)
+    - [Advanced Usage](#advanced-usage)
+  - [Girb (Glimmer irb) Command](#girb-glimmer-irb-command)
+  - [Glimmer DSL Syntax](#glimmer-dsl-syntax)
+    - [Widgets](#widgets)
+    - [Widget Styles](#widget-styles)
+    - [Widget Properties](#widget-properties)
+    - [Layouts](#layouts)
+    - [Layout Data](#layout-data)
+    - [Data-Binding](#data-binding)
+    - [Observer](#observer)
+    - [Custom Widgets](#custom-widgets)
+    - [Custom Shells](#custom-shells)
+    - [Miscellaneous](#miscellaneous)
+  - [Glimmer Style Guide](#glimmer-style-guide)
+  - [Samples](#samples)
+  - [SWT Reference](#swt-reference)
+  - [SWT Packages](#swt-packages)
+  - [Logging](#logging)
+  - [Raw JRuby Command](#raw-jruby-command)
+    - [Mac Support](#mac-support)
+  - [Packaging & Distribution](#packaging--distribution)
+    - [Defaults](#defaults)
+    - [javapackager Extra Arguments](#javapackager-extra-arguments)
+    - [Mac Application Distribution](#mac-application-distribution)
+    - [Self Signed Certificate](#self-signed-certificate)
+    - [Gotchas](#gotchas)
+  - [Resources](#resources)
+  - [Feature Suggestions](#feature-suggestions)
+  - [Change Log](#change-log)
+  - [Contributing](#contributing)
+  - [Contributors](#contributors)
+  - [License](#license)
+<!-- TOC END -->
+
+
+
 ## Background
 
 Ruby is a dynamically-typed object-oriented language, which provides great productivity gains due to its powerful expressive syntax and dynamic nature. While it is proven by the Ruby on Rails framework for web development, it currently lacks a robust platform-independent framework for building desktop applications. Given that Java libraries can now be utilized in Ruby code through JRuby, Eclipse technologies, such as SWT, JFace, and RCP can help fill the gap of desktop application development with Ruby.
@@ -111,14 +163,14 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.5.7
+jgem install glimmer -v 0.5.8
 ```
 
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.5.7'
+gem 'glimmer', '~> 0.5.8'
 ```
 
 And, then run:
@@ -263,7 +315,17 @@ The first line declares a **property** called `text`, which sets the title of th
 
 The second line declares the `label` **widget**, which is followed by a Ruby **content** ***block*** that contains its `text` **property** with value `"Hello, World!"`
 
-Note that The `shell` widget is always the outermost widget containing all others in a Glimmer desktop windowed application.
+The **widget** ***block*** may optionally receive an argument representing the widget proxy object that the block content is for. This is useful in rare cases when the content code needs to refer to parent widget during declaration. You may leave that argument out most of the time and only add when absolutely needed.
+
+Example:
+
+```ruby
+shell {|shell_proxy|
+  #...
+}
+```
+
+Remember that The `shell` widget is always the outermost widget containing all others in a Glimmer desktop windowed application.
 
 After it is declared, a `shell` must be opened with the `#open` method, which can be called on the block directly as in the example above, or by capturing `shell` in a `@shell` variable (shown in example below), and calling `#open` on it independently (recommended in actual apps)
 
@@ -316,6 +378,8 @@ There are 2 main types of menus in SWT:
 Underneath both types, there can be a 3rd menu type called Drop Down.
 
 Glimmer provides special support for Drop Down menus as it automatically instantiates associated Cascade menu items and wires together with proper parenting, swt styles, and calling setMenu.
+
+The ampersand symbol indicates the keyboard shortcut key for the menu item (e.g. '&Help' can be triggered on Windows by hitting ALT+H)
 
 Example [Menu Bar] (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
@@ -996,9 +1060,11 @@ Glimmer comes with `Observer` module, which is used internally for data-binding,
 
 #### Observing Widgets
 
-Glimmer supports observing widgets with two types of syntax:
-1. `on_{swt-listener-method-name}`: where {swt-listener-method-name} is replaced with the lowercase underscored method name on an SWT listener class (e.g. `on_verify_text` for `org.eclipse.swt.events.VerifyListener#verifyText`).
+Glimmer supports observing widgets with two main types of events:
+1. `on_{swt-listener-method-name}`: where {swt-listener-method-name} is replaced with the lowercase underscored event method name on an SWT listener class (e.g. `on_verify_text` for `org.eclipse.swt.events.VerifyListener#verifyText`).
 2. `on_event_{swt-event-constant}`: where {swt-event-constant} is replaced with an `org.eclipse.swt.SWT` event constant (e.g. `on_event_show` for `SWT.Show` to observe when widget becomes visible)
+
+Additionally, the `shell` widget supports a 3rd type on the Mac, application menu item observers (`on_about` and `on_preferences`), which you can read about under [Miscellaneous](#miscellaneous).
 
 Number 1 is more commonly used in SWT applications, so make it your starting point. Number 2 covers events not found in number 1, so look into it if you don't find an SWT listener you need in number 1.
 
@@ -1374,6 +1440,56 @@ shell { |app_shell|
 ```
 
 ### Miscellaneous
+
+#### Application Menu Items (About/Preferences)
+
+Mac applications always have About and Preferences menu items. Glimmer provides widget observer hooks for them on the `shell` widget:
+- `on_about`: executes code when user selects App Name -> About
+- `on_preferences`: executes code when user selects App Name -> Preferences or hits 'CMD+,' on the Mac
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+shell { |shell_proxy|
+  text 'Application Menu Items'
+  fill_layout {
+    margin_width 15
+    margin_height 15
+  }
+  label {
+    text 'Application Menu Items'
+    font height: 30
+  }
+  on_about {
+    message_box = MessageBox.new(shell_proxy.swt_widget)
+    message_box.setText("About")
+    message_box.setMessage("About Application")
+    message_box.open
+  }
+  on_preferences {
+    preferences_dialog = shell(:dialog_trim, :application_modal) {
+      text 'Preferences'
+      row_layout {
+        type :vertical
+        margin_left 15
+        margin_top 15
+        margin_right 15
+        margin_bottom 15
+      }
+      label {
+        text 'Check one of these options:'
+      }
+      button(:radio) {
+        text 'Option 1'
+      }
+      button(:radio) {
+        text 'Option 2'
+      }
+    }
+    preferences_dialog.open
+  }
+}.open
+```
 
 #### App Name and Version
 

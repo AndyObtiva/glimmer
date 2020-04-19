@@ -33,6 +33,7 @@ message_box {
 - Implement a Graphical Glimmer sample launcher
 - Add Glossary
 - Support => syntax for computed_for data-binding
+- Check into issues of closing a shell and repasting its code in girb
 
 ## Feature Suggestions
 - Glimmer Wizard: provide a standard structure for building a Glimmer wizard (multi-step/multi-screen process)

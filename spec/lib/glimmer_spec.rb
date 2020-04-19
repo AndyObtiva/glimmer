@@ -41,6 +41,16 @@ module GlimmerSpec
       expect(@target.has_style?(:resize)).to eq(false)
     end
 
+    it "tests shell with multiple style bits" do
+      @target = shell(:dialog_trim, :application_modal)
+
+      expect(@target).to_not be_nil
+      expect(@target.swt_widget).to_not be_nil
+      expect(@target.swt_widget).to be_instance_of(Shell)
+      expect(@target.has_style?(:dialog_trim)).to eq(true)
+      expect(@target.has_style?(:application_modal)).to eq(true)
+    end
+
     it "tests shell with one arg of display" do
       @display = Glimmer::SWT::DisplayProxy.instance.swt_display
       @target = shell(@display)
@@ -67,6 +77,19 @@ module GlimmerSpec
       expect(@target.has_style?(:min)).to eq(false)
       expect(@target.has_style?(:max)).to eq(false)
       expect(@target.has_style?(:resize)).to eq(false)
+    end
+
+    it "tests shell with two args of display and multiple style bits" do
+      @display = Glimmer::SWT::DisplayProxy.instance.swt_display
+      @target = shell(@display, :dialog_trim, :application_modal)
+
+      expect(@target).to_not be_nil
+      expect(@target.swt_widget).to_not be_nil
+      expect(@target.swt_widget).to be_instance_of(Shell)
+      expect(@target.swt_widget.getLayout).to_not be_nil
+      expect(@target.swt_widget.getLayout).to be_instance_of(FillLayout)
+      expect(@target.has_style?(:dialog_trim)).to eq(true)
+      expect(@target.has_style?(:application_modal)).to eq(true)
     end
 
     it "tests shell with one arg of parent shell" do

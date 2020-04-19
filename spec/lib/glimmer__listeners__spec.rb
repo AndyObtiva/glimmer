@@ -123,5 +123,30 @@ module GlimmerSpec
         }
       end
     end
+
+    context 'Shell listeners for Application Menu Items' do
+      it 'listens to about menu item selection' do
+        system_menu = Glimmer::SWT::DisplayProxy.instance.swt_display.getSystemMenu
+        about_menu_item = system_menu.getItems.find {|menu_item| menu_item.getID == swt('ID_ABOUT')}
+        expect(about_menu_item.getListeners(swt(:Selection)).count).to eq(0)
+        @target = shell {
+          on_about {
+            # No Op
+          }
+        }
+        expect(about_menu_item.getListeners(swt(:Selection)).count).to eq(1)
+      end
+      it 'listens to preferences menu item selection' do
+        system_menu = Glimmer::SWT::DisplayProxy.instance.swt_display.getSystemMenu
+        preferences_menu_item = system_menu.getItems.find {|menu_item| menu_item.getID == swt('ID_PREFERENCES')}
+        expect(preferences_menu_item.getListeners(swt(:Selection)).count).to eq(0)
+        @target = shell {
+          on_preferences {
+            # No Op
+          }
+        }
+        expect(preferences_menu_item.getListeners(swt(:Selection)).count).to eq(1)
+      end
+    end
   end
 end

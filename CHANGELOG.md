@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.5.8
+
+- Support hooking into About and Preferences application menu items
+- Support passing multiple SWT styles to a shell
+
 ## 0.5.7
 
 - Make mixing Glimmer into a class enable Glimmer DSL in both class instance scope and singleton class scope
