@@ -4,48 +4,31 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Support About and Preferences in Mac apps
+- Scaffold a Glimmer app: provide a standard structure for building a Glimmer app (models, views, and assets [images, videos, sounds])
 
 ## Soon
 
-- Add swt_ versions of proxy relationships
-- Support Video restart
-- Support listening to end of video event
-- Provide girb option to run without including Glimmer. Useful when testing an application that is not a "hello, world!" sort of example
-- Pre-generate bin/launcher.rb when packaging
-- Support publishing a Glimmer app for Windows (exe file)
-- Support publishing a Glimmer app for Linux
-(https://github.com/jruby/jruby/wiki/StandaloneJarsAndClasses - https://github.com/jruby/warbler - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/packager.html )
-- Support data binding boolean properties ending with ? bidirectionally (already supported for read-only)
 - DSL syntax for MessageBox
 message_box {
   text 'Red Label'
   message 'This is a red label'
 }.open
-- Make WidgetProxy and custom widgets proxy method calls to wrapped widget
-- Correct attribute/property naming (unify as attributes)
-- Recapture all of readme's sample screenshots on Mac, Windows, and Linux (except the general widget listing for now)
-- Image custom widget similar to video, and supporting gif
-- Scaffold a Glimmer app: provide a standard structure for building a Glimmer app (models, views, and assets [images, videos, sounds])
-- Scaffold a View/View-Model pair
-- Scaffold a custom widget
-- Scaffold a custom shell
-- Implement a Graphical Glimmer sample launcher
-- Add Glossary
-- Support => syntax for computed_for data-binding
-- Check into issues of closing a shell and repasting its code in girb
+- DSL syntax for dialogs
+- Support publishing a Glimmer app for Windows (exe file)
+- Support publishing a Glimmer app for Linux
+(https://github.com/jruby/jruby/wiki/StandaloneJarsAndClasses - https://github.com/jruby/warbler - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/packager.html )
 
 ## Feature Suggestions
 - Glimmer Wizard: provide a standard structure for building a Glimmer wizard (multi-step/multi-screen process)
-- bind_collection: an iterator that enables spawning widgets based on a variable collection (e.g. `bind_collection('user.addresses') { |address| address_widget {...} }` spawns 3 `AddressWidget`s if `user.addresses` is set with 3 addresses; and replaces with 2 `AddressWidget`s if `user.addresses` is reset with 2 addresses only). Needs further thought on naming and functionality.
+- bind_content: an iterator that enables spawning widgets based on a variable collection (e.g. `bind_content('user.addresses').each { |address| address_widget {...} }` spawns 3 `AddressWidget`s if `user.addresses` is set with 3 addresses; and replaces with 2 `AddressWidget`s if `user.addresses` is reset with 2 addresses only). Needs further thought on naming and functionality.
 Another idea in which each is triggered upon every update to bind's content:
-bind(model, 'username').content { |username|
+bind_content(model, 'username') { |username|
   label {
     text username
   }
 }
 
-bind(model, 'addresses').each.content { |address|
+bind_content(model, 'addresses').each { |address|
   label {
     bind(address, :street)
   }
@@ -53,9 +36,8 @@ bind(model, 'addresses').each.content { |address|
     bind(address, :zip)    
   }
 }
-- Automatic relayout of "glimmer components" when disposing one or as an option
-- Consider easy rerendering support for Glimmer upon processing events
-- Support re-rendering when updating a layout file for development.
+- Image custom widget similar to video, and supporting gif
+- Automatic relayout of glimmer widgets (or parent widget) when disposing a widget (or as an option when disposing)
 
 ## Technical Tasks
 
@@ -64,17 +46,11 @@ bind(model, 'addresses').each.content { |address|
 - Explore rewriting shine with Ruby 2 support
 - Consider need for a startup progress dialog (with Glimmer branding)
 - Externalize constants to make easily configurable
-- Extract ListenerParent into its own file from WidgetListenerCommandHandler
-- Build a sample demonstrating how to use Glimmer from Java only for the View layer in a desktop MVC SWT app
-- Support data binding translator option via a block
-- Simplify API for async_exec and sync_exec (putting directly on Glimmer)
 - Restore badges for README
-- Look into what to do regarding Glimmer silent failures (when things fall off the chain of command)
 - Check for need to recursively call dispose on widget descendants
 - Report a friendly error message for  can't modify frozen NilClass when mistakenly observing a nil model instead of doing a nested bind(self, 'model.property')
 - Provide general DSL to construct any object with Glimmer even if not a widget. Useful for easily setting style_range on a StyledText widget. Maybe make it work like layout_data where it knows type to instantiate automatically. With style_range, that's easy since it can be inferred from args.
 - Consider implementing Glimmer.app_dir as Pathname object referring to app root path of Glimmer application project (not Glimmer library)
-- Consider implementing Glimmer.__lib_dir__ as Pathname object referring to root path of Glimmer library
 - Support a Glimmer custom widget (custom shell) publishing/consumption mechanism that bypasses Ruby gems by pre-downloading their code directly by convention of custom widget name and github repository name (e.g. containing word glimmer or a special prefix like 'glimmer_public__some_widget_name'). Also, gets packaged when shipping a product or a gem. This should make 100s if not 1000s of widget available very easily online as authors won't be required beyond following a GitHub hosting convention from creating Ruby gems
 - Support a Glimmer ruby gem generator for custom widgets to easily and quickly wrap and publish as a Ruby gem if desired (despite option of github convention consumption mentioned above)
 - Put Glimmer on Travis CI and test on many platforms and with many jruby versions
@@ -87,8 +63,17 @@ bind(model, 'addresses').each.content { |address|
 - Support question mark ending data-binding properties
 - Automatically repack parent when data-binding layout or layout data properties have changes
 - consider detecting type on widget property method and automatically invoking right converter (e.g. :to_s for String text property, :to_i for Integer property, etc...)
+- Check into issues of closing a shell and repasting its code in girb
+- Provide girb option to run without including Glimmer. Useful when testing an application that is not a "hello, world!" sort of example
+- Correct attribute/property naming (unify as attributes)
+- Make WidgetProxy and custom widgets proxy method calls to wrapped widget
+- Implement a Graphical Glimmer sample launcher
+- Support => syntax for computed_for data-binding
+- Support data binding boolean properties ending with ? bidirectionally (already supported for read-only)
 
 ## Documentation Tasks
+- Recapture all of readme's sample screenshots on Mac, Windows, and Linux (except the general widget listing for now)
+- Add Glossary
 - Document custom widget custom properties/observers
 - Document how to build 3rd party library custom widgets and custom shells for distribution and consumption
 - Explain MVC and MVP
