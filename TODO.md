@@ -18,6 +18,7 @@ message_box {
 - Support publishing a Glimmer app for Windows (exe file)
 - Support publishing a Glimmer app for Linux
 (https://github.com/jruby/jruby/wiki/StandaloneJarsAndClasses - https://github.com/jruby/warbler - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/packager.html )
+- Bring back Glimmer XML syntax and integrate it into Glimmer core to use with the browser widget.
 
 ## Feature Suggestions
 - Glimmer Wizard: provide a standard structure for building a Glimmer wizard (multi-step/multi-screen process)
