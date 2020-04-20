@@ -56,8 +56,12 @@ class RubyEditor
   end
 
   class File
-    attr_accessor :dirty_content
+    attr_accessor :dirty_content, :caret_position
     attr_reader :path
+
+    def caret_position=(value)
+      pd value
+    end
 
     def initialize(path)
       raise "Not a file path: #{path}" unless ::File.file?(path)
@@ -85,6 +89,12 @@ class RubyEditor
     def kill_line!(caret_position)
       new_lines = lines
       new_lines.delete_at(line_index_for_caret_position(caret_position))
+      self.dirty_content = new_lines.join("\n")
+    end
+
+    def duplicate_line!(caret_position)
+      new_lines = lines
+      new_lines.insert(line_index_for_caret_position(caret_position) + 1, line_for_caret_position(caret_position))
       self.dirty_content = new_lines.join("\n")
     end
 
@@ -176,6 +186,7 @@ class RubyEditor
           foreground rgb(75, 75, 75)
           text bind(RubyEditor::Dir.local_dir, 'selected_child.dirty_content')
           focus true
+          #caret_position bind(RubyEditor::Dir.local_dir, 'selected_child.caret_position')
           on_focus_lost {
             RubyEditor::Dir.local_dir.selected_child.write_dirty_content
           }
@@ -190,10 +201,12 @@ class RubyEditor
               RubyEditor::Dir.local_dir.selected_child.comment_line!(@text.swt_widget.getCaretPosition())
             elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'k'
               RubyEditor::Dir.local_dir.selected_child.kill_line!(@text.swt_widget.getCaretPosition())
+            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'd'
+              RubyEditor::Dir.local_dir.selected_child.duplicate_line!(@text.swt_widget.getCaretPosition())
             elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'r'
               @filter_text.swt_widget.setFocus
             end
-          }    
+          }
           on_verify_text { |verify_event|
             key_code = verify_event.keyCode
             case key_code

@@ -25,6 +25,7 @@ module Glimmer
         "text"        => [:border],
         "table"       => [:border],
         "spinner"     => [:border],
+        "styled_text" => [:border],
         "list"        => [:border, :v_scroll],
         "button"      => [:push],
         "menu_item"   => [:push],
@@ -115,6 +116,13 @@ module Glimmer
             end,
           },
           Java::OrgEclipseSwtWidgets::Text => {
+            :text => proc do |observer|
+              on_modify_text { |modify_event|
+                observer.call(@swt_widget.getText)
+              }
+            end,
+          },
+          Java::OrgEclipseSwtCustom::StyledText => {
             :text => proc do |observer|
               on_modify_text { |modify_event|
                 observer.call(@swt_widget.getText)
