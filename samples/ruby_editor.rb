@@ -1,4 +1,5 @@
 require 'puts_debuggerer'
+require 'yaml'
 
 class RubyEditor
   include Glimmer
@@ -44,7 +45,7 @@ class RubyEditor
     end
     
     def selected_child_path
-      @selected_child.path
+      @selected_child&.path
     end
 
     alias filtered_path selected_child_path
@@ -56,19 +57,24 @@ class RubyEditor
   end
 
   class File
-    attr_accessor :dirty_content, :caret_position
-    attr_reader :path
+    include Glimmer
 
-    def caret_position=(value)
-      pd value
-    end
+    attr_accessor :dirty_content, :caret_position, :line_number
+    attr_reader :path
 
     def initialize(path)
       raise "Not a file path: #{path}" unless ::File.file?(path)
       @path = path
       self.dirty_content = ::File.read(path)
+      observe(self, :caret_position) do
+        self.line_number = line_index_for_caret_position(caret_position) + 1
+      end
+      observe(self, :line_number) do
+        new_caret_position = dirty_content.split("\n")[0...(line_number.to_i - 1)].map(&:size).sum + line_number.to_i - 1
+        self.caret_position = new_caret_position unless line_index_for_caret_position(new_caret_position) == line_index_for_caret_position(caret_position)
+      end
     end
-    
+
     def write_dirty_content
       ::File.write(path, dirty_content) if ::File.exists?(path)
     end
@@ -76,20 +82,29 @@ class RubyEditor
     def comment_line!(caret_position)
       new_lines = lines
       the_line_for_caret_position = line_for_caret_position(caret_position)
+      delta = 0
       if the_line_for_caret_position.strip.start_with?('# ')
         new_lines[line_index_for_caret_position(caret_position)] = line_for_caret_position(caret_position).sub(/# /, '')
+        delta -= 2
       elsif the_line_for_caret_position.strip.start_with?('#')
         new_lines[line_index_for_caret_position(caret_position)] = line_for_caret_position(caret_position).sub(/#/, '')
+        delta -= 2
       else
         new_lines[line_index_for_caret_position(caret_position)] = "# #{line_for_caret_position(caret_position)}"
+        delta += 2
       end
-      self.dirty_content = new_lines.join("\n")
+      old_caret_position = self.caret_position
+      self.dirty_content = new_lines.join("\n")   
+      self.caret_position = old_caret_position + delta
     end
 
     def kill_line!(caret_position)
       new_lines = lines
+      delta = line_for_caret_position(caret_position).size
       new_lines.delete_at(line_index_for_caret_position(caret_position))
+      old_caret_position = self.caret_position
       self.dirty_content = new_lines.join("\n")
+      self.caret_position = old_caret_position - delta
     end
 
     def duplicate_line!(caret_position)
@@ -107,7 +122,9 @@ class RubyEditor
     end
 
     def line_index_for_caret_position(caret_position)
-      dirty_content[0..caret_position].count("\n")
+      count = dirty_content[0..caret_position].count("\n")
+      count -= 1 if dirty_content[caret_position] == "\n"
+      count
     end
 
     def children
@@ -121,10 +138,29 @@ class RubyEditor
 
   def initialize
     @config_file_path = '.ruby_editor'
-    RubyEditor::Dir.local_dir.selected_child = RubyEditor::File.new(::File.read(@config_file_path)) if ::File.exists?(@config_file_path)
-    observe(RubyEditor::Dir.local_dir, 'selected_child') do |new_child|
-      ::File.write(@config_file_path, new_child.path)
+    load_config
+    observe(RubyEditor::Dir.local_dir, 'selected_child.caret_position') do
+      save_config
     end
+  end
+
+  def load_config
+    if ::File.exists?(@config_file_path)
+      config_yaml = ::File.read(@config_file_path)
+      config = YAML.load(config_yaml)
+      RubyEditor::Dir.local_dir.selected_child = RubyEditor::File.new(config[:selected_child_path])
+      RubyEditor::Dir.local_dir.selected_child.caret_position = config[:caret_position]
+    end
+  end
+
+  def save_config
+    child = RubyEditor::Dir.local_dir.selected_child
+    config = {
+      selected_child_path: child.path,
+      caret_position: child.caret_position
+    }
+    config_yaml = YAML.dump(config)
+    ::File.write(@config_file_path, config_yaml)
   end
 
   def launch
@@ -141,7 +177,10 @@ class RubyEditor
           layout_data :fill, :center, true, false
           text bind(RubyEditor::Dir.local_dir, 'filter')
     	   on_key_pressed { |key_event|
-            if key_event.keyCode == swt(:tab) || key_event.keyCode == swt(:cr) || key_event.keyCode == swt(:lf)
+            if key_event.keyCode == swt(:tab) || 
+                key_event.keyCode == swt(:cr) || 
+                key_event.keyCode == swt(:lf) ||
+                key_event.keyCode == swt(:arrow_down)
               @list.swt_widget.setFocus
             end
           }    
@@ -176,9 +215,21 @@ class RubyEditor
       composite {
         grid_layout 1, false
         layout_data :fill, :fill, true, true
-        @label = label {
-          layout_data :fill, :center, true, false
-          text bind(RubyEditor::Dir.local_dir, 'selected_child.path')
+        composite {
+          grid_layout 1, false
+          @label = label {
+            layout_data :fill, :fill, true, false
+            text bind(RubyEditor::Dir.local_dir, 'selected_child.path')
+          }
+          @line_number_text = text {
+            layout_data :fill, :fill, true, false
+            text bind(RubyEditor::Dir.local_dir, 'selected_child.line_number', on_read: :to_s, on_write: :to_i)
+    	     on_key_pressed { |key_event|
+              if Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :cr) || Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :lf)
+                @text.swt_widget.setFocus
+              end
+            }
+          }
         }
         @text = text(:multi, :h_scroll, :v_scroll) {
           layout_data :fill, :fill, true, true
@@ -186,15 +237,15 @@ class RubyEditor
           foreground rgb(75, 75, 75)
           text bind(RubyEditor::Dir.local_dir, 'selected_child.dirty_content')
           focus true
-          #caret_position bind(RubyEditor::Dir.local_dir, 'selected_child.caret_position')
+          caret_position bind(RubyEditor::Dir.local_dir, 'selected_child.caret_position')
           on_focus_lost {
-            RubyEditor::Dir.local_dir.selected_child.write_dirty_content
+            RubyEditor::Dir.local_dir.selected_child&.write_dirty_content
           }
           on_event_close {
-            RubyEditor::Dir.local_dir.selected_child.write_dirty_content
+            RubyEditor::Dir.local_dir.selected_child&.write_dirty_content
           }
           on_widget_disposed {
-            RubyEditor::Dir.local_dir.selected_child.write_dirty_content
+            RubyEditor::Dir.local_dir.selected_child&.write_dirty_content
           }
     	   on_key_pressed { |key_event|
             if Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == '/'
@@ -205,6 +256,9 @@ class RubyEditor
               RubyEditor::Dir.local_dir.selected_child.duplicate_line!(@text.swt_widget.getCaretPosition())
             elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'r'
               @filter_text.swt_widget.setFocus
+            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'l'
+              @line_number_text.swt_widget.selectAll
+              @line_number_text.swt_widget.setFocus
             end
           }
           on_verify_text { |verify_event|

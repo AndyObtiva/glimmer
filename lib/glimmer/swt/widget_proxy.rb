@@ -121,6 +121,14 @@ module Glimmer
                 observer.call(@swt_widget.getText)
               }
             end,
+            :caret_position => proc do |observer|
+              on_event_keydown { |event|
+                observer.call(@swt_widget.getCaretPosition)
+              }
+              on_event_mousedown { |event|
+                observer.call(@swt_widget.getCaretPosition)
+              }
+            end,
           },
           Java::OrgEclipseSwtCustom::StyledText => {
             :text => proc do |observer|
@@ -327,7 +335,11 @@ module Glimmer
           'focus' => {
             getter: {name: 'isFocusControl'},
             setter: {name: 'setFocus', invoker: lambda { |widget, args| @swt_widget.setFocus if args.first }},
-          }
+          },
+          'caret_position' => {
+            getter: {name: 'getCaretPosition'},
+            setter: {name: 'setSelection', invoker: lambda { |widget, args| @swt_widget.setSelection(args.first) if args.first }},
+          },
         }
       end
 
