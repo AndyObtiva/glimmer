@@ -1,5 +1,5 @@
 require 'puts_debuggerer'
-  
+
 class RubyEditor
   include Glimmer
 
@@ -79,6 +79,12 @@ class RubyEditor
       else
         new_lines[line_index_for_caret_position(caret_position)] = "# #{line_for_caret_position(caret_position)}"
       end
+      self.dirty_content = new_lines.join("\n")
+    end
+
+    def kill_line!(caret_position)
+      new_lines = lines
+      new_lines.delete_at(line_index_for_caret_position(caret_position))
       self.dirty_content = new_lines.join("\n")
     end
 
@@ -169,6 +175,7 @@ class RubyEditor
           font name: 'Consolas', height: 15
           foreground rgb(75, 75, 75)
           text bind(RubyEditor::Dir.local_dir, 'selected_child.dirty_content')
+          focus true
           on_focus_lost {
             RubyEditor::Dir.local_dir.selected_child.write_dirty_content
           }
@@ -181,8 +188,9 @@ class RubyEditor
     	   on_key_pressed { |key_event|
             if Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == '/'
               RubyEditor::Dir.local_dir.selected_child.comment_line!(@text.swt_widget.getCaretPosition())
-            end
-            if Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'r'
+            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'k'
+              RubyEditor::Dir.local_dir.selected_child.kill_line!(@text.swt_widget.getCaretPosition())
+            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'r'
               @filter_text.swt_widget.setFocus
             end
           }    
