@@ -5,11 +5,12 @@ class RubyEditor
 
   class Dir
     class << self
-      def local_children
-        new('.')
+      def local_dir
+        @local_dir ||= new('.')
       end
     end
-    
+
+    attr_accessor :selected_child
     attr_reader :path
 
     def initialize(path)
@@ -17,15 +18,29 @@ class RubyEditor
     end
 
     def children
-      ::Dir.glob(::File.join(@path, '*')).map {|p| ::File.file?(p) ? RubyEditor::File.new(p) : RubyEditor::Dir.new(p)}
+      @children ||= ::Dir.glob(::File.join(@path, '*')).map {|p| ::File.file?(p) ? RubyEditor::File.new(p) : RubyEditor::Dir.new(p)}
+    end
+
+    def selected_child_path=(selected_path)
+      if ::File.file?(selected_path)
+        @selected_child&.write_dirty_content
+        self.selected_child = RubyEditor::File.new(selected_path)
+      end
     end
   end
 
   class File
+    attr_accessor :dirty_content
     attr_reader :path
 
     def initialize(path)
+      raise "Not a file path: #{path}" unless ::File.file?(path)
       @path = path
+      self.dirty_content = ::File.read(path)
+    end
+    
+    def write_dirty_content
+      ::File.write(path, dirty_content) if ::File.exists?(path)
     end
 
     def children
@@ -34,7 +49,11 @@ class RubyEditor
   end
 
   def initialize
-    @config_file_path = ::File.expand_path('../ruby_editor.config', __FILE__)
+    @config_file_path = '.ruby_editor'
+    RubyEditor::Dir.local_dir.selected_child = RubyEditor::File.new(::File.read(@config_file_path)) if ::File.exists?(@config_file_path)
+    observe(RubyEditor::Dir.local_dir, 'selected_child') do |new_child|
+      ::File.write(@config_file_path, new_child.path)
+    end
   end
 
   def launch
@@ -46,16 +65,9 @@ class RubyEditor
         layout_data(:fill, :fill, false, true) {
           width_hint 300
         }
-        items bind(RubyEditor::Dir, :local_children), tree_properties(children: :children, text: :path)
+        items bind(RubyEditor::Dir, :local_dir), tree_properties(children: :children, text: :path)
         on_widget_selected {
-          selected_path = @tree.swt_widget.getSelection.first.getText
-          last_selected_path = @label.swt_widget.getText
-          if ::File.file?(selected_path)
-            ::File.write(last_selected_path, @text.swt_widget.getText) unless last_selected_path.to_s.empty?
-            @label.swt_widget.setText selected_path
-            @text.swt_widget.setText ::File.read(selected_path)
-            ::File.write(@config_file_path, selected_path)
-          end
+          RubyEditor::Dir.local_dir.selected_child_path = @tree.swt_widget.getSelection.first.getText
         }
       }
       composite {
@@ -63,15 +75,31 @@ class RubyEditor
         layout_data :fill, :fill, true, true
         @label = label {
           layout_data :fill, :center, true, false
-          text ::File.read(@config_file_path) if ::File.exists?(@config_file_path)
+          text bind(RubyEditor::Dir.local_dir, 'selected_child.path')
         }
         @text = text(:multi, :h_scroll, :v_scroll) {
           layout_data :fill, :fill, true, true
           font name: 'Consolas', height: 15
           foreground rgb(75, 75, 75)
-          text ::File.read(::File.read(@config_file_path)) unless @label.swt_widget.getText.to_s.empty?
+          text bind(RubyEditor::Dir.local_dir, 'selected_child.dirty_content')
           on_focus_lost {
-            ::File.write(@label.swt_widget.getText, @text.swt_widget.getText) unless @label.swt_widget.getText.to_s.empty? || !::File.file?(@label.swt_widget.getText)
+            RubyEditor::Dir.local_dir.selected_child.write_dirty_content
+          }
+          on_event_close {
+            RubyEditor::Dir.local_dir.selected_child.write_dirty_content
+          }
+          on_widget_disposed {
+            RubyEditor::Dir.local_dir.selected_child.write_dirty_content
+          }
+    	   on_key_pressed { |key_event|
+             #if (key_event.stateMask & swt(:command) == swt(:command)) && key_event.character.chr.downcase == 'k'
+            #end
+          }    
+          on_verify_text { |verify_event|
+            key_code = verify_event.keyCode
+            if key_code == swt(:tab)
+              verify_event.text = '  '
+            end
           }
         }
       }

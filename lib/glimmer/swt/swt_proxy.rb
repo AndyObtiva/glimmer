@@ -62,6 +62,10 @@ module Glimmer
             is_found ? found += [c] : found
           end
         end
+
+        def include?(swt_constant, *symbols)
+          swt_constant & self[symbols] == self[symbols]
+        end
       end
 
       EXTRA_STYLES = {
