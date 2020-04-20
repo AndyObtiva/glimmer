@@ -69,6 +69,31 @@ class RubyEditor
       ::File.write(path, dirty_content) if ::File.exists?(path)
     end
 
+    def comment_line!(caret_position)
+      new_lines = lines
+      the_line_for_caret_position = line_for_caret_position(caret_position)
+      if the_line_for_caret_position.strip.start_with?('# ')
+        new_lines[line_index_for_caret_position(caret_position)] = line_for_caret_position(caret_position).sub(/# /, '')
+      elsif the_line_for_caret_position.strip.start_with?('#')
+        new_lines[line_index_for_caret_position(caret_position)] = line_for_caret_position(caret_position).sub(/#/, '')
+      else
+        new_lines[line_index_for_caret_position(caret_position)] = "# #{line_for_caret_position(caret_position)}"
+      end
+      self.dirty_content = new_lines.join("\n")
+    end
+
+    def lines
+      dirty_content.split("\n")
+    end
+
+    def line_for_caret_position(caret_position)
+      lines[line_index_for_caret_position(caret_position)]
+    end
+
+    def line_index_for_caret_position(caret_position)
+      dirty_content[0..caret_position].count("\n")
+    end
+
     def children
       []
     end
@@ -154,6 +179,9 @@ class RubyEditor
             RubyEditor::Dir.local_dir.selected_child.write_dirty_content
           }
     	   on_key_pressed { |key_event|
+            if Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == '/'
+              RubyEditor::Dir.local_dir.selected_child.comment_line!(@text.swt_widget.getCaretPosition())
+            end
             if Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'r'
               @filter_text.swt_widget.setFocus
             end
