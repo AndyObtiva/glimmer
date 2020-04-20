@@ -44,7 +44,7 @@ module Glimmer
       end
 
       def evaluate_property
-        selection_array = @widget_proxy.swt_widget.send('selection').to_a
+        selection_array = @widget_proxy.swt_widget.send('selection').to_a #TODO refactor send('selection') into proper method invocation
         PROPERTY_EVALUATORS[@property_type].call(selection_array)
       end
     end

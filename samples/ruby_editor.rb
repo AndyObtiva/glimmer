@@ -1,5 +1,5 @@
 require 'puts_debuggerer'
-
+  
 class RubyEditor
   include Glimmer
 
@@ -10,22 +10,48 @@ class RubyEditor
       end
     end
 
-    attr_accessor :selected_child
+    attr_accessor :selected_child, :filter, :children, :filtered_path_options
     attr_reader :path
 
     def initialize(path)
       @path = path
+      self.filtered_path_options = []
     end
 
     def children
-      @children ||= ::Dir.glob(::File.join(@path, '*')).map {|p| ::File.file?(p) ? RubyEditor::File.new(p) : RubyEditor::Dir.new(p)}
+      ::Dir.glob(::File.join(@path, '*')).map {|p| ::File.file?(p) ? RubyEditor::File.new(p) : RubyEditor::Dir.new(p)}
+    end
+
+    def filter=(value)
+      if value.to_s.empty?
+        @filter = nil 
+      else
+        @filter = value
+      end
+      self.filtered_path_options = filtered.to_a.map(&:path)   
+    end
+
+    def filtered
+      return if filter.nil?
+      ::Dir.glob(::File.join(@path, '**', '*')).map {|p| RubyEditor::File.new(p) if p.include?(filter) && ::File.file?(p) }.compact
     end
 
     def selected_child_path=(selected_path)
-      if ::File.file?(selected_path)
+      if selected_path && ::File.file?(selected_path)
         @selected_child&.write_dirty_content
         self.selected_child = RubyEditor::File.new(selected_path)
       end
+    end
+    
+    def selected_child_path
+      @selected_child.path
+    end
+
+    alias filtered_path selected_child_path
+    alias filtered_path= selected_child_path=
+
+    def to_s
+      path
     end
   end
 
@@ -46,6 +72,10 @@ class RubyEditor
     def children
       []
     end
+
+    def to_s
+      path
+    end
   end
 
   def initialize
@@ -61,13 +91,45 @@ class RubyEditor
       text 'Ruby Editor'
       minimum_size 1280, 960
       grid_layout 2, false
-      @tree = tree(:virtual, :border, :h_scroll, :v_scroll) {
+      composite {
+        grid_layout 1, false
         layout_data(:fill, :fill, false, true) {
           width_hint 300
         }
-        items bind(RubyEditor::Dir, :local_dir), tree_properties(children: :children, text: :path)
-        on_widget_selected {
-          RubyEditor::Dir.local_dir.selected_child_path = @tree.swt_widget.getSelection.first.getText
+        @filter_text = text {
+          layout_data :fill, :center, true, false
+          text bind(RubyEditor::Dir.local_dir, 'filter')
+    	   on_key_pressed { |key_event|
+            if key_event.keyCode == swt(:tab) || key_event.keyCode == swt(:cr) || key_event.keyCode == swt(:lf)
+              @list.swt_widget.setFocus
+            end
+          }    
+        }
+        @list = list(:h_scroll, :v_scroll) {
+          layout_data(:fill, :fill, true, true) {
+            #exclude bind(RubyEditor::Dir.local_dir, :filter) {|f| !f}
+          }
+          visible bind(RubyEditor::Dir, 'local_dir.filter') {|f| !!f}
+          selection bind(RubyEditor::Dir.local_dir, :filtered_path)
+          on_widget_selected {
+            RubyEditor::Dir.local_dir.selected_child_path = @list.swt_widget.getSelection.first
+          }
+    	   on_key_pressed { |key_event|
+            if Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :cr) || Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :lf)
+              RubyEditor::Dir.local_dir.selected_child_path = @list.swt_widget.getSelection.first
+              @text.swt_widget.setFocus
+            end
+          }
+        }
+        @tree = tree(:virtual, :border, :h_scroll, :v_scroll) {
+          layout_data(:fill, :fill, true, true) {
+            #exclude bind(RubyEditor::Dir.local_dir, :filter) {|f| !!f}
+          }
+          visible bind(RubyEditor::Dir, 'local_dir.filter') {|f| !f}
+          items bind(RubyEditor::Dir, :local_dir), tree_properties(children: :children, text: :path)
+          on_widget_selected {
+            RubyEditor::Dir.local_dir.selected_child_path = @tree.swt_widget.getSelection.first.getText
+          }
         }
       }
       composite {
@@ -92,12 +154,14 @@ class RubyEditor
             RubyEditor::Dir.local_dir.selected_child.write_dirty_content
           }
     	   on_key_pressed { |key_event|
-             #if (key_event.stateMask & swt(:command) == swt(:command)) && key_event.character.chr.downcase == 'k'
-            #end
+            if Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'r'
+              @filter_text.swt_widget.setFocus
+            end
           }    
           on_verify_text { |verify_event|
             key_code = verify_event.keyCode
-            if key_code == swt(:tab)
+            case key_code
+            when swt(:tab)
               verify_event.text = '  '
             end
           }
