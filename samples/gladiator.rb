@@ -424,9 +424,10 @@ class RubyEditor
         composite {
           layout_data :fill, :fill, true, true
           grid_layout 2, false
-          @text = text(:multi) {
+          @line_numbers_text = text(:multi) {
             layout_data :left, :fill, false, true
             font name: 'Consolas', height: 15
+            foreground rgb(75, 75, 75)
             text bind(RubyEditor::Dir.local_dir, 'selected_child.lines') {|lines| lines.size.times.map {|n| n+1}.join("\n")}
             top_index bind(RubyEditor::Dir.local_dir, 'selected_child.top_index')
           }
