@@ -149,6 +149,11 @@ module Glimmer
                 observer.call(@swt_widget.getSelectionCount)
               }
             end,
+            :top_index => proc do |observer|
+              on_paint_control { |event|
+                observer.call(@swt_widget.getTopIndex)
+              }
+            end,
           },
           Java::OrgEclipseSwtCustom::StyledText => {
             :text => proc do |observer|
@@ -432,4 +437,4 @@ module Glimmer
       end
     end
   end
-end
+end

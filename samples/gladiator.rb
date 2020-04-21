@@ -67,7 +67,7 @@ class RubyEditor
   class File
     include Glimmer
 
-    attr_accessor :dirty_content, :caret_position, :selection_count, :line_number, :find_text
+    attr_accessor :dirty_content, :caret_position, :selection_count, :line_number, :find_text, :top_index
     attr_reader :path
 
     def initialize(path)
@@ -421,66 +421,77 @@ class RubyEditor
             }
           }
         }
-        @text = text(:multi, :h_scroll, :v_scroll) {
+        composite {
           layout_data :fill, :fill, true, true
-          font name: 'Consolas', height: 15
-          foreground rgb(75, 75, 75)
-          text bind(RubyEditor::Dir.local_dir, 'selected_child.dirty_content')
-          focus true
-			caret_position bind(RubyEditor::Dir.local_dir, 'selected_child.caret_position')
-        	selection_count bind(RubyEditor::Dir.local_dir, 'selected_child.selection_count')
-          on_focus_lost {
-            RubyEditor::Dir.local_dir.selected_child&.write_dirty_content
+          grid_layout 2, false
+          @text = text(:multi) {
+            layout_data :left, :fill, false, true
+            font name: 'Consolas', height: 15
+            text bind(RubyEditor::Dir.local_dir, 'selected_child.lines') {|lines| lines.size.times.map {|n| n+1}.join("\n")}
+            top_index bind(RubyEditor::Dir.local_dir, 'selected_child.top_index')
           }
-          on_event_close {
-            RubyEditor::Dir.local_dir.selected_child&.write_dirty_content
-          }
-          on_widget_disposed {
-            RubyEditor::Dir.local_dir.selected_child&.write_dirty_content
-          }
-    	   on_key_pressed { |key_event|
-            if Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == '/'
-              RubyEditor::Dir.local_dir.selected_child.comment_line!
-            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'k'
-              RubyEditor::Dir.local_dir.selected_child.kill_line!
-            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'd'
-              RubyEditor::Dir.local_dir.selected_child.duplicate_line!
-            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == '['
-              RubyEditor::Dir.local_dir.selected_child.outdent!
-            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == ']'
-              RubyEditor::Dir.local_dir.selected_child.indent!
-            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'r'
-              @filter_text.swt_widget.setFocus
-            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command, :shift) && key_event.character.chr.downcase == 'g'
-              RubyEditor::Dir.local_dir.selected_child.find_previous
-            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'g'
-              RubyEditor::Dir.local_dir.selected_child.find_next
-            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'f'
-              @find_text.swt_widget.selectAll
-              @find_text.swt_widget.setFocus
-            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'l'
-              @line_number_text.swt_widget.selectAll
-              @line_number_text.swt_widget.setFocus
-            elsif key_event.keyCode == swt(:page_up)
-              RubyEditor::Dir.local_dir.selected_child.page_up
-              key_event.doit = false
-            elsif key_event.keyCode == swt(:page_down)
-              RubyEditor::Dir.local_dir.selected_child.page_down
-              key_event.doit = false
-            elsif key_event.keyCode == swt(:home)
-              RubyEditor::Dir.local_dir.selected_child.home
-              key_event.doit = false
-            elsif key_event.keyCode == swt(:end)
-              RubyEditor::Dir.local_dir.selected_child.end
-              key_event.doit = false
-            end
-          }
-          on_verify_text { |verify_event|
-            key_code = verify_event.keyCode
-            case key_code
-            when swt(:tab)
-              verify_event.text = '  '
-            end
+          @text = text(:multi, :h_scroll, :v_scroll) {
+            layout_data :fill, :fill, true, true
+            font name: 'Consolas', height: 15
+            foreground rgb(75, 75, 75)
+            text bind(RubyEditor::Dir.local_dir, 'selected_child.dirty_content')
+            focus true
+            caret_position bind(RubyEditor::Dir.local_dir, 'selected_child.caret_position')
+            selection_count bind(RubyEditor::Dir.local_dir, 'selected_child.selection_count')
+            top_index bind(RubyEditor::Dir.local_dir, 'selected_child.top_index')
+            on_focus_lost {
+              RubyEditor::Dir.local_dir.selected_child&.write_dirty_content
+            }
+            on_event_close {
+              RubyEditor::Dir.local_dir.selected_child&.write_dirty_content
+            }
+            on_widget_disposed {
+              RubyEditor::Dir.local_dir.selected_child&.write_dirty_content
+            }
+      	     on_key_pressed { |key_event|
+              if Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == '/'
+                RubyEditor::Dir.local_dir.selected_child.comment_line!
+              elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'k'
+                RubyEditor::Dir.local_dir.selected_child.kill_line!
+              elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'd'
+                RubyEditor::Dir.local_dir.selected_child.duplicate_line!
+              elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == '['
+                RubyEditor::Dir.local_dir.selected_child.outdent!
+              elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == ']'
+                RubyEditor::Dir.local_dir.selected_child.indent!
+              elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'r'
+                @filter_text.swt_widget.setFocus
+              elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command, :shift) && key_event.character.chr.downcase == 'g'
+                RubyEditor::Dir.local_dir.selected_child.find_previous
+              elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'g'
+                RubyEditor::Dir.local_dir.selected_child.find_next
+              elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'f'
+                @find_text.swt_widget.selectAll
+                @find_text.swt_widget.setFocus
+              elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'l'
+                @line_number_text.swt_widget.selectAll
+                @line_number_text.swt_widget.setFocus
+              elsif key_event.keyCode == swt(:page_up)
+                RubyEditor::Dir.local_dir.selected_child.page_up
+                key_event.doit = false
+              elsif key_event.keyCode == swt(:page_down)
+                RubyEditor::Dir.local_dir.selected_child.page_down
+                key_event.doit = false
+              elsif key_event.keyCode == swt(:home)
+                RubyEditor::Dir.local_dir.selected_child.home
+                key_event.doit = false
+              elsif key_event.keyCode == swt(:end)
+                RubyEditor::Dir.local_dir.selected_child.end
+                key_event.doit = false
+              end
+            }
+            on_verify_text { |verify_event|
+              key_code = verify_event.keyCode
+              case key_code
+              when swt(:tab)
+                verify_event.text = '  '
+              end
+            }
           }
         }
       }
