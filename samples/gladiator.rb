@@ -302,7 +302,7 @@ class RubyEditor
   end
 
   def initialize
-    Display.setAppName('Glimmer Editor')
+    Display.setAppName('Gladiator')
     @config_file_path = '.glimmer_editor'
     RubyEditor::Dir.local_dir.all_children # pre-caches children
     load_config
@@ -332,7 +332,7 @@ class RubyEditor
 
   def launch
     @shell = shell {
-      text 'Glimmer Editor'
+      text 'Gladiator'
       minimum_size 1280, 960
       grid_layout 2, false
       composite {
