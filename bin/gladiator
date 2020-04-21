@@ -2,5 +2,5 @@
 
 require_relative '../lib/glimmer/launcher'
 
-glimmer_editor = File.expand_path('../../samples/glimmer_editor.rb', __FILE__)
-Glimmer::Launcher.new([glimmer_editor] + ARGV).launch
+gladiator = File.expand_path('../../samples/gladiator.rb', __FILE__)
+Glimmer::Launcher.new([gladiator] + ARGV).launch
