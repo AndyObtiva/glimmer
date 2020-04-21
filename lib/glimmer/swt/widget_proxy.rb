@@ -125,8 +125,28 @@ module Glimmer
               on_event_keydown { |event|
                 observer.call(@swt_widget.getCaretPosition)
               }
+              on_event_keyup { |event|
+                observer.call(@swt_widget.getCaretPosition)
+              }
               on_event_mousedown { |event|
                 observer.call(@swt_widget.getCaretPosition)
+              }
+              on_event_mouseup { |event|
+                observer.call(@swt_widget.getCaretPosition)
+              }
+            end,
+            :selection_count => proc do |observer|
+              on_event_keydown { |event|
+                observer.call(@swt_widget.getSelectionCount)
+              }
+              on_event_keyup { |event|
+                observer.call(@swt_widget.getSelectionCount)
+              }
+              on_event_mousedown { |event|
+                observer.call(@swt_widget.getSelectionCount)
+              }
+              on_event_mouseup { |event|
+                observer.call(@swt_widget.getSelectionCount)
               }
             end,
           },
@@ -339,6 +359,10 @@ module Glimmer
           'caret_position' => {
             getter: {name: 'getCaretPosition'},
             setter: {name: 'setSelection', invoker: lambda { |widget, args| @swt_widget.setSelection(args.first) if args.first }},
+          },
+          'selection_count' => {
+            getter: {name: 'getSelectionCount'},
+            setter: {name: 'setSelection', invoker: lambda { |widget, args| @swt_widget.setSelection(@swt_widget.getCaretPosition, args.first) if args.first }},
           },
         }
       end

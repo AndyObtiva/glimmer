@@ -34,7 +34,15 @@ class RubyEditor
 
     def filtered
       return if filter.nil?
-      ::Dir.glob(::File.join(@path, '**', '*')).map {|p| RubyEditor::File.new(p) if p.include?(filter) && ::File.file?(p) }.compact
+      all_children_files.select {|child| child.path.include?(filter) }
+    end
+
+    def all_children
+      @all_children ||= ::Dir.glob(::File.join(@path, '**', '*')).map {|p| ::File.file?(p) ? RubyEditor::File.new(p) : RubyEditor::Dir.new(p)}
+    end
+
+    def all_children_files
+      @all_children_files ||= all_children.select {|child| child.is_a?(RubyEditor::File) }
     end
 
     def selected_child_path=(selected_path)
@@ -59,8 +67,16 @@ class RubyEditor
   class File
     include Glimmer
 
-    attr_accessor :dirty_content, :caret_position, :line_number
+    attr_accessor :dirty_content, :caret_position, :selection_count, :line_number
     attr_reader :path
+
+    def caret_position=(n)
+      pd @caret_position = n
+    end
+
+    def selection_count=(n)
+      pd @selection_count = n
+    end
 
     def initialize(path)
       raise "Not a file path: #{path}" unless ::File.file?(path)
@@ -79,38 +95,72 @@ class RubyEditor
       ::File.write(path, dirty_content) if ::File.exists?(path)
     end
 
-    def comment_line!(caret_position)
+    def comment_line!
       new_lines = lines
-      the_line_for_caret_position = line_for_caret_position(caret_position)
       delta = 0
-      if the_line_for_caret_position.strip.start_with?('# ')
-        new_lines[line_index_for_caret_position(caret_position)] = line_for_caret_position(caret_position).sub(/# /, '')
-        delta -= 2
-      elsif the_line_for_caret_position.strip.start_with?('#')
-        new_lines[line_index_for_caret_position(caret_position)] = line_for_caret_position(caret_position).sub(/#/, '')
-        delta -= 2
-      else
-        new_lines[line_index_for_caret_position(caret_position)] = "# #{line_for_caret_position(caret_position)}"
-        delta += 2
+      line_caret_positions_for_selection(caret_position, selection_count).reverse.each do |caret_position|
+        delta = 0
+        the_line_index_for_caret_position = line_index_for_caret_position(caret_position)
+        the_line_for_caret_position = line_for_caret_position(caret_position)
+        if the_line_for_caret_position.strip.start_with?('# ')
+          new_lines[the_line_index_for_caret_position] = the_line_for_caret_position.sub(/# /, '')
+          delta -= 2
+        elsif the_line_for_caret_position.strip.start_with?('#')
+          new_lines[the_line_index_for_caret_position] = the_line_for_caret_position.sub(/#/, '')
+          delta -= 1
+        else
+          new_lines[the_line_index_for_caret_position] = "# #{the_line_for_caret_position}"
+          delta += 2
+        end
       end
       old_caret_position = self.caret_position
       self.dirty_content = new_lines.join("\n")   
       self.caret_position = old_caret_position + delta
     end
 
-    def kill_line!(caret_position)
+    def indent!
       new_lines = lines
-      delta = line_for_caret_position(caret_position).size
+      the_line_for_caret_position = line_for_caret_position(caret_position)
+      delta = 2
+      new_lines[line_index_for_caret_position(caret_position)] = "  #{line_for_caret_position(caret_position)}"
+      old_caret_position = self.caret_position
+      self.dirty_content = new_lines.join("\n")   
+      self.caret_position = old_caret_position + delta
+    end
+
+    def outdent!
+      new_lines = lines
+      the_line_for_caret_position = line_for_caret_position(caret_position)
+      if the_line_for_caret_position.start_with?('  ')
+        new_lines[line_index_for_caret_position(caret_position)] = line_for_caret_position(caret_position).sub(/  /, '')
+        delta = -2
+      elsif the_line_for_caret_position.start_with?(' ')
+        new_lines[line_index_for_caret_position(caret_position)] = line_for_caret_position(caret_position).sub(/ /, '')
+        delta = -1
+      else
+        return
+      end
+      old_caret_position = self.caret_position
+      self.dirty_content = new_lines.join("\n")   
+      self.caret_position = old_caret_position + delta
+    end
+
+    def kill_line!
+      new_lines = lines
       new_lines.delete_at(line_index_for_caret_position(caret_position))
       old_caret_position = self.caret_position
       self.dirty_content = new_lines.join("\n")
-      self.caret_position = old_caret_position - delta
+      self.caret_position = old_caret_position
     end
 
-    def duplicate_line!(caret_position)
+    def duplicate_line!
       new_lines = lines
-      new_lines.insert(line_index_for_caret_position(caret_position) + 1, line_for_caret_position(caret_position))
+      the_line_for_caret_position = line_for_caret_position(caret_position)
+      delta = the_line_for_caret_position.size + 1
+      new_lines.insert(line_index_for_caret_position(caret_position) + 1, the_line_for_caret_position)
+      old_caret_position = self.caret_position
       self.dirty_content = new_lines.join("\n")
+      self.caret_position = old_caret_position + delta
     end
 
     def lines
@@ -122,9 +172,22 @@ class RubyEditor
     end
 
     def line_index_for_caret_position(caret_position)
-      count = dirty_content[0..caret_position].count("\n")
-      count -= 1 if dirty_content[caret_position] == "\n"
-      count
+      the_line_index = dirty_content[0..caret_position].count("\n")
+      the_line_index -= 1 if dirty_content[caret_position] == "\n"
+      the_line_index
+    end
+
+    def caret_position_for_line_index(line_index)
+      lines[0..line_index].join("\n").size
+    end
+
+    def line_caret_positions_for_selection(caret_position, selection_count)
+      pd start_line_index = line_index_for_caret_position(caret_position)
+      end_caret_position = caret_position + selection_count.to_i
+      end_caret_position -= 1 if dirty_content[end_caret_position] == "\n"
+      pd end_line_index = line_index_for_caret_position(end_caret_position)
+      pd line_indices = (start_line_index..end_line_index).to_a
+      pd line_caret_positions = line_indices.map { |line_index| caret_position_for_line_index(line_index) }.to_a
     end
 
     def children
@@ -138,6 +201,7 @@ class RubyEditor
 
   def initialize
     @config_file_path = '.glimmer_editor'
+    RubyEditor::Dir.local_dir.all_children # pre-caches children
     load_config
     observe(RubyEditor::Dir.local_dir, 'selected_child.caret_position') do
       save_config
@@ -182,9 +246,13 @@ class RubyEditor
                 key_event.keyCode == swt(:lf) ||
                 key_event.keyCode == swt(:arrow_down)
               @list.swt_widget.setFocus
+            elsif key_event.keyCode == swt(:esc)
+              @text.swt_widget.setFocus
             end
           }    
         }
+        composite {
+          layout_data(:fill, :fill, true, true)
         @list = list(:h_scroll, :v_scroll) {
           layout_data(:fill, :fill, true, true) {
             #exclude bind(RubyEditor::Dir.local_dir, :filter) {|f| !f}
@@ -210,6 +278,8 @@ class RubyEditor
           on_widget_selected {
             RubyEditor::Dir.local_dir.selected_child_path = @tree.swt_widget.getSelection.first.getText
           }
+        }
+ 
         }
       }
       composite {
@@ -238,6 +308,7 @@ class RubyEditor
           text bind(RubyEditor::Dir.local_dir, 'selected_child.dirty_content')
           focus true
           caret_position bind(RubyEditor::Dir.local_dir, 'selected_child.caret_position')
+          selection_count bind(RubyEditor::Dir.local_dir, 'selected_child.selection_count')
           on_focus_lost {
             RubyEditor::Dir.local_dir.selected_child&.write_dirty_content
           }
@@ -249,11 +320,15 @@ class RubyEditor
           }
     	   on_key_pressed { |key_event|
             if Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == '/'
-              RubyEditor::Dir.local_dir.selected_child.comment_line!(@text.swt_widget.getCaretPosition())
+              RubyEditor::Dir.local_dir.selected_child.comment_line!
             elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'k'
-              RubyEditor::Dir.local_dir.selected_child.kill_line!(@text.swt_widget.getCaretPosition())
+              RubyEditor::Dir.local_dir.selected_child.kill_line!
             elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'd'
-              RubyEditor::Dir.local_dir.selected_child.duplicate_line!(@text.swt_widget.getCaretPosition())
+              RubyEditor::Dir.local_dir.selected_child.duplicate_line!
+            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == '['
+              RubyEditor::Dir.local_dir.selected_child.outdent!
+            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == ']'
+              RubyEditor::Dir.local_dir.selected_child.indent!
             elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'r'
               @filter_text.swt_widget.setFocus
             elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'l'
