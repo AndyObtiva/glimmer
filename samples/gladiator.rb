@@ -253,6 +253,52 @@ class RubyEditor
       self.line_number = lines.size
     end
 
+    def move_up!
+      old_lines = lines
+      old_selection_count = self.selection_count
+      old_caret_position = self.caret_position
+      old_caret_position_line_index = line_index_for_caret_position(old_caret_position)
+      old_caret_position_line_caret_position = caret_position_for_caret_position_start_of_line(old_caret_position_line_index)
+      old_end_caret_line_index = end_caret_position_line_index(caret_position, selection_count)
+      new_lines = lines
+      the_line_indices = line_indices_for_selection(caret_position, selection_count)
+      the_lines = lines_for_selection(caret_position, selection_count)
+      new_line_index = [the_line_indices.first - 1, 0].max
+      delta = -1 * (new_lines[new_line_index].size + 1)
+      new_lines[the_line_indices.first..the_line_indices.last] = []
+      new_lines[new_line_index...new_line_index] = the_lines
+      self.dirty_content = new_lines.join("\n")
+      if old_selection_count > 0
+        self.caret_position = caret_position_for_line_index(old_caret_position_line_index) + delta
+        self.selection_count = (caret_position_for_line_index(old_end_caret_line_index + 1) - self.caret_position + delta)
+      else
+        self.caret_position = old_caret_position + delta
+      end
+    end
+
+    def move_down!
+      old_lines = lines
+      old_selection_count = self.selection_count
+      old_caret_position = self.caret_position
+      old_caret_position_line_index = line_index_for_caret_position(old_caret_position)
+      old_caret_position_line_caret_position = caret_position_for_caret_position_start_of_line(old_caret_position_line_index)
+      old_end_caret_line_index = end_caret_position_line_index(caret_position, selection_count)
+      new_lines = lines
+      the_line_indices = line_indices_for_selection(caret_position, selection_count)
+      the_lines = lines_for_selection(caret_position, selection_count)
+      new_line_index = [the_line_indices.first + 1, new_lines.size - 1].min
+      delta = new_lines[new_line_index].size + 1
+      new_lines[the_line_indices.first..the_line_indices.last] = []
+      new_lines[new_line_index...new_line_index] = the_lines
+      self.dirty_content = new_lines.join("\n")
+      if old_selection_count > 0
+        self.caret_position = caret_position_for_line_index(old_caret_position_line_index) + delta
+        self.selection_count = (caret_position_for_line_index(old_end_caret_line_index + 1) - self.caret_position + delta)
+      else
+        self.caret_position = old_caret_position + delta
+      end
+    end
+
     def lines
       dirty_content.split("\n")
     end
@@ -518,6 +564,12 @@ class RubyEditor
               elsif key_event.keyCode == swt(:end)
                 RubyEditor::Dir.local_dir.selected_child.end
                 key_event.doit = false
+              elsif key_event.stateMask == swt(:command) && key_event.keyCode == swt(:arrow_up)
+                RubyEditor::Dir.local_dir.selected_child.move_up!
+                key_event.doit = false
+              elsif key_event.stateMask == swt(:command) && key_event.keyCode == swt(:arrow_down)
+                RubyEditor::Dir.local_dir.selected_child.move_down!
+                key_event.doit = false
               end
             }
             on_verify_text { |verify_event|
@@ -535,4 +587,4 @@ class RubyEditor
   end
 end
 
-RubyEditor.new.launch
+RubyEditor.new.launch
