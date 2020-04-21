@@ -67,7 +67,7 @@ class RubyEditor
   class File
     include Glimmer
 
-    attr_accessor :dirty_content, :caret_position, :selection_count, :line_number
+    attr_accessor :dirty_content, :caret_position, :selection_count, :line_number, :find_text
     attr_reader :path
 
     def initialize(path)
@@ -206,6 +206,19 @@ class RubyEditor
       end
     end
 
+    def find_next
+      all_lines = lines
+      the_line_index = line_index_for_caret_position(caret_position)
+      all_lines.rotate(the_line_index + 1).each_with_index do |the_line, the_index|
+        the_index = (the_index + the_line_index + 1)%all_lines.size
+        if the_line.downcase.include?(find_text.to_s.downcase)
+          self.caret_position = the_line.downcase.index(find_text.to_s.downcase) + caret_position_for_line_index(the_index)
+          self.selection_count = find_text.to_s.size
+          return
+        end
+      end
+    end
+
     def lines
       dirty_content.split("\n")
     end
@@ -258,6 +271,7 @@ class RubyEditor
   end
 
   def initialize
+    Display.setAppName('Glimmer Editor')
     @config_file_path = '.glimmer_editor'
     RubyEditor::Dir.local_dir.all_children # pre-caches children
     load_config
@@ -287,7 +301,7 @@ class RubyEditor
 
   def launch
     @shell = shell {
-      text 'Ruby Editor'
+      text 'Glimmer Editor'
       minimum_size 1280, 960
       grid_layout 2, false
       composite {
@@ -357,6 +371,16 @@ class RubyEditor
               end
             }
           }
+          @find_text = text {
+            layout_data :fill, :fill, true, false
+            text bind(RubyEditor::Dir.local_dir, 'selected_child.find_text')
+    	     on_key_pressed { |key_event|
+              if Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :cr) || Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :lf)
+                RubyEditor::Dir.local_dir.selected_child.find_next
+                @text.swt_widget.setFocus
+              end
+            }
+          }
         }
         @text = text(:multi, :h_scroll, :v_scroll) {
           layout_data :fill, :fill, true, true
@@ -388,6 +412,11 @@ class RubyEditor
               RubyEditor::Dir.local_dir.selected_child.indent!
             elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'r'
               @filter_text.swt_widget.setFocus
+            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'g'
+              RubyEditor::Dir.local_dir.selected_child.find_next
+            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'f'
+              @find_text.swt_widget.selectAll
+              @find_text.swt_widget.setFocus
             elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'l'
               @line_number_text.swt_widget.selectAll
               @line_number_text.swt_widget.setFocus
