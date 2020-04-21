@@ -79,7 +79,7 @@ class RubyEditor
       end
       observe(self, :line_number) do
         new_caret_position = dirty_content.split("\n")[0...(line_number.to_i - 1)].map(&:size).sum + line_number.to_i - 1
-        pd self.caret_position = new_caret_position unless line_index_for_caret_position(new_caret_position) == line_index_for_caret_position(caret_position)
+        self.caret_position = new_caret_position unless line_index_for_caret_position(new_caret_position) == line_index_for_caret_position(caret_position)
       end
     end
 
@@ -232,6 +232,22 @@ class RubyEditor
           return
         end
       end
+    end
+
+    def page_up
+      self.line_number = [(self.line_number - 15), 1].max
+    end
+
+    def page_down
+      self.line_number = [(self.line_number + 15), lines.size].min
+    end
+
+    def home
+      self.line_number = 1
+    end
+
+    def end
+      self.line_number = lines.size
     end
 
     def lines
@@ -403,8 +419,8 @@ class RubyEditor
           foreground rgb(75, 75, 75)
           text bind(RubyEditor::Dir.local_dir, 'selected_child.dirty_content')
           focus true
-          caret_position bind(RubyEditor::Dir.local_dir, 'selected_child.caret_position')
-          selection_count bind(RubyEditor::Dir.local_dir, 'selected_child.selection_count')
+			caret_position bind(RubyEditor::Dir.local_dir, 'selected_child.caret_position')
+        	selection_count bind(RubyEditor::Dir.local_dir, 'selected_child.selection_count')
           on_focus_lost {
             RubyEditor::Dir.local_dir.selected_child&.write_dirty_content
           }
@@ -437,6 +453,18 @@ class RubyEditor
             elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'l'
               @line_number_text.swt_widget.selectAll
               @line_number_text.swt_widget.setFocus
+            elsif key_event.keyCode == swt(:page_up)
+              RubyEditor::Dir.local_dir.selected_child.page_up
+              key_event.doit = false
+            elsif key_event.keyCode == swt(:page_down)
+              RubyEditor::Dir.local_dir.selected_child.page_down
+              key_event.doit = false
+            elsif key_event.keyCode == swt(:home)
+              RubyEditor::Dir.local_dir.selected_child.home
+              key_event.doit = false
+            elsif key_event.keyCode == swt(:end)
+              RubyEditor::Dir.local_dir.selected_child.end
+              key_event.doit = false
             end
           }
           on_verify_text { |verify_event|
