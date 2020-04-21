@@ -360,7 +360,7 @@ class RubyEditor
             layout_data(:fill, :fill, true, true) {
               #exclude bind(RubyEditor::Dir.local_dir, :filter) {|f| !f}
             }
-            visible bind(RubyEditor::Dir, 'local_dir.filter') {|f| !!f}
+            #visible bind(RubyEditor::Dir, 'local_dir.filter') {|f| !!f}
             selection bind(RubyEditor::Dir.local_dir, :filtered_path)
             on_widget_selected {
               RubyEditor::Dir.local_dir.selected_child_path = @list.swt_widget.getSelection.first
@@ -376,10 +376,16 @@ class RubyEditor
             layout_data(:fill, :fill, true, true) {
               #exclude bind(RubyEditor::Dir.local_dir, :filter) {|f| !!f}
             }
-            visible bind(RubyEditor::Dir, 'local_dir.filter') {|f| !f}
+            #visible bind(RubyEditor::Dir, 'local_dir.filter') {|f| !f}
             items bind(RubyEditor::Dir, :local_dir), tree_properties(children: :children, text: :path)
             on_widget_selected {
               RubyEditor::Dir.local_dir.selected_child_path = @tree.swt_widget.getSelection.first.getText
+            }
+            on_paint_control {
+              root_item = @tree.swt_widget.getItems.first
+              if root_item && !root_item.getExpanded
+                root_item.setExpanded true
+              end
             }
           }
         }
