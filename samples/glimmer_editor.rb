@@ -70,14 +70,6 @@ class RubyEditor
     attr_accessor :dirty_content, :caret_position, :selection_count, :line_number
     attr_reader :path
 
-    def caret_position=(n)
-      pd @caret_position = n
-    end
-
-    def selection_count=(n)
-      pd @selection_count = n
-    end
-
     def initialize(path)
       raise "Not a file path: #{path}" unless ::File.file?(path)
       @path = path
@@ -96,49 +88,57 @@ class RubyEditor
     end
 
     def comment_line!
-      new_lines = lines
+      old_lines = lines
+      old_caret_position = self.caret_position
+      old_caret_position_line_caret_position = caret_position_for_line_index(line_index_for_caret_position(old_caret_position))
+      new_lines = lines   
       delta = 0
-      line_caret_positions_for_selection(caret_position, selection_count).reverse.each do |caret_position|
+      line_indices_for_selection(caret_position, selection_count).reverse.each do | the_line_index |
         delta = 0
-        the_line_index_for_caret_position = line_index_for_caret_position(caret_position)
-        the_line_for_caret_position = line_for_caret_position(caret_position)
-        if the_line_for_caret_position.strip.start_with?('# ')
-          new_lines[the_line_index_for_caret_position] = the_line_for_caret_position.sub(/# /, '')
+        the_line = old_lines[the_line_index]
+        if the_line.strip.start_with?('# ')
+          new_lines[the_line_index] = the_line.sub(/# /, '')
           delta -= 2
-        elsif the_line_for_caret_position.strip.start_with?('#')
-          new_lines[the_line_index_for_caret_position] = the_line_for_caret_position.sub(/#/, '')
+        elsif the_line.strip.start_with?('#')
+          new_lines[the_line_index] = the_line.sub(/#/, '')
           delta -= 1
         else
-          new_lines[the_line_index_for_caret_position] = "# #{the_line_for_caret_position}"
+          new_lines[the_line_index] = "# #{the_line}"
           delta += 2
         end
+      end
+      self.dirty_content = new_lines.join("\n")   
+      new_caret_position = old_caret_position + delta
+      new_caret_position = [new_caret_position, old_caret_position_line_caret_position].max
+      self.caret_position = new_caret_position
+    end
+
+    def indent!
+      old_lines = lines
+      new_lines = lines
+      delta = 2
+      line_indices_for_selection(caret_position, selection_count).each do |the_line_index|
+        the_line = old_lines[the_line_index]
+        new_lines[the_line_index] = "  #{the_line}"
       end
       old_caret_position = self.caret_position
       self.dirty_content = new_lines.join("\n")   
       self.caret_position = old_caret_position + delta
     end
 
-    def indent!
-      new_lines = lines
-      the_line_for_caret_position = line_for_caret_position(caret_position)
-      delta = 2
-      new_lines[line_index_for_caret_position(caret_position)] = "  #{line_for_caret_position(caret_position)}"
-      old_caret_position = self.caret_position
-      self.dirty_content = new_lines.join("\n")   
-      self.caret_position = old_caret_position + delta
-    end
-
     def outdent!
+      old_lines = lines
       new_lines = lines
-      the_line_for_caret_position = line_for_caret_position(caret_position)
-      if the_line_for_caret_position.start_with?('  ')
-        new_lines[line_index_for_caret_position(caret_position)] = line_for_caret_position(caret_position).sub(/  /, '')
-        delta = -2
-      elsif the_line_for_caret_position.start_with?(' ')
-        new_lines[line_index_for_caret_position(caret_position)] = line_for_caret_position(caret_position).sub(/ /, '')
-        delta = -1
-      else
-        return
+      delta = 0
+      line_indices_for_selection(caret_position, selection_count).each do |the_line_index|
+        the_line = old_lines[the_line_index]
+        if the_line.start_with?('  ')
+          new_lines[the_line_index] = the_line.sub(/  /, '')
+          delta = -2
+        elsif the_line.start_with?(' ')
+          new_lines[the_line_index] = the_line.sub(/ /, '')
+          delta = -1
+        end
       end
       old_caret_position = self.caret_position
       self.dirty_content = new_lines.join("\n")   
@@ -147,7 +147,8 @@ class RubyEditor
 
     def kill_line!
       new_lines = lines
-      new_lines.delete_at(line_index_for_caret_position(caret_position))
+      line_indices = line_indices_for_selection(caret_position, selection_count)
+      new_lines = new_lines[0...line_indices.first] + new_lines[(line_indices.last+1)...new_lines.size]
       old_caret_position = self.caret_position
       self.dirty_content = new_lines.join("\n")
       self.caret_position = old_caret_position
@@ -172,22 +173,28 @@ class RubyEditor
     end
 
     def line_index_for_caret_position(caret_position)
-      the_line_index = dirty_content[0..caret_position].count("\n")
-      the_line_index -= 1 if dirty_content[caret_position] == "\n"
-      the_line_index
+      dirty_content[0...caret_position].count("\n")
     end
 
     def caret_position_for_line_index(line_index)
-      lines[0..line_index].join("\n").size
+      lines[0...line_index].join("\n").size + 1
     end
 
     def line_caret_positions_for_selection(caret_position, selection_count)
-      pd start_line_index = line_index_for_caret_position(caret_position)
-      end_caret_position = caret_position + selection_count.to_i
-      end_caret_position -= 1 if dirty_content[end_caret_position] == "\n"
-      pd end_line_index = line_index_for_caret_position(end_caret_position)
-      pd line_indices = (start_line_index..end_line_index).to_a
-      pd line_caret_positions = line_indices.map { |line_index| caret_position_for_line_index(line_index) }.to_a
+      line_indices = line_indices_for_selection(caret_position, selection_count)
+      line_caret_positions = line_indices.map { |line_index| caret_position_for_line_index(line_index) }.to_a
+    end
+
+    def line_indices_for_selection(caret_position, selection_count)
+      start_line_index = line_index_for_caret_position(caret_position)
+      if selection_count.to_i > 0
+        end_caret_position = caret_position + selection_count.to_i
+        end_caret_position -= 1 if dirty_content[end_caret_position - 1] == "\n"
+        end_line_index = line_index_for_caret_position(end_caret_position)
+      else
+        end_line_index = start_line_index
+      end
+      (start_line_index..end_line_index).to_a
     end
 
     def children
@@ -253,33 +260,32 @@ class RubyEditor
         }
         composite {
           layout_data(:fill, :fill, true, true)
-        @list = list(:h_scroll, :v_scroll) {
-          layout_data(:fill, :fill, true, true) {
-            #exclude bind(RubyEditor::Dir.local_dir, :filter) {|f| !f}
-          }
-          visible bind(RubyEditor::Dir, 'local_dir.filter') {|f| !!f}
-          selection bind(RubyEditor::Dir.local_dir, :filtered_path)
-          on_widget_selected {
-            RubyEditor::Dir.local_dir.selected_child_path = @list.swt_widget.getSelection.first
-          }
-    	   on_key_pressed { |key_event|
-            if Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :cr) || Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :lf)
+          @list = list(:h_scroll, :v_scroll) {
+            layout_data(:fill, :fill, true, true) {
+              #exclude bind(RubyEditor::Dir.local_dir, :filter) {|f| !f}
+            }
+            visible bind(RubyEditor::Dir, 'local_dir.filter') {|f| !!f}
+            selection bind(RubyEditor::Dir.local_dir, :filtered_path)
+            on_widget_selected {
               RubyEditor::Dir.local_dir.selected_child_path = @list.swt_widget.getSelection.first
-              @text.swt_widget.setFocus
-            end
+            }
+       	  on_key_pressed { |key_event|
+              if Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :cr) || Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :lf)
+                RubyEditor::Dir.local_dir.selected_child_path = @list.swt_widget.getSelection.first
+                @text.swt_widget.setFocus
+              end
+            }
           }
-        }
-        @tree = tree(:virtual, :border, :h_scroll, :v_scroll) {
-          layout_data(:fill, :fill, true, true) {
-            #exclude bind(RubyEditor::Dir.local_dir, :filter) {|f| !!f}
+          @tree = tree(:virtual, :border, :h_scroll, :v_scroll) {
+            layout_data(:fill, :fill, true, true) {
+              #exclude bind(RubyEditor::Dir.local_dir, :filter) {|f| !!f}
+            }
+            visible bind(RubyEditor::Dir, 'local_dir.filter') {|f| !f}
+            items bind(RubyEditor::Dir, :local_dir), tree_properties(children: :children, text: :path)
+            on_widget_selected {
+              RubyEditor::Dir.local_dir.selected_child_path = @tree.swt_widget.getSelection.first.getText
+            }
           }
-          visible bind(RubyEditor::Dir, 'local_dir.filter') {|f| !f}
-          items bind(RubyEditor::Dir, :local_dir), tree_properties(children: :children, text: :path)
-          on_widget_selected {
-            RubyEditor::Dir.local_dir.selected_child_path = @tree.swt_widget.getSelection.first.getText
-          }
-        }
- 
         }
       }
       composite {
