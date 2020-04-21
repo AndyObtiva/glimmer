@@ -34,7 +34,7 @@ class RubyEditor
 
     def filtered
       return if filter.nil?
-      all_children_files.select {|child| child.path.include?(filter) }
+      all_children_files.select {|child| child.path.downcase.include?(filter.downcase) }
     end
 
     def all_children
@@ -425,10 +425,12 @@ class RubyEditor
           layout_data :fill, :fill, true, true
           grid_layout 2, false
           @line_numbers_text = text(:multi) {
-            layout_data :left, :fill, false, true
+            layout_data(:right, :fill, false, true) {
+              width_hint bind(RubyEditor::Dir.local_dir, 'selected_child.lines') {|lines| (lines.size.to_s.chars.size * 10) + 4 }
+            }
             font name: 'Consolas', height: 15
             foreground rgb(75, 75, 75)
-            text bind(RubyEditor::Dir.local_dir, 'selected_child.lines') {|lines| lines.size.times.map {|n| n+1}.join("\n")}
+            text bind(RubyEditor::Dir.local_dir, 'selected_child.lines') {|lines| lines.size.times.map {|n| (' ' * (lines.size.to_s.chars.size - (n+1).to_s.chars.size)) + (n+1).to_s }.join("\n")}
             top_index bind(RubyEditor::Dir.local_dir, 'selected_child.top_index')
           }
           @text = text(:multi, :h_scroll, :v_scroll) {
