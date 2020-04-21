@@ -79,7 +79,7 @@ class RubyEditor
       end
       observe(self, :line_number) do
         new_caret_position = dirty_content.split("\n")[0...(line_number.to_i - 1)].map(&:size).sum + line_number.to_i - 1
-        self.caret_position = new_caret_position unless line_index_for_caret_position(new_caret_position) == line_index_for_caret_position(caret_position)
+        pd self.caret_position = new_caret_position unless line_index_for_caret_position(new_caret_position) == line_index_for_caret_position(caret_position)
       end
     end
 
@@ -89,9 +89,12 @@ class RubyEditor
 
     def comment_line!
       old_lines = lines
+      old_selection_count = self.selection_count
       old_caret_position = self.caret_position
-      old_caret_position_line_caret_position = caret_position_for_line_index(line_index_for_caret_position(old_caret_position))
-      new_lines = lines   
+      old_caret_position_line_index = line_index_for_caret_position(old_caret_position)
+      old_caret_position_line_caret_position = caret_position_for_line_index(old_caret_position_line_index)
+      old_end_caret_line_index = end_caret_position_line_index(caret_position, selection_count)
+      new_lines = lines
       delta = 0
       line_indices_for_selection(caret_position, selection_count).reverse.each do | the_line_index |
         delta = 0
@@ -108,13 +111,23 @@ class RubyEditor
         end
       end
       self.dirty_content = new_lines.join("\n")   
-      new_caret_position = old_caret_position + delta
-      new_caret_position = [new_caret_position, old_caret_position_line_caret_position].max
-      self.caret_position = new_caret_position
+      if old_selection_count > 0
+        self.caret_position = caret_position_for_line_index(old_caret_position_line_index)
+        self.selection_count = (caret_position_for_line_index(old_end_caret_line_index + 1) - self.caret_position)
+      else
+        new_caret_position = old_caret_position + delta
+        new_caret_position = [new_caret_position, old_caret_position_line_caret_position].max
+        self.caret_position = new_caret_position
+      end
     end
 
     def indent!
       old_lines = lines
+      old_selection_count = self.selection_count
+      old_caret_position = self.caret_position
+      old_caret_position_line_index = line_index_for_caret_position(old_caret_position)
+      old_caret_position_line_caret_position = caret_position_for_line_index(old_caret_position_line_index)
+      old_end_caret_line_index = end_caret_position_line_index(caret_position, selection_count)
       new_lines = lines
       delta = 2
       line_indices_for_selection(caret_position, selection_count).each do |the_line_index|
@@ -123,11 +136,21 @@ class RubyEditor
       end
       old_caret_position = self.caret_position
       self.dirty_content = new_lines.join("\n")   
-      self.caret_position = old_caret_position + delta
+      if old_selection_count > 0
+        self.caret_position = caret_position_for_line_index(old_caret_position_line_index)
+        self.selection_count = (caret_position_for_line_index(old_end_caret_line_index + 1) - self.caret_position)
+      else
+        self.caret_position = old_caret_position + delta
+      end
     end
 
     def outdent!
       old_lines = lines
+      old_selection_count = self.selection_count
+      old_caret_position = self.caret_position
+      old_caret_position_line_index = line_index_for_caret_position(old_caret_position)
+      old_caret_position_line_caret_position = caret_position_for_line_index(old_caret_position_line_index)
+      old_end_caret_line_index = end_caret_position_line_index(caret_position, selection_count)
       new_lines = lines
       delta = 0
       line_indices_for_selection(caret_position, selection_count).each do |the_line_index|
@@ -140,9 +163,15 @@ class RubyEditor
           delta = -1
         end
       end
-      old_caret_position = self.caret_position
       self.dirty_content = new_lines.join("\n")   
-      self.caret_position = old_caret_position + delta
+      if old_selection_count > 0
+        self.caret_position = caret_position_for_line_index(old_caret_position_line_index)
+        self.selection_count = (caret_position_for_line_index(old_end_caret_line_index + 1) - self.caret_position)
+      else
+        new_caret_position = old_caret_position + delta
+        new_caret_position = [new_caret_position, old_caret_position_line_caret_position].max
+        self.caret_position = new_caret_position
+      end
     end
 
     def kill_line!
@@ -185,12 +214,16 @@ class RubyEditor
       line_caret_positions = line_indices.map { |line_index| caret_position_for_line_index(line_index) }.to_a
     end
 
+    def end_caret_position_line_index(caret_position, selection_count)
+      end_caret_position = caret_position + selection_count.to_i
+      end_caret_position -= 1 if dirty_content[end_caret_position - 1] == "\n"
+      end_line_index = line_index_for_caret_position(end_caret_position)
+    end
+
     def line_indices_for_selection(caret_position, selection_count)
       start_line_index = line_index_for_caret_position(caret_position)
       if selection_count.to_i > 0
-        end_caret_position = caret_position + selection_count.to_i
-        end_caret_position -= 1 if dirty_content[end_caret_position - 1] == "\n"
-        end_line_index = line_index_for_caret_position(end_caret_position)
+        end_line_index = end_caret_position_line_index(caret_position, selection_count)
       else
         end_line_index = start_line_index
       end

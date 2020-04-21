@@ -362,7 +362,7 @@ module Glimmer
           },
           'selection_count' => {
             getter: {name: 'getSelectionCount'},
-            setter: {name: 'setSelection', invoker: lambda { |widget, args| @swt_widget.setSelection(@swt_widget.getCaretPosition, args.first) if args.first }},
+            setter: {name: 'setSelection', invoker: lambda { |widget, args| @swt_widget.setSelection(@swt_widget.getCaretPosition, @swt_widget.getCaretPosition + args.first) if args.first }},
           },
         }
       end
