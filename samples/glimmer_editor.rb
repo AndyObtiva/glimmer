@@ -137,7 +137,7 @@ class RubyEditor
   end
 
   def initialize
-    @config_file_path = '.ruby_editor'
+    @config_file_path = '.glimmer_editor'
     load_config
     observe(RubyEditor::Dir.local_dir, 'selected_child.caret_position') do
       save_config

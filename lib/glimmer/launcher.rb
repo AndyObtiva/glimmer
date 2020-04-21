@@ -87,7 +87,7 @@ module Glimmer
 
     def launch_application
       threads = @application_paths.map do |application_path|
-        puts "Launching Glimmer Application: #{application_path}" unless application_path.to_s.include?('irb')
+        puts "Launching Glimmer Application: #{application_path}" unless application_path.to_s.match(/(irb)|(glimmer_editor)/)
         Thread.new do
           self.class.launch(
             application_path,
