@@ -78,12 +78,15 @@ class RubyEditor
         self.line_number = line_index_for_caret_position(caret_position) + 1
       end
       observe(self, :line_number) do
-        new_caret_position = dirty_content.split("\n")[0...(line_number.to_i - 1)].map(&:size).sum + line_number.to_i - 1
-        self.caret_position = new_caret_position unless line_index_for_caret_position(new_caret_position) == line_index_for_caret_position(caret_position)
+        if line_number
+          new_caret_position = dirty_content.split("\n")[0...(line_number.to_i - 1)].map(&:size).sum + line_number.to_i - 1
+          self.caret_position = new_caret_position unless line_index_for_caret_position(new_caret_position) == line_index_for_caret_position(caret_position)
+        end
       end
     end
 
     def write_dirty_content
+#       ::File.write(path, dirty_content.gsub("\r", '')) if ::File.exists?(path)
       ::File.write(path, dirty_content) if ::File.exists?(path)
     end
 
@@ -188,7 +191,7 @@ class RubyEditor
       old_selection_count = self.selection_count
       old_caret_position = self.caret_position
       old_caret_position_line_index = line_index_for_caret_position(old_caret_position)
-      old_caret_position_line_caret_position = caret_position_for_line_index(old_caret_position_line_index)
+      old_caret_position_line_caret_position = caret_position_for_caret_position_start_of_line(old_caret_position_line_index)
       old_end_caret_line_index = end_caret_position_line_index(caret_position, selection_count)
       new_lines = lines
       the_line_indices = line_indices_for_selection(caret_position, selection_count)
@@ -266,6 +269,10 @@ class RubyEditor
       lines[0...line_index].join("\n").size + 1
     end
 
+    def caret_position_for_caret_position_start_of_line(caret_position)
+      caret_position_for_line_index(line_index_for_caret_position(caret_position))
+    end
+
     def line_caret_positions_for_selection(caret_position, selection_count)
       line_indices = line_indices_for_selection(caret_position, selection_count)
       line_caret_positions = line_indices.map { |line_index| caret_position_for_line_index(line_index) }.to_a
@@ -304,9 +311,13 @@ class RubyEditor
   def initialize
     Display.setAppName('Gladiator')
     @config_file_path = '.gladiator'
+    @config = {}
     RubyEditor::Dir.local_dir.all_children # pre-caches children
     load_config
     observe(RubyEditor::Dir.local_dir, 'selected_child.caret_position') do
+      save_config
+    end
+    observe(RubyEditor::Dir.local_dir, 'selected_child.top_index') do
       save_config
     end
   end
@@ -314,19 +325,21 @@ class RubyEditor
   def load_config
     if ::File.exists?(@config_file_path)
       config_yaml = ::File.read(@config_file_path)
-      config = YAML.load(config_yaml)
-      RubyEditor::Dir.local_dir.selected_child = RubyEditor::File.new(config[:selected_child_path])
-      RubyEditor::Dir.local_dir.selected_child.caret_position = config[:caret_position]
+      @config = YAML.load(config_yaml)
+      RubyEditor::Dir.local_dir.selected_child = RubyEditor::File.new(@config[:selected_child_path]) if @config[:selected_child_path]
+      RubyEditor::Dir.local_dir.selected_child.caret_position  = RubyEditor::Dir.local_dir.selected_child.caret_position_for_caret_position_start_of_line(@config[:caret_position]) if @config[:caret_position]
+      RubyEditor::Dir.local_dir.selected_child.top_index = @config[:top_index] if @config[:top_index]
     end
   end
 
   def save_config
     child = RubyEditor::Dir.local_dir.selected_child
-    config = {
+    @config = {
       selected_child_path: child.path,
-      caret_position: child.caret_position
+      caret_position: child.caret_position,
+      top_index: child.top_index,
     }
-    config_yaml = YAML.dump(config)
+    config_yaml = YAML.dump(@config)
     ::File.write(@config_file_path, config_yaml)
   end
 
@@ -430,9 +443,18 @@ class RubyEditor
         composite {
           layout_data :fill, :fill, true, true
           grid_layout 2, false
-          @line_numbers_text = text(:multi) {
+          @line_numbers_text = text(:multi) { |text_proxy|
             layout_data(:right, :fill, false, true) {
               width_hint bind(RubyEditor::Dir.local_dir, 'selected_child.lines') {|lines| (lines.size.to_s.chars.size * 10) + 4 }
+            }
+            on_focus_gained {
+              @text&.swt_widget.setFocus
+            }
+            on_key_pressed {
+              @text&.swt_widget.setFocus
+            }
+            on_mouse_up {
+              @text&.swt_widget.setFocus
             }
             font name: 'Consolas', height: 15
             background color(:widget_background)
@@ -440,7 +462,7 @@ class RubyEditor
             text bind(RubyEditor::Dir.local_dir, 'selected_child.lines') {|lines| lines.size.times.map {|n| (' ' * (lines.size.to_s.chars.size - (n+1).to_s.chars.size)) + (n+1).to_s }.join("\n")}
             top_index bind(RubyEditor::Dir.local_dir, 'selected_child.top_index')
           }
-          @text = text(:multi, :h_scroll, :v_scroll) {
+          @text = text(:multi, :h_scroll, :v_scroll) { |text_proxy|
             layout_data :fill, :fill, true, true
             font name: 'Consolas', height: 15
             foreground rgb(75, 75, 75)
@@ -476,6 +498,9 @@ class RubyEditor
               elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'g'
                 RubyEditor::Dir.local_dir.selected_child.find_next
               elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'f'
+                if @text.swt_widget.getSelectionText && @text.swt_widget.getSelectionText.size > 0
+                  @find_text.swt_widget.setText @text.swt_widget.getSelectionText
+                end
                 @find_text.swt_widget.selectAll
                 @find_text.swt_widget.setFocus
               elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'l'

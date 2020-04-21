@@ -150,8 +150,12 @@ module Glimmer
               }
             end,
             :top_index => proc do |observer|
+              @last_top_index = @swt_widget.getTopIndex
               on_paint_control { |event|
-                observer.call(@swt_widget.getTopIndex)
+                if @swt_widget.getTopIndex != @last_top_index
+                  @last_top_index = @swt_widget.getTopIndex
+                  observer.call(@last_top_index)
+                end
               }
             end,
           },
