@@ -429,6 +429,7 @@ class RubyEditor
               width_hint bind(RubyEditor::Dir.local_dir, 'selected_child.lines') {|lines| (lines.size.to_s.chars.size * 10) + 4 }
             }
             font name: 'Consolas', height: 15
+            background color(:widget_background)
             foreground rgb(75, 75, 75)
             text bind(RubyEditor::Dir.local_dir, 'selected_child.lines') {|lines| lines.size.times.map {|n| (' ' * (lines.size.to_s.chars.size - (n+1).to_s.chars.size)) + (n+1).to_s }.join("\n")}
             top_index bind(RubyEditor::Dir.local_dir, 'selected_child.top_index')
