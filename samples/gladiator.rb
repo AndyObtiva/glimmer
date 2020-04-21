@@ -303,7 +303,7 @@ class RubyEditor
 
   def initialize
     Display.setAppName('Gladiator')
-    @config_file_path = '.glimmer_editor'
+    @config_file_path = '.gladiator'
     RubyEditor::Dir.local_dir.all_children # pre-caches children
     load_config
     observe(RubyEditor::Dir.local_dir, 'selected_child.caret_position') do
@@ -388,10 +388,15 @@ class RubyEditor
         grid_layout 1, false
         layout_data :fill, :fill, true, true
         composite {
-          grid_layout 1, false
+          grid_layout 2, false
           @label = label {
-            layout_data :fill, :fill, true, false
+            layout_data(:fill, :fill, true, false) {
+              horizontal_span 2
+            }
             text bind(RubyEditor::Dir.local_dir, 'selected_child.path')
+          }
+          label {
+            text 'Line Number:'
           }
           @line_number_text = text {
             layout_data :fill, :fill, true, false
@@ -401,6 +406,9 @@ class RubyEditor
                 @text.swt_widget.setFocus
               end
             }
+          }
+          label {
+            text 'Find Text:'
           }
           @find_text = text {
             layout_data :fill, :fill, true, false
