@@ -184,13 +184,26 @@ class RubyEditor
     end
 
     def duplicate_line!
-      new_lines = lines
-      the_line_for_caret_position = line_for_caret_position(caret_position)
-      delta = the_line_for_caret_position.size + 1
-      new_lines.insert(line_index_for_caret_position(caret_position) + 1, the_line_for_caret_position)
+      old_lines = lines
+      old_selection_count = self.selection_count
       old_caret_position = self.caret_position
+      old_caret_position_line_index = line_index_for_caret_position(old_caret_position)
+      old_caret_position_line_caret_position = caret_position_for_line_index(old_caret_position_line_index)
+      old_end_caret_line_index = end_caret_position_line_index(caret_position, selection_count)
+      new_lines = lines
+      the_line_indices = line_indices_for_selection(caret_position, selection_count)
+      the_lines = lines_for_selection(caret_position, selection_count)
+      delta = the_lines.join("\n").size + 1
+      the_lines.each_with_index do |the_line, i|
+        new_lines.insert(the_line_indices.first + i, the_line)
+      end
       self.dirty_content = new_lines.join("\n")
-      self.caret_position = old_caret_position + delta
+      if old_selection_count > 0
+        self.caret_position = caret_position_for_line_index(old_caret_position_line_index)
+        self.selection_count = (caret_position_for_line_index(old_end_caret_line_index + 1) - self.caret_position)
+      else
+        self.caret_position = old_caret_position + delta
+      end
     end
 
     def lines
@@ -218,6 +231,11 @@ class RubyEditor
       end_caret_position = caret_position + selection_count.to_i
       end_caret_position -= 1 if dirty_content[end_caret_position - 1] == "\n"
       end_line_index = line_index_for_caret_position(end_caret_position)
+    end
+
+    def lines_for_selection(caret_position, selection_count)
+      line_indices = line_indices_for_selection(caret_position, selection_count)
+      lines[line_indices.first..line_indices.last]
     end
 
     def line_indices_for_selection(caret_position, selection_count)
