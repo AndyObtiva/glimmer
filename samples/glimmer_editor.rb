@@ -219,6 +219,21 @@ class RubyEditor
       end
     end
 
+    def find_previous
+      all_lines = lines
+      the_line_index = line_index_for_caret_position(caret_position)
+      all_lines.rotate(the_line_index).each_with_index.map do |the_line, the_index|
+        the_index = (the_index + the_line_index)%all_lines.size
+        [the_line, the_index]
+      end.reverse.each do |the_line, the_index|
+        if the_line.downcase.include?(find_text.to_s.downcase)
+          self.caret_position = the_line.downcase.index(find_text.to_s.downcase) + caret_position_for_line_index(the_index)
+          self.selection_count = find_text.to_s.size
+          return
+        end
+      end
+    end
+
     def lines
       dirty_content.split("\n")
     end
@@ -366,7 +381,7 @@ class RubyEditor
             layout_data :fill, :fill, true, false
             text bind(RubyEditor::Dir.local_dir, 'selected_child.line_number', on_read: :to_s, on_write: :to_i)
     	     on_key_pressed { |key_event|
-              if Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :cr) || Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :lf)
+              if key_event.keyCode == swt(:cr)
                 @text.swt_widget.setFocus
               end
             }
@@ -375,7 +390,7 @@ class RubyEditor
             layout_data :fill, :fill, true, false
             text bind(RubyEditor::Dir.local_dir, 'selected_child.find_text')
     	     on_key_pressed { |key_event|
-              if Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :cr) || Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :lf)
+              if key_event.keyCode == swt(:cr)
                 RubyEditor::Dir.local_dir.selected_child.find_next
                 @text.swt_widget.setFocus
               end
@@ -412,6 +427,8 @@ class RubyEditor
               RubyEditor::Dir.local_dir.selected_child.indent!
             elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'r'
               @filter_text.swt_widget.setFocus
+            elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command, :shift) && key_event.character.chr.downcase == 'g'
+              RubyEditor::Dir.local_dir.selected_child.find_previous
             elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'g'
               RubyEditor::Dir.local_dir.selected_child.find_next
             elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'f'
