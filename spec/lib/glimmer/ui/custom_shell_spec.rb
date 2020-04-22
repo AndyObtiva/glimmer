@@ -54,7 +54,7 @@ module GlimmerSpec
 
     it 'rejects a non shell body root' do
       expect do
-        time_composite_custom_shell
+        invalid_custom_shell
       end.to raise_error(NameError)
     end
 

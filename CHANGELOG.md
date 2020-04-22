@@ -2,6 +2,8 @@
 
 ## 0.5.9
 
+- Allow discovery of custom widgets without namespace if there are no existing classes with same name
+
 ## 0.5.8
 
 - Support hooking into About and Preferences application menu items

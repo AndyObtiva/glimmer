@@ -4,7 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Allow discovery of custom widgets without namespace if they belong to the same namespace as the consumer
 - Bring back Glimmer XML syntax and integrate it into Glimmer core to use with the browser widget.
 - Scaffold a Glimmer app: provide a standard structure for building a Glimmer app (models, views, and assets [images, videos, sounds])
 

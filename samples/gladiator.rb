@@ -1,4 +1,3 @@
-require 'puts_debuggerer'
 require 'yaml'
 
 class RubyEditor
@@ -7,7 +6,7 @@ class RubyEditor
   class Dir
     class << self
       def local_dir
-        @local_dir ||= new('.')
+        @local_dir ||= new(ENV['LOCAL_DIR'] || '.')
       end
     end
 
@@ -48,7 +47,14 @@ class RubyEditor
     def selected_child_path=(selected_path)
       if selected_path && ::File.file?(selected_path)
         @selected_child&.write_dirty_content
-        self.selected_child = RubyEditor::File.new(selected_path)
+        new_child = RubyEditor::File.new(selected_path)
+        begin
+          if new_child.lines.any?
+            self.selected_child = new_child
+          end
+        rescue
+          # no op
+        end
       end
     end
     
@@ -86,7 +92,7 @@ class RubyEditor
     end
 
     def write_dirty_content
-#       ::File.write(path, dirty_content.gsub("\r", '')) if ::File.exists?(path)
+      self.dirty_content = dirty_content.gsub("\r\n", "\n").gsub("\r", "\n").sub(/\n+\z/, "\n").gsub("\n", "\r\n")
       ::File.write(path, dirty_content) if ::File.exists?(path)
     end
 
@@ -391,8 +397,8 @@ class RubyEditor
 
   def launch
     @shell = shell {
-      text 'Gladiator'
-      minimum_size 1280, 960
+      text "Gladiator - #{::File.expand_path(RubyEditor::Dir.local_dir.path)}"
+      minimum_size 320, 240
       grid_layout 2, false
       composite {
         grid_layout 1, false
@@ -428,6 +434,9 @@ class RubyEditor
               if Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :cr) || Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :lf)
                 RubyEditor::Dir.local_dir.selected_child_path = @list.swt_widget.getSelection.first
                 @text.swt_widget.setFocus
+              elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'r'
+                @filter_text.swt_widget.selectAll
+                @filter_text.swt_widget.setFocus
               end
             }
           }
@@ -538,6 +547,7 @@ class RubyEditor
               elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == ']'
                 RubyEditor::Dir.local_dir.selected_child.indent!
               elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'r'
+                @filter_text.swt_widget.selectAll
                 @filter_text.swt_widget.setFocus
               elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command, :shift) && key_event.character.chr.downcase == 'g'
                 RubyEditor::Dir.local_dir.selected_child.find_previous
@@ -587,4 +597,4 @@ class RubyEditor
   end
 end
 
-RubyEditor.new.launch
+RubyEditor.new.launch

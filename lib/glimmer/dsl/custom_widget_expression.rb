@@ -3,7 +3,6 @@ require 'glimmer/dsl/expression'
 require 'glimmer/dsl/parent_expression'
 require 'glimmer/ui/custom_widget'
 require 'glimmer/ui/custom_shell'
-require 'glimmer/ui/video' # this is interpreted here since it's a custom widget
 
 module Glimmer
   module DSL

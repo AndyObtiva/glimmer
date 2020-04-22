@@ -7,7 +7,6 @@ module Glimmer
   module UI
     class Video
       include Glimmer::UI::CustomWidget
-
       include_package 'org.eclipse.swt.browser'
 
       options :file, :url

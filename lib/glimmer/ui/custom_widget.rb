@@ -16,39 +16,58 @@ module Glimmer
       super_module_included do |klass|
         klass.include(Glimmer) unless klass.name.include?('Glimmer::UI::CustomShell')
         klass.prepend DataBinding::ObservableWidget
+        Glimmer::UI::CustomWidget.add_custom_widget_namespaces_for(klass) unless klass.name.include?('Glimmer::UI::CustomShell')
       end
 
       class << self
         def for(underscored_custom_widget_name)
-          namespaces = underscored_custom_widget_name.
+          extracted_namespaces = underscored_custom_widget_name.
             to_s.
             split(/__/).map do |namespace|
               namespace.camelcase(:upper)
             end
-          #TODO update code to avoid using reduce and going through all of them, yet stop right when it finds something
-          custom_widget_class = [Object, Glimmer::UI].reduce([]) do |found, base|
-            if found.empty?
-              found << namespaces.reduce(base) do |result, namespace|
-                namespace = namespace.to_sym
-                if !result.constants.include?(namespace)
-                  namespace = result.constants.detect {|c| c.to_s.upcase == namespace.to_s.upcase } || namespace
-                end
-                begin
-                  result.const_get(namespace)
-                rescue => e
-                  # Glimmer.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
-                  result
-                end
+          custom_widget_namespaces.each do |base|
+            extracted_namespaces.reduce(base) do |result, namespace|
+              if !result.constants.include?(namespace)
+                namespace = result.constants.detect {|c| c.to_s.upcase == namespace.to_s.upcase } || namespace
+              end
+              begin
+                constant = result.const_get(namespace)
+                return constant if constant.ancestors.include?(Glimmer::UI::CustomWidget)
+                constant
+              rescue => e
+                # Glimmer.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
+                result
               end
             end
-            found - [Object, Glimmer::UI]
-          end.first
-          raise "#{underscored_custom_widget_name} has no custom widget class!" if custom_widget_class.nil?
-          custom_widget_class if custom_widget_class.ancestors.include?(Glimmer::UI::CustomWidget)
+          end
+          raise "#{underscored_custom_widget_name} has no custom widget class!"
         rescue => e
           Glimmer.logger&.debug e.message
           Glimmer.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
           nil
+        end
+ 
+        def add_custom_widget_namespaces_for(klass)
+          Glimmer::UI::CustomWidget.namespaces_for_class(klass).drop(1).each do |namespace|
+            Glimmer::UI::CustomWidget.custom_widget_namespaces << namespace
+          end
+        end
+
+        def namespaces_for_class(m)
+          return [m] if m.name.nil?
+          namespace_constants = m.name.split(/::/).map(&:to_sym)
+          namespace_constants.reduce([Object]) do |output, namespace_constant|
+            output += [output.last.const_get(namespace_constant)]
+          end[1..-1].uniq.reverse
+        end
+
+        def custom_widget_namespaces
+          @custom_widget_namespaces ||= reset_custom_widget_namespaces
+        end
+
+        def reset_custom_widget_namespaces
+          @custom_widget_namespaces = Set[Object, Glimmer::UI]
         end
 
         # Allows defining convenience option readers for an array of option names

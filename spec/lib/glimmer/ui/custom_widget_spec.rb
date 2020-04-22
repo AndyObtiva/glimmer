@@ -137,7 +137,7 @@ module GlimmerSpec
       Object.send(:remove_const, :InvalidCustomWidget) if Object.const_defined?(:InvalidCustomWidget)
       Object.send(:remove_const, :RedLabel) if Object.const_defined?(:RedLabel)
       Object.send(:remove_const, :ColoredLabel) if Object.const_defined?(:ColoredLabel)
-      Object.send(:remove_const, :MultiColorLabel) if Object.const_defined?(:MultiColorLabel)
+      Object.send(:remove_const, :MultiColorLabel) if Object.const_defined?(:MultiColorLabel) 
       GlimmerSpec::Red.send(:remove_const, :Composite) if GlimmerSpec::Red.const_defined?(:Composite)
       GlimmerSpec::Red.send(:remove_const, :Label) if GlimmerSpec::Red.const_defined?(:Label)
       GlimmerSpec.send(:remove_const, :Red) if GlimmerSpec.const_defined?(:Red)
@@ -181,6 +181,18 @@ module GlimmerSpec
     it "builds custom widget with namespace" do
       @target = shell {
         @red_label = glimmer_spec__red__label {
+          text 'Red Label'
+        }
+      }
+
+      expect(@red_label.swt_widget.getParent).to eq(@target.swt_widget)
+      expect(@red_label.swt_widget.getBackground).to eq(Glimmer::SWT::ColorProxy.new(:red).swt_color)
+      expect(@red_label.swt_widget.getText).to eq('Red Label')
+    end
+
+    it "builds custom widget without mentioning full namespace" do
+      @target = shell {
+        @red_label = red__label {
           text 'Red Label'
         }
       }

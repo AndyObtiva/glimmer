@@ -64,7 +64,13 @@ module Glimmer
         jruby_options_string = jruby_options.join(' ') + ' ' if jruby_options.any?
         env_vars_string = env_vars.map {|k,v| "#{k}=#{v}"}.join(' ')
         env_vars_string = [env_vars_string, glimmer_option_env_vars(glimmer_options)].join(' ')
-        system "#{env_vars_string} jruby #{jruby_options_string}#{jruby_os_specific_options} -r #{glimmer_lib} -S #{application}"
+        the_glimmer_lib = glimmer_lib
+        devmode_require = nil
+        if the_glimmer_lib == GLIMMER_LIB_LOCAL
+          devmode_require = '-r puts_debuggerer '
+        end
+        puts "#{env_vars_string} jruby #{jruby_options_string}#{jruby_os_specific_options} -r #{the_glimmer_lib} #{devmode_require}-S \"#{application}\"" if jruby_options_string.to_s.include?('--debug')
+        system "#{env_vars_string} jruby #{jruby_options_string}#{jruby_os_specific_options} -r #{the_glimmer_lib} #{devmode_require}-S \"#{application}\""
       end
     end
 
@@ -87,7 +93,7 @@ module Glimmer
 
     def launch_application
       threads = @application_paths.map do |application_path|
-        puts "Launching Glimmer Application: #{application_path}" unless application_path.to_s.match(/(irb)|(glimmer_editor)/)
+        puts "Launching Glimmer Application: #{application_path}" unless application_path.to_s.match(/(irb)|(gladiator)/)
         Thread.new do
           self.class.launch(
             application_path,

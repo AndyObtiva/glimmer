@@ -25,8 +25,8 @@ unless jeweler_required.nil?
     gem.description = %Q{JRuby Desktop UI DSL + Data-Binding cross-platform library that enables productive and efficient authoring of desktop user-interfaces using the robust platform-native Eclipse SWT library}
     gem.email = "andy.am@gmail.com"
     gem.authors = ["AndyMaleh"]
-    gem.executables = ['glimmer', 'girb']
-    gem.files = Dir['bin/**/*', 'lib/**/*', 'vendor/**/*']
+    gem.executables = ['glimmer', 'girb', 'gladiator']
+    gem.files = Dir['bin/**/*', 'lib/**/*', 'vendor/**/*', 'samples/gladiator.rb']
     # dependencies defined in Gemfile
   end
   Jeweler::RubygemsDotOrgTasks.new
