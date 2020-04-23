@@ -1,5 +1,8 @@
 require 'yaml'
 require 'filewatcher'
+require 'clipboard'
+
+Clipboard.implementation = Clipboard::Java
 
 # Gladiator (Glimmer Editor)
 class RubyEditor
@@ -135,11 +138,9 @@ class RubyEditor
     end
 
     def write_dirty_content
-      new_dirty_content = "#{dirty_content.gsub("\r\n", "\n").gsub("\r", "\n").sub(/\n+\z/, '')}\n"
-      if new_dirty_content != self.dirty_content
-        self.dirty_content = new_dirty_content
-        ::File.write(path, dirty_content) if ::File.exists?(path)
-      end
+      new_dirty_content = "#{dirty_content.gsub("\r\n", "\n").gsub("\r", "\n").sub(/\n+\z/, '')}\n"      
+      self.dirty_content = new_dirty_content if new_dirty_content != self.dirty_content
+      ::File.write(path, dirty_content) if ::File.exists?(path)
     end
 
     def comment_line!
@@ -445,6 +446,8 @@ class RubyEditor
           end
           @find_text.swt_widget.selectAll
           @find_text.swt_widget.setFocus
+        elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command, :shift) && key_event.character.chr.downcase == 'c'
+          Clipboard.copy(RubyEditor::Dir.local_dir.selected_child.path)
         elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command, :shift) && key_event.character.chr.downcase == 'g'
           RubyEditor::Dir.local_dir.selected_child.find_previous
         elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'g'
@@ -524,11 +527,20 @@ class RubyEditor
         layout_data :fill, :fill, true, true
         composite {
           grid_layout 2, false
-          @label = label {
+          @file_path_label = styled_text(:none) {
             layout_data(:fill, :fill, true, false) {
               horizontal_span 2
             }
+            background color(:widget_background)
+            editable false
+            caret nil
             text bind(RubyEditor::Dir.local_dir, 'selected_child.path')
+            on_mouse_up {
+              @file_path_label.swt_widget.selectAll
+            }
+            on_focus_lost {
+              @file_path_label.swt_widget.setSelection(0, 0)
+            }
           }
           label {
             text 'Line Number:'
