@@ -25,6 +25,22 @@ module GlimmerSpec
       end
     end
 
+    context 'filter listeners' do
+      it 'adds filter listener' do
+        @display = display {
+          on_event_show {
+            @shown = true
+          }
+        }
+        @target = shell
+        @target.async_exec do
+          expect(@shown).to eq(true)
+          @target.dispose
+        end
+        @target.open
+      end
+    end
+
     context 'UI code execution' do
       after do
         if @target
