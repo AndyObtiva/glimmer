@@ -1710,6 +1710,9 @@ glimmer samples/tictactoe/tic_tac_toe.rb # demonstrates a full MVC application
 glimmer samples/gladiator.rb # demonstrates a Glimmer Editor with tree/list data-binding
 ```
 
+Gladiator (short for Glimmer Editor) has been made available in [Glimmer's gem](https://rubygems.org/gems/glimmer) via the `gladiator` command.
+[Contributers](CONTRIBUTING.md) who cloned the project may invoke via `bin/gladiator` instead. It is used in active development of Glimmer.
+
 ## In Production
 
 The following production apps have been built with Glimmer:
