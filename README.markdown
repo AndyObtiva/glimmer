@@ -1673,21 +1673,43 @@ shell {
 
 Check the [samples](samples) directory for examples on how to write Glimmer applications. To run a sample, make sure to install the `glimmer` gem first and then use the `glimmer` command to run it (alternatively, you may clone the repo, follow [CONTRIBUTING.md](CONTRIBUTING.md) instructions, and run samples locally with development glimmer command: `bin/glimmer`).
 
-Examples:
+If you cloned the project and followed [CONTRIBUTING.md](CONTRIBUTING.md) instructions, you may run all samples at once via `samples/launch` command:
 
 ```
+samples/launch
+```
+
+### Hello, World!
+
+For "Hello, World!" type samples, check the following:
+
+```
+glimmer samples/hello_world.rb
+glimmer samples/hello_browser.rb
 glimmer samples/hello_tab.rb
 glimmer samples/hello_combo.rb
 glimmer samples/hello_list_single_selection.rb
 glimmer samples/hello_list_multi_selection.rb
-glimmer samples/contactmanager/contact_manager.rb
+glimmer samples/hellocomputed/hello_computed.rb
+glimmer samples/video/hello_video.rb
+glimmer samples/video/hello_looped_video_with_black_background.rb
+glimmer samples/video/hello_video_observers.rb
 ```
 
-The last example (`contact_manager.rb`) is a good sample about how to build tables with Glimmer including data-binding, filtering, and sorting. It even comes with specs in `spec/samples/contactmanager/contact_manager_presenter_spec.rb` to demonstrate how Glimmer facilitates TDD (test-driven development) with the Model View Presenter pattern (a variation on MVC) by separating testable presentation logic from the view layer with data-binding.
+### Elaborate Samples
 
-For a more elaborate project built with Glimmer, check out this educational game:
+For more elaborate samples, check the following:
 
-[Math Bowling](https://github.com/AndyObtiva/MathBowling)
+```
+glimmer samples/login.rb # demonstrates basic data-binding
+glimmer samples/contactmanager/contact_manager.rb # demonstrates table data-binding
+glimmer samples/tictactoe/tic_tac_toe.rb # demonstrates a full MVC application
+```
+
+## In Production
+
+The following production apps have been built with Glimmer:
+- [Math Bowling](https://github.com/AndyObtiva/MathBowling): an educational math game for elementary level kids
 
 ## SWT Reference
 
