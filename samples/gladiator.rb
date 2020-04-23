@@ -479,6 +479,7 @@ class RubyEditor
             if key_event.keyCode == swt(:tab) || 
                 key_event.keyCode == swt(:cr) || 
                 key_event.keyCode == swt(:lf) ||
+                key_event.keyCode == swt(:arrow_up) ||
                 key_event.keyCode == swt(:arrow_down)
               @list.swt_widget.setFocus
             elsif key_event.keyCode == swt(:esc)
