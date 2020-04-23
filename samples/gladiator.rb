@@ -443,14 +443,14 @@ class Gladiator
 
   def save_config
     child = Gladiator::Dir.local_dir.selected_child
-    return if child.nil? || child.path.nil? || child.caret_position.nil? || child.top_index.nil?
+    return if child.nil?
     @config = {
       selected_child_path: child.path,
       caret_position: child.caret_position,
       top_index: child.top_index,
     }
     config_yaml = YAML.dump(@config)
-    ::File.write(@config_file_path, config_yaml)
+    ::File.write(@config_file_path, config_yaml) unless config_yaml.to_s.empty?
   rescue => e
     puts e.full_message
   end
@@ -483,7 +483,8 @@ class Gladiator
     }
     @shell = shell {
       text "Gladiator - #{::File.expand_path(Gladiator::Dir.local_dir.path)}"
-      minimum_size 720, 540
+      minimum_size 720, 450
+      size 1440, 900 
       grid_layout 2, false
       on_event_close {
         Gladiator::Dir.local_dir.selected_child&.write_dirty_content
