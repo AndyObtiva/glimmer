@@ -92,7 +92,12 @@ module Glimmer
         minimum_size = @swt_widget.getMinimumSize
         bounds = @swt_widget.getBounds
         @swt_widget.setMinimumSize(bounds.width, bounds.height)
+        listener = on_control_resized {
+          @swt_widget.setSize(bounds.width, bounds.height)
+          @swt_widget.setLocation(bounds.x, bounds.y)
+        }
         @swt_widget.pack
+        @swt_widget.removeControlListener(listener.swt_listener)
         @swt_widget.setMinimumSize(minimum_size)
       end
 

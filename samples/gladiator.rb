@@ -450,7 +450,7 @@ class RubyEditor
         }
         composite {
           layout_data(:fill, :fill, true, true)
-          @list = list(:h_scroll, :v_scroll) {
+          @list = list(:border, :h_scroll, :v_scroll) {
             layout_data(:fill, :fill, true, true) {
               #exclude bind(RubyEditor::Dir.local_dir, :filter) {|f| !f}
             }
@@ -499,7 +499,9 @@ class RubyEditor
             text 'Line Number:'
           }
           @line_number_text = text {
-            layout_data :fill, :fill, true, false
+            layout_data(:fill, :fill, true, false) {
+              minimum_width 200
+            }
             text bind(RubyEditor::Dir.local_dir, 'selected_child.line_number', on_read: :to_s, on_write: :to_i)
     	     on_key_pressed { |key_event|
               if key_event.keyCode == swt(:cr)
@@ -511,7 +513,9 @@ class RubyEditor
             text 'Find Text:'
           }
           @find_text = text {
-            layout_data :fill, :fill, true, false
+            layout_data(:fill, :fill, true, false) {
+              minimum_width 200
+            }
             text bind(RubyEditor::Dir.local_dir, 'selected_child.find_text')
     	     on_key_pressed { |key_event|
               if key_event.keyCode == swt(:cr)
@@ -541,7 +545,7 @@ class RubyEditor
               @text&.swt_widget.setFocus
             }
           }
-          @text = text(:multi, :h_scroll, :v_scroll) {
+          @text = text(:multi, :border, :h_scroll, :v_scroll) {
             layout_data :fill, :fill, true, true
             font name: 'Consolas', height: 15
             foreground rgb(75, 75, 75)

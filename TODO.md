@@ -39,6 +39,7 @@ bind_content(model, 'addresses').each { |address|
 }
 - Image custom widget similar to video, and supporting gif
 - Automatic relayout of glimmer widgets (or parent widget) when disposing a widget (or as an option when disposing)
+- Scroll bar listener support
 
 ## Technical Tasks
 
