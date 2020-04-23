@@ -1681,7 +1681,7 @@ If you cloned the project and followed [CONTRIBUTING.md](CONTRIBUTING.md) instru
 samples/launch
 ```
 
-### Hello, World!
+### Hello Samples
 
 For "Hello, World!" type samples, check the following:
 
