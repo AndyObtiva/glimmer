@@ -5,7 +5,7 @@ require 'clipboard'
 Clipboard.implementation = Clipboard::Java
 
 # Gladiator (Glimmer Editor)
-class RubyEditor
+class Gladiator
   include Glimmer
 
   class Dir
@@ -24,7 +24,7 @@ class RubyEditor
     end
 
     def children
-      ::Dir.glob(::File.join(@path, '*')).map {|p| ::File.file?(p) ? RubyEditor::File.new(p) : RubyEditor::Dir.new(p)}.sort_by {|c| c.path.to_s.downcase }.sort_by {|c| c.class.name }
+      ::Dir.glob(::File.join(@path, '*')).map {|p| ::File.file?(p) ? Gladiator::File.new(p) : Gladiator::Dir.new(p)}.sort_by {|c| c.path.to_s.downcase }.sort_by {|c| c.class.name }
     end
 
     def filter=(value)
@@ -45,17 +45,17 @@ class RubyEditor
     end
 
     def all_children
-      @all_children ||= ::Dir.glob(::File.join(@path, '**', '*')).map {|p| ::File.file?(p) ? RubyEditor::File.new(p) : RubyEditor::Dir.new(p)}
+      @all_children ||= ::Dir.glob(::File.join(@path, '**', '*')).map {|p| ::File.file?(p) ? Gladiator::File.new(p) : Gladiator::Dir.new(p)}
     end
 
     def all_children_files
-      @all_children_files ||= all_children.select {|child| child.is_a?(RubyEditor::File) }
+      @all_children_files ||= all_children.select {|child| child.is_a?(Gladiator::File) }
     end
 
     def selected_child_path=(selected_path)
       if selected_path && ::File.file?(selected_path)
         @selected_child&.write_dirty_content
-        new_child = RubyEditor::File.new(selected_path)
+        new_child = Gladiator::File.new(selected_path)
         begin
           if new_child.lines.any?
             self.selected_child&.stop_filewatcher
@@ -83,7 +83,7 @@ class RubyEditor
   class File
     include Glimmer
 
-    attr_accessor :dirty_content, :line_numbers_content, :caret_position, :selection_count, :line_number, :find_text, :top_index
+    attr_accessor :dirty_content, :line_numbers_content, :caret_position, :selection_count, :line_number, :find_text, :replace_text, :top_index
     attr_reader :path, :display_path
 
     def initialize(path)
@@ -263,6 +263,7 @@ class RubyEditor
     end
 
     def find_next
+      return if find_text.to_s.empty?
       all_lines = lines
       the_line_index = line_index_for_caret_position(caret_position)
       all_lines.rotate(the_line_index + 1).each_with_index do |the_line, the_index|
@@ -276,6 +277,7 @@ class RubyEditor
     end
 
     def find_previous
+      return if find_text.to_s.empty?
       all_lines = lines
       the_line_index = line_index_for_caret_position(caret_position)
       all_lines.rotate(the_line_index).each_with_index.map do |the_line, the_index|
@@ -288,6 +290,19 @@ class RubyEditor
           return
         end
       end
+    end
+
+    def ensure_find_next
+      find_next unless dirty_content[caret_position, find_text.size] == find_text
+    end
+
+    def replace_next
+      return if find_text.to_s.empty?
+      ensure_find_next
+      new_dirty_content = dirty_content
+      new_dirty_content[caret_position, find_text.size] = replace_text
+      self.dirty_content = new_dirty_content
+      find_next
     end
 
     def page_up
@@ -411,7 +426,7 @@ class RubyEditor
     Display.setAppName('Gladiator')
     @config_file_path = '.gladiator'
     @config = {}
-    RubyEditor::Dir.local_dir.all_children # pre-caches children
+    Gladiator::Dir.local_dir.all_children # pre-caches children
     load_config  
   end
 
@@ -420,14 +435,14 @@ class RubyEditor
       config_yaml = ::File.read(@config_file_path)
       @config = YAML.load(config_yaml)
       return if @config.to_s.empty?
-      RubyEditor::Dir.local_dir.selected_child_path = @config[:selected_child_path] if @config[:selected_child_path]
-      RubyEditor::Dir.local_dir.selected_child.caret_position  = RubyEditor::Dir.local_dir.selected_child.caret_position_for_caret_position_start_of_line(@config[:caret_position]) if @config[:caret_position]
-      RubyEditor::Dir.local_dir.selected_child.top_index = @config[:top_index] if @config[:top_index]
+      Gladiator::Dir.local_dir.selected_child_path = @config[:selected_child_path] if @config[:selected_child_path]
+      Gladiator::Dir.local_dir.selected_child.caret_position  = Gladiator::Dir.local_dir.selected_child.caret_position_for_caret_position_start_of_line(@config[:caret_position]) if @config[:caret_position]
+      Gladiator::Dir.local_dir.selected_child.top_index = @config[:top_index] if @config[:top_index]
     end
   end
 
   def save_config
-    child = RubyEditor::Dir.local_dir.selected_child
+    child = Gladiator::Dir.local_dir.selected_child
     @config = {
       selected_child_path: child.path,
       caret_position: child.caret_position,
@@ -447,11 +462,11 @@ class RubyEditor
           @find_text.swt_widget.selectAll
           @find_text.swt_widget.setFocus
         elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command, :shift) && key_event.character.chr.downcase == 'c'
-          Clipboard.copy(RubyEditor::Dir.local_dir.selected_child.path)
+          Clipboard.copy(Gladiator::Dir.local_dir.selected_child.path)
         elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command, :shift) && key_event.character.chr.downcase == 'g'
-          RubyEditor::Dir.local_dir.selected_child.find_previous
+          Gladiator::Dir.local_dir.selected_child.find_previous
         elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'g'
-          RubyEditor::Dir.local_dir.selected_child.find_next
+          Gladiator::Dir.local_dir.selected_child.find_next
         elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'l'
           @line_number_text.swt_widget.selectAll
           @line_number_text.swt_widget.setFocus
@@ -464,7 +479,7 @@ class RubyEditor
       }
     }
     @shell = shell {
-      text "Gladiator - #{::File.expand_path(RubyEditor::Dir.local_dir.path)}"
+      text "Gladiator - #{::File.expand_path(Gladiator::Dir.local_dir.path)}"
       minimum_size 720, 540
       grid_layout 2, false
       composite {
@@ -474,7 +489,7 @@ class RubyEditor
         }
         @filter_text = text {
           layout_data :fill, :center, true, false
-          text bind(RubyEditor::Dir.local_dir, 'filter')
+          text bind(Gladiator::Dir.local_dir, 'filter')
     	   on_key_pressed { |key_event|
             if key_event.keyCode == swt(:tab) || 
                 key_event.keyCode == swt(:cr) || 
@@ -491,28 +506,28 @@ class RubyEditor
           layout_data(:fill, :fill, true, true)
           @list = list(:border, :h_scroll, :v_scroll) {
             layout_data(:fill, :fill, true, true) {
-              #exclude bind(RubyEditor::Dir.local_dir, :filter) {|f| !f}
+              #exclude bind(Gladiator::Dir.local_dir, :filter) {|f| !f}
             }
-            #visible bind(RubyEditor::Dir, 'local_dir.filter') {|f| !!f}
-            selection bind(RubyEditor::Dir.local_dir, :filtered_path)
+            #visible bind(Gladiator::Dir, 'local_dir.filter') {|f| !!f}
+            selection bind(Gladiator::Dir.local_dir, :filtered_path)
             on_widget_selected {
-              RubyEditor::Dir.local_dir.selected_child_path = @list.swt_widget.getSelection.first
+              Gladiator::Dir.local_dir.selected_child_path = @list.swt_widget.getSelection.first
             }
        	  on_key_pressed { |key_event|
               if Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :cr) || Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :lf)
-                RubyEditor::Dir.local_dir.selected_child_path = @list.swt_widget.getSelection.first
+                Gladiator::Dir.local_dir.selected_child_path = @list.swt_widget.getSelection.first
                 @text.swt_widget.setFocus
               end
             }
           }
           @tree = tree(:virtual, :border, :h_scroll, :v_scroll) {
             layout_data(:fill, :fill, true, true) {
-              #exclude bind(RubyEditor::Dir.local_dir, :filter) {|f| !!f}
+              #exclude bind(Gladiator::Dir.local_dir, :filter) {|f| !!f}
             }
-            #visible bind(RubyEditor::Dir, 'local_dir.filter') {|f| !f}
-            items bind(RubyEditor::Dir, :local_dir), tree_properties(children: :children, text: :display_path)
+            #visible bind(Gladiator::Dir, 'local_dir.filter') {|f| !f}
+            items bind(Gladiator::Dir, :local_dir), tree_properties(children: :children, text: :display_path)
             on_widget_selected {
-              RubyEditor::Dir.local_dir.selected_child_path = @tree.swt_widget.getSelection.first.getText
+              Gladiator::Dir.local_dir.selected_child_path = @tree.swt_widget.getSelection.first.getText
             }
             on_paint_control {
               root_item = @tree.swt_widget.getItems.first
@@ -535,7 +550,7 @@ class RubyEditor
             background color(:widget_background)
             editable false
             caret nil
-            text bind(RubyEditor::Dir.local_dir, 'selected_child.path')
+            text bind(Gladiator::Dir.local_dir, 'selected_child.path')
             on_mouse_up {
               @file_path_label.swt_widget.selectAll
             }
@@ -544,13 +559,13 @@ class RubyEditor
             }
           }
           label {
-            text 'Line Number:'
+            text 'Line:'
           }
           @line_number_text = text {
             layout_data(:fill, :fill, true, false) {
               minimum_width 200
             }
-            text bind(RubyEditor::Dir.local_dir, 'selected_child.line_number', on_read: :to_s, on_write: :to_i)
+            text bind(Gladiator::Dir.local_dir, 'selected_child.line_number', on_read: :to_s, on_write: :to_i)
     	     on_key_pressed { |key_event|
               if key_event.keyCode == swt(:cr)
                 @text.swt_widget.setFocus
@@ -558,16 +573,36 @@ class RubyEditor
             }
           }
           label {
-            text 'Find Text:'
+            text 'Find:'
           }
           @find_text = text {
             layout_data(:fill, :fill, true, false) {
               minimum_width 200
             }
-            text bind(RubyEditor::Dir.local_dir, 'selected_child.find_text')
+            text bind(Gladiator::Dir.local_dir, 'selected_child.find_text')
     	     on_key_pressed { |key_event|
               if key_event.keyCode == swt(:cr)
-                RubyEditor::Dir.local_dir.selected_child.find_next
+                Gladiator::Dir.local_dir.selected_child.find_next
+              elsif key_event.keyCode == swt(:esc)
+                @text.swt_widget.setFocus
+              end
+            }
+          }
+          label {
+            text 'Replace:'
+          }
+          @replace_text = text {
+            layout_data(:fill, :fill, true, false) {
+              minimum_width 200
+            }
+            text bind(Gladiator::Dir.local_dir, 'selected_child.replace_text')
+            on_focus_gained {              
+              Gladiator::Dir.local_dir.selected_child.ensure_find_next
+            }
+    	     on_key_pressed { |key_event|
+              if key_event.keyCode == swt(:cr)
+                Gladiator::Dir.local_dir.selected_child.replace_next
+              elsif key_event.keyCode == swt(:esc)
                 @text.swt_widget.setFocus
               end
             }
@@ -581,8 +616,8 @@ class RubyEditor
             font name: 'Consolas', height: 15
             background color(:widget_background)
             foreground rgb(75, 75, 75)
-            text bind(RubyEditor::Dir.local_dir, 'selected_child.line_numbers_content')
-            top_index bind(RubyEditor::Dir.local_dir, 'selected_child.top_index')
+            text bind(Gladiator::Dir.local_dir, 'selected_child.line_numbers_content')
+            top_index bind(Gladiator::Dir.local_dir, 'selected_child.top_index')
             on_focus_gained {
               @text&.swt_widget.setFocus
             }
@@ -597,48 +632,48 @@ class RubyEditor
             layout_data :fill, :fill, true, true
             font name: 'Consolas', height: 15
             foreground rgb(75, 75, 75)
-            text bind(RubyEditor::Dir.local_dir, 'selected_child.dirty_content')
+            text bind(Gladiator::Dir.local_dir, 'selected_child.dirty_content')
             focus true
-            caret_position bind(RubyEditor::Dir.local_dir, 'selected_child.caret_position')
-            selection_count bind(RubyEditor::Dir.local_dir, 'selected_child.selection_count')
-            top_index bind(RubyEditor::Dir.local_dir, 'selected_child.top_index')
+            caret_position bind(Gladiator::Dir.local_dir, 'selected_child.caret_position')
+            selection_count bind(Gladiator::Dir.local_dir, 'selected_child.selection_count')
+            top_index bind(Gladiator::Dir.local_dir, 'selected_child.top_index')
             on_focus_lost {
-              RubyEditor::Dir.local_dir.selected_child&.write_dirty_content
+              Gladiator::Dir.local_dir.selected_child&.write_dirty_content
             }
             on_event_close {
-              RubyEditor::Dir.local_dir.selected_child&.write_dirty_content
+              Gladiator::Dir.local_dir.selected_child&.write_dirty_content
             }
             on_widget_disposed {
-              RubyEditor::Dir.local_dir.selected_child&.write_dirty_content
+              Gladiator::Dir.local_dir.selected_child&.write_dirty_content
             }
       	     on_key_pressed { |key_event|
               if Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == '/'
-                RubyEditor::Dir.local_dir.selected_child.comment_line!
+                Gladiator::Dir.local_dir.selected_child.comment_line!
               elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'k'
-                RubyEditor::Dir.local_dir.selected_child.kill_line!
+                Gladiator::Dir.local_dir.selected_child.kill_line!
               elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'd'
-                RubyEditor::Dir.local_dir.selected_child.duplicate_line!
+                Gladiator::Dir.local_dir.selected_child.duplicate_line!
               elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == '['
-                RubyEditor::Dir.local_dir.selected_child.outdent!
+                Gladiator::Dir.local_dir.selected_child.outdent!
               elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == ']'
-                RubyEditor::Dir.local_dir.selected_child.indent!
+                Gladiator::Dir.local_dir.selected_child.indent!
               elsif key_event.keyCode == swt(:page_up)
-                RubyEditor::Dir.local_dir.selected_child.page_up
+                Gladiator::Dir.local_dir.selected_child.page_up
                 key_event.doit = false
               elsif key_event.keyCode == swt(:page_down)
-                RubyEditor::Dir.local_dir.selected_child.page_down
+                Gladiator::Dir.local_dir.selected_child.page_down
                 key_event.doit = false
               elsif key_event.keyCode == swt(:home)
-                RubyEditor::Dir.local_dir.selected_child.home
+                Gladiator::Dir.local_dir.selected_child.home
                 key_event.doit = false
               elsif key_event.keyCode == swt(:end)
-                RubyEditor::Dir.local_dir.selected_child.end
+                Gladiator::Dir.local_dir.selected_child.end
                 key_event.doit = false
               elsif key_event.stateMask == swt(:command) && key_event.keyCode == swt(:arrow_up)
-                RubyEditor::Dir.local_dir.selected_child.move_up!
+                Gladiator::Dir.local_dir.selected_child.move_up!
                 key_event.doit = false
               elsif key_event.stateMask == swt(:command) && key_event.keyCode == swt(:arrow_down)
-                RubyEditor::Dir.local_dir.selected_child.move_down!
+                Gladiator::Dir.local_dir.selected_child.move_down!
                 key_event.doit = false
               end
             }
@@ -653,20 +688,20 @@ class RubyEditor
         }
       }
     }
-    observe(RubyEditor::Dir.local_dir, 'selected_child.line_numbers_content') do
-      if @last_line_numbers_content != RubyEditor::Dir.local_dir.selected_child.line_numbers_content
+    observe(Gladiator::Dir.local_dir, 'selected_child.line_numbers_content') do
+      if @last_line_numbers_content != Gladiator::Dir.local_dir.selected_child.line_numbers_content
         @shell.pack_same_size
-        @last_line_numbers_content = RubyEditor::Dir.local_dir.selected_child.line_numbers_content
+        @last_line_numbers_content = Gladiator::Dir.local_dir.selected_child.line_numbers_content
       end
     end
-    observe(RubyEditor::Dir.local_dir, 'selected_child.caret_position') do
+    observe(Gladiator::Dir.local_dir, 'selected_child.caret_position') do
       save_config
     end
-    observe(RubyEditor::Dir.local_dir, 'selected_child.top_index') do
+    observe(Gladiator::Dir.local_dir, 'selected_child.top_index') do
       save_config
     end
     @shell.open
   end
 end
 
-RubyEditor.new.launch
+Gladiator.new.launch
