@@ -84,6 +84,18 @@ module Glimmer
         visibility ? show : hide
       end
 
+      def pack
+        @swt_widget.pack
+      end
+
+      def pack_same_size
+        minimum_size = @swt_widget.getMinimumSize
+        bounds = @swt_widget.getBounds
+        @swt_widget.setMinimumSize(bounds.width, bounds.height)
+        @swt_widget.pack
+        @swt_widget.setMinimumSize(minimum_size)
+      end
+
       def content(&block)
         Glimmer::DSL::Engine.add_content(self, DSL::ShellExpression.new, &block)
       end

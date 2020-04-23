@@ -33,7 +33,7 @@ class RubyEditor
 
     def filtered
       return if filter.nil?
-      all_children_files.select {|child| child.path.downcase.include?(filter.downcase) }
+      all_children_files.select {|child| child.path.downcase.include?(filter.downcase) }.sort_by {|c| c.path.to_s.downcase}
     end
 
     def all_children
@@ -73,26 +73,38 @@ class RubyEditor
   class File
     include Glimmer
 
-    attr_accessor :dirty_content, :caret_position, :selection_count, :line_number, :find_text, :top_index
+    attr_accessor :dirty_content, :line_numbers_content, :caret_position, :selection_count, :line_number, :find_text, :top_index
     attr_reader :path
 
     def initialize(path)
       raise "Not a file path: #{path}" unless ::File.file?(path)
       @path = path
-      self.dirty_content = ::File.read(path)
-      observe(self, :caret_position) do
-        self.line_number = line_index_for_caret_position(caret_position) + 1
-      end
-      observe(self, :line_number) do
-        if line_number
-          new_caret_position = dirty_content.split("\n")[0...(line_number.to_i - 1)].map(&:size).sum + line_number.to_i - 1
-          self.caret_position = new_caret_position unless line_index_for_caret_position(new_caret_position) == line_index_for_caret_position(caret_position)
+      read_dirty_content = ::File.read(path)
+      begin
+        # test read dirty content
+        read_dirty_content.split("\n")
+        observe(self, :dirty_content) do
+          lines_text_size = lines.size.to_s.size
+          self.line_numbers_content = lines.size.times.map {|n| (' ' * (lines_text_size - (n+1).to_s.size)) + (n+1).to_s }.join("\n")
         end
+        self.dirty_content = read_dirty_content
+        observe(self, :caret_position) do
+          self.line_number = line_index_for_caret_position(caret_position) + 1
+        end
+        observe(self, :line_number) do
+          if line_number
+            new_caret_position = lines[0...(line_number.to_i - 1)].map(&:size).sum + line_number.to_i - 1
+            self.caret_position = new_caret_position unless line_index_for_caret_position(new_caret_position) == line_index_for_caret_position(caret_position)
+          end
+        end
+      rescue
+        # no op in case of a binary file
       end
     end
 
     def write_dirty_content
-      self.dirty_content = dirty_content.gsub("\r\n", "\n").gsub("\r", "\n").sub(/\n+\z/, "\n")
+      new_dirty_content = "#{dirty_content.gsub("\r\n", "\n").gsub("\r", "\n").sub(/\n+\z/, '')}\n"
+      self.dirty_content = new_dirty_content if new_dirty_content != self.dirty_content
       ::File.write(path, dirty_content) if ::File.exists?(path)
     end
 
@@ -366,12 +378,6 @@ class RubyEditor
     @config = {}
     RubyEditor::Dir.local_dir.all_children # pre-caches children
     load_config
-    observe(RubyEditor::Dir.local_dir, 'selected_child.caret_position') do
-      save_config
-    end
-    observe(RubyEditor::Dir.local_dir, 'selected_child.top_index') do
-      save_config
-    end
   end
 
   def load_config
@@ -421,7 +427,7 @@ class RubyEditor
     }
     @shell = shell {
       text "Gladiator - #{::File.expand_path(RubyEditor::Dir.local_dir.path)}"
-      minimum_size 320, 240
+      minimum_size 720, 540
       grid_layout 2, false
       composite {
         grid_layout 1, false
@@ -517,11 +523,14 @@ class RubyEditor
         }
         composite {
           layout_data :fill, :fill, true, true
-          grid_layout 2, false
-          @line_numbers_text = text(:multi) { |text_proxy|
-            layout_data(:right, :fill, false, true) {
-              width_hint bind(RubyEditor::Dir.local_dir, 'selected_child.lines') {|lines| (lines.size.to_s.chars.size * 10) + 4 }
-            }
+          grid_layout 2, false  
+          @line_numbers_text = text(:multi) {
+            layout_data(:right, :fill, false, true)
+            font name: 'Consolas', height: 15
+            background color(:widget_background)
+            foreground rgb(75, 75, 75)
+            text bind(RubyEditor::Dir.local_dir, 'selected_child.line_numbers_content')
+            top_index bind(RubyEditor::Dir.local_dir, 'selected_child.top_index')
             on_focus_gained {
               @text&.swt_widget.setFocus
             }
@@ -531,13 +540,8 @@ class RubyEditor
             on_mouse_up {
               @text&.swt_widget.setFocus
             }
-            font name: 'Consolas', height: 15
-            background color(:widget_background)
-            foreground rgb(75, 75, 75)
-            text bind(RubyEditor::Dir.local_dir, 'selected_child.lines') {|lines| lines.size.times.map {|n| (' ' * (lines.size.to_s.chars.size - (n+1).to_s.chars.size)) + (n+1).to_s }.join("\n")}
-            top_index bind(RubyEditor::Dir.local_dir, 'selected_child.top_index')
           }
-          @text = text(:multi, :h_scroll, :v_scroll) { |text_proxy|
+          @text = text(:multi, :h_scroll, :v_scroll) {
             layout_data :fill, :fill, true, true
             font name: 'Consolas', height: 15
             foreground rgb(75, 75, 75)
@@ -597,6 +601,15 @@ class RubyEditor
         }
       }
     }
+    observe(RubyEditor::Dir.local_dir, 'selected_child.line_numbers_content') do
+      @shell.pack_same_size
+    end
+    observe(RubyEditor::Dir.local_dir, 'selected_child.caret_position') do
+      save_config
+    end
+    observe(RubyEditor::Dir.local_dir, 'selected_child.top_index') do
+      save_config
+    end
     @shell.open
   end
 end
