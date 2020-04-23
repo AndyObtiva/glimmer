@@ -1312,6 +1312,8 @@ shell {
 
 Notice how `Red::Composite` became `red__composite` with double-underscore, which is how Glimmer Custom Widgets signify namespaces by convention. Additionally, `before_body` hook was utilized to set a `@color` variable and use inside the `body`.
 
+Keep in mind that namespaces are not needed to be specified if the Custom Widget class has a unique name, not clashing with a basic SWT widget or another custom widget name.
+
 Custom Widgets have the following attributes (attribute readers) available to call from inside the `#body` method:
 - `#parent`: Glimmer object parenting custom widget
 - `#swt_style`: SWT style integer. Can be useful if you want to allow consumers to customize a widget inside the custom widget body
@@ -1711,9 +1713,24 @@ glimmer samples/gladiator.rb # demonstrates a text editor with tree/list data-bi
 
 ![Gladiator](images/glimmer-gladiator.png)
 
-Gladiator (short for Glimmer Editor) is an on-going sample project with continuous development.
-It is also used as the main text editor for coding Glimmer.
-As such, it has been made available in [Glimmer's gem](https://rubygems.org/gems/glimmer) via the `gladiator` command should others find useful too.
+Gladiator (short for Glimmer Editor) is an on-going sample project under continuous development. It is used as the main text editor for developing Glimmer.
+
+It currently supports the following text editing features:
+- File explorer navigation to open file
+- File lookup by name
+- Find & Replace
+- Show Line Numbers
+- Jump to Line
+- Remember last opened file, caret position, and top line
+- Autosave on focus out/quit/open new file
+- Watch open file for external changes to reflect in editor
+- Duplicate Line(s)
+- Kill Line(s)
+- Move up one line
+- Move down one line
+
+Gladiator has been made available in [Glimmer's gem](https://rubygems.org/gems/glimmer) via the `gladiator` command should others find useful too.
+
 If you cloned this project and followed [CONTRIBUTING.md](CONTRIBUTING.md) instructions, you may invoke via `bin/gladiator` instead. 
 
 ## In Production
