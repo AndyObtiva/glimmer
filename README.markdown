@@ -1698,12 +1698,16 @@ glimmer samples/video/hello_video_observers.rb
 
 ### Elaborate Samples
 
+![Gladiator](images/glimmer-gladiator.png)
+Gladiator (Glimmer Editor)
+
 For more elaborate samples, check the following:
 
 ```
 glimmer samples/login.rb # demonstrates basic data-binding
 glimmer samples/contactmanager/contact_manager.rb # demonstrates table data-binding
 glimmer samples/tictactoe/tic_tac_toe.rb # demonstrates a full MVC application
+glimmer samples/gladiator.rb # demonstrates a Glimmer Editor with tree/list data-binding
 ```
 
 ## In Production
