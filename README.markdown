@@ -1700,20 +1700,21 @@ glimmer samples/video/hello_video_observers.rb
 
 ### Elaborate Samples
 
-![Gladiator](images/glimmer-gladiator.png)
-Gladiator (Glimmer Editor)
-
 For more elaborate samples, check the following:
 
 ```
 glimmer samples/login.rb # demonstrates basic data-binding
 glimmer samples/contactmanager/contact_manager.rb # demonstrates table data-binding
 glimmer samples/tictactoe/tic_tac_toe.rb # demonstrates a full MVC application
-glimmer samples/gladiator.rb # demonstrates a Glimmer Editor with tree/list data-binding
+glimmer samples/gladiator.rb # demonstrates a text editor with tree/list data-binding
 ```
 
-Gladiator (short for Glimmer Editor) has been made available in [Glimmer's gem](https://rubygems.org/gems/glimmer) via the `gladiator` command.
-[Contributers](CONTRIBUTING.md) who cloned the project may invoke via `bin/gladiator` instead. It is used in active development of Glimmer.
+![Gladiator](images/glimmer-gladiator.png)
+
+Gladiator (short for Glimmer Editor) is an on-going sample project with continuous development.
+It is also used as the main text editor for coding Glimmer.
+As such, it has been made available in [Glimmer's gem](https://rubygems.org/gems/glimmer) via the `gladiator` command should others find useful too.
+If you cloned this project and followed [CONTRIBUTING.md](CONTRIBUTING.md) instructions, you may invoke via `bin/gladiator` instead. 
 
 ## In Production
 

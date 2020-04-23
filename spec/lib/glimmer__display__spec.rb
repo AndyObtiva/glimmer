@@ -32,7 +32,9 @@ module GlimmerSpec
             @shown = true
           }
         }
-        @target = shell
+        @target = shell {
+          alpha 0 # keep invisible while running specs
+        }
         @target.async_exec do
           expect(@shown).to eq(true)
           @target.dispose
