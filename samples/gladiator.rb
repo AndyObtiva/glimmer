@@ -133,14 +133,14 @@ class Gladiator
     
     def stop_filewatcher
       @filewatcher&.stop
-      @thread&.join
-      @filewatcher&.finalize
+#       @thread&.join
+#       @filewatcher&.finalize
     end
 
     def write_dirty_content
       new_dirty_content = "#{dirty_content.gsub("\r\n", "\n").gsub("\r", "\n").sub(/\n+\z/, '')}\n"      
       self.dirty_content = new_dirty_content if new_dirty_content != self.dirty_content
-      ::File.write(path, dirty_content) if ::File.exists?(path)
+      ::File.write(path, dirty_content) if ::File.exists?(path) && dirty_content.to_s.strip.size > 0
     end
 
     def comment_line!
@@ -443,6 +443,7 @@ class Gladiator
 
   def save_config
     child = Gladiator::Dir.local_dir.selected_child
+    return if child.nil? || child.path.nil? || child.caret_position.nil? || child.top_index.nil?
     @config = {
       selected_child_path: child.path,
       caret_position: child.caret_position,
@@ -450,6 +451,8 @@ class Gladiator
     }
     config_yaml = YAML.dump(@config)
     ::File.write(@config_file_path, config_yaml)
+  rescue => e
+    puts e.full_message
   end
 
   def launch
