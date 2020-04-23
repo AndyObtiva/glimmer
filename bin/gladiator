@@ -3,4 +3,4 @@
 require_relative '../lib/glimmer/launcher'
 
 gladiator = File.expand_path('../../samples/gladiator.rb', __FILE__)
-Glimmer::Launcher.new([gladiator] + ARGV).launch
+Glimmer::Launcher.new([gladiator, '-J-Xrs'] + ARGV).launch

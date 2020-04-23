@@ -120,7 +120,7 @@ class Gladiator
           begin
             read_dirty_content = ::File.read(path)
             # test read dirty content
-          read_dirty_content.split("\n")
+            read_dirty_content.split("\n")
             async_exec do
               self.dirty_content = read_dirty_content if read_dirty_content != dirty_content
             end
@@ -133,8 +133,6 @@ class Gladiator
     
     def stop_filewatcher
       @filewatcher&.stop
-#       @thread&.join
-#       @filewatcher&.finalize
     end
 
     def write_dirty_content
