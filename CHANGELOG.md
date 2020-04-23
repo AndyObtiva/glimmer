@@ -3,6 +3,7 @@
 ## 0.5.9
 
 - Allow discovery of custom widgets without namespace if there are no existing classes with same name
+- Add filters (global listeners) to SWT Display
 
 ## 0.5.8
 

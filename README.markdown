@@ -367,6 +367,103 @@ shell {
 }.open
 ```
 
+#### Display
+
+SWT Display is a singleton in Glimmer. It is used in SWT to represent your display device, allowing you to manage UI globally 
+and access available monitors. 
+It is automatically instantiated upon first instantiation of a `shell` widget. 
+Alternatively, for advanced use cases, it can be created explicitly with Glimmer `display` keyword. When a `shell` is later declared, it
+automatically uses the display created earlier without having to explicitly hook it.
+
+```ruby
+@display = display {
+  cursor_location 300, 300
+  on_event_keydown {
+    # ...
+  }
+  # ...
+}
+@shell = shell { # uses display created above
+}
+```
+The benefit of instantiating an SWT Display explicitly is to set [Properties](#widget-properties) or [Observers](#observer). 
+Although SWT Display is not technically a widget, it has similar APIs in SWT and similar DSL support in Glimmer.
+
+#### SWT Proxies
+
+Glimmer follows Proxy Design Pattern by having Ruby proxy wrappers for all SWT objects:
+- `Glimmer::SWT:WidgetProxy` wraps all descendants of `org.eclipse.swt.widgets.Widget` except the ones that have their own wrappers.
+- `Glimmer::SWT::ShellProxy` wraps `org.eclipse.swt.widgets.Shell`
+- `Glimmer::SWT:TabItemProxy` wraps `org.eclipse.swt.widget.TabItem` (also adds a composite to enable adding content under tab items directly in Glimmer)
+- `Glimmer::SWT:LayoutProxy` wraps all descendants of `org.eclipse.swt.widget.Layout`
+- `Glimmer::SWT:LayoutDataProxy` wraps all layout data objects
+- `Glimmer::SWT:DisplayProxy` wraps `org.eclipse.swt.widget.Display` (manages displaying UI)
+- `Glimmer::SWT:ColorProxy` wraps `org.eclipse.swt.graphics.Color`
+- `Glimmer::SWT:FontProxy` wraps `org.eclipse.swt.graphics.Font`
+- `Glimmer::SWT::WidgetListenerProxy` wraps all widget listeners
+
+These proxy objects have an API and provide some convenience methods, some of which are mentioned below.
+
+##### `#content { ... }`
+
+Glimmer allows re-opening any widget and adding properties or extra content after it has been constructed already by using the `#content` method.
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+@shell = shell {
+  text "Application"
+  row_layout
+  @label1 = label {
+    text "Hello,"
+  }
+}
+@shell.content {
+  minimum_size 130, 130
+  label {
+    text "World!"
+  }
+}
+@label1.content {
+  foreground :red
+}
+@shell.open
+```
+
+##### `#swt_widget`
+
+Glimmer widget objects come with an instance method `#swt_widget` that returns the actual SWT `Widget` object wrapped by the Glimmer widget object. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+@shell = shell {
+  button {
+    text "Press Me"
+    on_widget_selected {
+      message_box = MessageBox.new(@shell.swt_widget) # passing SWT Shell widget
+      message_box.setText("Surprise")
+      message_box.setMessage("You have won $1,000,000!")
+      message_box.open      
+    }
+  }
+}
+@shell.open
+```
+
+##### Shell widget proxy methods
+
+Shell widget proxy has extra methods specific to SWT Shell:
+- `#open`: Opens the shell, making it visible and active, and starting the SWT Event Loop (you may learn more about it here: https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/widgets/Display.html). If shell was already open, but hidden, it makes the shell visible.
+- `#show`: Alias for `#open`
+- `#hide`: Hides a shell setting "visible" property to false
+- `#close`: Closes the shell
+- `#center`: Centers the shell within monitor it is in
+- `#start_event_loop`: (happens as part of `#open`) Starts SWT Event Loop (you may learn more about it here: https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/widgets/Display.html). This method is not needed except in rare circumstances where there is a need to start the SWT Event Loop before opening the shell.
+- `#visible?`: Returns whether a shell is visible
+- `#opened_before?`: Returns whether a shell has been opened at least once before (additionally implying the SWT Event Loop has been started already)
+- `#visible=`: Setting to true opens/shows shell. Setting to false hides the shell.
+
 #### Menus
 
 Glimmer DSL provides support for SWT Menu and MenuItem widgets.
@@ -444,83 +541,6 @@ shell {
   }
 }.open
 ```
-
-
-#### SWT Proxies
-
-Glimmer follows Proxy Design Pattern by having Ruby proxy wrappers for all SWT objects:
-- `Glimmer::SWT:WidgetProxy` wraps all descendants of `org.eclipse.swt.widgets.Widget` except the ones that have their own wrappers.
-- `Glimmer::SWT::ShellProxy` wraps `org.eclipse.swt.widgets.Shell`
-- `Glimmer::SWT:TabItemProxy` wraps `org.eclipse.swt.widget.TabItem` (also adds a composite to enable adding content under tab items directly in Glimmer)
-- `Glimmer::SWT:LayoutProxy` wraps all descendants of `org.eclipse.swt.widget.Layout`
-- `Glimmer::SWT:LayoutDataProxy` wraps all layout data objects
-- `Glimmer::SWT:DisplayProxy` wraps `org.eclipse.swt.widget.Display` (manages displaying UI)
-- `Glimmer::SWT:ColorProxy` wraps `org.eclipse.swt.graphics.Color`
-- `Glimmer::SWT:FontProxy` wraps `org.eclipse.swt.graphics.Font`
-- `Glimmer::SWT::WidgetListenerProxy` wraps all widget listeners
-
-These proxy objects have an API and provide some convenience methods, some of which are mentioned below.
-
-
-##### `#content { ... }`
-
-Glimmer allows re-opening any widget and adding properties or extra content after it has been constructed already by using the `#content` method.
-
-Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
-
-```ruby
-@shell = shell {
-  text "Application"
-  row_layout
-  @label1 = label {
-    text "Hello,"
-  }
-}
-@shell.content {
-  minimum_size 130, 130
-  label {
-    text "World!"
-  }
-}
-@label1.content {
-  foreground :red
-}
-@shell.open
-```
-
-##### `#swt_widget`
-
-Glimmer widget objects come with an instance method `#swt_widget` that returns the actual SWT `Widget` object wrapped by the Glimmer widget object. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
-
-Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
-
-```ruby
-@shell = shell {
-  button {
-    text "Press Me"
-    on_widget_selected {
-      message_box = MessageBox.new(@shell.swt_widget) # passing SWT Shell widget
-      message_box.setText("Surprise")
-      message_box.setMessage("You have won $1,000,000!")
-      message_box.open      
-    }
-  }
-}
-@shell.open
-```
-
-##### Shell widget proxy methods
-
-Shell widget proxy has extra methods specific to SWT Shell:
-- `#open`: Opens the shell, making it visible and active, and starting the SWT Event Loop (you may learn more about it here: https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/widgets/Display.html). If shell was already open, but hidden, it makes the shell visible.
-- `#show`: Alias for `#open`
-- `#hide`: Hides a shell setting "visible" property to false
-- `#close`: Closes the shell
-- `#center`: Centers the shell within monitor it is in
-- `#start_event_loop`: (happens as part of `#open`) Starts SWT Event Loop (you may learn more about it here: https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/widgets/Display.html). This method is not needed except in rare circumstances where there is a need to start the SWT Event Loop before opening the shell.
-- `#visible?`: Returns whether a shell is visible
-- `#opened_before?`: Returns whether a shell has been opened at least once before (additionally implying the SWT Event Loop has been started already)
-- `#visible=`: Setting to true opens/shows shell. Setting to false hides the shell.
 
 ### Widget Styles
 
@@ -1064,7 +1084,9 @@ Glimmer supports observing widgets with two main types of events:
 1. `on_{swt-listener-method-name}`: where {swt-listener-method-name} is replaced with the lowercase underscored event method name on an SWT listener class (e.g. `on_verify_text` for `org.eclipse.swt.events.VerifyListener#verifyText`).
 2. `on_event_{swt-event-constant}`: where {swt-event-constant} is replaced with an `org.eclipse.swt.SWT` event constant (e.g. `on_event_show` for `SWT.Show` to observe when widget becomes visible)
 
-Additionally, the `shell` widget supports a 3rd type on the Mac, application menu item observers (`on_about` and `on_preferences`), which you can read about under [Miscellaneous](#miscellaneous).
+Additionally, there are two more types of events:
+- SWT `display` supports global listeners called filters that run on any widget. They are hooked via `on_event_{swt-event-constant}`
+- the `shell` widget supports Mac application menu item observers (`on_about` and `on_preferences`), which you can read about under [Miscellaneous](#miscellaneous).
 
 Number 1 is more commonly used in SWT applications, so make it your starting point. Number 2 covers events not found in number 1, so look into it if you don't find an SWT listener you need in number 1.
 

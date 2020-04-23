@@ -1,3 +1,5 @@
+require 'glimmer/swt/widget_listener_proxy'
+
 module Glimmer
   module SWT
     # Proxy for org.eclipse.swt.widgets.Display
@@ -43,6 +45,31 @@ module Glimmer
       # Executes code block synchronously with respect to SWT UI thread
       def sync_exec(&block)
         @swt_display.syncExec(&block)
+      end
+
+      def can_handle_observation_request?(observation_request)
+        observation_request = observation_request.to_s
+        if observation_request.start_with?('on_event_')
+          constant_name = observation_request.sub(/^on_event_/, '')
+          SWTProxy.has_constant?(constant_name)
+        else
+          false
+        end
+      end
+
+      def handle_observation_request(observation_request, &block)
+        if observation_request.start_with?('on_event_')
+          constant_name = observation_request.sub(/^on_event_/, '')
+          add_swt_event_listener(constant_name, &block)
+        end
+      end
+
+      def add_swt_event_listener(swt_constant, &block)
+        event_type = SWTProxy[swt_constant]
+        pd 'adding filter'
+        pd swt_constant
+        @swt_display.addFilter(event_type, &block)
+        #WidgetListenerProxy.new(@swt_display.getListeners(event_type).last)
       end
     end
   end

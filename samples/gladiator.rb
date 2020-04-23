@@ -396,6 +396,29 @@ class RubyEditor
   end
 
   def launch
+    @display = display {
+      on_event_keydown { |key_event|
+        if Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'f'
+          if @text.swt_widget.getSelectionText && @text.swt_widget.getSelectionText.size > 0
+            @find_text.swt_widget.setText @text.swt_widget.getSelectionText
+          end
+          @find_text.swt_widget.selectAll
+          @find_text.swt_widget.setFocus
+        elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command, :shift) && key_event.character.chr.downcase == 'g'
+          RubyEditor::Dir.local_dir.selected_child.find_previous
+        elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'g'
+          RubyEditor::Dir.local_dir.selected_child.find_next
+        elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'l'
+          @line_number_text.swt_widget.selectAll
+          @line_number_text.swt_widget.setFocus
+        elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'r'
+          @filter_text.swt_widget.selectAll
+          @filter_text.swt_widget.setFocus
+        elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 't'
+          @tree.swt_widget.setFocus
+        end
+      }
+    }
     @shell = shell {
       text "Gladiator - #{::File.expand_path(RubyEditor::Dir.local_dir.path)}"
       minimum_size 320, 240
@@ -434,9 +457,6 @@ class RubyEditor
               if Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :cr) || Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :lf)
                 RubyEditor::Dir.local_dir.selected_child_path = @list.swt_widget.getSelection.first
                 @text.swt_widget.setFocus
-              elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'r'
-                @filter_text.swt_widget.selectAll
-                @filter_text.swt_widget.setFocus
               end
             }
           }
@@ -546,22 +566,6 @@ class RubyEditor
                 RubyEditor::Dir.local_dir.selected_child.outdent!
               elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == ']'
                 RubyEditor::Dir.local_dir.selected_child.indent!
-              elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'r'
-                @filter_text.swt_widget.selectAll
-                @filter_text.swt_widget.setFocus
-              elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command, :shift) && key_event.character.chr.downcase == 'g'
-                RubyEditor::Dir.local_dir.selected_child.find_previous
-              elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'g'
-                RubyEditor::Dir.local_dir.selected_child.find_next
-              elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'f'
-                if @text.swt_widget.getSelectionText && @text.swt_widget.getSelectionText.size > 0
-                  @find_text.swt_widget.setText @text.swt_widget.getSelectionText
-                end
-                @find_text.swt_widget.selectAll
-                @find_text.swt_widget.setFocus
-              elsif Glimmer::SWT::SWTProxy.include?(key_event.stateMask, :command) && key_event.character.chr.downcase == 'l'
-                @line_number_text.swt_widget.selectAll
-                @line_number_text.swt_widget.setFocus
               elsif key_event.keyCode == swt(:page_up)
                 RubyEditor::Dir.local_dir.selected_child.page_up
                 key_event.doit = false

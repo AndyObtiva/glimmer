@@ -1,4 +1,5 @@
 require 'glimmer/dsl/expression'
+require 'glimmer/swt/display_proxy'
 
 module Glimmer
   module DSL
@@ -8,9 +9,9 @@ module Glimmer
       def can_interpret?(parent, keyword, *args, &block)
         Glimmer.logger&.debug "keyword starts with on_: #{keyword.start_with?('on_')}"
         return false unless keyword.start_with?('on_')
-        widget_parentage = widget?(parent)
-        Glimmer.logger&.debug "parent is a widget: #{widget_parentage}"
-        return false unless widget_parentage
+        widget_or_display_parentage = widget?(parent) || parent.is_a?(SWT::DisplayProxy)
+        Glimmer.logger&.debug "parent is a widget or display: #{widget_or_display_parentage}"
+        return false unless widget_or_display_parentage
         Glimmer.logger&.debug "block exists?: #{!block.nil?}"
         raise Glimmer::Error, "Listener is missing block for keyword: #{keyword}" unless block_given?
         Glimmer.logger&.debug "args are empty?: #{args.empty?}"
