@@ -33,7 +33,10 @@ class RubyEditor
 
     def filtered
       return if filter.nil?
-      all_children_files.select {|child| child.path.downcase.include?(filter.downcase) }.sort_by {|c| c.path.to_s.downcase}
+      all_children_files.select do |child|
+        child.path.downcase.include?(filter.downcase) ||
+          child.path.downcase.gsub('_', '').include?(filter.downcase)
+      end.sort_by {|c| c.path.to_s.downcase}
     end
 
     def all_children

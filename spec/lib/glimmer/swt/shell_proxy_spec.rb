@@ -43,6 +43,50 @@ module GlimmerSpec
       end
     end
 
+    describe '#pack_same_size' do
+      it 'packs shell content while maintaining the same shell size (widget sizes may vary)' do
+        @target = shell {
+          grid_layout 1, false
+          @text = text {
+            layout_data :fill, :fill, true, true
+            text 'A'
+          }
+        }
+
+        text_width = @text.swt_widget.getSize.x
+        shell_width = @target.swt_widget.getSize.x
+
+        @text.swt_widget.setText('A very long text it cannot fit in the screen if you keep reading on' + ' and on'*60)
+        # packing shell should resize text widget
+        @target.pack_same_size
+
+        expect(@text.swt_widget.getSize.x > text_width).to eq(true)
+        expect(@target.swt_widget.getSize.x).to eq(shell_width)
+      end
+    end
+
+    describe '#pack' do
+      it 'packs shell content by invoking SWT Shell#pack' do
+        @target = shell {
+          grid_layout 1, false
+          @text = text {
+            layout_data :fill, :fill, true, true
+            text 'A'
+          }
+        }
+
+        text_width = @text.swt_widget.getSize.x
+        shell_width = @target.swt_widget.getSize.x
+
+        @text.swt_widget.setText('A very long text it cannot fit in the screen if you keep reading on' + ' and on'*60)
+        # packing shell should resize text widget
+        @target.pack
+
+        expect(@text.swt_widget.getSize.x > text_width).to eq(true)
+        expect(@target.swt_widget.getSize.x > shell_width).to eq(true)
+      end
+    end
+
     describe 'visibility observation' do
       it 'notifies when becoming visible' do
         @target = described_class.new
