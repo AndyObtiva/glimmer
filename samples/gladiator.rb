@@ -19,7 +19,7 @@ class RubyEditor
     end
 
     def children
-      ::Dir.glob(::File.join(@path, '*')).map {|p| ::File.file?(p) ? RubyEditor::File.new(p) : RubyEditor::Dir.new(p)}
+      ::Dir.glob(::File.join(@path, '*')).map {|p| ::File.file?(p) ? RubyEditor::File.new(p) : RubyEditor::Dir.new(p)}.sort_by {|c| c.path.to_s.downcase }.sort_by {|c| c.class.name }
     end
 
     def filter=(value)
@@ -92,7 +92,7 @@ class RubyEditor
     end
 
     def write_dirty_content
-      self.dirty_content = dirty_content.gsub("\r\n", "\n").gsub("\r", "\n").sub(/\n+\z/, "\n").gsub("\n", "\r\n")
+      self.dirty_content = dirty_content.gsub("\r\n", "\n").gsub("\r", "\n").sub(/\n+\z/, "\n")
       ::File.write(path, dirty_content) if ::File.exists?(path)
     end
 

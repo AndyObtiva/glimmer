@@ -64,7 +64,7 @@ module Glimmer
         args = SWTProxy.constantify_args(args)
         if args.first != @swt_layout_data.send(attribute_getter(attribute_name))
           @swt_layout_data.send(attribute_setter(attribute_name), *args)
-          @widget_proxy.swt_widget.getShell.pack
+          @widget_proxy.swt_widget.getShell.layout
         end
       end
 

@@ -66,8 +66,6 @@ module Glimmer
 
       def add_swt_event_listener(swt_constant, &block)
         event_type = SWTProxy[swt_constant]
-        pd 'adding filter'
-        pd swt_constant
         @swt_display.addFilter(event_type, &block)
         #WidgetListenerProxy.new(@swt_display.getListeners(event_type).last)
       end

@@ -56,7 +56,7 @@ module Glimmer
         apply_property_type_converters(attribute_name, args)
         if args.first != @swt_layout.send(attribute_getter(attribute_name))
           @swt_layout.send(attribute_setter(attribute_name), *args)
-          @widget_proxy.swt_widget.getShell.pack
+          @widget_proxy.swt_widget.getShell.layout
           # TODO see if pack(true) is needed
         end
       end
