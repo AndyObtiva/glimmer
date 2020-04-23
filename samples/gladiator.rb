@@ -1,5 +1,7 @@
 require 'yaml'
+require 'filewatcher'
 
+# Gladiator (Glimmer Editor)
 class RubyEditor
   include Glimmer
 
@@ -11,10 +13,10 @@ class RubyEditor
     end
 
     attr_accessor :selected_child, :filter, :children, :filtered_path_options
-    attr_reader :path
+    attr_reader :path, :display_path
 
     def initialize(path)
-      @path = path
+      @path = @display_path = path
       self.filtered_path_options = []
     end
 
@@ -28,12 +30,12 @@ class RubyEditor
       else
         @filter = value
       end
-      self.filtered_path_options = filtered.to_a.map(&:path)   
+      self.filtered_path_options = filtered.to_a.map(&:display_path)
     end
 
     def filtered
       return if filter.nil?
-      all_children_files.select do |child|
+      all_children_files.select do |child| 
         child.path.downcase.include?(filter.downcase) ||
           child.path.downcase.gsub('_', '').include?(filter.downcase)
       end.sort_by {|c| c.path.to_s.downcase}
@@ -53,7 +55,9 @@ class RubyEditor
         new_child = RubyEditor::File.new(selected_path)
         begin
           if new_child.lines.any?
+            self.selected_child&.stop_filewatcher
             self.selected_child = new_child
+            self.selected_child.start_filewatcher
           end
         rescue
           # no op
@@ -77,11 +81,12 @@ class RubyEditor
     include Glimmer
 
     attr_accessor :dirty_content, :line_numbers_content, :caret_position, :selection_count, :line_number, :find_text, :top_index
-    attr_reader :path
+    attr_reader :path, :display_path
 
     def initialize(path)
       raise "Not a file path: #{path}" unless ::File.file?(path)
-      @path = path
+      @display_path = path
+      @path = ::File.expand_path(path)
       read_dirty_content = ::File.read(path)
       begin
         # test read dirty content
@@ -105,10 +110,36 @@ class RubyEditor
       end
     end
 
+    def start_filewatcher
+      @filewatcher = Filewatcher.new(@path)
+      @thread = Thread.new(@filewatcher) do |fw| 
+        fw.watch do |filename, event|
+          begin
+            read_dirty_content = ::File.read(path)
+            # test read dirty content
+          read_dirty_content.split("\n")
+            async_exec do
+              self.dirty_content = read_dirty_content if read_dirty_content != dirty_content
+            end
+          rescue
+            # no op in case of a binary file
+          end
+        end
+      end
+    end
+    
+    def stop_filewatcher
+      @filewatcher&.stop
+      @thread&.join
+      @filewatcher&.finalize
+    end
+
     def write_dirty_content
       new_dirty_content = "#{dirty_content.gsub("\r\n", "\n").gsub("\r", "\n").sub(/\n+\z/, '')}\n"
-      self.dirty_content = new_dirty_content if new_dirty_content != self.dirty_content
-      ::File.write(path, dirty_content) if ::File.exists?(path)
+      if new_dirty_content != self.dirty_content
+        self.dirty_content = new_dirty_content
+        ::File.write(path, dirty_content) if ::File.exists?(path)
+      end
     end
 
     def comment_line!
@@ -380,14 +411,15 @@ class RubyEditor
     @config_file_path = '.gladiator'
     @config = {}
     RubyEditor::Dir.local_dir.all_children # pre-caches children
-    load_config
+    load_config  
   end
 
   def load_config
     if ::File.exists?(@config_file_path)
       config_yaml = ::File.read(@config_file_path)
       @config = YAML.load(config_yaml)
-      RubyEditor::Dir.local_dir.selected_child = RubyEditor::File.new(@config[:selected_child_path]) if @config[:selected_child_path]
+      return if @config.to_s.empty?
+      RubyEditor::Dir.local_dir.selected_child_path = @config[:selected_child_path] if @config[:selected_child_path]
       RubyEditor::Dir.local_dir.selected_child.caret_position  = RubyEditor::Dir.local_dir.selected_child.caret_position_for_caret_position_start_of_line(@config[:caret_position]) if @config[:caret_position]
       RubyEditor::Dir.local_dir.selected_child.top_index = @config[:top_index] if @config[:top_index]
     end
@@ -474,7 +506,7 @@ class RubyEditor
               #exclude bind(RubyEditor::Dir.local_dir, :filter) {|f| !!f}
             }
             #visible bind(RubyEditor::Dir, 'local_dir.filter') {|f| !f}
-            items bind(RubyEditor::Dir, :local_dir), tree_properties(children: :children, text: :path)
+            items bind(RubyEditor::Dir, :local_dir), tree_properties(children: :children, text: :display_path)
             on_widget_selected {
               RubyEditor::Dir.local_dir.selected_child_path = @tree.swt_widget.getSelection.first.getText
             }
@@ -609,7 +641,10 @@ class RubyEditor
       }
     }
     observe(RubyEditor::Dir.local_dir, 'selected_child.line_numbers_content') do
-      @shell.pack_same_size
+      if @last_line_numbers_content != RubyEditor::Dir.local_dir.selected_child.line_numbers_content
+        @shell.pack_same_size
+        @last_line_numbers_content = RubyEditor::Dir.local_dir.selected_child.line_numbers_content
+      end
     end
     observe(RubyEditor::Dir.local_dir, 'selected_child.caret_position') do
       save_config

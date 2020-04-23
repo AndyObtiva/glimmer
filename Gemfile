@@ -6,6 +6,7 @@ gem 'super_module', '~> 1.4.1'
 gem 'nested_inherited_jruby_include_package', '~> 0.3.0'
 gem 'warbler', '~> 2.0.5'
 gem 'rake', '>= 10.1.0'
+gem 'filewatcher', '~> 1.1.1'
 
 group :development do
   gem "rspec-mocks", "~> 3.5.0"
