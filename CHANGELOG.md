@@ -4,6 +4,8 @@
 
 - Allow discovery of custom widgets without namespace if there are no existing classes with same name
 - Add filters (global listeners) to SWT Display
+- ShellProxy #pack and #pack_same_size methods
+- Added Gladiator (Glimmer Editor) sample and command
 
 ## 0.5.8
 
