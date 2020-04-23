@@ -463,6 +463,8 @@ Shell widget proxy has extra methods specific to SWT Shell:
 - `#visible?`: Returns whether a shell is visible
 - `#opened_before?`: Returns whether a shell has been opened at least once before (additionally implying the SWT Event Loop has been started already)
 - `#visible=`: Setting to true opens/shows shell. Setting to false hides the shell.
+- `#pack`: Packs contained widgets using SWT's `Shell#pack` method
+- `#pack_same_size`: Packs contained widgets without changing shell's size when widget sizes change
 
 #### Menus
 

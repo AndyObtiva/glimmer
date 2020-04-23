@@ -433,8 +433,8 @@ class Gladiator
   def load_config
     if ::File.exists?(@config_file_path)
       config_yaml = ::File.read(@config_file_path)
+      return if config_yaml.to_s.strip.empty?
       @config = YAML.load(config_yaml)
-      return if @config.to_s.empty?
       Gladiator::Dir.local_dir.selected_child_path = @config[:selected_child_path] if @config[:selected_child_path]
       Gladiator::Dir.local_dir.selected_child.caret_position  = Gladiator::Dir.local_dir.selected_child.caret_position_for_caret_position_start_of_line(@config[:caret_position]) if @config[:caret_position]
       Gladiator::Dir.local_dir.selected_child.top_index = @config[:top_index] if @config[:top_index]
@@ -482,6 +482,12 @@ class Gladiator
       text "Gladiator - #{::File.expand_path(Gladiator::Dir.local_dir.path)}"
       minimum_size 720, 540
       grid_layout 2, false
+      on_event_close {
+        Gladiator::Dir.local_dir.selected_child&.write_dirty_content
+      }
+      on_widget_disposed {
+        Gladiator::Dir.local_dir.selected_child&.write_dirty_content
+      }
       composite {
         grid_layout 1, false
         layout_data(:fill, :fill, false, true) {
@@ -638,12 +644,6 @@ class Gladiator
             selection_count bind(Gladiator::Dir.local_dir, 'selected_child.selection_count')
             top_index bind(Gladiator::Dir.local_dir, 'selected_child.top_index')
             on_focus_lost {
-              Gladiator::Dir.local_dir.selected_child&.write_dirty_content
-            }
-            on_event_close {
-              Gladiator::Dir.local_dir.selected_child&.write_dirty_content
-            }
-            on_widget_disposed {
               Gladiator::Dir.local_dir.selected_child&.write_dirty_content
             }
       	     on_key_pressed { |key_event|
