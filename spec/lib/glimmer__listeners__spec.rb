@@ -1,4 +1,5 @@
 require "spec_helper"
+require 'os'
 
 module GlimmerSpec
   describe "Glimmer Listeners" do
@@ -126,26 +127,34 @@ module GlimmerSpec
 
     context 'Shell listeners for Application Menu Items' do
       it 'listens to about menu item selection' do
-        system_menu = Glimmer::SWT::DisplayProxy.instance.swt_display.getSystemMenu
-        about_menu_item = system_menu.getItems.find {|menu_item| menu_item.getID == swt('ID_ABOUT')}
-        expect(about_menu_item.getListeners(swt(:Selection)).count).to eq(0)
+        if OS.mac?
+          system_menu = Glimmer::SWT::DisplayProxy.instance.swt_display.getSystemMenu
+          about_menu_item = system_menu.getItems.find {|menu_item| menu_item.getID == swt('ID_ABOUT')}
+          expect(about_menu_item.getListeners(swt(:Selection)).count).to eq(0)
+        end
         @target = shell {
           on_about {
             # No Op
           }
         }
-        expect(about_menu_item.getListeners(swt(:Selection)).count).to eq(1)
+        if OS.mac?
+	  expect(about_menu_item.getListeners(swt(:Selection)).count).to eq(1)
+        end	
       end
       it 'listens to preferences menu item selection' do
-        system_menu = Glimmer::SWT::DisplayProxy.instance.swt_display.getSystemMenu
-        preferences_menu_item = system_menu.getItems.find {|menu_item| menu_item.getID == swt('ID_PREFERENCES')}
-        expect(preferences_menu_item.getListeners(swt(:Selection)).count).to eq(0)
+        if OS.mac?
+          system_menu = Glimmer::SWT::DisplayProxy.instance.swt_display.getSystemMenu
+          preferences_menu_item = system_menu.getItems.find {|menu_item| menu_item.getID == swt('ID_PREFERENCES')}
+          expect(preferences_menu_item.getListeners(swt(:Selection)).count).to eq(0)
+        end
         @target = shell {
           on_preferences {
             # No Op
           }
         }
-        expect(preferences_menu_item.getListeners(swt(:Selection)).count).to eq(1)
+        if OS.mac?
+          expect(preferences_menu_item.getListeners(swt(:Selection)).count).to eq(1)
+        end
       end
     end
   end
