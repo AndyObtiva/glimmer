@@ -3,6 +3,7 @@ require 'filewatcher'
 require 'clipboard'
 
 Clipboard.implementation = Clipboard::Java
+Clipboard.copy(Clipboard.paste) # pre-initialize library to avoid slowdown during use
 
 # Gladiator (Glimmer Editor)
 class Gladiator

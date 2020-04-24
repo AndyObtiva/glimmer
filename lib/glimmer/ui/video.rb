@@ -26,7 +26,7 @@ module Glimmer
       alias fit_to_height? fit_to_height
 
       body {
-        browser {
+        browser(:no_scroll) {
           text <<~HTML
             <html>
               <head>
