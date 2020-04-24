@@ -1736,7 +1736,8 @@ If you cloned this project and followed [CONTRIBUTING.md](CONTRIBUTING.md) instr
 ## In Production
 
 The following production apps have been built with Glimmer:
-- [Math Bowling](https://github.com/AndyObtiva/MathBowling): an educational math game for elementary level kids
+
+[<img alt="Math Bowling Logo" src="https://raw.githubusercontent.com/AndyObtiva/MathBowling/master/images/math-bowling-logo.png" width="40" />Math Bowling](https://github.com/AndyObtiva/MathBowling): an educational math game for elementary level kids
 
 ## SWT Reference
 
