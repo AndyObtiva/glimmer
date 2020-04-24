@@ -9,6 +9,7 @@ require 'java'
 require 'set'
 require 'nested_inherited_jruby_include_package'
 require 'fileutils'
+require 'os'
 
 # Glimmer provides a JRuby Desktop UI DSL + Data-Binding functionality
 #

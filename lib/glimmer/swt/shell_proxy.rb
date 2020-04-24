@@ -130,9 +130,11 @@ module Glimmer
         if observation_request.start_with?('on_')
           event_name = observation_request.sub(/^on_/, '')
           if OBSERVED_MENU_ITEMS.include?(event_name)
-            system_menu = DisplayProxy.instance.swt_display.getSystemMenu
-            menu_item = system_menu.getItems.find {|menu_item| menu_item.getID == SWTProxy["ID_#{event_name.upcase}"]}
-            menu_item.addListener(SWTProxy[:Selection], &block)
+            if OS.mac?
+              system_menu = DisplayProxy.instance.swt_display.getSystemMenu
+              menu_item = system_menu.getItems.find {|menu_item| menu_item.getID == SWTProxy["ID_#{event_name.upcase}"]}
+              menu_item.addListener(SWTProxy[:Selection], &block)
+            end
           else
             super
           end
