@@ -371,11 +371,11 @@ class Gladiator
     end
 
     def line_for_caret_position(caret_position)
-      lines[line_index_for_caret_position(caret_position)]
+      lines[line_index_for_caret_position(caret_position.to_i)]
     end
 
     def line_index_for_caret_position(caret_position)
-      dirty_content[0...caret_position].count("\n")
+      dirty_content[0...caret_position.to_i].count("\n")
     end
 
     def caret_position_for_line_index(line_index)
