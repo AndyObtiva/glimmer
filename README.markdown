@@ -598,17 +598,37 @@ You may check out all available `SWT` styles here:
 
 https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
 
-#### Advanced case outside of standard Glimmer DSL
+#### Explicit SWT Style Bit
 
 When building a widget-related SWT object manually (e.g. `GridData.new(...)`), you are expected to use `SWT::CONSTANT` directly or BIT-OR a few SWT constants together like `SWT::BORDER | SWT::V_SCROLL`.
 
-Glimmer facilitates that with `SWTProxy` class by allowing you to pass multiple styles as an argument array of symbols instead of dealing with BIT-OR. For example: `SWTProxy[:border, :v_scroll]`
+Glimmer facilitates that with `swt` keyword by allowing you to pass multiple styles as an argument array of symbols instead of dealing with BIT-OR. 
+Example: 
 
-#### Non-resizable Window
+```ruby
+style = swt(:border, :v_scroll)
+```
 
-SWT Shell widget by default is resizable. To make it non-resizable, one must pass a complicated style bit concoction like `SWTProxy[:shell_trim] & (~SWTProxy[:resize]) & (~SWTProxy[:max])`.
+#### Negative SWT Style Bits
 
-Glimmer makes this easier by alternatively offering `:no_resize` extra SWT style, added for convenience. This makes declaring an non-resizable window as easy as:
+In rare occasions, you might need to apply & with a negative (not) style bit to negate it from another style bit that includes it. 
+Glimmer facilitates that by declaring the negative style bit via postfixing a symbol with `!`.
+
+Example:
+
+```ruby
+style = swt(:shell_trim, :max!) # creates a shell trim style without the maximize button (negated)
+```
+
+#### Extra SWT Styles 
+
+##### Non-resizable Window
+
+SWT Shell widget by default is resizable. To make it non-resizable, one must pass a complicated style bit concoction like `swt(:shell_trim, :resize!, :max!)`.
+
+Glimmer makes this easier by alternatively offering a `:no_resize` extra SWT style, added for convenience. 
+This makes declaring a non-resizable window as easy as:
+
 ```ruby
 shell(:no_resize) {
   # ...
@@ -889,7 +909,7 @@ composite {
   grid_layout 3, false # grid layout with 3 columns not of equal width
   label {
     # layout data set explicitly via an object (helps in rare cases that break convention)
-    layout_data GridData.new(SWTProxy[:fill], SWTProxy[:end], true, false)
+    layout_data GridData.new(swt(:fill), swt(:end), true, false)
   }
 }
 # ...

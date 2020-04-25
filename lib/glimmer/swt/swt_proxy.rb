@@ -10,19 +10,24 @@ module Glimmer
         java_import 'org.eclipse.swt.SWT'
 
         ERROR_INVALID_STYLE = " is an invalid SWT style! Please choose a style from org.eclipse.swt.SWT class constants."
+        REGEX_SYMBOL_NEGATIVITY = /^([^!]+)(!)?$/
 
         # Gets SWT constants as if calling SWT::CONSTANT where constant is
         # passed in as a lower case symbol
         def [](*symbols)
           symbols = symbols.first if symbols.size == 1 && symbols.first.is_a?(Array)
-          symbols.compact.reduce(0) do |output, symbol|
-            constant_value = constant(symbol)
-            if constant_value.is_a?(Integer)
-              output | constant(symbol)
+          result = symbols.compact.map do |symbol|
+            constant(symbol).tap do |constant_value|
+              raise Error, symbol.to_s + ERROR_INVALID_STYLE unless constant_value.is_a?(Integer)
+            end
+          end.reduce do |output, constant_value|
+            if constant_value < 0
+              output & constant_value
             else
-              raise Error, symbol.to_s + ERROR_INVALID_STYLE
+              output | constant_value
             end
           end
+          result.nil? ? SWT::NONE : result
         end
 
         # Returns SWT style integer value for passed in symbol or allows
@@ -32,16 +37,41 @@ module Glimmer
         # (look into [] operator if you want an error raised on invalid values)
         def constant(symbol)
           return symbol unless symbol.is_a?(Symbol) || symbol.is_a?(String)
-          symbol_string = symbol.to_s
+          symbol_string, negative = extract_symbol_string_negativity(symbol)
           swt_constant_symbol = symbol_string.downcase == symbol_string ? symbol_string.upcase.to_sym : symbol_string.to_sym
-          SWT.const_get(swt_constant_symbol)
-        rescue
+          bit_value = SWT.const_get(swt_constant_symbol)
+          negative ? ~bit_value : bit_value
+        rescue => e
           begin
+#             Glimmer.logger&.debug(e.full_message)
             alternative_swt_constant_symbol = SWT.constants.find {|c| c.to_s.upcase == swt_constant_symbol.to_s.upcase}
-            SWT.const_get(alternative_swt_constant_symbol)
-          rescue
-            EXTRA_STYLES[swt_constant_symbol] || symbol
+            bit_value = SWT.const_get(alternative_swt_constant_symbol)
+            negative ? ~bit_value : bit_value
+          rescue => e
+#             Glimmer.logger&.debug(e.full_message)
+            bit_value = Glimmer::SWT::SWTProxy::EXTRA_STYLES[swt_constant_symbol]
+            if bit_value
+              negative ? ~bit_value : bit_value
+            else
+              symbol
+            end
           end
+        end
+
+        def extract_symbol_string_negativity(symbol)
+          if symbol.is_a?(Symbol) || symbol.is_a?(String)
+            symbol_negativity_match = symbol.to_s.match(REGEX_SYMBOL_NEGATIVITY)
+            symbol = symbol_negativity_match[1]
+            negative = !!symbol_negativity_match[2]
+            [symbol, negative]
+          else
+            negative = symbol < 0
+            [symbol, negative]
+          end
+         end
+
+        def negative?(symbol)
+          extract_symbol_string_negativity(symbol)[1]
         end
 
         def has_constant?(symbol)
@@ -69,7 +99,7 @@ module Glimmer
       end
 
       EXTRA_STYLES = {
-        NO_RESIZE: SWTProxy[:shell_trim] & (~SWTProxy[:resize]) & (~SWTProxy[:max])
+        NO_RESIZE: self[:shell_trim, :resize!, :max!]
       }
     end
   end

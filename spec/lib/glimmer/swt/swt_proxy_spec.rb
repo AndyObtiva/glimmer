@@ -22,7 +22,19 @@ module GlimmerSpec
       end
 
       it 'returns SWT constant value for symbol representing an extra SWT constant added in Glimmer for convenience' do
-        expect(Glimmer::SWT::SWTProxy.constant(:no_resize)).to eq(Glimmer::SWT::SWTProxy[:shell_trim] & (~Glimmer::SWT::SWTProxy[:resize]) & (~Glimmer::SWT::SWTProxy[:max]))
+        expect(Glimmer::SWT::SWTProxy.constant(:no_resize)).to eq(::SWT::SHELL_TRIM & ~::SWT::RESIZE & ~::SWT::MAX)
+      end
+
+      it 'returns SWT constant value for a negative symbol (postfixed by !)' do
+        expect(Glimmer::SWT::SWTProxy.constant(:max!)).to eq(~::SWT::MAX)
+      end
+
+      it 'returns SWT constant value for a negative symbol that is not all caps in SWT' do
+        expect(Glimmer::SWT::SWTProxy.constant(:activate!)).to eq(~::SWT::Activate)
+      end
+
+      it 'returns SWT constant value for a negative symbol representing an extra SWT constant added in Glimmer for convenience' do
+        expect(Glimmer::SWT::SWTProxy.constant(:no_resize!)).to eq(~(::SWT::SHELL_TRIM & ~::SWT::RESIZE & ~::SWT::MAX))
       end
 
       it 'returns SWT constant value for string' do
@@ -53,6 +65,10 @@ module GlimmerSpec
 
         it 'returns SWT constant value for mixed values (symbol, string, and integer)' do
           expect(Glimmer::SWT::SWTProxy['border', :v_scroll, ::SWT::CENTER]).to eq(::SWT::BORDER | ::SWT::V_SCROLL | ::SWT::CENTER)
+        end
+
+        it 'returns SWT constant value for negative and positive symbols' do
+          expect(Glimmer::SWT::SWTProxy[:shell_trim, :resize, :max!, :min!]).to eq((::SWT::SHELL_TRIM | ::SWT::SHELL_TRIM) & ~::SWT::MAX & ~::SWT::MIN)
         end
       end
 

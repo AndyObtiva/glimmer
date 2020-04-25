@@ -69,8 +69,8 @@ module Glimmer
         if the_glimmer_lib == GLIMMER_LIB_LOCAL
           devmode_require = '-r puts_debuggerer '
         end
-        puts "#{env_vars_string} jruby #{jruby_options_string}#{jruby_os_specific_options} -r #{the_glimmer_lib} #{devmode_require}-S \"#{application}\"" if jruby_options_string.to_s.include?('--debug')
-        system "#{env_vars_string} jruby #{jruby_options_string}#{jruby_os_specific_options} -r #{the_glimmer_lib} #{devmode_require}-S \"#{application}\""
+        puts "#{env_vars_string} jruby #{jruby_options_string}#{jruby_os_specific_options} #{devmode_require}-r #{the_glimmer_lib} -S #{application}" if jruby_options_string.to_s.include?('--debug')
+        system "#{env_vars_string} jruby #{jruby_options_string}#{jruby_os_specific_options} #{devmode_require}-r #{the_glimmer_lib} -S #{application}"
       end
     end
 

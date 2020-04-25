@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.5.10
+
+- Fix video widget scrolling bar appearing issue
+- Ensure on_about/on_preferences menu items are ignored on Windows
+- Support SWT negative symbols postfixed by exclamation mark (e.g. :max! for no :max)
+
 ## 0.5.9
 
 - Allow discovery of custom widgets without namespace if there are no existing classes with same name
