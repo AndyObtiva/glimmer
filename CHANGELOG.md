@@ -6,6 +6,7 @@
 - Ensure on_about/on_preferences menu items are ignored on Windows
 - Support SWT negative symbols postfixed by exclamation mark (e.g. :max! for no :max)
 - Fix a bug in girb that made it not start anymore
+- Fix a bug in Gladiator when jumping to line before a caret has been set
 
 ## 0.5.9
 
