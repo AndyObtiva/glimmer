@@ -31,11 +31,11 @@ module GlimmerSpec
     let(:video_url) { "http://www.youtube.com/fdajiew" }
     let(:video_url_truncated) { "www.youtube.com/fdajiew" }
 
-    it "sets video source by file option argument" do
+    it "initializes video source by file option argument" do
       @target.content {
         @video = video(file: video_file) {
           on_completed {
-            expect(@video.swt_widget.evaluate("return document.getElementById('source').src")).to eq("file://#{video_file}")
+            expect(@video.swt_widget.evaluate("return document.getElementById('video').src")).to eq("file://#{video_file}")
             @target.dispose
           }
         }
@@ -43,11 +43,11 @@ module GlimmerSpec
       expect(@video.source).to eq("file://#{video_file}")
     end
 
-    it "sets video source by url option argument" do
+    it "initializes video source by url option argument" do
       @target.content {
         @video = video(url: video_url) {
           on_completed {
-            expect(@video.swt_widget.evaluate("return document.getElementById('source').src")).to eq(video_url)
+            expect(@video.swt_widget.evaluate("return document.getElementById('video').src")).to eq(video_url)
             @target.dispose
           }
         }
@@ -55,12 +55,68 @@ module GlimmerSpec
       expect(@video.source).to eq(video_url)
     end
 
-    it 'sets video source by uri:classloader file (JAR file path)' do
+    it 'initializes video source by uri:classloader file (JAR file path)' do
       expected_source = "file:///tmp/glimmer/lib/glimmer/ui/video/#{File.basename(video_file)}"
       @target.content {
         @video = video(file: "uri:classloader://#{video_file}") {
           on_completed {
-            expect(@video.swt_widget.evaluate("return document.getElementById('source').src")).to eq(expected_source)
+            expect(@video.swt_widget.evaluate("return document.getElementById('video').src")).to eq(expected_source)
+            expect(Dir['/tmp/glimmer/lib/glimmer/ui/video/*'].to_a.size).to be > 0
+            @target.dispose
+          }
+        }
+      }
+      expect(@video.source).to eq(expected_source)
+    end
+
+    it 'initializes video source by uri:classloader file (JAR file path) with ENV["temp"] set for windows' do
+      ENV['temp'] = '/tmp/tmp'
+      expected_source = "file:///tmp/tmp/glimmer/lib/glimmer/ui/video/#{File.basename(video_file)}"
+      @target.content {
+        @video = video(file: "uri:classloader://#{video_file}") {
+          on_completed {
+            expect(@video.swt_widget.evaluate("return document.getElementById('video').src")).to eq(expected_source)
+            expect(Dir['/tmp/tmp/glimmer/lib/glimmer/ui/video/*'].to_a.size).to be > 0
+            @target.dispose
+          }
+        }
+      }
+      expect(@video.source).to eq(expected_source)
+    end
+
+    it "sets video source by file attribute" do
+      @target.content {
+        @video = video {
+          file video_file
+          on_completed {
+            expect(@video.swt_widget.evaluate("return document.getElementById('video').src")).to eq("file://#{video_file}")
+            @target.dispose
+          }
+        }
+      }
+      expect(@video.source).to eq("file://#{video_file}")
+    end
+
+    it "sets video source by url attribute" do
+      @target.content {
+        @video = video {
+          url video_url
+          on_completed {
+            expect(@video.swt_widget.evaluate("return document.getElementById('video').src")).to eq(video_url)
+            @target.dispose
+          }
+        }
+      }
+      expect(@video.source).to eq(video_url)
+    end
+
+    it 'sets video source by uri:classloader file attribute (JAR file path)' do
+      expected_source = "file:///tmp/glimmer/lib/glimmer/ui/video/#{File.basename(video_file)}"
+      @target.content {
+        @video = video {
+          file "uri:classloader://#{video_file}"
+          on_completed {
+            expect(@video.swt_widget.evaluate("return document.getElementById('video').src")).to eq(expected_source)
             expect(Dir['/tmp/glimmer/lib/glimmer/ui/video/*'].to_a.size).to be > 0
             @target.dispose
           }
@@ -73,9 +129,10 @@ module GlimmerSpec
       ENV['temp'] = '/tmp/tmp'
       expected_source = "file:///tmp/tmp/glimmer/lib/glimmer/ui/video/#{File.basename(video_file)}"
       @target.content {
-        @video = video(file: "uri:classloader://#{video_file}") {
+        @video = video {
+          file "uri:classloader://#{video_file}"
           on_completed {
-            expect(@video.swt_widget.evaluate("return document.getElementById('source').src")).to eq(expected_source)
+            expect(@video.swt_widget.evaluate("return document.getElementById('video').src")).to eq(expected_source)
             expect(Dir['/tmp/tmp/glimmer/lib/glimmer/ui/video/*'].to_a.size).to be > 0
             @target.dispose
           }

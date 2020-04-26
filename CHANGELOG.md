@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.5.11
+
+- Added file and url attribute writers to `video` widget
+- Fix Gladiator issue with empty replace text field
+- Fix Gladiator issue with opening empty file
+- Support picking up VERSION and LICENSE.txt files in glimmer:package rake task
+- Update packaging to build app DMG file with humanized name (having spaces for multiple words) and to autoset a default mac bundle ID
+
 ## 0.5.10
 
 - Fix video widget scrolling bar appearing issue

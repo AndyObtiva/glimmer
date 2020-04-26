@@ -1,4 +1,4 @@
-# Glimmer 0.5.10 Beta (JRuby Desktop UI DSL + Data-Binding)
+# Glimmer 0.5.11 Beta (JRuby Desktop UI DSL + Data-Binding)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master)
 
 Glimmer is a native-UI cross-platform desktop development library written in Ruby. Glimmer's main innovation is a JRuby DSL that enables productive and efficient authoring of desktop application user-interfaces while relying on the robust platform-native Eclipse SWT library. Glimmer additionally innovates by having built-in data-binding support to greatly facilitate synchronizing the UI with domain models. As a result, that achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about UI concerns, or alternatively drive development UI-first, and then write clean business components test-first afterwards.
@@ -70,7 +70,7 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
 ## Table of Contents
 
 <!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
-- [Glimmer 0.5.10 Beta (JRuby Desktop UI DSL + Data-Binding)](#glimmer-058-beta-jruby-desktop-ui-dsl--data-binding)
+- [Glimmer 0.5.11 Beta (JRuby Desktop UI DSL + Data-Binding)](#glimmer-058-beta-jruby-desktop-ui-dsl--data-binding)
   - [Examples](#examples)
     - [Hello World](#hello-world)
     - [Tic Tac Toe](#tic-tac-toe)
@@ -163,14 +163,14 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.5.10
+jgem install glimmer -v 0.5.11
 ```
 
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.5.10'
+gem 'glimmer', '~> 0.5.11'
 ```
 
 And, then run:
@@ -1753,6 +1753,15 @@ Gladiator has been made available in [Glimmer's gem](https://rubygems.org/gems/g
 
 If you cloned this project and followed [CONTRIBUTING.md](CONTRIBUTING.md) instructions, you may invoke via `bin/gladiator` instead. 
 
+Gotcha:
+
+Gladiator repetitively displays a signaling error that is harmless in practice:
+```
+The signal HUP is in use by the JVM and will not work correctly on this platform
+The signal INT is in use by the JVM and will not work correctly on this platform
+The signal TERM is in use by the JVM and will not work correctly on this platform
+```
+
 ## In Production
 
 The following production apps have been built with Glimmer:
@@ -1885,15 +1894,22 @@ To use:
 ```ruby
 require_relative '../app/my_application.rb'
 ```
-- (Optional) If you'd like to include an icon for your app (.icns format on the Mac), place it under `package/macosx` matching your application local directory name (e.g. 'MathBowling.icns' for MathBowling). You may generate your Mac icon easily using tools like Image2Icon (http://www.img2icnsapp.com/) or manually using the Mac terminal command `iconutil` (iconutil guide: https://applehelpwriter.com/tag/iconutil/)
-- (Optional) You may optionally add the following to `Rakefile` to configure extra arguments for javapackager: `Glimmer::Packager.javapackager_extra_args = "..."` (Useful to avoid re-entering extra arguments on every run of rake task.)
+- Include Icon (Optional): If you'd like to include an icon for your app (.icns format on the Mac), place it under `package/macosx` matching the humanized application local directory name (e.g. 'Math Bowling.icns' [containing space] for MathBowling or math_bowling). You may generate your Mac icon easily using tools like Image2Icon (http://www.img2icnsapp.com/) or manually using the Mac terminal command `iconutil` (iconutil guide: https://applehelpwriter.com/tag/iconutil/)
+- Include Version (Optional): Create a `VERSION` file in your application and fill it your app version on one line (e.g. `1.1.0`)
+- Include License (Optional): Create a `LICENSE.txt` file in your application and fill it up with your license (e.g. MIT). It will show up to people when installing your app. Note that, you may optionally also specify license type, but you'd have to do so manually via `-BlicenseType=MIT` shown in an [example below](#javapackager-extra-arguments).
+- Extra args (Optional): You may optionally add the following to `Rakefile` to configure extra arguments for javapackager: `Glimmer::Packager.javapackager_extra_args = "..."` (Useful to avoid re-entering extra arguments on every run of rake task.). Read about them in [their section below](#javapackager-extra-arguments).
 
 Now, you can run the following rake command to package your app into a Mac DMG file (using both Warbler and javapackager):
 ```
 rake glimmer:package
 ```
 
-This will generate a JAR file under `./dist` directory, which is then used to generate a DMG file (and pkg/app) under `./packages/bundles`. Both will match your application local directory name (e.g. `MathBowling.jar` and `MathBowling-1.0.dmg` for `~/code/MathBowling`)
+This will generate a JAR file under `./dist` directory, which is then used to generate a DMG file (and pkg/app) under `./packages/bundles`. 
+JAR file name will match your application local directory name (e.g. `MathBowling.jar` for `~/code/MathBowling`)
+DMG file name will match the humanized local directory name + dash + application version (e.g. `Math Bowling-1.0.dmg` for `~/code/MathBowling` with version 1.0 or unspecified)
+
+THe rake task will automatically set "mac.CFBundleIdentifier" to ="org.#{project_name}.application.#{project_name}". 
+You may override by configuring as an extra argument for javapackger (e.g. Glimmer::Package.javapackager_extra_args = " -Bmac.CFBundleIdentifier=org.andymaleh.application.MathBowling")
 
 ### Defaults
 
@@ -1926,7 +1942,7 @@ The Glimmer rake task allows passing extra options to javapackager via:
 Example (Rakefile):
 
 ```ruby
-Glimmer::Package.javapackager_extra_args = '-srcfiles "LICENSE.txt" -BlicenseFile="LICENSE.txt" -BlicenseType="MIT" -Bmac.CFBundleVersion="1.0.0" -Bmac.category="arithmetic" -Bmac.signing-key-developer-id-app="Andy Maleh"'
+Glimmer::Package.javapackager_extra_args = '-BlicenseType="MIT" -Bmac.category="arithmetic" -Bmac.signing-key-developer-id-app="Andy Maleh"'
 ```
 
 Example (env var):
@@ -1983,12 +1999,13 @@ Now, when you run `rake glimmer:package`, it builds a self-signed DMG file. When
 
 1. Specifying License File
 
-The javapackager documentation states that a license file may be specified with "-BlicenseFile" javapackager option. However, in order for that to work, one must specify as a source file via "-srcfiles" javapackager option.
+The javapackager documentation states that a license file may be specified with "-BlicenseFile" javapackager option. However, in order for that to work, one must specify as a source file via "-srcfiles" javapackager option. 
+Keep that in mind if you are not going to rely on the default `LICENSE.txt` support.
 
 Example:
 
 ```ruby
-Glimmer::Package.javapackager_extra_args = '-srcfiles "LICENSE.txt" -BlicenseFile="LICENSE.txt" -BlicenseType="MIT"'
+Glimmer::Package.javapackager_extra_args = '-srcfiles "ACME.txt" -BlicenseFile="ACME.txt" -BlicenseType="ACME"'
 ```
 
 2. Mounted DMG Residue

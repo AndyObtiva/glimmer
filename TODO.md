@@ -4,8 +4,16 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
+- Have packager automatically pick up version from VERSION file when present
 - Bring back Glimmer XML syntax and integrate it into Glimmer core to use with the browser widget.
 - Scaffold a Glimmer app: provide a standard structure for building a Glimmer app (models, views, and assets [images, videos, sounds])
+
+## Gladiator (Glimmer Editor)
+
+- Fix Gladiator issue with Find not working for more than one occurrence in a line
+- Fix Gladiator issue with file lookup list and file explorer tree not showing up upon launching in a new directory until resizing window
+- Fix Gladiator issue with line numbers not scrolling perfectly along with open file (off by a few pixels)
+- Fix Gladiator issue with line numbers sometimes getting clipped when openig a new file until resizing window
 
 ## Soon
 
@@ -72,6 +80,7 @@ bind_content(model, 'addresses').each { |address|
 - Implement a Graphical Glimmer sample launcher
 - Support => syntax for computed_for data-binding
 - Support data binding boolean properties ending with ? bidirectionally (already supported for read-only)
+- Add popups to Gladiator showing the shortcut of each field (e.g. CMD+L for Line)
 
 ## Documentation Tasks
 - Recapture all of readme's sample screenshots on Mac, Windows, and Linux (except the general widget listing for now)

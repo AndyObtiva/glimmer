@@ -58,7 +58,7 @@ class Gladiator
         @selected_child&.write_dirty_content
         new_child = Gladiator::File.new(selected_path)
         begin
-          if new_child.lines.any?
+          unless new_child.dirty_content.nil?
             self.selected_child&.stop_filewatcher
             self.selected_child = new_child
             self.selected_child.start_filewatcher
@@ -144,6 +144,7 @@ class Gladiator
 
     def comment_line!
       old_lines = lines
+      return if old_lines.size < 1
       old_selection_count = self.selection_count
       old_caret_position = self.caret_position
       old_caret_position_line_index = line_index_for_caret_position(old_caret_position)
@@ -177,13 +178,14 @@ class Gladiator
     end
 
     def indent!
+      new_lines = lines
       old_lines = lines
+      return if old_lines.size < 1
       old_selection_count = self.selection_count
       old_caret_position = self.caret_position
       old_caret_position_line_index = line_index_for_caret_position(old_caret_position)
       old_caret_position_line_caret_position = caret_position_for_line_index(old_caret_position_line_index)
       old_end_caret_line_index = end_caret_position_line_index(caret_position, selection_count)
-      new_lines = lines
       delta = 2
       line_indices_for_selection(caret_position, selection_count).each do |the_line_index|
         the_line = old_lines[the_line_index]
@@ -200,13 +202,14 @@ class Gladiator
     end
 
     def outdent!
+      new_lines = lines
       old_lines = lines
+      return if old_lines.size < 1
       old_selection_count = self.selection_count
       old_caret_position = self.caret_position
       old_caret_position_line_index = line_index_for_caret_position(old_caret_position)
       old_caret_position_line_caret_position = caret_position_for_line_index(old_caret_position_line_index)
       old_end_caret_line_index = end_caret_position_line_index(caret_position, selection_count)
-      new_lines = lines
       delta = 0
       line_indices_for_selection(caret_position, selection_count).each do |the_line_index|
         the_line = old_lines[the_line_index]
@@ -231,6 +234,7 @@ class Gladiator
 
     def kill_line!
       new_lines = lines
+      return if new_lines.size < 2
       line_indices = line_indices_for_selection(caret_position, selection_count)
       new_lines = new_lines[0...line_indices.first] + new_lines[(line_indices.last+1)...new_lines.size]
       old_caret_position = self.caret_position
@@ -239,13 +243,14 @@ class Gladiator
     end
 
     def duplicate_line!
+      new_lines = lines
       old_lines = lines
+      return if old_lines.size < 1
       old_selection_count = self.selection_count
       old_caret_position = self.caret_position
       old_caret_position_line_index = line_index_for_caret_position(old_caret_position)
       old_caret_position_line_caret_position = caret_position_for_caret_position_start_of_line(old_caret_position_line_index)
       old_end_caret_line_index = end_caret_position_line_index(caret_position, selection_count)
-      new_lines = lines
       the_line_indices = line_indices_for_selection(caret_position, selection_count)
       the_lines = lines_for_selection(caret_position, selection_count)
       delta = the_lines.join("\n").size + 1
@@ -292,14 +297,15 @@ class Gladiator
     end
 
     def ensure_find_next
+      return if find_text.to_s.empty? || dirty_content.to_s.strip.size < 1
       find_next unless dirty_content[caret_position, find_text.size] == find_text
     end
 
-    def replace_next
-      return if find_text.to_s.empty?
+    def replace_next!
+      return if find_text.to_s.empty? || dirty_content.to_s.strip.size < 1
       ensure_find_next
       new_dirty_content = dirty_content
-      new_dirty_content[caret_position, find_text.size] = replace_text
+      new_dirty_content[caret_position, find_text.size] = replace_text.to_s
       self.dirty_content = new_dirty_content
       find_next
     end
@@ -322,6 +328,7 @@ class Gladiator
 
     def move_up!
       old_lines = lines
+      return if old_lines.size < 2
       old_selection_count = self.selection_count
       old_caret_position = self.caret_position
       old_caret_position_line_index = line_index_for_caret_position(old_caret_position)
@@ -345,6 +352,7 @@ class Gladiator
 
     def move_down!
       old_lines = lines
+      return if old_lines.size < 2
       old_selection_count = self.selection_count
       old_caret_position = self.caret_position
       old_caret_position_line_index = line_index_for_caret_position(old_caret_position)
@@ -435,8 +443,8 @@ class Gladiator
       return if config_yaml.to_s.strip.empty?
       @config = YAML.load(config_yaml)
       Gladiator::Dir.local_dir.selected_child_path = @config[:selected_child_path] if @config[:selected_child_path]
-      Gladiator::Dir.local_dir.selected_child.caret_position  = Gladiator::Dir.local_dir.selected_child.caret_position_for_caret_position_start_of_line(@config[:caret_position]) if @config[:caret_position]
-      Gladiator::Dir.local_dir.selected_child.top_index = @config[:top_index] if @config[:top_index]
+      Gladiator::Dir.local_dir.selected_child&.caret_position  = Gladiator::Dir.local_dir.selected_child&.caret_position_for_caret_position_start_of_line(@config[:caret_position]) if @config[:caret_position]
+      Gladiator::Dir.local_dir.selected_child&.top_index = @config[:top_index] if @config[:top_index]
     end
   end
 
@@ -610,7 +618,7 @@ class Gladiator
             }
     	     on_key_pressed { |key_event|
               if key_event.keyCode == swt(:cr)
-                Gladiator::Dir.local_dir.selected_child.replace_next
+                Gladiator::Dir.local_dir.selected_child.replace_next!
               elsif key_event.keyCode == swt(:esc)
                 @text.swt_widget.setFocus
               end
@@ -704,6 +712,13 @@ class Gladiator
       save_config
     end
     @shell.open
+  end
+end
+
+include Glimmer
+at_exit do
+  async_exec do
+    Gladiator::Dir.local_dir.selected_child&.write_dirty_content
   end
 end
 

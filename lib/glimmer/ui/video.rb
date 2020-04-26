@@ -54,9 +54,7 @@ module Glimmer
                 </style>
               </head>
               <body>
-                <video id="video" #{browser_video_width} #{browser_video_height} #{browser_video_loop} #{browser_video_controls} #{browser_video_autoplay}>
-                  <source id="source" src="#{source}" type="video/mp4">
-                Your browser does not support the video tag.
+                <video id="video" src="#{source}" #{browser_video_width} #{browser_video_height} #{browser_video_loop} #{browser_video_controls} #{browser_video_autoplay}>
                 </video>
               </body>
             </html>
@@ -87,6 +85,16 @@ module Glimmer
         else
           url
         end
+      end
+
+      def file=(a_file)
+        options[:file] = a_file
+        set_video_source
+      end
+
+      def url=(a_url)
+        options[:url] = a_url
+        set_video_source
       end
 
       def play
@@ -197,6 +205,12 @@ module Glimmer
         'ended' => 'ended',
         'loaded' => 'canplay',
       }
+
+      def set_video_source
+        run_on_completed do
+          video_attribute_set('src', source)
+        end
+      end
 
       def video_action(action)
         run_on_completed do
