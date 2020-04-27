@@ -11,7 +11,7 @@ namespace :glimmer do
         system('warble config')
         new_config = File.read('config/warble.rb').split("\n").inject('') do |output, line|
           if line.include?('config.dirs =')
-            line = line.sub('# ', '').sub(/=[^=\n]+$/, '= %w(app config db lib script bin images sounds videos)')
+            line = line.sub('# ', '').sub(/=[^=\n]+$/, '= %w(app config db lib script bin docs fonts images sounds videos)')
           end
           if line.include?('config.autodeploy_dir =')
             line = line.sub('# ', '')

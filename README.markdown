@@ -1917,7 +1917,7 @@ Glimmer employs smart defaults in packaging.
 
 The package application name (shows up in top menu bar on the Mac) will be a human form of the app root directory name (e.g. "Math Bowling" for "MathBowling" or "math_bowling" app root directory name). However, application name and version may be specified explicitly via "-Bmac.CFBundleName" and "-Bmac.CFBundleVersion" options.
 
-Also, the package will only include these directories: app, config, db, lib, script, bin, images, sounds, videos
+Also, the package will only include these directories: app, config, db, lib, script, bin, docs, fonts, images, sounds, videos
 
 After running once, you will find a `config/warble.rb` file. It has the JAR packaging configuration. You may adjust included directories in it if needed, and then rerun `rake glimmer:package` and it will pick up your custom configuration. Alternatively, if you'd like to customize the included directories to begin with, don't run `rake glimmer:package` right away. Run this command first:
 
