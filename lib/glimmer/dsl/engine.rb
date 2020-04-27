@@ -1,5 +1,4 @@
 require 'glimmer'
-Dir[File.expand_path('../*_expression.rb', __FILE__)].each {|f| require f}
 require 'glimmer/dsl/expression_handler'
 
 module Glimmer

@@ -4,7 +4,6 @@ require 'glimmer/swt/color_proxy'
 require 'glimmer/swt/font_proxy'
 require 'glimmer/swt/swt_proxy'
 require 'glimmer/data_binding/observable_widget'
-require 'glimmer/dsl/widget_expression'
 
 module Glimmer
   module SWT

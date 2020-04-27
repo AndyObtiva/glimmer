@@ -1,4 +1,5 @@
 require 'glimmer/dsl/engine'
+Dir[File.expand_path('../*_expression.rb', __FILE__)].each {|f| require f}
 
 module Glimmer
   # Glimmer DSL expression configuration module

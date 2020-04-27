@@ -1,4 +1,5 @@
 require 'glimmer/error'
+require 'glimmer/dsl/expression'
 require 'glimmer/swt/widget_proxy'
 require 'glimmer/ui/custom_widget'
 

@@ -1,5 +1,5 @@
 require 'glimmer/dsl/static_expression'
-require 'glimmer/dsl/exec_expression'
+require 'glimmer/dsl/swt/exec_expression'
 
 module Glimmer
   module DSL
