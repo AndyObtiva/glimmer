@@ -4,8 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Glimmer CSS DSL
-- Support HTML no-value attributes 
 - Scaffold a Glimmer app: provide a standard structure for building a Glimmer app (models, views, and assets [images, videos, sounds])
 - Support web UIs via Opal Ruby (https://github.com/opal/opal)
 
