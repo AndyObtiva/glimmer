@@ -82,7 +82,15 @@ bind_content(model, 'addresses').each { |address|
 - Support data binding boolean properties ending with ? bidirectionally (already supported for read-only)
 - Add popups to Gladiator showing the shortcut of each field (e.g. CMD+L for Line)
 
+## Samples
+
+-scientific calculator
+-business accounting app
+-HR Employee Management app
+-Medical Patient Management app
+
 ## Documentation Tasks
+
 - Recapture all of readme's sample screenshots on Mac, Windows, and Linux (except the general widget listing for now)
 - Add Glossary
 - Document custom widget custom properties/observers
