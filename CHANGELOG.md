@@ -2,7 +2,7 @@
 
 ## 0.6.0
 
-- Added multi-DSL support back to Glimmer
+- Added multi-DSL support back to Glimmer, supporting XML/HTML
 - Fixed Gladiator issue with not saving on quit
 
 ## 0.5.11

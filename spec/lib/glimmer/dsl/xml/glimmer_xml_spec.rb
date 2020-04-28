@@ -1,15 +1,15 @@
 require "spec_helper"
  
-# describe "Glimmer Xml" do
-#   include Glimmer
-#  
-#   it "tests single html tag" do
-#     @target = html
-#  
-#     expect(@target).to_not be_nil
-#     expect(@target.to_xml).to eq("<html/>")
-#   end
-#  
+describe "Glimmer Xml" do
+  include Glimmer
+  
+  it "tests single html tag" do
+    @target = html
+  
+    expect(@target).to_not be_nil
+    expect(@target.to_xml).to eq("<html/>")
+  end
+  
 #   it "tests single document tag upper case" do
 #     @target = tag(:_name => "DOCUMENT")
 #  
@@ -146,4 +146,4 @@ require "spec_helper"
 #     expect(@target.to_xml).to eq('<html id="thesis" class="document"><body id="main"><h1 class="title" /></body></html>')
 #   end
 #  
-# end
+end
