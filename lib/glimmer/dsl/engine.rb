@@ -43,9 +43,10 @@ module Glimmer
         # Pattern when interpretting a DSL expression
         def add_dynamic_expressions(dsl_namespace, expression_names)
           dsl = dsl_namespace.name.split("::").last.downcase.to_sym
-          dynamic_expression_chains_of_responsibility[dsl] = expression_names.reverse.reduce(nil) do |last_expresion_handler, expression_name|
+          dynamic_expression_chains_of_responsibility[dsl] = expression_names.reverse.map do |expression_name|
+            expression_class(dsl_namespace, expression_name).new
+          end.reduce(nil) do |last_expresion_handler, expression|
             Glimmer.logger&.debug "Adding dynamic expression: #{dsl_namespace.name}::#{expression_class_name(expression_name)}"
-            expression = expression_class(dsl_namespace, expression_name).new
             expression_handler = ExpressionHandler.new(expression)
             expression_handler.next = last_expresion_handler if last_expresion_handler
             expression_handler
@@ -71,8 +72,8 @@ module Glimmer
             retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
             static_expression_dsl = Glimmer::DSL::Engine.static_expressions[keyword].keys.first if retrieved_static_expression.nil?
             raise Glimmer::Error, "Unsupported keyword: #{keyword}" unless static_expression_dsl || retrieved_static_expression
-            Glimmer::DSL::Engine.dsl_stack.push(static_expression_dsl || Glimmer::DSL::Engine.dsl)            
-            retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
+            Glimmer::DSL::Engine.dsl_stack.push(static_expression_dsl || Glimmer::DSL::Engine.dsl)
+            retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][static_expression_dsl]
             retrieved_static_expression.call(*args, &block).tap do
               Glimmer::DSL::Engine.dsl_stack.pop
             end
@@ -87,7 +88,7 @@ module Glimmer
           "#{expression_name}_expression".camelcase(:upper)
         end
 
-        # Interprets Glimmer DSL keyword, args, and block (e.g. shell(:no_resize) { ... })
+        # Interprets Glimmer dynamic DSL expression consisting of keyword, args, and block (e.g. shell(:no_resize) { ... })
         def interpret(keyword, *args, &block)
           keyword = keyword.to_s
           dynamic_expression_dsl = dynamic_expression_chains_of_responsibility.keys.first if dsl.nil?
@@ -105,9 +106,11 @@ module Glimmer
         #
         # For example, a shell widget would get properties set and children added
         def add_content(parent, expression, &block)
+          dsl_stack.push(expression.class.dsl)
           parent_stack.push(parent) if expression.is_a?(ParentExpression)
           expression.add_content(parent, &block) if block_given?
           parent_stack.pop if expression.is_a?(ParentExpression)
+          dsl_stack.pop
         end
 
         # Current parent while evaluating Glimmer DSL (nil if just started or done evaluatiing)

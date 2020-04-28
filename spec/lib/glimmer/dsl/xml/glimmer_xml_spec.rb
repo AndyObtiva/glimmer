@@ -66,23 +66,23 @@ describe "Glimmer Xml" do
   end
   
   it "tests different name spaced tags" do
-    @target = w3c.html(:id => "thesis", :class => "document") {
+    @target = html(:id => "thesis", :class => "document") {
       document.body(:id => "main") {
       }
     }
   
     expect(@target).to_not be_nil
-    expect(@target.to_xml).to eq('<w3c:html id="thesis" class="document"><document:body id="main"></document:body></w3c:html>')
+    expect(@target.to_xml).to eq('<html id="thesis" class="document"><document:body id="main"></document:body></html>')
   end
   
   it "tests different name spaced attributes and tags" do
-    @target = w3c.html(w3c.id => "thesis", :class => "document") {
+    @target = html(w3c.id => "thesis", :class => "document") {
       document.body(document.id => "main") {
       }
     }
   
     expect(@target).to_not be_nil
-    expect(@target.to_xml).to eq('<w3c:html w3c:id="thesis" class="document"><document:body document:id="main"></document:body></w3c:html>')
+    expect(@target.to_xml).to eq('<html w3c:id="thesis" class="document"><document:body document:id="main"></document:body></html>')
   end
   
   it "tests name space context" do

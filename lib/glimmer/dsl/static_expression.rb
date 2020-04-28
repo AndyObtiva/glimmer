@@ -18,19 +18,15 @@ module Glimmer
     # The direct parent namespace of a StaticExpression subclass must match the DSL name (case-insensitive)
     # (e.g. Glimmer::DSL::SWT::WidgetExpression has a DSL of :swt)
     class StaticExpression < Expression
-      class << self
-        attr_reader :dsl, :keyword
-  
+      class << self  
         def inherited(base)
-          base_name_parts = base.name.split(/::/)
-          base.keyword = base_name_parts.last.sub(/Expression$/, '').underscore
-          base.dsl = base_name_parts[-2].downcase.to_sym
           Glimmer::DSL::Engine.add_static_expression(base.new)
+          super
         end
 
-        protected
-
-        attr_writer :dsl, :keyword
+        def keyword
+          @keyword ||= name.split(/::/).last.sub(/Expression$/, '').underscore
+        end
       end
 
       # Subclasses may optionally implement

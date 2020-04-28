@@ -12,6 +12,12 @@ module Glimmer
     # english versino of Ruby's boolean operations. This allows easy DSL-like
     # readability of the rules, and easy tagging with pd when troubleshooting.
     class Expression
+      class << self
+        def dsl
+          @dsl ||= name.split(/::/)[-2].downcase.to_sym
+        end
+      end
+
       # Checks if it can interpret parameters (subclass must override)
       def can_interpret?(parent, keyword, *args, &block)
         raise Error, "#can_interpret? must be implemented by an Expression subclass"

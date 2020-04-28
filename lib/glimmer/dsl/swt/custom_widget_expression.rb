@@ -9,6 +9,7 @@ module Glimmer
     module SWT
       class CustomWidgetExpression < Expression
         include ParentExpression
+
         def can_interpret?(parent, keyword, *args, &block)
           custom_widget_class = UI::CustomWidget.for(keyword)
           custom_widget_class and

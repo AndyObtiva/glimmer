@@ -6,6 +6,7 @@
 - Support XML/HTML DSL
 - Support mixing DSLs (e.g. SWT browser widget that has an XML text)
 - Fixed Gladiator issue with not saving on quit
+- Made color, rgb, and rgba SWT DSL static expressions instead of dynamic
 
 ## 0.5.11
 

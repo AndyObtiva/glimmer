@@ -1,4 +1,4 @@
-require 'glimmer/dsl/expression'
+require 'glimmer/dsl/static_expression'
 require 'glimmer/xml/node'
 require 'glimmer/xml/depth_first_search_iterator'
 require 'glimmer/xml/name_space_visitor'
@@ -6,7 +6,7 @@ require 'glimmer/xml/name_space_visitor'
 module Glimmer
   module DSL
     module XML
-      class XmlNameSpaceExpression < Expression
+      class NameSpaceExpression < StaticExpression
         def can_interpret?(parent, keyword, *args, &block)
           (parent == nil or parent.is_a?(Glimmer::XML::Node)) and
           (keyword.to_s == "name_space")

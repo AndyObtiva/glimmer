@@ -433,7 +433,7 @@ module Glimmer
           :text => proc do |value|
             if swt_widget.is_a?(Browser)
               if value.is_a?(Glimmer::XML::Node)
-                value.to_xml
+                value.to_html
               else
                 value.to_s
               end

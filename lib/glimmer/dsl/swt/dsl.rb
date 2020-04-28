@@ -19,7 +19,6 @@ Glimmer::DSL::Engine.add_dynamic_expressions(
     tree_items_data_binding
     table_items_data_binding
     data_binding
-    color
     property
     widget
     custom_widget
