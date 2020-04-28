@@ -27,7 +27,7 @@ module GlimmerSpec
       ENV['temp'] = @original_temp
     end
 
-    let(:video_file) { File.expand_path('../../fixtures/videos/Pepa-creativeCommonsMp4956_512kb.mp4', __FILE__) }
+    let(:video_file) { File.join(FIXTURES_PATH, 'videos/Pepa-creativeCommonsMp4956_512kb.mp4') }
     let(:video_url) { "http://www.youtube.com/fdajiew" }
     let(:video_url_truncated) { "www.youtube.com/fdajiew" }
 

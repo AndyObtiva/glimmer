@@ -324,7 +324,7 @@ module GlimmerSpec
     it 'sets background image via image path' do
       @target = shell {
         @composite = composite {
-          background_image File.expand_path(File.join(__FILE__, '..', '..', '..', 'images', 'glimmer-hello-world.png'))
+          background_image File.join(ROOT_PATH, 'images', 'glimmer-hello-world.png')
         }
       }
 
@@ -332,7 +332,7 @@ module GlimmerSpec
     end
 
     it 'sets background image via image object' do
-      image_data = ImageData.new(File.expand_path(File.join(__FILE__, '..', '..', '..', 'images', 'glimmer-hello-world.png')))
+      image_data = ImageData.new(File.join(ROOT_PATH, 'images', 'glimmer-hello-world.png'))
       image = Image.new(display.swt_display, image_data)
       @target = shell {
         @composite = composite {
