@@ -46,6 +46,7 @@ module Glimmer
         xml_visitor.document
       end
       alias to_html to_xml
+      alias to_s to_xml
 
       def text_command(text)
         "text \"#{text}\""

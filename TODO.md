@@ -17,6 +17,7 @@ Here is a list of tasks to do (please delete once done):
 
 ## Soon
 
+- Support web UIs via Opal Ruby (https://github.com/opal/opal)
 - DSL syntax for MessageBox
 message_box {
   text 'Red Label'

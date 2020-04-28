@@ -1,8 +1,6 @@
 require 'glimmer/ui/custom_widget'
 require 'glimmer/swt/color_proxy'
 
-#TODO consider the need to display a progress wheel while loading video as an option
-
 module Glimmer
   module UI
     class Video

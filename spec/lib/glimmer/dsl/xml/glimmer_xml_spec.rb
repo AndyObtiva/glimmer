@@ -138,16 +138,5 @@ describe "Glimmer Xml" do
 ##  TODO handle special characters such as #, {, }, and .
 ##  TODO CDATA support
 ##  TODO encode special characters
-  
-  it "tests html alternative syntax for id and class attributes" do
-    @target = html_thesis_document {
-      body_main {
-        h1__title
-      }
-    }
-  
-    expect(@target).to_not be_nil
-    expect(@target.to_xml).to eq('<html id="thesis" class="document"><body id="main"><h1 class="title" /></body></html>')
-  end
 
 end
