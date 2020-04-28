@@ -142,6 +142,10 @@ class Gladiator
       ::File.write(path, dirty_content) if ::File.exists?(path) && dirty_content.to_s.strip.size > 0
     end
 
+    def write_raw_dirty_content
+      ::File.write(path, dirty_content) if ::File.exists?(path) && dirty_content.to_s.strip.size > 0
+    end
+
     def comment_line!
       old_lines = lines
       return if old_lines.size < 1
@@ -721,8 +725,10 @@ class Gladiator
   end
 end
 
+@gladiator = Gladiator.new
+
 at_exit do
-  Gladiator::Dir.local_dir.selected_child&.write_dirty_content
+  Gladiator::Dir.local_dir.selected_child&.write_raw_dirty_content
 end
 
-Gladiator.new.launch
+@gladiator.launch

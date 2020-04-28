@@ -54,6 +54,16 @@ module Glimmer
     def enable_logging
       @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}
     end
+
+    # Sets current DSL (e.g. :swt)
+    def dsl=(dsl_name)
+      Glimmer::DSL::Engine.dsl = dsl_name
+    end
+
+    # Currently set DSL (e.g. :swt or :xml)
+    def dsl
+      Glimmer::DSL::Engine.dsl
+    end
   end
 
   def method_missing(method_symbol, *args, &block)

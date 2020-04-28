@@ -15,10 +15,13 @@ module Glimmer
     # predefined as methods in Glimmer instead of needing method_missing
     class Engine
       class << self
-        attr_reader :dsl # active dsl
-
         def dsl=(dsl_name)
-          @dsl = dsl_name&.to_sym
+          dsl_name = dsl_name&.to_sym
+          dsl_stack.push(dsl_name) unless dsl_name.nil?
+        end
+        
+        def dsl
+          dsl_stack.last
         end
 
         # Dynamic expression chains of responsibility indexed by dsl
@@ -64,14 +67,15 @@ module Glimmer
               end
             end
           end
-          unless Glimmer.respond_to?(keyword)
-            Glimmer.define_method(keyword) do |*args, &block|
-              Glimmer::DSL::Engine.dsl = Glimmer::DSL::Engine.static_expressions[keyword].keys.first if Glimmer::DSL::Engine.dsl.nil?
-              raise Glimmer::Error, "Unsupported keyword: #{keyword}" if Glimmer::DSL::Engine.dsl.nil?
-              retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
-              retrieved_static_expression.call(*args, &block)
+          Glimmer.define_method(keyword) do |*args, &block|      
+            retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
+            static_expression_dsl = Glimmer::DSL::Engine.static_expressions[keyword].keys.first if retrieved_static_expression.nil?
+            raise Glimmer::Error, "Unsupported keyword: #{keyword}" unless static_expression_dsl || retrieved_static_expression
+            Glimmer::DSL::Engine.dsl_stack.push(static_expression_dsl || Glimmer::DSL::Engine.dsl)            
+            retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
+            retrieved_static_expression.call(*args, &block).tap do
+              Glimmer::DSL::Engine.dsl_stack.pop
             end
-            
           end
         end
 
@@ -86,10 +90,12 @@ module Glimmer
         # Interprets Glimmer DSL keyword, args, and block (e.g. shell(:no_resize) { ... })
         def interpret(keyword, *args, &block)
           keyword = keyword.to_s
-          self.dsl =  dynamic_expression_chains_of_responsibility.keys.first if dsl.nil?
+          dynamic_expression_dsl = dynamic_expression_chains_of_responsibility.keys.first if dsl.nil?
+          dsl_stack.push(dynamic_expression_dsl || dsl)
           expression = dynamic_expression_chains_of_responsibility[dsl].handle(parent, keyword, *args, &block)
-          expression.interpret(parent, keyword, *args, &block).tap do |ui_object|
+          expression.interpret(parent, keyword, *args, &block).tap do |ui_object|            
             add_content(ui_object, expression, &block)
+            dsl_stack.pop
           end
         end
 
@@ -113,7 +119,16 @@ module Glimmer
         end
 
         def parent_stack
-          @parent_stack ||= []
+          parent_stacks[dsl] ||= []
+        end
+
+        def parent_stacks
+          @parent_stacks ||= {}
+        end
+
+        # Enables multiple DSLs to play well with each other when mixing together
+        def dsl_stack
+          @dsl_stack ||= []
         end
       end
     end

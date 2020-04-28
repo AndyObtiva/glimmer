@@ -2,10 +2,6 @@ require 'coveralls'
 Coveralls.wear!
 require 'bundler'
 require 'puts_debuggerer' unless ENV['puts_debuggerer'] == 'false'
-
-# Remove kernel display method conflicting with Glimmer's
-self.class.send(:undef_method, :display)
-
 require_relative '../lib/glimmer'
 begin
   Bundler.require(:default, :development)
@@ -75,7 +71,7 @@ RSpec.configure do |config|
   config.after do
     @target.dispose if @target && @target.respond_to?(:dispose)
     Glimmer::DSL::Engine.parent_stack.clear # ensures no conflict in using Glimmer across tests
-    Glimmer::DSL::Engine.dsl = nil
+    Glimmer::DSL::Engine.dsl_stack.clear
   end
   # config.profile_examples = 20
   # config.fail_fast = true

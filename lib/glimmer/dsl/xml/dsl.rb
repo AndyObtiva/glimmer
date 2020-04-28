@@ -7,7 +7,7 @@ Glimmer::DSL::Engine.add_dynamic_expressions(
     xml_name_space
     xml_text
     xml_tag
-    html
+    html_tag
     xml
   ]
 )

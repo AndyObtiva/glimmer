@@ -406,22 +406,5 @@ module GlimmerSpec
         end
       end
     end
-
-#     context 'multi-DSL support' do
-#       it 'mixes multiple DSLs (SWT and XML)' do
-#         fail('hehe')
-#         @target = shell {
-#           @browser = browser {
-#             text html {
-#               body {
-#                 input(type: 'text', value: 'Hello, World!')
-#               }
-#             }
-#           }
-#         }
-#         
-#         expect(@browser.swt_widget.getText).to eq('<html><body><input type="text" value="Hello, World!"></body></html>')
-#       end
-#     end
   end
 end
