@@ -27,38 +27,43 @@ module Glimmer
 
       body {
         browser(:no_scroll) {
-          text <<~HTML
-            <html>
-              <head>
-                <style id="style">
-                  body {
-                    margin: 0;
-                    padding: 0;
-                    overflow: hidden;
-                  }
-                </style>
-                <style id="style-body-background">
-                  body {
-                    background: #{browser_body_background};
-                  }
-                </style>
-                <style id="style-body-offset-x">
-                  body {
-                    margin-left: #{browser_body_offset_x}px;
-                  }
-                </style>
-                <style id="style-body-offset-y">
-                  body {
-                    margin-top: #{browser_body_offset_y}px;
-                  }
-                </style>
-              </head>
-              <body>
-                <video id="video" src="#{source}" #{browser_video_width} #{browser_video_height} #{browser_video_loop} #{browser_video_controls} #{browser_video_autoplay}>
-                </video>
-              </body>
-            </html>
-          HTML
+          text html {
+            head {
+              style(id: "style") {
+                <<~CSS
+                body {
+                  margin: 0;
+                  padding: 0;
+                  overflow: hidden;
+                }
+                CSS
+              }
+              style(id: "style-body-background") {
+                <<~CSS
+                body {
+                  background: #{browser_body_background};
+                }
+                CSS
+              }
+              style(id: "style-body-offset-x") {
+                <<~CSS
+                body {
+                  margin-left: #{browser_body_offset_x}px;
+                }
+                CSS
+              }
+              style(id: "style-body-offset-y") {
+                <<~CSS
+                body {
+                  margin-top: #{browser_body_offset_y}px;
+                }
+                CSS
+              }
+            }
+            body {
+              "<video id=\"video\" src=\"#{source}\" #{browser_video_width} #{browser_video_height} #{browser_video_loop} #{browser_video_controls} #{browser_video_autoplay}>"
+            }
+          }
           on_completed {
             @completed = true
           }
