@@ -85,10 +85,10 @@ bind_content(model, 'addresses').each { |address|
 
 ## Samples
 
--scientific calculator
--business accounting app
--HR Employee Management app
--Medical Patient Management app
+- scientific calculator
+- business accounting app
+- HR Employee Management app
+- Medical Patient Management app
 
 ## Documentation Tasks
 
