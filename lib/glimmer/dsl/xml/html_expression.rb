@@ -1,23 +1,24 @@
-require File.dirname(__FILE__) + "/../../command_handler"
-require File.dirname(__FILE__) + "/../node"
+require 'glimmer/dsl/xml/node_parent_expression'
+require 'glimmer/dsl/expression'
+require 'glimmer/xml/node'
 
 module Glimmer
-  module XML
-    module CommandHandlers
-      class HtmlCommandHandler
-        include CommandHandler
+  module DSL
+    module XML
+      class HtmlExpression < Expression
+        include NodeParentExpression
 
-        def can_handle?(parent, command_symbol, *args, &block)
-          (parent == nil or parent.is_a?(Node)) and
-          (args.size == 0 or ((args.size == 1) and ((args[0].is_a?(Hash)) or (args[0].is_a?(Hash)))))
+        def can_interpret?(parent, keyword, *args, &block) 
+          (parent == nil or parent.is_a?(Glimmer::XML::Node)) and
+            (args.size == 0 or ((args.size == 1) and ((args[0].is_a?(Hash)) or (args[0].is_a?(Hash)))))
         end
 
-        def do_handle(parent, command_symbol, *args, &block)
+        def interpret(parent, keyword, *args, &block)
           attributes = Hash.new
           attributes = args[0] if (args.size == 1)
-          append_id_and_class_attributes(command_symbol.to_s, attributes)
-          tag_name = parse_tag_name(command_symbol.to_s)
-          Node.new(parent, tag_name, attributes, &block)
+          append_id_and_class_attributes(keyword.to_s, attributes)
+          tag_name = parse_tag_name(keyword.to_s)
+          Glimmer::XML::Node.new(parent, tag_name, attributes, &block)
         end
 
         def parse_tag_name(command)

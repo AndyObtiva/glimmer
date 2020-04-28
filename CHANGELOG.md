@@ -2,7 +2,9 @@
 
 ## 0.6.0
 
-- Added multi-DSL support back to Glimmer, supporting XML/HTML
+- Added multi-DSL support back to Glimmer
+- Support XML/HTML DSL
+- Support mixing DSLs (e.g. SWT browser widget that has an XML text)
 - Fixed Gladiator issue with not saving on quit
 
 ## 0.5.11

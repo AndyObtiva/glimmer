@@ -73,8 +73,9 @@ RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
   config.after do
-    @target.dispose if @target
+    @target.dispose if @target && @target.respond_to?(:dispose)
     Glimmer::DSL::Engine.parent_stack.clear # ensures no conflict in using Glimmer across tests
+    Glimmer::DSL::Engine.dsl = nil
   end
   # config.profile_examples = 20
   # config.fail_fast = true

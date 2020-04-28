@@ -1,10 +1,11 @@
-require File.dirname(__FILE__) + "/depth_first_search_iterator"
-require File.dirname(__FILE__) + "/xml_visitor"
+require 'glimmer'
+require 'glimmer/xml/depth_first_search_iterator'
+require 'glimmer/xml/xml_visitor'
 
 module Glimmer
   module XML
     class Node
-      include Parent, Glimmer
+      include Glimmer
 
       attr_accessor :children, :name, :contents, :attributes, :is_name_space, :is_attribute, :name_space, :parent
 
@@ -28,14 +29,14 @@ module Glimmer
               attribute.parent = nil #attributes do not usually have parents
             end
           end
-          Glimmer.logger.debug(attributes)
+          Glimmer.logger&.debug(attributes)
         end
       end
 
       def method_missing(symbol, *args, &block)
         @is_name_space = true
         parent.children.delete(self) if parent
-        Glimmer.add_contents(self) {@tag = super}
+        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::XML::HtmlExpression.new) {@tag = super}
         @tag
       end
 
@@ -44,25 +45,7 @@ module Glimmer
         DepthFirstSearchIterator.new(self, xml_visitor).iterate
         xml_visitor.document
       end
-
-      def process_block(block)
-        return_value = block.call(@widget) #TODO fix (remove @widget reference)
-        if return_value.is_a?(String) and !@children.include?(return_value)
-          text = return_value
-          first_match = text.match(/[#][^{]+[{][^}]+[}]/)
-          match = first_match
-          while (match)
-            Glimmer.module_eval(text_command(match.pre_match))
-            tag_text = match.to_s
-            Glimmer.module_eval(rubyize(tag_text))
-            text = tag_text
-            post_match = match.post_match
-            match = text.match(/[#]\w+[{]\w+[}]/)
-          end
-          Glimmer.module_eval(text_command(post_match)) if post_match
-          @children << return_value unless first_match
-        end
-      end
+      alias to_html to_xml
 
       def text_command(text)
         "text \"#{text}\""
@@ -71,14 +54,13 @@ module Glimmer
       def rubyize(text)
         text = text.gsub(/[}]/, '"}')
         text = text.gsub(/[{]/, '{"')
-          text = text.gsub(/[#]/, '')
-        end
-
-        #override Object default id method and route it to Glimmer engine
-        def id
-          method_missing(:id)
-        end
-
+        text = text.gsub(/[#]/, '')
       end
+
+      #override Object default id method and route it to Glimmer engine
+      def id
+        method_missing(:id)
+      end
+    end
   end
 end

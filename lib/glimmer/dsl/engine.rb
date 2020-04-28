@@ -15,7 +15,11 @@ module Glimmer
     # predefined as methods in Glimmer instead of needing method_missing
     class Engine
       class << self
-        attr_accessor :dsl # active dsl
+        attr_reader :dsl # active dsl
+
+        def dsl=(dsl_name)
+          @dsl = dsl_name&.to_sym
+        end
 
         # Dynamic expression chains of responsibility indexed by dsl
         def dynamic_expression_chains_of_responsibility

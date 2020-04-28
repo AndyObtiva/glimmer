@@ -431,7 +431,15 @@ module Glimmer
             value.to_java :string
           end,
           :text => proc do |value|
-            value.to_s
+            if swt_widget.is_a?(Browser)
+              if value.is_a?(Glimmer::XML::Node)
+                value.to_xml
+              else
+                value.to_s
+              end
+            else
+              value.to_s
+            end
           end,
           :visible => proc do |value|
             !!value

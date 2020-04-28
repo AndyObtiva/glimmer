@@ -83,6 +83,7 @@ require 'glimmer/launcher'
 require Glimmer::Launcher.swt_jar_file
 require 'glimmer/swt/packages'
 require 'glimmer/dsl/swt/dsl'
+require 'glimmer/dsl/xml/dsl'
 require 'glimmer/error'
 require 'glimmer/invalid_keyword_error'
 require 'glimmer/ui/video'
