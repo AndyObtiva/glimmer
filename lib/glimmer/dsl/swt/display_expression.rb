@@ -4,10 +4,13 @@ require 'glimmer/swt/display_proxy'
 
 module Glimmer
   module DSL
-    class DisplayExpression < StaticExpression
-      include ParentExpression
-      def interpret(parent, keyword, *args, &block)
-        SWT::DisplayProxy.instance(*args)
+    module SWT
+      class DisplayExpression < StaticExpression
+        include ParentExpression
+
+        def interpret(parent, keyword, *args, &block)
+          Glimmer::SWT::DisplayProxy.instance(*args)
+        end
       end
     end
   end

@@ -41,7 +41,7 @@ class Gladiator
       return if filter.nil?
       all_children_files.select do |child| 
         child.path.downcase.include?(filter.downcase) ||
-          child.path.downcase.gsub('_', '').include?(filter.downcase)
+          child.path.downcase.gsub(/[_\/]/, '').include?(filter.downcase)
       end.sort_by {|c| c.path.to_s.downcase}
     end
 
@@ -298,7 +298,7 @@ class Gladiator
 
     def ensure_find_next
       return if find_text.to_s.empty? || dirty_content.to_s.strip.size < 1
-      find_next unless dirty_content[caret_position, find_text.size] == find_text
+      find_next unless dirty_content[caret_position.to_i, find_text.to_s.size] == find_text
     end
 
     def replace_next!
@@ -546,6 +546,12 @@ class Gladiator
             on_widget_selected {
               Gladiator::Dir.local_dir.selected_child_path = @tree.swt_widget.getSelection.first.getText
             }
+            on_key_pressed { |key_event|
+              if Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :cr) || Glimmer::SWT::SWTProxy.include?(key_event.keyCode, :lf)
+                Gladiator::Dir.local_dir.selected_child_path = @tree.swt_widget.getSelection.first.getText
+                @text.swt_widget.setFocus
+              end
+            }
             on_paint_control {
               root_item = @tree.swt_widget.getItems.first
               if root_item && !root_item.getExpanded
@@ -715,11 +721,8 @@ class Gladiator
   end
 end
 
-include Glimmer
 at_exit do
-  async_exec do
-    Gladiator::Dir.local_dir.selected_child&.write_dirty_content
-  end
+  Gladiator::Dir.local_dir.selected_child&.write_dirty_content
 end
 
 Gladiator.new.launch

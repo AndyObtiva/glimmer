@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.6.0
+
+- Added multi-DSL support back to Glimmer
+- Fixed Gladiator issue with not saving on quit
+
 ## 0.5.11
 
 - Added file and url attribute writers to `video` widget

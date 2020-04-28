@@ -101,7 +101,7 @@ module Glimmer
       end
 
       def content(&block)
-        Glimmer::DSL::Engine.add_content(self, DSL::ShellExpression.new, &block)
+        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::SWT::ShellExpression.new, &block)
       end
 
       # (happens as part of `#open`)

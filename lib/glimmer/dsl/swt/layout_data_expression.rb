@@ -7,16 +7,18 @@ require 'glimmer/swt/layout_data_proxy'
 
 module Glimmer
   module DSL
-    class LayoutDataExpression < StaticExpression
-      include ParentExpression
-
-      def can_interpret?(parent, keyword, *args, &block)
-        keyword == 'layout_data' and
-          widget?(parent)
-      end
-
-      def interpret(parent, keyword, *args, &block)
-        SWT::LayoutDataProxy.new(parent, args)
+    module SWT
+      class LayoutDataExpression < StaticExpression
+        include ParentExpression
+  
+        def can_interpret?(parent, keyword, *args, &block)
+          keyword == 'layout_data' and
+            widget?(parent)
+        end
+  
+        def interpret(parent, keyword, *args, &block)
+          Glimmer::SWT::LayoutDataProxy.new(parent, args)
+        end
       end
     end
   end

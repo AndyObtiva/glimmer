@@ -266,7 +266,7 @@ module Glimmer
       end
 
       def content(&block)
-        Glimmer::DSL::Engine.add_content(self, DSL::WidgetExpression.new, &block)
+        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::SWT::WidgetExpression.new, &block)
       end
 
       private

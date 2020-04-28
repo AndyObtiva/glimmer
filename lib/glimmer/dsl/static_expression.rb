@@ -1,4 +1,5 @@
 require 'glimmer/error'
+require 'glimmer/dsl/engine'
 require 'glimmer/dsl/expression'
 require 'glimmer/swt/widget_proxy'
 require 'glimmer/ui/custom_widget'
@@ -13,21 +14,23 @@ module Glimmer
     # (not needed if it only checks for keyword)
     #
     # StaticExpression subclasses must define `#interpret`.
+    # 
+    # The direct parent namespace of a StaticExpression subclass must match the DSL name (case-insensitive)
+    # (e.g. Glimmer::DSL::SWT::WidgetExpression has a DSL of :swt)
     class StaticExpression < Expression
-      def self.inherited(base)
-        keyword = base.name.split(/::/).last.sub(/Expression$/, '').underscore
-        static_expression = base.new
-        Glimmer.define_method(keyword) do |*args, &block|
-          parent = Glimmer::DSL::Engine.current_parent
-          if !static_expression.can_interpret?(parent, keyword, *args, &block)
-            raise Error, "Invalid use of Glimmer keyword #{keyword} with args #{args} under parent #{parent}"
-          else
-            Glimmer.logger&.debug "#{base.name} will handle expression keyword #{keyword}"
-            static_expression.interpret(parent, keyword, *args, &block).tap do |ui_object|
-              Glimmer::DSL::Engine.add_content(ui_object, static_expression, &block) unless block.nil?
-            end
-          end
+      class << self
+        attr_reader :dsl, :keyword
+  
+        def inherited(base)
+          base_name_parts = base.name.split(/::/)
+          base.keyword = base_name_parts.last.sub(/Expression$/, '').underscore
+          base.dsl = base_name_parts[-2].downcase.to_sym
+          Glimmer::DSL::Engine.add_static_expression(base.new)
         end
+
+        protected
+
+        attr_writer :dsl, :keyword
       end
 
       # Subclasses may optionally implement
