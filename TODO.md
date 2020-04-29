@@ -17,7 +17,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Soon
 
-- Support web UIs via Opal Ruby (https://github.com/opal/opal)
 - DSL syntax for MessageBox
 message_box {
   text 'Red Label'
@@ -55,6 +54,7 @@ bind_content(model, 'addresses').each { |address|
 ## Technical Tasks
 
 - Support Tree databinding in the other direction (from tree update to model)
+- Improve tree databinding so that replacing content array value still updates the tree (instead of clearing and readding elements)
 - Figure out what is missing from table databinding (bidirectional?)
 - Explore rewriting shine with Ruby 2 support
 - Consider need for a startup progress dialog (with Glimmer branding)

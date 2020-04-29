@@ -10,9 +10,19 @@ class Gladiator
   include Glimmer
 
   class Dir
+    include Glimmer
+
     class << self
       def local_dir
-        @local_dir ||= new(ENV['LOCAL_DIR'] || '.')
+        @local_dir ||= new(ENV['LOCAL_DIR'] || '.').tap do |dir|
+          dir.refresh
+          @filewatcher = Filewatcher.new(dir.path)
+          @thread = Thread.new(@filewatcher) do |fw| 
+            fw.watch do |filename, event|
+              dir.refresh if filename != dir.selected_child_path
+            end
+          end
+        end
       end
     end
 
@@ -25,7 +35,22 @@ class Gladiator
     end
 
     def children
+      @children ||= retrieve_children
+    end
+
+    def retrieve_children
       ::Dir.glob(::File.join(@path, '*')).map {|p| ::File.file?(p) ? Gladiator::File.new(p) : Gladiator::Dir.new(p)}.sort_by {|c| c.path.to_s.downcase }.sort_by {|c| c.class.name }
+    end
+
+    def refresh
+      async_exec do
+        @all_children = retrieve_all_children
+        @children ||= []
+        @children.clear
+        retrieve_children.each do |child|
+          @children << child
+        end
+      end
     end
 
     def filter=(value)
@@ -46,11 +71,15 @@ class Gladiator
     end
 
     def all_children
-      @all_children ||= ::Dir.glob(::File.join(@path, '**', '*')).map {|p| ::File.file?(p) ? Gladiator::File.new(p) : Gladiator::Dir.new(p)}
+      @all_children ||= retrieve_all_children
+    end
+
+    def retrieve_all_children
+      ::Dir.glob(::File.join(@path, '**', '*')).map {|p| ::File.file?(p) ? Gladiator::File.new(p) : Gladiator::Dir.new(p)}
     end
 
     def all_children_files
-      @all_children_files ||= all_children.select {|child| child.is_a?(Gladiator::File) }
+      all_children.select {|child| child.is_a?(Gladiator::File) }
     end
 
     def selected_child_path=(selected_path)
@@ -590,7 +619,7 @@ class Gladiator
           }
           @line_number_text = text {
             layout_data(:fill, :fill, true, false) {
-              minimum_width 200
+              minimum_width 300
             }
             text bind(Gladiator::Dir.local_dir, 'selected_child.line_number', on_read: :to_s, on_write: :to_i)
     	     on_key_pressed { |key_event|
