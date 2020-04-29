@@ -9,7 +9,7 @@ describe "Glimmer CSS DSL" do
       }
     }
    
-    expect(@target).to be_a(Glimmer::CSS::Stylesheet)
+    expect(@target).to be_a(Glimmer::CSS::StyleSheet)
     expect(@target.to_css).to eq(<<~CSS
       a {
       }

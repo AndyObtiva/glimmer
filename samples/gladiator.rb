@@ -43,11 +43,13 @@ class Gladiator
     end
 
     def refresh
+      new_all_children = retrieve_all_children
+      new_children = retrieve_children
       async_exec do
-        @all_children = retrieve_all_children
+        @all_children = new_all_children
         @children ||= []
         @children.clear
-        retrieve_children.each do |child|
+        new_children.each do |child|
           @children << child
         end
       end

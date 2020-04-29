@@ -109,6 +109,8 @@ module Glimmer
         def interpret(keyword, *args, &block)
           keyword = keyword.to_s
           dynamic_expression_dsl = dynamic_expression_chains_of_responsibility.keys.first if dsl.nil?
+          pd dsl
+          pd dynamic_expression_chains_of_responsibility
           dsl_stack.push(dynamic_expression_dsl || dsl)
           expression = dynamic_expression_chains_of_responsibility[dsl].handle(parent, keyword, *args, &block)
           expression.interpret(parent, keyword, *args, &block).tap do |ui_object|            
