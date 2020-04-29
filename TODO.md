@@ -4,16 +4,18 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Have packager automatically pick up version from VERSION file when present
-- Bring back Glimmer XML syntax and integrate it into Glimmer core to use with the browser widget.
+- Glimmer CSS DSL
+- Support HTML no-value attributes 
 - Scaffold a Glimmer app: provide a standard structure for building a Glimmer app (models, views, and assets [images, videos, sounds])
+- Support web UIs via Opal Ruby (https://github.com/opal/opal)
 
 ## Gladiator (Glimmer Editor)
 
-- Fix Gladiator issue with Find not working for more than one occurrence in a line
-- Fix Gladiator issue with file lookup list and file explorer tree not showing up upon launching in a new directory until resizing window
-- Fix Gladiator issue with line numbers not scrolling perfectly along with open file (off by a few pixels)
-- Fix Gladiator issue with line numbers sometimes getting clipped when openig a new file until resizing window
+- Fix issue with Find not working for more than one occurrence in a line
+- Fix issue with file lookup list and file explorer tree not showing up upon launching in a new directory until resizing window
+- Fix issue with line numbers not scrolling perfectly along with open file (off by a few pixels)
+- Fix issue with line numbers sometimes getting clipped when openig a new file until resizing window
+- Fix issue with not autosaving right away when making changes with Find/Replace (until focusing in and out of text editor area)
 
 ## Soon
 
@@ -49,6 +51,7 @@ bind_content(model, 'addresses').each { |address|
 - Automatic relayout of glimmer widgets (or parent widget) when disposing a widget (or as an option when disposing)
 - Scroll bar listener support
 - Web Support (e.g. via Opal?)
+- Make Glimmer defaults configurable
 
 ## Technical Tasks
 
@@ -82,11 +85,15 @@ bind_content(model, 'addresses').each { |address|
 - Support => syntax for computed_for data-binding
 - Support data binding boolean properties ending with ? bidirectionally (already supported for read-only)
 - Add popups to Gladiator showing the shortcut of each field (e.g. CMD+L for Line)
+- Support XML Top-Level Static Expression (xml { })
+- Support XML DSL comments <!-- COMMENT -->
+- Support XML Document Declaration Tag: <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+- Support HTML Doctype Declaration <!DOCTYPE html>
 
 ## Samples
 
-- scientific calculator
-- business accounting app
+- Scientific Calculator
+- Business Accounting app
 - HR Employee Management app
 - Medical Patient Management app
 
