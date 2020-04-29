@@ -15,7 +15,7 @@ module Glimmer
       class DataBindingExpression < Expression
         def can_interpret?(parent, keyword, *args, &block)
           args.size == 1 and
-          args[0].is_a?(DataBinding::ModelBinding)
+            args[0].is_a?(DataBinding::ModelBinding)
         end
   
         def interpret(parent, keyword, *args, &block)

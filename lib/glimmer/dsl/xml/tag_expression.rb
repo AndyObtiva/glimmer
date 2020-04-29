@@ -1,11 +1,11 @@
 require 'glimmer/dsl/xml/node_parent_expression'
-require 'glimmer/dsl/expression'
+require 'glimmer/dsl/static_expression'
 require 'glimmer/xml/node'
 
 module Glimmer
   module DSL
     module XML
-      class XmlTagExpression < Expression
+      class TagExpression < StaticExpression
         include NodeParentExpression
 
         def can_interpret?(parent, keyword, *args, &block)

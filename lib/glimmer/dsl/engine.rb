@@ -17,7 +17,11 @@ module Glimmer
       class << self
         def dsl=(dsl_name)
           dsl_name = dsl_name&.to_sym
-          dsl_stack.push(dsl_name) unless dsl_name.nil?
+          if dsl_name
+            dsl_stack.push(dsl_name)
+          else
+            dsl_stack.clear
+          end
         end
         
         def dsl
@@ -46,12 +50,14 @@ module Glimmer
           dynamic_expression_chains_of_responsibility[dsl] = expression_names.reverse.map do |expression_name|
             expression_class(dsl_namespace, expression_name).new
           end.reduce(nil) do |last_expresion_handler, expression|
-            Glimmer.logger&.debug "Adding dynamic expression: #{dsl_namespace.name}::#{expression_class_name(expression_name)}"
+            Glimmer.logger&.debug "Adding dynamic expression: #{expression.class.name}"
             expression_handler = ExpressionHandler.new(expression)
             expression_handler.next = last_expresion_handler if last_expresion_handler
             expression_handler
           end
         end
+
+        # TODO consider not making static expression methods to avoid clashing with other inherited methods
 
         def add_static_expression(static_expression)
           Glimmer.logger&.debug "Adding static expression: #{static_expression.class.name}"
@@ -59,7 +65,11 @@ module Glimmer
           static_expression_dsl = static_expression.class.dsl
           static_expressions[keyword] ||= {}
           static_expressions[keyword][static_expression_dsl] = lambda do |*args, &block|
-            if !static_expression.can_interpret?(parent, keyword, *args, &block)
+            if dsl != static_expression_dsl
+              dsl_stack.pop
+              dsl_stack.push(dsl)
+              interpret(keyword, *args, &block)
+            elsif !static_expression.can_interpret?(parent, keyword, *args, &block)
               raise Error, "Invalid use of Glimmer keyword #{keyword} with args #{args} under parent #{parent}"
             else
               Glimmer.logger&.debug "#{static_expression.class.name} will handle expression keyword #{keyword}"
@@ -70,10 +80,17 @@ module Glimmer
           end
           Glimmer.define_method(keyword) do |*args, &block|      
             retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
-            static_expression_dsl = Glimmer::DSL::Engine.static_expressions[keyword].keys.first if retrieved_static_expression.nil?
+            static_expression_dsl = Glimmer::DSL::Engine.static_expressions[keyword].keys.first if retrieved_static_expression.nil? 
+            if retrieved_static_expression.nil? && Glimmer::DSL::Engine.dsl
+              begin
+                return Glimmer::DSL::Engine.interpret(keyword, *args, &block)
+              rescue => e
+                raise e if static_expression_dsl.nil?
+              end
+            end
             raise Glimmer::Error, "Unsupported keyword: #{keyword}" unless static_expression_dsl || retrieved_static_expression
             Glimmer::DSL::Engine.dsl_stack.push(static_expression_dsl || Glimmer::DSL::Engine.dsl)
-            retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][static_expression_dsl]
+            retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
             retrieved_static_expression.call(*args, &block).tap do
               Glimmer::DSL::Engine.dsl_stack.pop
             end

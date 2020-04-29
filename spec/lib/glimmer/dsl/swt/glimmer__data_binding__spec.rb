@@ -78,17 +78,17 @@ module GlimmerSpec
             }
           }
 
-          def text=(value)
+          def custom_text=(value)
             @red_text.swt_widget.setText value.to_s
           end
 
-          def text
+          def custom_text
             @red_text.swt_widget.getText
           end
 
           def add_observer(observer, attribute_name)
-            if attribute_name.to_s == 'text'
-              @red_text.add_observer(observer, attribute_name)
+            if attribute_name.to_s == 'custom_text'
+              @red_text.add_observer(observer, 'text')
             else
               super
             end
@@ -131,8 +131,8 @@ module GlimmerSpec
       person.name = "Lady Butterfly"
       expect(@text.swt_widget.getText).to eq("Lady Butterfly")
 
-      @text.swt_widget.setText("Allen Cork")
-      expect(person.name).to eq("Allen Cork")
+      @text.swt_widget.setText("Allen Deiley")
+      expect(person.name).to eq("Allen Deiley")
     end
 
     it "tests red label custom widget data binding string property" do
@@ -157,32 +157,32 @@ module GlimmerSpec
           }
         }
         @red_text3 = red__text {
-          text bind(person3, :name)
+          custom_text bind(person3, :name)
         }
       }
 
       expect(@red_text.swt_widget.getText).to eq("Bruce Ting")
       person.name = "Lady Butterfly"
       expect(@red_text.swt_widget.getText).to eq("Lady Butterfly")
-      @red_text.swt_widget.setText("Allen Cork")
-      expect(person.name).to eq("Allen Cork")
+      @red_text.swt_widget.setText("Allen Deiley")
+      expect(person.name).to eq("Allen Deiley")
 
       expect(@red_text2.swt_widget.getText).to eq("Bruce Ting")
       person2.name = "Lady Butterfly"
       expect(@red_text2.swt_widget.getText).to eq("Lady Butterfly")
-      @red_text2.swt_widget.setText("Allen Cork")
-      expect(person2.name).to eq("Allen Cork")
+      @red_text2.swt_widget.setText("Allen Deiley")
+      expect(person2.name).to eq("Allen Deiley")
 
       red_text3_widget = @red_text3.swt_widget
       red_text3_widget = red_text3_widget.getChildren.first
       expect(red_text3_widget.getText).to eq("Bruce Ting")
-      expect(@red_text3.text).to eq("Bruce Ting")
+      expect(@red_text3.custom_text).to eq("Bruce Ting")
       person3.name = "Lady Butterfly"
       expect(red_text3_widget.getText).to eq("Lady Butterfly")
-      expect(@red_text3.text).to eq("Lady Butterfly")
-      red_text3_widget.setText("Allen Cork")
-      expect(person3.name).to eq("Allen Cork")
-      @red_text3.text = "Sean McFaun"
+      expect(@red_text3.custom_text).to eq("Lady Butterfly")
+      red_text3_widget.setText("Allen Deiley")
+      expect(person3.name).to eq("Allen Deiley")
+      @red_text3.custom_text = "Sean McFaun"
       expect(person3.name).to eq("Sean McFaun")
     end
 

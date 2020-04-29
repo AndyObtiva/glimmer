@@ -1,10 +1,10 @@
-require 'glimmer/dsl/expression'
+require 'glimmer/dsl/static_expression'
 require 'glimmer/xml/node'
 
 module Glimmer
   module DSL
     module XML
-      class XmlTextExpression < Expression
+      class TextExpression < StaticExpression
         def can_interpret?(parent, keyword, *args, &block)
           (parent == nil or parent.is_a?(Glimmer::XML::Node)) and
           (keyword.to_s == "text") and

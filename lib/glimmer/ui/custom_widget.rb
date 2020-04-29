@@ -109,7 +109,6 @@ module Glimmer
           @before_body_blocks << block
         end
 
-        # TODO rename to content as well as before and after blocks
         def body(&block)
           @body_block = block
         end
@@ -155,11 +154,11 @@ module Glimmer
       end
 
       def can_add_observer?(attribute_name)
-        respond_to?(attribute_name) || respond_to?("#{attribute_name}?") || @body_root.can_add_observer?(attribute_name)
+        has_instance_method?(attribute_name) || respond_to?("#{attribute_name}?") || @body_root.can_add_observer?(attribute_name)
       end
 
       def add_observer(observer, attribute_name)
-        if respond_to?(attribute_name)
+        if has_instance_method?(attribute_name)
           super
         else
           @body_root.add_observer(observer, attribute_name)
@@ -179,8 +178,13 @@ module Glimmer
         end
       end
 
+      # This method ensures it has an instance method not coming from Glimmer DSL
+      def has_instance_method?(method_name)
+        respond_to?(method_name) && !method(method_name).source_location.first.include?('glimmer/dsl/engine.rb')
+      end
+
       def get_attribute(attribute_name)
-        if respond_to?(attribute_name)
+        if has_instance_method?(attribute_name)
           send(attribute_name)
         else
           @body_root.get_attribute(attribute_name)

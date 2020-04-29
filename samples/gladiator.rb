@@ -511,7 +511,7 @@ class Gladiator
         @filter_text = text {
           layout_data :fill, :center, true, false
           text bind(Gladiator::Dir.local_dir, 'filter')
-    	   on_key_pressed { |key_event|
+    	    on_key_pressed { |key_event|
             if key_event.keyCode == swt(:tab) || 
                 key_event.keyCode == swt(:cr) || 
                 key_event.keyCode == swt(:lf) ||

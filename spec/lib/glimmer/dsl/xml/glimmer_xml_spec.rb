@@ -3,10 +3,6 @@ require "spec_helper"
 describe "Glimmer Xml" do
   include Glimmer
 
-  before do
-    Glimmer::DSL::Engine.dsl = :xml
-  end
-  
   it "tests single html tag" do
     @target = html
    
@@ -76,13 +72,13 @@ describe "Glimmer Xml" do
   end
   
   it "tests different name spaced attributes and tags" do
-    @target = html(w3c.id => "thesis", :class => "document") {
+    @target = html(:id => "thesis", :class => "document") {
       document.body(document.id => "main") {
       }
     }
   
     expect(@target).to_not be_nil
-    expect(@target.to_xml).to eq('<html w3c:id="thesis" class="document"><document:body document:id="main"></document:body></html>')
+    expect(@target.to_xml).to eq('<html id="thesis" class="document"><document:body document:id="main"></document:body></html>')
   end
   
   it "tests name space context" do
