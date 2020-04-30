@@ -10,8 +10,7 @@ module Glimmer
 
       def add_property(keyword, *args)
         keyword = keyword.to_s.downcase.gsub('_', '-')
-        args = args.map(&:to_s).join(' ')
-        @properties[keyword] = args
+        @properties[keyword] = args.first
       end
 
       def to_css

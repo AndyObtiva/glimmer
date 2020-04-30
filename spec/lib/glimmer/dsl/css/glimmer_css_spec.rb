@@ -50,4 +50,30 @@ describe "Glimmer CSS DSL" do
     )
   end
    
+  it 'renders two element selectors with two properties each' do
+    @target = css {
+      h1 {
+        font_size '2em'
+        font_family '"Times New Roman", Times, serif'
+      }
+      a {
+        background :red
+        text_align :center
+      }
+    }
+   
+    expect(@target.to_css).to eq(<<~CSS
+      h1 {
+        font-size: 2em;
+        font-family: "Times New Roman", Times, serif;
+      }
+
+      a {
+        background: red;
+        text-align: center;
+      }
+    CSS
+    )
+  end
+   
 end
