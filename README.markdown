@@ -1599,7 +1599,7 @@ puts @xml
 Output:
 
 ```
-<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=2.0\" /></head><body><h1>Hello, World!</h1></body></html>
+<html><head><meta name="viewport" content="width=device-width, initial-scale=2.0" /></head><body><h1>Hello, World!</h1></body></html>
 ```
 
 Example (explicit XML tag / you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
@@ -1629,7 +1629,7 @@ puts @xml
 Output:
 
 ```
-<w3c:html id=\"thesis\" class=\"document\"><w3c:body id=\"main\"></w3c:body></w3c:html>
+<w3c:html id="thesis" class="document"><w3c:body id="main"></w3c:body></w3c:html>
 ```
 
 Example (XML namespaces using dot operator / you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
