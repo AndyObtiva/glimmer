@@ -14,6 +14,7 @@ module Glimmer
         @children = []
         @parent = parent
         if attributes.is_a?(Array)
+          attributes = attributes.compact
           hash_attributes = attributes.last.is_a?(Hash) ? attributes.delete(attributes.last) : {}
           hash_attributes = attributes.reduce(hash_attributes) do |hash, attribute|
             hash.merge(attribute => nil)

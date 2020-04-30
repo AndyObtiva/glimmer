@@ -59,7 +59,7 @@ module Glimmer
               }
             }
             body {
-              "<video id=\"video\" src=\"#{source}\" #{browser_video_width} #{browser_video_height} #{browser_video_loop} #{browser_video_controls} #{browser_video_autoplay}>"
+              video(browser_video_loop, browser_video_controls, browser_video_autoplay, id: 'video', src: source, width: browser_video_width, height: browser_video_height)
             }
           }
           on_completed {
@@ -260,11 +260,11 @@ module Glimmer
       end
 
       def browser_video_width
-        "width='100%'" if fit_to_width
+        "100%" if fit_to_width
       end
 
       def browser_video_height
-        "height='100%'" if fit_to_height
+        "100%" if fit_to_height
       end
 
       def browser_body_background
