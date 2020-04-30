@@ -56,8 +56,17 @@ describe "Glimmer Xml" do
       }
     }
   
-    expect(@target).to_not be_nil
     expect(@target.to_xml).to eq('<html><body><video src="http://videos.org/1.mp4" loop controls /></body></html>')
+  end
+
+  it 'renders meta tag' do
+    @target = html {
+      head {
+        meta(name: "viewport", content: "width=device-width, initial-scale=2.0")
+      }
+    }
+  
+    expect(@target.to_xml).to eq('<html><head><meta name="viewport" content="width=device-width, initial-scale=2.0" /></head></html>')
   end
   
   it "tests tag with contents before and after nested tag" do

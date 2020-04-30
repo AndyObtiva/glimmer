@@ -9,10 +9,6 @@ module Glimmer
     #
     # When DSL engine interprets an expression, it attempts to handle
     # with ordered expression array specified via `.expressions=` method.
-    #
-    # TODO support auto-loading static_expressions in the future for expressions where
-    # the keyword does not vary dynamically. These static keywords are then
-    # predefined as methods in Glimmer instead of needing method_missing
     class Engine
       class << self
         def dsl=(dsl_name)
@@ -56,8 +52,6 @@ module Glimmer
             expression_handler
           end
         end
-
-        # TODO consider not making static expression methods to avoid clashing with other inherited methods
 
         def add_static_expression(static_expression)
           Glimmer.logger&.debug "Adding static expression: #{static_expression.class.name}"

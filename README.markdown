@@ -1558,6 +1558,48 @@ shell(:no_resize) {
 
 Also, you may invoke `Display.setAppVersion('1.0.0')` if needed for OS app version identification reasons during development, replacing `'1.0.0'` with your application version.
 
+#### Multi-DSL Support
+
+Glimmer supports 2 other DSLs in addition to SWT, that is HTML and CSS. It also allows mixing DSLs, which comes in
+handy when using Browser widget.
+
+##### HTML DSL
+
+Simply start with `html` keyword and add HTML inside its block using Glimmer DSL syntax.
+Once done, you may call `to_s`, `to_xml`, or `to_html` to get the formatted HTML output.
+
+Example:
+
+```ruby
+html {
+  head {
+    meta(name: "viewport", content: "width=device-width, initial-scale=2.0")
+  }
+  body {
+    h1 { "Hello, World!" }
+  }
+}
+```
+
+##### CSS DSL
+
+Simply start with `css` keyword and add stylesheet rule sets inside its block using Glimmer DSL syntax.
+Once done, you may call `to_s` or `to_css` to get the formatted CSS output.
+
+Example:
+
+```ruby
+css {
+  body {
+    font_size "1.1em"
+  }
+  
+  s('body > h1') {
+    background_color :red
+  }
+}
+```
+
 #### Video Widget
 
 ![Video Widget](images/glimmer-video-widget.png)
@@ -1662,21 +1704,22 @@ Example rendering HTML with JavaScript on document ready (you may copy/paste in 
 shell {
   minimum_size 130, 130
   @browser = browser {
-    text <<~HTML
-      <html>
-        <head>
-        </head>
-        <body>
-          <h1>Hello, World!</h1>
-        </body>
-      </html>
-    HTML
+    text html {
+      head {
+        meta(name: "viewport", content: "width=device-width, initial-scale=2.0")
+      }
+      body {
+        h1 { "Hello, World!" }
+      }
+    }
     on_completed { # on load of the page execute this JavaScript
       @browser.swt_widget.execute("alert('Hello, World!');")
     }
   }
 }.open
 ```
+
+This relies on Glimmer's Multi-DSL Support (mentioned under Miscellaneous section) for building the HTML using Glimmer HTML DSL.
 
 ## Glimmer Style Guide
 
