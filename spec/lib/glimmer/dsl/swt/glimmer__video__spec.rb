@@ -46,7 +46,7 @@ module GlimmerSpec
     it "initializes video source by url option argument" do
       @target.content {
         @video = video(url: video_url) {
-          on_completed {
+          on_loaded {
             expect(@video.swt_widget.evaluate("return document.getElementById('video').src")).to eq(video_url)
             @target.dispose
           }
