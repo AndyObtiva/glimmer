@@ -1560,18 +1560,32 @@ Also, you may invoke `Display.setAppVersion('1.0.0')` if needed for OS app versi
 
 #### Multi-DSL Support
 
-Glimmer supports 2 other DSLs in addition to SWT, that is HTML and CSS. It also allows mixing DSLs, which comes in
-handy when using Browser widget.
+Glimmer supports two other DSLs in addition to the SWT DSL; that is Glimmer XML DSL and Glimmer CSS DSL. It also allows mixing DSLs, which comes in handy when doing things like using the `browser` widget. Glimmer automatically recognizes top-level keywords in each DSL
+and switches DSLs accordingly until it finishes processes the top-level keywords, at which point it switches back to the prior DSL.
 
-##### HTML DSL
+For example, the SWT DSL has the following top-level keywords:
+- `shell`
+- `display`
+- `observe`
+- `async_exec`
+- `sync_exec`
+
+##### XML DSL
 
 Simply start with `html` keyword and add HTML inside its block using Glimmer DSL syntax.
 Once done, you may call `to_s`, `to_xml`, or `to_html` to get the formatted HTML output.
 
-Example:
+Here are all the Glimmer XML DSL top-level keywords:
+- `html`
+- `tag`: enables custom tag creation for exceptional cases by passing tag name as '_name' attribute
+- `name_space`: enables namespacing html tags
+
+Element properties are typically passed as a key/value hash (e.g. `section(id: 'main', class: 'accordion')`) . However, for properties like "selected" or "checked", you must leave value `nil` or otherwise pass in front of the hash (e.g. `input(:checked, type: 'checkbox')` )
+
+Example (basic HTML / you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
-html {
+@xml = html {
   head {
     meta(name: "viewport", content: "width=device-width, initial-scale=2.0")
   }
@@ -1579,17 +1593,73 @@ html {
     h1 { "Hello, World!" }
   }
 }
+puts @xml
 ```
+
+Output:
+
+```
+<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=2.0\" /></head><body><h1>Hello, World!</h1></body></html>
+```
+
+Example (explicit XML tag / you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+puts tag(:_name => "DOCUMENT")
+```
+
+Output:
+
+```
+<DOCUMENT/>
+```
+
+Example (XML namespaces using `name_space` keyword / you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+@xml = name_space(:w3c) {
+  html(:id => "thesis", :class => "document") {
+    body(:id => "main") {
+    }
+  }
+}
+puts @xml
+```
+
+Output:
+
+```
+<w3c:html id=\"thesis\" class=\"document\"><w3c:body id=\"main\"></w3c:body></w3c:html>
+```
+
+Example (XML namespaces using dot operator / you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+@xml = tag(:_name => "DOCUMENT") {
+  document.body(document.id => "main") {
+  }
+}
+puts @xml
+```
+
+Output:
+
+```
+<DOCUMENT><document:body document:id="main"></document:body></DOCUMENT>
+```
+
 
 ##### CSS DSL
 
 Simply start with `css` keyword and add stylesheet rule sets inside its block using Glimmer DSL syntax.
 Once done, you may call `to_s` or `to_css` to get the formatted CSS output.
 
-Example:
+`css` is the only top-level keyword in the Glimmer CSS DSL
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
-css {
+@css = css {
   body {
     font_size "1.1em"
   }
@@ -1598,6 +1668,7 @@ css {
     background_color :red
   }
 }
+puts @css
 ```
 
 #### Video Widget
@@ -1719,7 +1790,7 @@ shell {
 }.open
 ```
 
-This relies on Glimmer's Multi-DSL Support (mentioned under Miscellaneous section) for building the HTML using Glimmer HTML DSL.
+This relies on Glimmer's [Multi-DSL Support](https://github.com/AndyObtiva/glimmer/tree/development#multi-dsl-support) for building the HTML text using Glimmer XML DSL.
 
 ## Glimmer Style Guide
 
