@@ -180,7 +180,7 @@ module Glimmer
 
       # This method ensures it has an instance method not coming from Glimmer DSL
       def has_instance_method?(method_name)
-        respond_to?(method_name) && !method(method_name).source_location.first.include?('glimmer/dsl/engine.rb')
+        respond_to?(method_name) && !method(method_name)&.source_location&.first&.include?('glimmer/dsl/engine.rb')
       end
 
       def get_attribute(attribute_name)
