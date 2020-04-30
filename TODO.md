@@ -5,6 +5,9 @@ Here is a list of tasks to do (please delete once done):
 ## Up Next
 
 - Scaffold a Glimmer app: provide a standard structure for building a Glimmer app (models, views, and assets [images, videos, sounds])
+- Scaffold a Glimmer custom widget gem
+- Extract Video widget into its own glimmer-video gem
+- Extract Gladiator into its own glimmer-gladiator gem
 - Support web UIs via Opal Ruby (https://github.com/opal/opal)
 
 ## Gladiator (Glimmer Editor)
