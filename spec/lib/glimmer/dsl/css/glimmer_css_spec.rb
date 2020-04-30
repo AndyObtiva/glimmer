@@ -18,4 +18,21 @@ describe "Glimmer CSS DSL" do
     expect(@target.to_s).to eq(@target.to_css)
   end
    
+  it 'renders element selector with one property' do
+    @target = css {
+      a {
+        background :red
+      }
+    }
+   
+    expect(@target).to be_a(Glimmer::CSS::StyleSheet)
+    expect(@target.to_css).to eq(<<~CSS
+      a {
+        background: red;
+      }
+    CSS
+    )
+    expect(@target.to_s).to eq(@target.to_css)
+  end
+   
 end

@@ -5,7 +5,7 @@ module Glimmer
 
       def initialize(selector)
         @selector = selector
-        @properties = []
+        @properties = {}
       end
 
       def add_property(keyword, *args)
