@@ -1561,7 +1561,7 @@ Also, you may invoke `Display.setAppVersion('1.0.0')` if needed for OS app versi
 #### Multi-DSL Support
 
 Glimmer supports two other DSLs in addition to the SWT DSL; that is Glimmer XML DSL and Glimmer CSS DSL. It also allows mixing DSLs, which comes in handy when doing things like using the `browser` widget. Glimmer automatically recognizes top-level keywords in each DSL
-and switches DSLs accordingly until it finishes processes the top-level keywords, at which point it switches back to the prior DSL.
+and switches DSLs accordingly. Once done processing a top-level keyword, it switches back to the prior DSL automatically.
 
 For example, the SWT DSL has the following top-level keywords:
 - `shell`
