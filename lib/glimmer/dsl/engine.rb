@@ -64,35 +64,39 @@ module Glimmer
           keyword = static_expression.class.keyword
           static_expression_dsl = static_expression.class.dsl
           static_expressions[keyword] ||= {}
-          static_expressions[keyword][static_expression_dsl] = lambda do |*args, &block|
-            if dsl != static_expression_dsl
-              dsl_stack.pop
-              dsl_stack.push(dsl)
-              interpret(keyword, *args, &block)
-            elsif !static_expression.can_interpret?(parent, keyword, *args, &block)
-              raise Error, "Invalid use of Glimmer keyword #{keyword} with args #{args} under parent #{parent}"
-            else
-              Glimmer.logger&.debug "#{static_expression.class.name} will handle expression keyword #{keyword}"
-              static_expression.interpret(parent, keyword, *args, &block).tap do |ui_object|
-                Glimmer::DSL::Engine.add_content(ui_object, static_expression, &block) unless block.nil?
+          static_expressions[keyword][static_expression_dsl] = static_expression
+          Glimmer.define_method(keyword) do |*args, &block|
+            begin
+              retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]            
+              static_expression_dsl = Glimmer::DSL::Engine.static_expressions[keyword].keys.first if retrieved_static_expression.nil?
+              if retrieved_static_expression.nil? && Glimmer::DSL::Engine.dsl && (static_expression_dsl.nil? || !Glimmer::DSL::Engine.static_expressions[keyword][static_expression_dsl].is_a?(TopLevelExpression))
+                begin
+                  return Glimmer::DSL::Engine.interpret(keyword, *args, &block)
+                rescue => e 
+                  puts e.full_message               
+                  raise e if static_expression_dsl.nil?
+                end
               end
-            end
-          end
-          Glimmer.define_method(keyword) do |*args, &block|      
-            retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
-            static_expression_dsl = Glimmer::DSL::Engine.static_expressions[keyword].keys.first if retrieved_static_expression.nil? 
-            if retrieved_static_expression.nil? && Glimmer::DSL::Engine.dsl
-              begin
-                return Glimmer::DSL::Engine.interpret(keyword, *args, &block)
-              rescue => e
-                raise e if static_expression_dsl.nil?
+              raise Glimmer::Error, "Unsupported keyword: #{keyword}" unless static_expression_dsl || retrieved_static_expression
+              time = Time.now.to_f
+              Glimmer::DSL::Engine.dsl_stack.push(static_expression_dsl || Glimmer::DSL::Engine.dsl)
+              static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
+#                 if Glimmer::DSL::Engine.dsl != static_expression_dsl
+#                   Glimmer::DSL::Engine.dsl_stack.pop
+#                   Glimmer::DSL::Engine.dsl_stack.push(dsl)
+#                   Glimmer::DSL::Engine.interpret(keyword, *args, &block)
+              if !static_expression.can_interpret?(Glimmer::DSL::Engine.parent, keyword, *args, &block)
+                raise Error, "Invalid use of Glimmer keyword #{keyword} with args #{args} under parent #{parent}"
+              else
+                Glimmer.logger&.debug "#{static_expression.class.name} will handle expression keyword #{keyword}"
+                return static_expression.interpret(Glimmer::DSL::Engine.parent, keyword, *args, &block).tap do |ui_object|
+                  Glimmer::DSL::Engine.add_content(ui_object, static_expression, &block) unless block.nil?
+                  Glimmer::DSL::Engine.dsl_stack.pop
+                end
               end
-            end
-            raise Glimmer::Error, "Unsupported keyword: #{keyword}" unless static_expression_dsl || retrieved_static_expression
-            Glimmer::DSL::Engine.dsl_stack.push(static_expression_dsl || Glimmer::DSL::Engine.dsl)
-            retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
-            retrieved_static_expression.call(*args, &block).tap do
+            rescue => e
               Glimmer::DSL::Engine.dsl_stack.pop
+              raise e
             end
           end
         end
@@ -109,12 +113,16 @@ module Glimmer
         def interpret(keyword, *args, &block)
           keyword = keyword.to_s
           dynamic_expression_dsl = dynamic_expression_chains_of_responsibility.keys.first if dsl.nil?
+          time = Time.now.to_f
           dsl_stack.push(dynamic_expression_dsl || dsl)
           expression = dynamic_expression_chains_of_responsibility[dsl].handle(parent, keyword, *args, &block)
           expression.interpret(parent, keyword, *args, &block).tap do |ui_object|            
             add_content(ui_object, expression, &block)
             dsl_stack.pop
           end
+        rescue => e
+          dsl_stack.pop
+          raise e
         end
 
         # Adds content block to parent UI object
@@ -123,6 +131,7 @@ module Glimmer
         #
         # For example, a shell widget would get properties set and children added
         def add_content(parent, expression, &block)
+          time = Time.now.to_f
           dsl_stack.push(expression.class.dsl)
           parent_stack.push(parent) if expression.is_a?(ParentExpression)
           expression.add_content(parent, &block) if block_given?

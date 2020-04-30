@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + "/node_visitor"
+require File.dirname(__FILE__) + "/node"
 
 module Glimmer
   module XML
@@ -11,8 +12,8 @@ module Glimmer
       end
 
       def process_before_children(node)
-        if (node.is_a?(String))
-          @document << node
+        if (!node.is_a?(Glimmer::XML::Node))          
+          @document << node.to_s
           return
         end
         begin_open_tag(node)
@@ -21,7 +22,7 @@ module Glimmer
       end
 
       def process_after_children(node)
-        return if (node.is_a?(String))
+        return if (!node.is_a?(Glimmer::XML::Node))
         append_close_tag(node)
       end
 

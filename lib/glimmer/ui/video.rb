@@ -28,34 +28,34 @@ module Glimmer
           text html {
             head {
               style(id: "style") {
-                <<~CSS
-                body {
-                  margin: 0;
-                  padding: 0;
-                  overflow: hidden;
+                css {
+                  body {
+                    margin 0
+                    padding 0
+                    overflow :hidden
+                  }
                 }
-                CSS
               }
               style(id: "style-body-background") {
-                <<~CSS
-                body {
-                  background: #{browser_body_background};
+                css {
+                  body {
+                    p 'background', browser_body_background
+                  }
                 }
-                CSS
               }
               style(id: "style-body-offset-x") {
-                <<~CSS
-                body {
-                  margin-left: #{browser_body_offset_x}px;
+                css {
+                  body {
+                    margin_left "#{browser_body_offset_x}px"
+                  }
                 }
-                CSS
               }
               style(id: "style-body-offset-y") {
-                <<~CSS
-                body {
-                  margin-top: #{browser_body_offset_y}px;
+                css {
+                  body {
+                    margin_top "#{browser_body_offset_y}px"
+                  }
                 }
-                CSS
               }
             }
             body {

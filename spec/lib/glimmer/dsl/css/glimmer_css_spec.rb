@@ -102,4 +102,30 @@ describe "Glimmer CSS DSL" do
     )
   end
    
+  it 'renders two custom selectors with two custom properties each' do
+    @target = css {
+      s('body#app h1#title') {
+        p 'font-size', '2em'
+        p 'font-family', '"Times New Roman", Times, serif'
+      }
+      s('section#menu > a#home') {
+        p 'background', 'red'
+        p 'text_align', 'center'
+      }
+    }
+   
+    expect(@target.to_css).to eq(<<~CSS
+      body#app h1#title {
+        font-size: 2em;
+        font-family: "Times New Roman", Times, serif;
+      }
+
+      section#menu > a#home {
+        background: red;
+        text-align: center;
+      }
+    CSS
+    )
+  end
+   
 end

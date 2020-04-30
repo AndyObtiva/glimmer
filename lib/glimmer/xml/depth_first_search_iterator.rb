@@ -1,3 +1,5 @@
+require 'glimmer/xml/node'
+
 module Glimmer
   module XML
     class DepthFirstSearchIterator
@@ -12,7 +14,7 @@ module Glimmer
 
       def process(node)
         @node_visitor.process_before_children(node)
-        node.children.each { |child| process(child) } unless node.is_a?(String)
+        node.children.each { |child| process(child) } if node.is_a?(Node)
         @node_visitor.process_after_children(node)
       end
     end

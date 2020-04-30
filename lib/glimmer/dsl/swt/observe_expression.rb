@@ -1,4 +1,5 @@
 require 'glimmer/dsl/static_expression'
+require 'glimmer/dsl/top_level_expression'
 require 'glimmer/data_binding/observer'
 require 'glimmer/data_binding/model_binding'
 
@@ -6,6 +7,8 @@ module Glimmer
   module DSL
     module SWT
       class ObserveExpression < StaticExpression
+        include TopLevelExpression
+
         REGEX_NESTED_OR_INDEXED_PROPERTY = /([^\[]+)(\[[^\]]+\])?/
   
         def can_interpret?(parent, keyword, *args, &block)

@@ -11,8 +11,8 @@ module Glimmer
 
         def add_content(parent, &block)
           return_value = block.call(parent)      
-          if return_value.is_a?(String) and !parent.children.include?(return_value)
-            text = return_value
+          if !return_value.is_a?(Glimmer::XML::Node) and !parent.children.include?(return_value)
+            text = return_value.to_s
             first_match = text.match(/[#][^{]+[{][^}]+[}]/)
             match = first_match
             while (match)

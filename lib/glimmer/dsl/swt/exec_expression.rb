@@ -1,3 +1,4 @@
+require 'glimmer/dsl/top_level_expression'
 require 'glimmer/swt/display_proxy'
 
 module Glimmer
@@ -6,6 +7,8 @@ module Glimmer
       # Mixin for common code in async_exec and sync_exec expressions
       # Uses name in subclass to auto-derive exec_operation
       module ExecExpression
+        include TopLevelExpression
+
         def exec_operation
           @exec_operation ||= self.class.name.split(/::/).last.sub(/Expression$/, '').underscore
         end
