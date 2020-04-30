@@ -3,7 +3,8 @@
 ## 0.6.0
 
 - Added multi-DSL support back to Glimmer
-- Support XML/HTML DSL
+- Glimmer XML (HTML) DSL
+- Glimmer CSS DSL
 - Support mixing DSLs (e.g. SWT browser widget that has an XML text)
 - Fixed Gladiator issue with not saving on quit
 - Made color, rgb, and rgba SWT DSL static expressions instead of dynamic

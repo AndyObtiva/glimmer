@@ -13,6 +13,13 @@ module Glimmer
         @is_name_space = false
         @children = []
         @parent = parent
+        if attributes.is_a?(Array)
+          hash_attributes = attributes.last.is_a?(Hash) ? attributes.delete(attributes.last) : {}
+          hash_attributes = attributes.reduce(hash_attributes) do |hash, attribute|
+            hash.merge(attribute => nil)
+          end
+          attributes = hash_attributes
+        end
         if (parent and parent.is_name_space)
           @name_space = parent
           @parent = @name_space.parent

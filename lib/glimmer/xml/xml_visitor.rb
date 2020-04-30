@@ -52,10 +52,11 @@ module Glimmer
       def append_attributes(node)
         Glimmer.logger&.debug "Take 3"
         Glimmer.logger&.debug(node.attributes)
-        node.attributes.each_key do |attribute|
+        node.attributes.each do |attribute, value|
           attribute_name = attribute
           attribute_name = "#{attribute.name_space.name}:#{attribute.name}" if attribute.is_a?(Node)
-          @document << " #{attribute_name}=\"#{node.attributes[attribute]}\""
+          @document << " #{attribute_name}"
+          @document << "=\"#{value}\"" unless value.nil?
         end
       end
 

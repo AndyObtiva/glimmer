@@ -8,15 +8,18 @@ module Glimmer
       class XmlExpression < Expression
         include NodeParentExpression
 
+        SUPPORTED_ARG_TYPES = [String, Symbol, Hash]
+
         def can_interpret?(parent, keyword, *args, &block)
-          (parent == nil or parent.is_a?(Glimmer::XML::Node)) and
-          (args.size == 0 or ((args.size == 1) and ((args[0].is_a?(Hash)) or (args[0].is_a?(Hash)))))
+          hash_arg = args.detect {|arg| arg.is_a?(Hash)}
+          parent.is_a?(Glimmer::XML::Node) and
+            ((SUPPORTED_ARG_TYPES & args.map(&:class).uniq) == args.map(&:class).uniq) and
+            args.map(&:class).count(Hash) <= 1 and
+            ((args.index(hash_arg) == args.size - 1) or args.index(hash_arg).nil?)
         end
 
         def interpret(parent, keyword, *args, &block)
-          attributes = Hash.new
-          attributes = args[0] if (args.size == 1)
-          Glimmer::XML::Node.new(parent, keyword.to_s, attributes, &block)
+          Glimmer::XML::Node.new(parent, keyword.to_s, args, &block)
         end
       end
     end

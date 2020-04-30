@@ -49,6 +49,17 @@ describe "Glimmer Xml" do
     expect(@target.to_xml).to eq('<html id="thesis" class="document"><body id="main"></body></html>')
   end
   
+  it "renders html tag with nested body and video with attributes, including non-value attributes (e.g. loop)" do
+    @target = html {
+      body {
+        video(:loop, :controls, src: "http://videos.org/1.mp4")
+      }
+    }
+  
+    expect(@target).to_not be_nil
+    expect(@target.to_xml).to eq('<html><body><video src="http://videos.org/1.mp4" loop controls /></body></html>')
+  end
+  
   it "tests tag with contents before and after nested tag" do
     @target = html(:id => "thesis", :class => "document") {
       text "Before body"
