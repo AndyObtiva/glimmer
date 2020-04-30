@@ -25,14 +25,29 @@ describe "Glimmer CSS DSL" do
       }
     }
    
-    expect(@target).to be_a(Glimmer::CSS::StyleSheet)
     expect(@target.to_css).to eq(<<~CSS
       a {
         background: red;
       }
     CSS
     )
-    expect(@target.to_s).to eq(@target.to_css)
+  end
+   
+  it 'renders element selector with two properties' do
+    @target = css {
+      a {
+        background :red
+        text_align :center
+      }
+    }
+   
+    expect(@target.to_css).to eq(<<~CSS
+      a {
+        background: red;
+        text-align: center;
+      }
+    CSS
+    )
   end
    
 end
