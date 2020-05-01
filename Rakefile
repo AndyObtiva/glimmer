@@ -26,7 +26,7 @@ unless jeweler_required.nil?
     gem.email = "andy.am@gmail.com"
     gem.authors = ["AndyMaleh"]
     gem.executables = ['glimmer', 'girb', 'gladiator']
-    gem.files = Dir['bin/**/*', 'lib/**/*', 'vendor/**/*', 'samples/gladiator.rb']
+    gem.files = Dir['RUBY_VERSION', 'VERSION', 'bin/**/*', 'lib/**/*', 'vendor/**/*', 'samples/gladiator.rb', 'icons/**/*']
     # dependencies defined in Gemfile
   end
   Jeweler::RubygemsDotOrgTasks.new

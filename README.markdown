@@ -1973,7 +1973,8 @@ Glimmer comes with a Ruby Logger accessible via `Glimmer.logger`
 Its level of logging defaults to `Logger::WARN`
 It may be configured to show a different level of logging as follows:
 ```ruby
-Glimmer.logger&.level = Logger::DEBUG
+Glimmer.enable_logging
+Glimmer.logger.level = Logger::DEBUG
 ```
 This results in more verbose debugging log to `STDOUT`, which is helpful in troubleshooting Glimmer DSL syntax when needed.
 
@@ -2073,6 +2074,7 @@ In order to explicitly configure javapackager, Mac package attributes, or sign y
 - https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html
 - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGICFDB
 - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html
+- https://developer.apple.com/library/archive/releasenotes/General/SubmittingToMacAppStore/index.html#//apple_ref/doc/uid/TP40010572-CH16-SW8
 
 The Glimmer rake task allows passing extra options to javapackager via:
 - `Glimmer::Packager.javapackager_extra_args="..."` in your application Rakefile
@@ -2081,8 +2083,12 @@ The Glimmer rake task allows passing extra options to javapackager via:
 Example (Rakefile):
 
 ```ruby
-Glimmer::Package.javapackager_extra_args = '-BlicenseType="MIT" -Bmac.category="arithmetic" -Bmac.signing-key-developer-id-app="Andy Maleh"'
+Glimmer::Package.javapackager_extra_args = '-BlicenseType="MIT" -Bmac.category="public.app-category.business" -Bmac.signing-key-developer-id-app="Andy Maleh"'
 ```
+
+Note that `mac.category` defaults to "public.app-category.business", but can be overridden with one of the category UTI values mentioned here: 
+
+https://developer.apple.com/library/archive/releasenotes/General/SubmittingToMacAppStore/index.html#//apple_ref/doc/uid/TP40010572-CH16-SW8 
 
 Example (env var):
 
@@ -2151,7 +2157,11 @@ Glimmer::Package.javapackager_extra_args = '-srcfiles "ACME.txt" -BlicenseFile="
 
 If you run `rake glimmer:package` multiple times, sometimes it leaves a mounted DMG project in your finder. Unmount before you run the command again or it might fail with an error saying: "Error: Bundler "DMG Installer" (dmg) failed to produce a bundle."
 
-By the way, keep in mind that during normal operation, it does also indicate a false-negative while completing successfully (please ignore): "Exec failed with code 2 command [[/usr/bin/SetFile, -c, icnC, /var/folders/4_/g1sw__tx6mjdgyh3mky7vydc0000gp/T/fxbundler4076750801763032201/images/MathBowling/.VolumeIcon.icns] in unspecified directory"
+By the way, keep in mind that during normal operation, it does also indicate a false-negative while completing successfully similar to the following (please ignore): 
+
+```
+Exec failed with code 2 command [[/usr/bin/SetFile, -c, icnC, /var/folders/4_/g1sw__tx6mjdgyh3mky7vydc0000gp/T/fxbundler4076750801763032201/images/MathBowling/.VolumeIcon.icns] in unspecified directory
+```
 
 ## Resources
 
