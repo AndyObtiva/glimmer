@@ -90,7 +90,7 @@ end
 $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 
 require 'glimmer/launcher'
-require Glimmer::Launcher.swt_jar_file
+require Glimmer::Launcher.swt_jar_file # TODO move into swt/dsl.rb
 require 'glimmer/swt/packages'
 require 'glimmer/dsl/swt/dsl'
 require 'glimmer/dsl/xml/dsl'

@@ -1,4 +1,6 @@
-require 'glimmer/package'
+require 'rake'
+
+require_relative 'package'
 
 namespace :glimmer do
   namespace :package do

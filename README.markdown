@@ -1,4 +1,4 @@
-# Glimmer 0.6.0 Beta (JRuby Desktop UI DSL + Data-Binding)
+# Glimmer 0.7.0 Beta (JRuby Desktop UI DSL + Data-Binding)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master)
 
 Glimmer is a native-UI cross-platform desktop development library written in Ruby. Glimmer's main innovation is a JRuby DSL that enables productive and efficient authoring of desktop application user-interfaces while relying on the robust Eclipse SWT library. Glimmer additionally innovates by having built-in data-binding support to greatly facilitate synchronizing the UI with domain models. As a result, that achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about UI concerns, or alternatively drive development UI-first, and then write clean business components test-first afterwards.
@@ -70,7 +70,7 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
 ## Table of Contents
 
 <!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
-- [Glimmer 0.6.0 Beta (JRuby Desktop UI DSL + Data-Binding)](#glimmer-058-beta-jruby-desktop-ui-dsl--data-binding)
+- [Glimmer 0.7.0 Beta (JRuby Desktop UI DSL + Data-Binding)](#glimmer-058-beta-jruby-desktop-ui-dsl--data-binding)
   - [Examples](#examples)
     - [Hello World](#hello-world)
     - [Tic Tac Toe](#tic-tac-toe)
@@ -163,14 +163,14 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.6.0
+jgem install glimmer -v 0.7.0
 ```
 
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.6.0'
+gem 'glimmer', '~> 0.7.0'
 ```
 
 And, then run:

@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.7.0
+
+- Expose rake glimmer:package rake task via glimmer command
+
 ## 0.6.0
 
 - Added multi-DSL support back to Glimmer

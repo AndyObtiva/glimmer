@@ -1,5 +1,7 @@
 require 'os'
 
+require_relative 'rake_task'
+
 module Glimmer
   class Launcher
     OPERATING_SYSTEMS_SUPPORTED = ["mac", "windows", "linux"]
@@ -55,22 +57,40 @@ module Glimmer
       end
 
       def glimmer_option_env_vars(glimmer_options)
-        glimmer_options.map do |k, v|
-          "#{GLIMMER_OPTION_ENV_VAR_MAPPING[k]}=#{v}"
-        end.join(' ')
+        glimmer_options.reduce({}) do |hash, pair|
+          hash.merge(GLIMMER_OPTION_ENV_VAR_MAPPING[pair.first] => pair.last)
+        end
+      end
+
+      def load_env_vars(env_vars)
+        env_vars.each do |key, value|
+          ENV[key] = value
+        end
       end
 
       def launch(application, jruby_options: [], env_vars: {}, glimmer_options: {})
         jruby_options_string = jruby_options.join(' ') + ' ' if jruby_options.any?
+        env_vars = env_vars.merge(glimmer_option_env_vars(glimmer_options))
         env_vars_string = env_vars.map {|k,v| "#{k}=#{v}"}.join(' ')
-        env_vars_string = [env_vars_string, glimmer_option_env_vars(glimmer_options)].join(' ')
         the_glimmer_lib = glimmer_lib
         devmode_require = nil
         if the_glimmer_lib == GLIMMER_LIB_LOCAL
           devmode_require = '-r puts_debuggerer '
         end
-        puts "#{env_vars_string} jruby #{jruby_options_string}#{jruby_os_specific_options} #{devmode_require}-r #{the_glimmer_lib} -S #{application}" if jruby_options_string.to_s.include?('--debug')
-        system "#{env_vars_string} jruby #{jruby_options_string}#{jruby_os_specific_options} #{devmode_require}-r #{the_glimmer_lib} -S #{application}"
+        raw_rake_tasks = Rake.application.tasks.map(&:to_s).map {|t| t.sub('glimmer:', '')}
+        if raw_rake_tasks.include?(application)
+          load_env_vars(glimmer_option_env_vars(glimmer_options))
+          rake_task = "glimmer:#{application}"
+          puts "Running Glimmer rake task: #{rake_task}" if jruby_options_string.to_s.include?('--debug')
+          Rake::Task[rake_task].invoke
+        else
+          @@mutex.synchronize do
+            puts "Launching Glimmer Application: #{application}" unless application.to_s.match(/(irb)|(gladiator)/)
+          end
+          command = "#{env_vars_string} jruby #{jruby_options_string}#{jruby_os_specific_options} #{devmode_require}-r #{the_glimmer_lib} -S #{application}"
+          puts command if jruby_options_string.to_s.include?('--debug')
+          system command
+        end
       end
     end
 
@@ -93,7 +113,6 @@ module Glimmer
 
     def launch_application
       threads = @application_paths.map do |application_path|
-        puts "Launching Glimmer Application: #{application_path}" unless application_path.to_s.match(/(irb)|(gladiator)/)
         Thread.new do
           self.class.launch(
             application_path,
