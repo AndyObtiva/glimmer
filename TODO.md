@@ -4,13 +4,12 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Scaffold a Glimmer app: provide a standard structure for building a Glimmer app (models, views, and assets [images, videos, sounds])
-- Scaffold a Glimmer custom widget gem
-- Make girb "include Glimmer" into the main object automatically
-- Support deconfiguring DSLs
+- Scaffold a Glimmer custom shell
+- Scaffold a Glimmer custom widget
+- Scaffold a Glimmer custom widget/shell gem
+- Support disabling DSLs
 - Extract Video widget into its own glimmer-video gem
 - Extract Gladiator into its own glimmer-gladiator gem
-- Support web UIs via Opal Ruby (https://github.com/opal/opal)
 
 ## Gladiator (Glimmer Editor)
 
@@ -23,6 +22,8 @@ Here is a list of tasks to do (please delete once done):
 
 ## Soon
 
+- Support web UIs via Opal Ruby (https://github.com/opal/opal)
+- Support porting an existing Glimmer SWT app into a web app with very little effort
 - DSL syntax for MessageBox
 message_box {
   text 'Red Label'
