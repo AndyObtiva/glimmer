@@ -6,14 +6,29 @@ module Glimmer
   class Launcher
     OPERATING_SYSTEMS_SUPPORTED = ["mac", "windows", "linux"]
     TEXT_USAGE = <<-MULTILINE
-  Usage: glimmer [--log-level=VALUE] [[ENV_VAR=VALUE]...] [[-jruby-option]...] application.rb [[application2.rb]...]
+  Usage: glimmer [--debug] [--log-level=VALUE] [[ENV_VAR=VALUE]...] [[-jruby-option]...] (application.rb or task name) [[application2.rb]...]
 
-  Runs Glimmer applications using JRuby, automatically preloading
-  the glimmer ruby gem and SWT jar dependency.
+  Runs Glimmer applications/tasks.
 
-  Optionally, JRuby options may be passed in.
+  Either a single task or one or more applications may be specified at the end.
+
+  When a task is specified, it runs via rake.
+
+  Available tasks are below (you may also lookup by including `glimmer/rake_task` in Rakefile and running rake -T):
+  - "package"        : Package app for distribution (DMG/PKG/APP file on the Mac)
+  - "package:config" : Generate JAR config file (allows configuring what goes into package)
+
+  When applications are specified, they are run using JRuby, 
+  automatically preloading the glimmer Ruby gem and SWT jar dependency.
+
+  Optionally, extra Glimmer options, JRuby options and environment variables may be passed in.
+
+  Concerning Glimmer options:
+  - "--debug"           : Displays extra debugging information and passes "--debug" to JRuby
+  - "--log-level=VALUE" : Sets Glimmer's Ruby logger level ("ERROR" / "WARN" / "INFO" / "DEBUG"; default is "WARN")
 
   Example: glimmer samples/hello_world.rb
+
   This runs the Glimmer application samples/hello_world.rb
     MULTILINE
     GLIMMER_LIB_LOCAL = File.expand_path(File.join(__FILE__, '..', '..', 'glimmer.rb'))

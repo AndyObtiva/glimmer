@@ -2,7 +2,7 @@
 
 ## 0.7.0
 
-- Expose rake glimmer:package rake task via glimmer command
+- Expose `rake glimmer:package` rake task via `glimmer package` command
 
 ## 0.6.0
 
