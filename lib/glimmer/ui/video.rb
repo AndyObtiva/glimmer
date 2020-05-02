@@ -1,5 +1,4 @@
 require 'glimmer/ui/custom_widget'
-require 'glimmer/swt/color_proxy'
 
 module Glimmer
   module UI
@@ -269,9 +268,10 @@ module Glimmer
 
       def browser_body_background
         color = background
-        if color.is_a?(Symbol) || color.is_a?(String)
-          color = SWT::ColorProxy.new(color).swt_color
-        elsif color.is_a?(SWT::ColorProxy)
+        if color.is_a?(Symbol) || color.is_a?(String)        
+          color = color(color)
+        end
+        if color.respond_to?(:swt_color)
           color = color.swt_color
         end
         "rgba(#{color.getRed}, #{color.getGreen}, #{color.getBlue}, #{color.getAlpha})"

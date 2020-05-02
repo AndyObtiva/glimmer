@@ -1666,6 +1666,7 @@ and switches DSLs accordingly. Once done processing a top-level keyword, it swit
 For example, the SWT DSL has the following top-level keywords:
 - `shell`
 - `display`
+- `color`
 - `observe`
 - `async_exec`
 - `sync_exec`
