@@ -4,6 +4,7 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
+- Load gems via bundler in glimmer app/gem
 - Scaffold a Glimmer custom widget gem
 - Extract Video widget into its own custom widget glimmer-video gem
 - Scaffold a Glimmer custom shell gem
@@ -17,6 +18,7 @@ Here is a list of tasks to do (please delete once done):
 - Fix issue with line numbers not scrolling perfectly along with open file (off by a few pixels)
 - Fix issue with line numbers sometimes getting clipped when openig a new file until resizing window
 - Fix issue with not autosaving right away when making changes with Find/Replace (until focusing in and out of text editor area)
+- Fix issue with crashing upon permission denied for opening a file
 - Implement Undo/Redo (it partially works right now from text widget built-in undo/redo)
 
 ## Soon

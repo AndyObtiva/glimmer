@@ -211,19 +211,19 @@ Usage: glimmer [--debug] [--log-level=VALUE] [[ENV_VAR=VALUE]...] [[-jruby-optio
 
 Runs Glimmer applications/tasks.
 
-Either a single task or one or more applications may be specified at the end.
+Either a single task or one or more applications may be specified.
 
 When a task is specified, it runs via rake. Some tasks take arguments in square brackets.
 
 Available tasks are below (you may also lookup by adding `require 'glimmer/rake_task'` in Rakefile and running rake -T):
-glimmer package                                     # Package app for distribution (generating config, jar, and native files)
-glimmer package:config                              # Generate JAR config file
-glimmer package:jar                                 # Generate JAR file
-glimmer package:native                              # Generate Native files (DMG/PKG/APP on the Mac)
-glimmer scaffold[app_name]                          # Same as scaffold:app
-glimmer scaffold:app[app_name]                      # Scaffold a Glimmer application directory structure to begin building a new app
-glimmer scaffold:custom_shell[custom_shell_name]    # Scaffold a Glimmer::UI::CustomShell subclass under app/views (represents a full window view)
-glimmer scaffold:custom_widget[custom_widget_name]  # Scaffold a Glimmer::UI::CustomWidget subclass under app/views (represents a part of a view)
+glimmer package                                                   # Package app for distribution (generating config, jar, and native files)
+glimmer package:config                                            # Generate JAR config file
+glimmer package:jar                                               # Generate JAR file
+glimmer package:native                                            # Generate Native files (DMG/PKG/APP on the Mac)
+glimmer scaffold[app_name]                                        # Scaffold a Glimmer application directory structure to begin building a new app
+glimmer scaffold:custom_shell[custom_shell_name,namespace]        # Scaffold a Glimmer::UI::CustomShell subclass (represents a full window view) under app/views (namespace is optional)
+glimmer scaffold:custom_widget[custom_widget_name,namespace]      # Scaffold a Glimmer::UI::CustomWidget subclass (represents a part of a view) under app/views (namespace is optional)
+glimmer scaffold:custom_widget_gem[custom_widget_name,namespace]  # Scaffold a Glimmer::UI::CustomWidget subclass (represents a part of a view) under its own Ruby gem project (namespace is required)
 
 When applications are specified, they are run using JRuby, 
 automatically preloading the glimmer Ruby gem and SWT jar dependency.
@@ -323,6 +323,20 @@ To scaffold a Glimmer custom widget (part of a view) for an existing Glimmer app
 ```
 glimmer scaffold:custom_widget[custom_widget_name]
 ```
+
+#### Custom Widget Gem
+
+To scaffold a Glimmer custom widget gem (part of a view externalized into a gem) for an existing Glimmer app, run the following command:
+
+```
+glimmer scaffold:custom_widget_gem[custom_widget_name, namespace]
+```
+
+It is important to specify a namespace to avoid having your gem clash with existing gems.
+
+The Ruby gem name will follow the convention "glimmer-cw-customwidgetname-namespace" (the 'cw' is for Custom Widget)
+
+Only official Glimmer gems created by the Glimmer project committers will have no namespace (e.g. "glimmer-cw-video" Ruby gem)
 
 ## Girb (Glimmer irb) Command
 
