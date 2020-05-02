@@ -73,8 +73,8 @@ class Scaffold
       mkdir 'bin'
       write "bin/#{file_name(app_name)}", app_bin_file(app_name)
       FileUtils.chmod 0755, "bin/#{app_name.underscore}"
-      system "bash -c '#{RVM_FUNCTION}\n cd .\n bundle'"
-      Rake::Task['glimmer:package'].invoke
+      system "bash -c '#{RVM_FUNCTION}\n cd .\n bundle\n glimmer package\n'"
+      system "open packages/bundles/#{human_name(app_name).gsub(' ', '\ ')}.app"
     end
 
     private
