@@ -81,7 +81,7 @@ class Scaffold
       
       git_source(:github) {|repo_name| "https://github.com/\#{repo_name}" }
       
-      gem 'glimmer', '#{VERSION}'
+      gem 'glimmer', '~> #{VERSION}'
       
       group :test do
         gem 'rspec'
@@ -95,7 +95,7 @@ class Scaffold
       
       git_source(:github) {|repo_name| "https://github.com/\#{repo_name}" }
       
-      gem 'glimmer', '#{VERSION}'
+      gem 'glimmer', '~> #{VERSION}'
       
       group :development do
         gem "rspec", "~> 3.5.0"
@@ -158,6 +158,7 @@ class Scaffold
       FileUtils.chmod 0755, "bin/#{app_name.underscore}"
       system "bash -c '#{RVM_FUNCTION}\n cd .\n bundle\n glimmer package\n'"
       system "open packages/bundles/#{human_name(app_name).gsub(' ', '\ ')}.app"
+      # TODO generate rspec test suite
     end
 
     def custom_shell(custom_shell_name, namespace)
@@ -174,6 +175,34 @@ class Scaffold
       parent_dir = "#{root_dir}/views/#{file_name(namespace)}"
       mkdir_p parent_dir unless File.exists?(parent_dir)
       write "#{parent_dir}/#{file_name(custom_widget_name)}.rb", custom_widget_file(custom_widget_name, namespace)
+    end
+
+    def custom_shell_gem(custom_shell_name, namespace)
+      gem_name = "glimmer-cs-#{compact_name(custom_shell_name)}"
+      gem_summary = "Glimmer Custom Widget - #{human_name(custom_shell_name)}"
+      if namespace
+        gem_name += "-#{compact_name(namespace)}"
+        gem_summary += " (#{human_name(namespace)})"
+      else
+        namespace = 'glimmer'
+      end
+      system "jeweler --rspec --summary '#{gem_summary}' --description '#{gem_summary}' #{gem_name}" 
+      cd gem_name
+      write '.gitignore', GITIGNORE
+      write '.ruby-version', RUBY_VERSION        
+      write '.ruby-gemset', gem_name
+      write 'VERSION', '1.0.0'
+      write 'Gemfile', GEMFILE_GEM      
+      write 'Rakefile', gem_rakefile
+      append "lib/#{gem_name}.rb", gem_main_file(custom_shell_name, namespace)
+      mkdir 'lib/views'
+      custom_shell(custom_shell_name, namespace)
+      system "bash -c '#{RVM_FUNCTION}\n cd .\n bundle\n'"
+      puts "Finished creating #{gem_name} Ruby gem."
+      puts 'Edit Rakefile to configure gem details.'
+      puts 'Run `rake` to execute specs.'
+      puts 'Run `rake build` to build gem.'
+      puts 'Run `rake release` to release into rubygems.org once ready.'
     end
 
     def custom_widget_gem(custom_widget_name, namespace)
@@ -193,6 +222,7 @@ class Scaffold
       write 'VERSION', '1.0.0'
       write 'Gemfile', GEMFILE_GEM      
       write 'Rakefile', gem_rakefile
+      write 'spec/spec_helper.rb', spec_helper_file
       append "lib/#{gem_name}.rb", gem_main_file(custom_widget_name, namespace)
       mkdir 'lib/views'
       custom_widget(custom_widget_name, namespace)
@@ -286,8 +316,25 @@ class Scaffold
     def gem_rakefile
       rakefile_content = File.read('Rakefile')
       lines = rakefile_content.split("\n")
+      require_rake_line_index = lines.index(lines.detect {|l| l.include?("require 'rake'") })
+      lines.insert(require_rake_line_index, "require 'glimmer/launcher'")
       gem_files_line_index = lines.index(lines.detect {|l| l.include?('# dependencies defined in Gemfile') })
       lines.insert(gem_files_line_index, "  gem.files = Dir['lib/**/*.rb']")
+      spec_pattern_line_index = lines.index(lines.detect {|l| l.include?('spec.pattern =') })
+      lines.insert(spec_pattern_line_index+1, "  spec.ruby_opts = [Glimmer::Launcher.jruby_swt_options]")
+      lines << "\nrequire 'glimmer/rake_task'\n"
+      lines.join("\n")
+    end
+
+    def spec_helper_file
+      content = File.read('spec/spec_helper.rb')
+      lines = content.split("\n")
+      require_line_index = lines.index(lines.detect {|l| l.include?('glimmer-cw-video') })
+      lines[require_line_index...require_line_index] = [
+        "require 'bundler/setup'",
+        'Bundler.require(:default, :development)',
+      ]
+      
       lines << "\nrequire 'glimmer/rake_task'\n"
       lines.join("\n")
     end
@@ -296,45 +343,47 @@ class Scaffold
       namespace_type = class_name(namespace) == class_name(current_dir_name) ? 'class' : 'module'
 
       <<~MULTI_LINE_STRING
-        #{namespace_type} #{class_name(custom_shell_name)}
-          include Glimmer::UI::CustomShell
-      
-          ## Add options like the following to configure CustomShell by outside consumers
-          #
-          # options :title, :background_color
-          # option :width, 320
-          # option :height, 240
-      
-          ## Uncomment before_body block to pre-initialize variables to use in body
-          #
-          #
-          # before_body {
-          # 
-          # }
-      
-          ## Uncomment after_body block to setup observers for widgets in body
-          #
-          # after_body {
-          # 
-          # }
-      
-          ## Add widget content inside custom shell body
-          ## Top-most widget must be a shell or another custom shell
-          #
-          body {
-            shell {
-              # Replace example content below with custom shell content
-              minimum_size 320, 240
-              text "#{human_name(namespace)} - #{human_name(custom_shell_name)}"
-              grid_layout
-              label {
-                text "Hello, World!"
-                font height: 40
-                layout_data :center, :center, true, true
+        #{namespace_type} #{class_name(namespace)}
+          class #{class_name(custom_shell_name)}
+            include Glimmer::UI::CustomShell
+        
+            ## Add options like the following to configure CustomShell by outside consumers
+            #
+            # options :title, :background_color
+            # option :width, 320
+            # option :height, 240
+        
+            ## Uncomment before_body block to pre-initialize variables to use in body
+            #
+            #
+            # before_body {
+            # 
+            # }
+        
+            ## Uncomment after_body block to setup observers for widgets in body
+            #
+            # after_body {
+            # 
+            # }
+        
+            ## Add widget content inside custom shell body
+            ## Top-most widget must be a shell or another custom shell
+            #
+            body {
+              shell {
+                # Replace example content below with custom shell content
+                minimum_size 320, 240
+                text "#{human_name(namespace)} - #{human_name(custom_shell_name)}"
+                grid_layout
+                label {
+                  text "Hello, World!"
+                  font height: 40
+                  layout_data :center, :center, true, true
+                }
               }
             }
-          }
-      
+        
+          end
         end
       MULTI_LINE_STRING
     end

@@ -76,6 +76,11 @@ namespace :glimmer do
       Scaffold.custom_widget(args[:custom_widget_name], args[:namespace])
     end
     
+    desc 'Scaffold a Glimmer::UI::CustomShell subclass (represents a full window view) under its own Ruby gem project (namespace is required)'
+    task :custom_shell_gem, [:custom_widget_name, :namespace] do |t, args|
+      Scaffold.custom_shell_gem(args[:custom_widget_name], args[:namespace])
+    end
+    
     desc 'Scaffold a Glimmer::UI::CustomWidget subclass (represents a part of a view) under its own Ruby gem project (namespace is required)'
     task :custom_widget_gem, [:custom_widget_name, :namespace] do |t, args|
       Scaffold.custom_widget_gem(args[:custom_widget_name], args[:namespace])

@@ -44,7 +44,7 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   # profile_data = JRuby::Profiler.profile do
   # end
 
-  spec.ruby_opts = ["#{Glimmer::Launcher.jruby_swt_options}"]
+  spec.ruby_opts = [Glimmer::Launcher.jruby_swt_options]
 end
 
 task :default => :spec

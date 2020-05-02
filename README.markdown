@@ -166,6 +166,10 @@ Run this command to install directly:
 jgem install glimmer -v 0.7.0
 ```
 
+`jgem` is JRuby's version of `gem` command. 
+RVM allows running `gem` as an alias.
+Otherwise, you may also run `jruby -S gem install ...`
+
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
@@ -274,6 +278,8 @@ letting Glimmer scaffolding take care of initial app file structure concerns, su
 
 #### App
 
+Before you start, make sure you are in a JRuby environment with Glimmer gem installed as per "Direct Install" pre-requisites. 
+
 To scaffold a Glimmer app from scratch, run the following command:
 
 ```
@@ -324,6 +330,24 @@ To scaffold a Glimmer custom widget (part of a view) for an existing Glimmer app
 glimmer scaffold:custom_widget[custom_widget_name]
 ```
 
+#### Custom Shell Gem
+
+Custom shell gems are self-contained Glimmer apps as well as reusable custom shells.
+
+To scaffold a Glimmer custom shell gem (full window view externalized into a gem) for an existing Glimmer app, run the following command:
+
+```
+glimmer scaffold:custom_shell_gem[custom_shell_name, namespace]
+```
+
+It is important to specify a namespace to avoid having your gem clash with existing gems.
+
+The Ruby gem name will follow the convention "glimmer-cs-customwidgetname-namespace" (the 'cs' is for Custom Shell)
+
+Only official Glimmer gems created by the Glimmer project committers will have no namespace (e.g. "glimmer-cs-gladiator" Ruby gem)
+
+Example: https://github.com/AndyObtiva/glimmer-cs-gladiator
+
 #### Custom Widget Gem
 
 To scaffold a Glimmer custom widget gem (part of a view externalized into a gem) for an existing Glimmer app, run the following command:
@@ -337,6 +361,8 @@ It is important to specify a namespace to avoid having your gem clash with exist
 The Ruby gem name will follow the convention "glimmer-cw-customwidgetname-namespace" (the 'cw' is for Custom Widget)
 
 Only official Glimmer gems created by the Glimmer project committers will have no namespace (e.g. "glimmer-cw-video" Ruby gem)
+
+Example: https://github.com/AndyObtiva/glimmer-cw-video
 
 ## Girb (Glimmer irb) Command
 
@@ -1790,84 +1816,9 @@ puts @css
 
 ![Video Widget](images/glimmer-video-widget.png)
 
-Glimmer comes with a video widget not in SWT. It comes with very basic video functionality at the moment, such as autoplay by default, displaying controls, looping, and setting background.
+Glimmer supports a [video custom widget](https://github.com/AndyObtiva/glimmer-cw-video) not in SWT. 
 
-Options (passed in an options hash as arguments to video widget):
-- `autoplay` (true [default] or false): plays video automatically as soon as loaded
-- `controls` (true [default] or false): displays controls
-- `looped` (true or false [default]): plays video in looped mode
-- `background` (Glimmer color [default: white]): sets background color just like with any other widget
-- `fit_to_width` (true [default] or false): fits video width to widget allotted width regardless of video's original size. Maintains video aspect ratio.
-- `fit_to_height` (true [default] or false): fits video height to widget allotted height regardless of video's original size. Maintains video aspect ratio.
-- `offset_x` (integer [default: 0]): offset from left border. Could be a negative number if you want to show only an area of the video. Useful when fit_to_width is false to pick an area of the video to display.
-- `offset_y` (integer [default: 0]): offset from top border. Could be a negative number if you want to show only an area of the video. Useful when fit_to_height is false to pick an area of the video to display.
-
-Methods:
-- `#play`: plays video
-- `#pause`: pauses video
-- `#reload`: reloads video restarting from beginning
-- `#position`: position in seconds (and fractions)
-- `#position=`: seeks a new position in video
-- `#duration`: length of video, maximum video position possible
-- `#loaded?`: returns true when video has been initially loaded or reloaded
-- `#playing?`: returns true when video is actively playing
-- `#paused?`: returns true when video is not playing
-- `#ended?`: returns true when video has reached the end (position == duration)
-
-Events (to observe):
-- `on_loaded`: invoked when video `#loaded?` becomes true
-- `on_ended`: invoked when video `#ended?` becomes true
-- `on_playing`: invoked when video `#playing?` becomes true
-- `on_paused`: invoked when video `#paused?` becomes true
-
-Example ([samples/video/hello_video.rb](samples/video/hello_video.rb)):
-
-```ruby
-# ...
-shell {
-  video(file: video_file)
-}.open
-```
-
-Example ([samples/video/hello_looped_video_with_black_background.rb](samples/video/hello_looped_video_with_black_background.rb)):
-
-```ruby
-# ...
-shell {
-  minimum_size 1024, 640
-  video(file: video_file, looped: true, background: :black)
-}.open
-```
-
-Example ([samples/video/hello_video_observers.rb](samples/video/hello_video_observers.rb)):
-
-```ruby
-# ...
-def display_video_status(video, status)
-  message_box = MessageBox.new(video.swt_widget.getShell)
-  message_box.setText(status)
-  message = "Video Position: #{video.position} seconds\n"
-  message += "Video Duration: #{video.duration} seconds"
-  message_box.setMessage(message)
-  message_box.open
-end
-
-@shell = shell {
-  minimum_size 800, 500
-  @video = video(file: video_file, background: :black) {
-    on_playing {
-      display_video_status(@video, 'Playing')
-    }
-    on_paused {
-      display_video_status(@video, 'Paused')
-    }
-    on_ended {
-      display_video_status(@video, 'Ended')
-    }
-  }
-}
-@shell.open
-```
+You may obtain via `glimmer-cw-video` gem.
 
 #### Browser Widget
 
