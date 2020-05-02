@@ -59,23 +59,26 @@ namespace :glimmer do
   desc 'Package app for distribution (generating config, jar, and native files)'
   task :package => 'package:native'
 
-  namespace :scaffold do
-    desc 'Scaffold a Glimmer application directory structure to begin building a new app'
-    task :app, [:app_name] do |t, args|
-      Scaffold.app(args[:app_name])
-    end
-    
-    desc 'Scaffold a Glimmer::UI::CustomShell subclass under app/views (represents a full window view)'
-    task :custom_shell, [:custom_shell_name] do |t, args|
-      Scaffold.custom_shell(args[:custom_shell_name])
-    end
-    
-    desc 'Scaffold a Glimmer::UI::CustomWidget subclass under app/views (represents a part of a view)'
-    task :custom_widget, [:custom_widget_name] do |t, args|
-      Scaffold.custom_widget(args[:custom_widget_name])
-    end
+
+  desc 'Scaffold a Glimmer application directory structure to begin building a new app'
+  task :scaffold, [:app_name] do |t, args|
+    Scaffold.app(args[:app_name])
   end
 
-  desc 'Same as scaffold:app'
-  task :scaffold, [:app_name] => 'scaffold:app'
+  namespace :scaffold do
+    desc 'Scaffold a Glimmer::UI::CustomShell subclass (represents a full window view) under app/views (namespace is optional)'
+    task :custom_shell, [:custom_shell_name, :namespace] do |t, args|
+      Scaffold.custom_shell(args[:custom_shell_name], args[:namespace])
+    end
+    
+    desc 'Scaffold a Glimmer::UI::CustomWidget subclass (represents a part of a view) under app/views (namespace is optional)'
+    task :custom_widget, [:custom_widget_name, :namespace] do |t, args|
+      Scaffold.custom_widget(args[:custom_widget_name], args[:namespace])
+    end
+    
+    desc 'Scaffold a Glimmer::UI::CustomWidget subclass (represents a part of a view) under its own Ruby gem project (namespace is optional)'
+    task :custom_widget_gem, [:custom_widget_name, :namespace] do |t, args|
+      Scaffold.custom_widget_gem(args[:custom_widget_name], args[:namespace])
+    end
+  end
 end

@@ -19,14 +19,14 @@ module Glimmer
       Available tasks are below (you may also lookup by adding `require 'glimmer/rake_task'` in Rakefile and running rake -T):
     MULTI_LINE_STRING
 
-    TEXT_USAGE_POSTFIX = <<~MULTI_LINE_STRING
+    TEXT_USAGE_SUFFIX = <<~MULTI_LINE_STRING
     
       When applications are specified, they are run using JRuby, 
       automatically preloading the glimmer Ruby gem and SWT jar dependency.
     
       Optionally, extra Glimmer options, JRuby options and environment variables may be passed in.
     
-      Concerning Glimmer options:
+      Glimmer options:
       - "--debug"           : Displays extra debugging information and passes "--debug" to JRuby
       - "--log-level=VALUE" : Sets Glimmer's Ruby logger level ("ERROR" / "WARN" / "INFO" / "DEBUG"; default is "WARN")
     
@@ -152,7 +152,7 @@ module Glimmer
       rake_tasks = `rake -T`.gsub('rake glimmer:', 'glimmer ').split("\n").select {|l| l.start_with?('glimmer ')}
       puts TEXT_USAGE_PREFIX
       puts rake_tasks.join("\n")
-      puts TEXT_USAGE_POSTFIX
+      puts TEXT_USAGE_SUFFIX
     end
 
     def extract_application_paths(options)

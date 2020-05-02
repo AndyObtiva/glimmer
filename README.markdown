@@ -277,12 +277,6 @@ letting Glimmer scaffolding take care of initial app file structure concerns, su
 To scaffold a Glimmer app from scratch, run the following command:
 
 ```
-glimmer scaffold:app[AppName]
-```
-
-or the short form:
-
-```
 glimmer scaffold[AppName]
 ```
 

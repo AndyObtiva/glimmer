@@ -9,6 +9,8 @@ class Scaffold
     VERSION = File.read(File.expand_path('../../../VERSION', __FILE__)).strip
     RUBY_VERSION = File.read(File.expand_path('../../../RUBY_VERSION', __FILE__)).strip
 
+    # TODO externalize all constants into scaffold/files
+
     GITIGNORE = <<~MULTI_LINE_STRING
       *.gem
       *.rbc
@@ -72,7 +74,7 @@ class Scaffold
       packages      
     MULTI_LINE_STRING
 
-    GEMFILE = <<~MULTI_LINE_STRING
+    GEMFILE_APP = <<~MULTI_LINE_STRING
       # frozen_string_literal: true
       
       source "https://rubygems.org"
@@ -83,6 +85,22 @@ class Scaffold
       
       group :test do
         gem 'rspec'
+      end
+    MULTI_LINE_STRING
+
+    GEMFILE_GEM = <<~MULTI_LINE_STRING
+      # frozen_string_literal: true
+      
+      source "https://rubygems.org"
+      
+      git_source(:github) {|repo_name| "https://github.com/\#{repo_name}" }
+      
+      gem 'glimmer', '#{VERSION}'
+      
+      group :development do
+        gem "rspec", "~> 3.5.0"
+        gem "jeweler", "2.3.9"
+        gem "simplecov", ">= 0"
       end
     MULTI_LINE_STRING
 
@@ -122,18 +140,18 @@ class Scaffold
       write '.ruby-gemset', app_name
       write 'VERSION', '1.0.0'
       write 'LICENSE.txt', "Copyright (c) #{Time.now.year} #{app_name}"
-      write 'Gemfile', GEMFILE
+      write 'Gemfile', GEMFILE_APP
       write 'Rakefile', RAKEFILE
       mkdir 'app'
       write "app/#{file_name(app_name)}.rb", app_main_file(app_name)
       mkdir 'app/models'
       mkdir 'app/views'
-      custom_shell('AppView')
+      custom_shell('AppView', current_dir_name)
       if OS.mac?
         mkdir_p 'package/macosx'
         icon_file = "package/macosx/#{human_name(app_name)}.icns"
         cp File.expand_path('../../../icons/scaffold_app.icns', __FILE__), icon_file
-        puts "Created #{app_dir}/#{icon_file}"
+        puts "Created #{current_dir_name}/#{icon_file}"
       end
       mkdir 'bin'
       write "bin/#{file_name(app_name)}", app_bin_file(app_name)
@@ -142,16 +160,46 @@ class Scaffold
       system "open packages/bundles/#{human_name(app_name).gsub(' ', '\ ')}.app"
     end
 
-    def custom_shell(custom_shell_name)
-      parent_dir = "app/views/#{file_name(app_dir)}"
-      mkdir parent_dir unless File.exists?(parent_dir)
-      write "#{parent_dir}/#{file_name(custom_shell_name)}.rb", custom_shell_file(custom_shell_name)
+    def custom_shell(custom_shell_name, namespace = nil)
+      root_dir = File.exists?('app') ? 'app' : 'lib'
+      parent_dir = "#{root_dir}/views"
+      parent_dir += "/#{file_name(namespace)}" if namespace
+      mkdir_p parent_dir unless File.exists?(parent_dir)
+      write "#{parent_dir}/#{file_name(custom_shell_name)}.rb", custom_shell_file(custom_shell_name, namespace)
     end
 
-    def custom_widget(custom_widget_name)
-      parent_dir = "app/views/#{file_name(app_dir)}"
-      mkdir parent_dir unless File.exists?(parent_dir)
-      write "#{parent_dir}/#{file_name(custom_widget_name)}.rb", custom_widget_file(custom_widget_name)
+    def custom_widget(custom_widget_name, namespace = nil)
+      root_dir = File.exists?('app') ? 'app' : 'lib'
+      parent_dir = "#{root_dir}/views"
+      parent_dir += "/#{file_name(namespace)}" if namespace
+      mkdir_p parent_dir unless File.exists?(parent_dir)
+      write "#{parent_dir}/#{file_name(custom_widget_name)}.rb", custom_widget_file(custom_widget_name, namespace)
+    end
+
+    def custom_widget_gem(custom_widget_name, namespace = nil)
+      gem_name = "glimmer-cw-#{compact_name(custom_widget_name)}"
+      gem_summary = "Glimmer Custom Widget - #{human_name(custom_widget_name)}"
+      if namespace
+        gem_name += "-#{compact_name(namespace)}"
+        gem_summary += " (#{human_name(namespace)})"
+      end
+      system "jeweler --rspec --summary '#{gem_summary}' --description '#{gem_summary}' #{gem_name}" 
+      cd gem_name
+      write '.gitignore', GITIGNORE
+      write '.ruby-version', RUBY_VERSION        
+      write '.ruby-gemset', gem_name
+      write 'VERSION', '1.0.0'
+      write 'Gemfile', GEMFILE_GEM
+      append 'Rakefile', "\nrequire 'glimmer/rake_task'\n"
+      append "lib/#{gem_name}.rb", gem_main_file(custom_widget_name, namespace)
+      mkdir 'lib/views'
+      custom_widget(custom_widget_name, namespace)
+      system "bash -c '#{RVM_FUNCTION}\n cd .\n bundle\n'"
+      puts "Finished creating #{gem_name} Ruby gem."
+      puts 'Edit Rakefile to configure gem details.'
+      puts 'Run `rake` to execute specs.'
+      puts 'Run `rake build` to build gem.'
+      puts 'Run `rake release` to release into rubygems.org once ready.'
     end
 
     private
@@ -159,10 +207,16 @@ class Scaffold
     def write(file, content)
       File.write file, content
       file_path = File.expand_path(file)
-      puts "Created #{app_dir}/#{file}"
+      puts "Created #{current_dir_name}/#{file}"
     end
 
-    def app_dir
+    def append(file, content)
+      File.open(file, 'a') do |f|
+        f.write(content)
+      end
+    end
+
+    def current_dir_name
       File.basename(File.expand_path('.'))
     end
 
@@ -176,6 +230,10 @@ class Scaffold
 
     def human_name(app_name)
       app_name.underscore.titlecase
+    end
+
+    def compact_name(gem_name)
+      gem_name.camelcase.downcase
     end
 
     def app_main_file(app_name)
@@ -200,6 +258,19 @@ class Scaffold
       MULTI_LINE_STRING
     end
 
+    def gem_main_file(custom_widget_name, namespace = nil)
+      custom_widget_file_path = "views"
+      custom_widget_file_path += "/#{file_name(namespace)}" if namespace
+      custom_widget_file_path += "/#{file_name(custom_widget_name)}"
+
+      <<~MULTI_LINE_STRING
+        $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
+        
+        require 'glimmer'
+        require '#{custom_widget_file_path}'
+      MULTI_LINE_STRING
+    end
+
     def app_bin_file(app_name)
       <<~MULTI_LINE_STRING
         #!/usr/bin/env ruby
@@ -208,93 +279,103 @@ class Scaffold
       MULTI_LINE_STRING
     end
 
-    def custom_shell_file(custom_shell_name)
-      <<~MULTI_LINE_STRING
-        class #{class_name(app_dir)}
-          class #{class_name(custom_shell_name)}
-            include Glimmer::UI::CustomShell
-        
-            ## Add options like the following to configure CustomShell by outside consumers
-            #
-            # options :title, :background_color
-            # option :width, 320
-            # option :height, 240
-        
-            ## Uncomment before_body block to pre-initialize variables to use in body
-            #
-            #
-            # before_body {
-            # 
-            # }
-        
-            ## Uncomment after_body block to setup observers for widgets in body
-            #
-            # after_body {
-            # 
-            # }
-        
-            ## Add widget content inside custom shell body
-            ## Top-most widget must be a shell or another custom shell
-            #
-            body {
-              shell {
-                # Replace example content below with custom shell content
-                minimum_size 320, 240
-                text "#{human_name(app_dir)}"
-                grid_layout
-                label {
-                  text "Hello, World!"
-                  font height: 40
-                  layout_data :center, :center, true, true
-                }
+    def custom_shell_file(custom_shell_name, namespace)
+      custom_shell_class = <<~MULTI_LINE_STRING
+        class #{class_name(custom_shell_name)}
+          include Glimmer::UI::CustomShell
+      
+          ## Add options like the following to configure CustomShell by outside consumers
+          #
+          # options :title, :background_color
+          # option :width, 320
+          # option :height, 240
+      
+          ## Uncomment before_body block to pre-initialize variables to use in body
+          #
+          #
+          # before_body {
+          # 
+          # }
+      
+          ## Uncomment after_body block to setup observers for widgets in body
+          #
+          # after_body {
+          # 
+          # }
+      
+          ## Add widget content inside custom shell body
+          ## Top-most widget must be a shell or another custom shell
+          #
+          body {
+            shell {
+              # Replace example content below with custom shell content
+              minimum_size 320, 240
+              text "#{human_name(namespace)} - #{human_name(custom_shell_name)}"
+              grid_layout
+              label {
+                text "Hello, World!"
+                font height: 40
+                layout_data :center, :center, true, true
               }
             }
-        
-          end
-        end        
+          }
+      
+        end
       MULTI_LINE_STRING
+      if namespace
+        custom_shell_file_content = "class #{class_name(namespace)}\n"
+        custom_shell_file_content += custom_shell_class.split("\n").map {|l| "  #{l}"}.join("\n") + "\n"
+        custom_shell_file_content += "end\n"
+      else
+        custom_shell_class
+      end
     end
 
-    def custom_widget_file(custom_widget_name)
-      <<~MULTI_LINE_STRING
-        class #{class_name(app_dir)}
-          class #{class_name(custom_widget_name)}
-            include Glimmer::UI::CustomWidget
-        
-            ## Add options like the following to configure CustomWidget by outside consumers
-            #
-            # options :custom_text, :background_color
-            # option :foreground_color, :red
-        
-            ## Uncomment before_body block to pre-initialize variables to use in body
-            #
-            #
-            # before_body {
-            # 
-            # }
-        
-            ## Uncomment after_body block to setup observers for widgets in body
-            #
-            # after_body {
-            # 
-            # }
-        
-            ## Add widget content under custom widget body
-            ##
-            ## If you want to add a shell as the top-most widget, 
-            ## consider creating a custom shell instead 
-            ## (Glimmer::UI::CustomShell offers shell convenience methods, like show and hide)
-            #
-            body {
-              # Replace example content below with custom widget content
-              label {
-                background :red
-              }
+    def custom_widget_file(custom_widget_name, namespace)
+      custom_widget_class = <<~MULTI_LINE_STRING
+        class #{class_name(custom_widget_name)}
+          include Glimmer::UI::CustomWidget
+      
+          ## Add options like the following to configure CustomWidget by outside consumers
+          #
+          # options :custom_text, :background_color
+          # option :foreground_color, :red
+      
+          ## Uncomment before_body block to pre-initialize variables to use in body
+          #
+          #
+          # before_body {
+          # 
+          # }
+      
+          ## Uncomment after_body block to setup observers for widgets in body
+          #
+          # after_body {
+          # 
+          # }
+      
+          ## Add widget content under custom widget body
+          ##
+          ## If you want to add a shell as the top-most widget, 
+          ## consider creating a custom shell instead 
+          ## (Glimmer::UI::CustomShell offers shell convenience methods, like show and hide)
+          #
+          body {
+            # Replace example content below with custom widget content
+            label {
+              background :red
             }
-        
-          end
-        end        
+          }
+      
+        end
       MULTI_LINE_STRING
+      if namespace
+        custom_widget_file_content = "class #{class_name(namespace)}\n"
+        custom_widget_file_content += custom_widget_class.split("\n").map {|l| "  #{l}"}.join("\n") + "\n"
+        custom_widget_file_content += "end\n"
+      else
+        custom_widget_class
+      end
     end
   end
 end
