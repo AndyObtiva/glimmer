@@ -64,10 +64,11 @@ namespace :glimmer do
     task :app, [:app_name] do |t, args|
       Scaffold.app(args[:app_name])
     end
-
-    # TODO scaffold custom widget 
-#     task :custom_widget do
-#     end
+    
+    desc 'Scaffold a Glimmer::UI::CustomShell subclass under app/views'
+    task :custom_shell, [:custom_shell_name] do |t, args|
+      Scaffold.custom_shell(args[:custom_shell_name])
+    end
   end
 
   desc 'Same as scaffold:app'

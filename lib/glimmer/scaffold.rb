@@ -77,6 +77,11 @@ class Scaffold
       system "open packages/bundles/#{human_name(app_name).gsub(' ', '\ ')}.app"
     end
 
+    def custom_shell(custom_shell_name)
+      write "app/views/#{file_name(custom_shell_name)}.rb", custom_shell_file(custom_shell_name)
+      add_require "app/#{file_name(app_dir)}.rb", "views/#{file_name(custom_shell_name)}"
+    end
+
     private
 
     def write(file, content)
@@ -94,15 +99,28 @@ class Scaffold
     end
 
     def file_name(app_name)
-      "#{app_name.underscore}"
+      app_name.underscore
     end
 
     def human_name(app_name)
-      "#{app_name.underscore.titlecase}"
+      app_name.underscore.titlecase
+    end
+
+    def add_require(file, required_source)
+      file_content = File.read(file)
+      lines = file_content.split("\n")
+      class_declaration_line_index = lines.index(lines.detect {|l| l.match(/class\s+#{class_name(app_dir)}/)})
+      lines[class_declaration_line_index...class_declaration_line_index] = [
+        "require '#{required_source}'",
+        ""
+      ]
+      File.write(file, lines.join("\n"))
     end
 
     def app_main_file(app_name)
       <<~MULTI_LINE_STRING
+        $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
+        
         require 'glimmer'
 
         class #{class_name(app_name)}
@@ -111,7 +129,7 @@ class Scaffold
           APP_ROOT = File.expand_path('../..', __FILE__)
         
           VERSION = File.read(File.expand_path('VERSION', APP_ROOT))
-                
+                    
           def start
             @shell = shell {
               minimum_size 320, 240
@@ -136,6 +154,43 @@ class Scaffold
         #!/usr/bin/env ruby
 
         require_relative '../app/#{file_name(app_name)}'
+      MULTI_LINE_STRING
+    end
+
+    def custom_shell_file(custom_shell_name)
+      <<~MULTI_LINE_STRING
+        class #{class_name(app_dir)}
+          class #{class_name(custom_shell_name)}
+            include Glimmer::UI::CustomShell
+        
+            ## Add options like these to configure CustomShell by outside consumers
+            #
+            # options :title, :background_color
+            # option :width, 320
+            # option :height, 240
+        
+            ## Uncomment before_body block to pre-initialize variables to use in body
+            #
+            #
+            # before_body {
+            # 
+            # }
+        
+            ## Uncomment after_body block to setup observers for widgets in body
+            #
+            # after_body {
+            # 
+            # }
+        
+            body {
+              shell {
+                text '#{custom_shell_name}'
+                # fill in with widget content
+              }
+            }
+        
+          end
+        end        
       MULTI_LINE_STRING
     end
   end
