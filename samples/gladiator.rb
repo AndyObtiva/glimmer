@@ -19,7 +19,10 @@ class Gladiator
           @filewatcher = Filewatcher.new(dir.path)
           @thread = Thread.new(@filewatcher) do |fw| 
             fw.watch do |filename, event|
-              dir.refresh if filename != dir.selected_child_path
+              if @last_update.nil? || (Time.now.to_f - @last_update) > 10
+                dir.refresh if filename != dir.selected_child_path
+              end
+              @last_update = Time.now.to_f
             end
           end
         end
