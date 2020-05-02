@@ -4,10 +4,11 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Scaffold a Glimmer custom widget/shell gem
+- Scaffold a Glimmer custom widget gem
+- Extract Video widget into its own custom widget glimmer-video gem
+- Scaffold a Glimmer custom shell gem
+- Extract Gladiator into its own custom shell glimmer-gladiator gem
 - Support disabling DSLs
-- Extract Video widget into its own glimmer-video gem
-- Extract Gladiator into its own glimmer-gladiator gem
 
 ## Gladiator (Glimmer Editor)
 
@@ -93,6 +94,10 @@ bind_content(model, 'addresses').each { |address|
 - Support XML DSL comments <!-- COMMENT -->
 - Support XML Document Declaration Tag: <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 - Support HTML Doctype Declaration <!DOCTYPE html>
+- Extract SWT DSL into its own glimmer-dsl-swt gem
+- Extract XML DSL into its own glimmer-dsl-xml gem
+- Extract CSS DSL into its own glimmer-dsl-css gem
+- Log to SysLog using this gem: https://www.rubydoc.info/gems/syslog-logger/1.6.8
 
 ## Samples
 
