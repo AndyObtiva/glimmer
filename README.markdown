@@ -310,9 +310,11 @@ Created CarMaker/bin/car_maker
 ...
 ```
 
-Eventually, it will launch an advanced "Hello, World!" app window having the title of your application.
+Eventually, it will launch an advanced "Hello, World!" app window having the title of your application and a Mac icon.
 
 ![Glimmer Scaffold App](images/glimmer-scaffolding-app.png)
+
+![Glimmer Scaffold App](images/glimmer-scaffolding-app-icon.png)
 
 #### Custom Shell
 
