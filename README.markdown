@@ -204,7 +204,7 @@ bin/glimmer samples/hello_world.rb
 
 ### Advanced Usage
 
-Below are the full usage instructions that come up when running just `glimmer` without args.
+Below are the full usage instructions that come up when running `glimmer` without args.
 
 ```
 Usage: glimmer [--debug] [--log-level=VALUE] [[ENV_VAR=VALUE]...] [[-jruby-option]...] (application.rb or task[task_args]) [[application2.rb]...]
@@ -239,9 +239,7 @@ Example: glimmer samples/hello_world.rb
 This runs the Glimmer application samples/hello_world.rb
 ```
 
-Accepts JRuby options and multiple Glimmer applications to run simultaneously, each in a JRuby thread.
-
-Example (JRuby option):
+Example (Glimmer/JRuby option specified):
 ```
 glimmer --debug samples/hello_world.rb
 ```
@@ -261,7 +259,7 @@ Glimmer borrows from Rails the idea of Scaffolding, that is generating a structu
 helps you get started just like true building scaffolding helps construction workers, civil engineers, and architects.
 
 Glimmer scaffolding goes way beyond just scaffolding the app files that Rails does. It also packages it and launches it, 
-getting you to a running state of an advanced "Hello, World!" Glimmer application.
+getting you to a running and delivered state of an advanced "Hello, World!" Glimmer application right off the bat.
 
 This should greatly facilitate building a new Glimmer app by helping you be productive and focus on app details while 
 letting Glimmer scaffolding take care of initial app file structure concerns, such as adding:
@@ -274,7 +272,7 @@ letting Glimmer scaffolding take care of initial app file structure concerns, su
 - Icon
 - Bin file for starting application
 
-#### scaffold:app
+#### App
 
 To scaffold a Glimmer app from scratch, run the following command:
 
@@ -316,7 +314,7 @@ Eventually, it will launch an advanced "Hello, World!" app window having the tit
 
 ![Glimmer Scaffold App](images/glimmer-scaffolding-app.png)
 
-#### scaffold:custom_shell
+#### Custom Shell
 
 To scaffold a Glimmer custom shell (full window view) for an existing Glimmer app, run the following command:
 
@@ -324,7 +322,7 @@ To scaffold a Glimmer custom shell (full window view) for an existing Glimmer ap
 glimmer scaffold:custom_shell[custom_shell_name]
 ```
 
-#### scaffold:custom_widget
+#### Custom Widget
 
 To scaffold a Glimmer custom widget (part of a view) for an existing Glimmer app, run the following command:
 
