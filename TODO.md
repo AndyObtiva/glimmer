@@ -4,7 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Scaffold a Glimmer custom widget
 - Scaffold a Glimmer custom widget/shell gem
 - Support disabling DSLs
 - Extract Video widget into its own glimmer-video gem
