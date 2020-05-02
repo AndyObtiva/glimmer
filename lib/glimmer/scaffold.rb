@@ -79,7 +79,15 @@ class Scaffold
     end
 
     def custom_shell(custom_shell_name)
-      write "app/views/#{file_name(custom_shell_name)}.rb", custom_shell_file(custom_shell_name)
+      parent_dir = "app/views/#{file_name(app_dir)}"
+      mkdir parent_dir unless File.exists?(parent_dir)
+      write "#{parent_dir}/#{file_name(custom_shell_name)}.rb", custom_shell_file(custom_shell_name)
+    end
+
+    def custom_widget(custom_widget_name)
+      parent_dir = "app/views/#{file_name(app_dir)}"
+      mkdir parent_dir unless File.exists?(parent_dir)
+      write "#{parent_dir}/#{file_name(custom_widget_name)}.rb", custom_widget_file(custom_widget_name)
     end
 
     private
@@ -111,7 +119,7 @@ class Scaffold
         $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
         
         require 'glimmer'
-        require 'views/app_view'
+        require 'views/#{file_name(app_name)}/app_view'
 
         class #{class_name(app_name)}
           include Glimmer
@@ -142,7 +150,7 @@ class Scaffold
           class #{class_name(custom_shell_name)}
             include Glimmer::UI::CustomShell
         
-            ## Add options like these to configure CustomShell by outside consumers
+            ## Add options like the following to configure CustomShell by outside consumers
             #
             # options :title, :background_color
             # option :width, 320
@@ -161,19 +169,62 @@ class Scaffold
             # 
             # }
         
-            ## Add custom widget content under body shell
+            ## Add widget content inside custom shell body
+            ## Top-most widget must be a shell or another custom shell
             #
             body {
               shell {
-                # add custom widget content
+                # Replace example content below with custom shell content
                 minimum_size 320, 240
                 text "#{human_name(app_dir)}"
                 grid_layout
-                label(:center) {
+                label {
                   text "Hello, World!"
                   font height: 40
                   layout_data :center, :center, true, true
                 }
+              }
+            }
+        
+          end
+        end        
+      MULTI_LINE_STRING
+    end
+
+    def custom_widget_file(custom_widget_name)
+      <<~MULTI_LINE_STRING
+        class #{class_name(app_dir)}
+          class #{class_name(custom_widget_name)}
+            include Glimmer::UI::CustomWidget
+        
+            ## Add options like the following to configure CustomWidget by outside consumers
+            #
+            # options :custom_text, :background_color
+            # option :foreground_color, :red
+        
+            ## Uncomment before_body block to pre-initialize variables to use in body
+            #
+            #
+            # before_body {
+            # 
+            # }
+        
+            ## Uncomment after_body block to setup observers for widgets in body
+            #
+            # after_body {
+            # 
+            # }
+        
+            ## Add widget content under custom widget body
+            ##
+            ## If you want to add a shell as the top-most widget, 
+            ## consider creating a custom shell instead 
+            ## (Glimmer::UI::CustomShell offers shell convenience methods, like show and hide)
+            #
+            body {
+              # Replace example content below with custom widget content
+              label {
+                background :red
               }
             }
         

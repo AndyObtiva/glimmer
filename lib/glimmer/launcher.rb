@@ -12,7 +12,7 @@ module Glimmer
     
       Runs Glimmer applications/tasks.
     
-      Either a single task or one or more applications may be specified at the end.
+      Either a single task or one or more applications may be specified.
     
       When a task is specified, it runs via rake. Some tasks take arguments in square brackets.
     
@@ -149,9 +149,9 @@ module Glimmer
     end
 
     def display_usage
-      rake_tasks = `rake -T`.gsub('rake glimmer:', 'glimmer ')
+      rake_tasks = `rake -T`.gsub('rake glimmer:', 'glimmer ').split("\n").select {|l| l.start_with?('glimmer ')}
       puts TEXT_USAGE_PREFIX
-      puts rake_tasks
+      puts rake_tasks.join("\n")
       puts TEXT_USAGE_POSTFIX
     end
 

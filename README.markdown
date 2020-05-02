@@ -207,30 +207,36 @@ bin/glimmer samples/hello_world.rb
 Below are the full usage instructions that come up when running just `glimmer` without args.
 
 ```
-  Usage: glimmer [--debug] [--log-level=VALUE] [[ENV_VAR=VALUE]...] [[-jruby-option]...] (application.rb or task name) [[application2.rb]...]
+Usage: glimmer [--debug] [--log-level=VALUE] [[ENV_VAR=VALUE]...] [[-jruby-option]...] (application.rb or task[task_args]) [[application2.rb]...]
 
-  Runs Glimmer applications/tasks.
+Runs Glimmer applications/tasks.
 
-  Either a single task or one or more applications may be specified at the end.
+Either a single task or one or more applications may be specified at the end.
 
-  When a task is specified, it runs via rake.
+When a task is specified, it runs via rake. Some tasks take arguments in square brackets.
 
-  Available tasks are below (you may also lookup by including `glimmer/rake_task` in Rakefile and running rake -T):
-  - "package"        : Package app for distribution (DMG/PKG/APP file on the Mac)
-  - "package:config" : Generate JAR config file (allows configuring what goes into package)
+Available tasks are below (you may also lookup by adding `require 'glimmer/rake_task'` in Rakefile and running rake -T):
+glimmer package                                     # Package app for distribution (generating config, jar, and native files)
+glimmer package:config                              # Generate JAR config file
+glimmer package:jar                                 # Generate JAR file
+glimmer package:native                              # Generate Native files (DMG/PKG/APP on the Mac)
+glimmer scaffold[app_name]                          # Same as scaffold:app
+glimmer scaffold:app[app_name]                      # Scaffold a Glimmer application directory structure to begin building a new app
+glimmer scaffold:custom_shell[custom_shell_name]    # Scaffold a Glimmer::UI::CustomShell subclass under app/views (represents a full window view)
+glimmer scaffold:custom_widget[custom_widget_name]  # Scaffold a Glimmer::UI::CustomWidget subclass under app/views (represents a part of a view)
 
-  When applications are specified, they are run using JRuby, 
-  automatically preloading the glimmer Ruby gem and SWT jar dependency.
+When applications are specified, they are run using JRuby, 
+automatically preloading the glimmer Ruby gem and SWT jar dependency.
 
-  Optionally, extra Glimmer options, JRuby options and environment variables may be passed in.
+Optionally, extra Glimmer options, JRuby options and environment variables may be passed in.
 
-  Concerning Glimmer options:
-  - "--debug"           : Displays extra debugging information and passes "--debug" to JRuby
-  - "--log-level=VALUE" : Sets Glimmer's Ruby logger level ("ERROR" / "WARN" / "INFO" / "DEBUG"; default is "WARN")
+Concerning Glimmer options:
+- "--debug"           : Displays extra debugging information and passes "--debug" to JRuby
+- "--log-level=VALUE" : Sets Glimmer's Ruby logger level ("ERROR" / "WARN" / "INFO" / "DEBUG"; default is "WARN")
 
-  Example: glimmer samples/hello_world.rb
+Example: glimmer samples/hello_world.rb
 
-  This runs the Glimmer application samples/hello_world.rb
+This runs the Glimmer application samples/hello_world.rb
 ```
 
 Accepts JRuby options and multiple Glimmer applications to run simultaneously, each in a JRuby thread.
@@ -248,6 +254,83 @@ glimmer samples/hello_world.rb samples/hello_tab.rb
 ```
 
 Launches samples/hello_world.rb and samples/hello_tab.rb at the same time, each in a separate JRuby thread.
+
+### Scaffolding
+
+Glimmer borrows from Rails the idea of Scaffolding, that is generating a structure for your app files that
+helps you get started just like true building scaffolding helps construction workers, civil engineers, and architects.
+
+Glimmer scaffolding goes way beyond just scaffolding the app files that Rails does. It also packages it and launches it, 
+getting you to a running state of an advanced "Hello, World!" Glimmer application.
+
+This should greatly facilitate building a new Glimmer app by helping you be productive and focus on app details while 
+letting Glimmer scaffolding take care of initial app file structure concerns, such as adding:
+- Main application class that includes Glimmer
+- Main application view that houses main window content
+- View and Model directories
+- Rakefile including Glimmer tasks
+- Version
+- License
+- Icon
+- Bin file for starting application
+
+#### scaffold:app
+
+To scaffold a Glimmer app from scratch, run the following command:
+
+```
+glimmer scaffold:app[AppName]
+```
+
+or the short form:
+
+```
+glimmer scaffold[AppName]
+```
+
+This will generate an advanced "Hello, World!" app, package it as a Mac native file (DMG/PKG/APP), and launch it all in one fell swoop.
+
+Suppose you run:
+
+```
+glimmer scaffold[CarMaker]
+```
+
+You should see output like the following:
+
+```
+Created CarMaker/.ruby-version
+Created CarMaker/.ruby-gemset
+Created CarMaker/VERSION
+Created CarMaker/LICENSE.txt
+Created CarMaker/Gemfile
+Created CarMaker/Rakefile
+Created CarMaker/app/car_maker.rb
+Created CarMaker/app/views/car_maker/app_view.rb
+Created CarMaker/package/macosx/Car Maker.icns
+Created CarMaker/bin/car_maker
+...
+```
+
+Eventually, it will launch an advanced "Hello, World!" app window having the title of your application.
+
+![Glimmer Scaffold App](images/glimmer-scaffolding-app.png)
+
+#### scaffold:custom_shell
+
+To scaffold a Glimmer custom shell (full window view) for an existing Glimmer app, run the following command:
+
+```
+glimmer scaffold:custom_shell[custom_shell_name]
+```
+
+#### scaffold:custom_widget
+
+To scaffold a Glimmer custom widget (part of a view) for an existing Glimmer app, run the following command:
+
+```
+glimmer scaffold:custom_widget[custom_widget_name]
+```
 
 ## Girb (Glimmer irb) Command
 

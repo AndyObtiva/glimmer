@@ -65,9 +65,14 @@ namespace :glimmer do
       Scaffold.app(args[:app_name])
     end
     
-    desc 'Scaffold a Glimmer::UI::CustomShell subclass under app/views'
+    desc 'Scaffold a Glimmer::UI::CustomShell subclass under app/views (represents a full window view)'
     task :custom_shell, [:custom_shell_name] do |t, args|
       Scaffold.custom_shell(args[:custom_shell_name])
+    end
+    
+    desc 'Scaffold a Glimmer::UI::CustomWidget subclass under app/views (represents a part of a view)'
+    task :custom_widget, [:custom_widget_name] do |t, args|
+      Scaffold.custom_widget(args[:custom_widget_name])
     end
   end
 

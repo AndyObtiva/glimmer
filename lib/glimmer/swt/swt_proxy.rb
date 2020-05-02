@@ -88,7 +88,7 @@ module Glimmer
         def deconstruct(integer)
           SWT.constants.reduce([]) do |found, c|
             constant_value = SWT.const_get(c) rescue -1
-            is_found = constant_value.is_a?(Integer) && (constant_value & style) == constant_value
+            is_found = constant_value.is_a?(Integer) && (constant_value & integer) == constant_value
             is_found ? found += [c] : found
           end
         end
