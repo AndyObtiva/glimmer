@@ -4,6 +4,7 @@
 
 - Expose `rake glimmer:package` rake task via `glimmer package` command
 - Scaffold a Glimmer app: provide a standard structure for building a Glimmer app (models, views, and assets [images, videos, sounds])
+- Scaffold a Glimmer custom shell
 
 ## 0.6.0
 

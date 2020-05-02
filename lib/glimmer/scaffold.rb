@@ -64,6 +64,7 @@ class Scaffold
       write "app/#{file_name(app_name)}.rb", app_main_file(app_name)
       mkdir 'app/models'
       mkdir 'app/views'
+      custom_shell('AppView')
       if OS.mac?
         mkdir_p 'package/macosx'
         icon_file = "package/macosx/#{human_name(app_name)}.icns"
@@ -79,7 +80,6 @@ class Scaffold
 
     def custom_shell(custom_shell_name)
       write "app/views/#{file_name(custom_shell_name)}.rb", custom_shell_file(custom_shell_name)
-      add_require "app/#{file_name(app_dir)}.rb", "views/#{file_name(custom_shell_name)}"
     end
 
     private
@@ -106,46 +106,25 @@ class Scaffold
       app_name.underscore.titlecase
     end
 
-    def add_require(file, required_source)
-      file_content = File.read(file)
-      lines = file_content.split("\n")
-      class_declaration_line_index = lines.index(lines.detect {|l| l.match(/class\s+#{class_name(app_dir)}/)})
-      lines[class_declaration_line_index...class_declaration_line_index] = [
-        "require '#{required_source}'",
-        ""
-      ]
-      File.write(file, lines.join("\n"))
-    end
-
     def app_main_file(app_name)
       <<~MULTI_LINE_STRING
         $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
         
         require 'glimmer'
+        require 'views/app_view'
 
         class #{class_name(app_name)}
           include Glimmer
         
-          APP_ROOT = File.expand_path('../..', __FILE__)
-        
+          APP_ROOT = File.expand_path('../..', __FILE__)        
           VERSION = File.read(File.expand_path('VERSION', APP_ROOT))
                     
-          def start
-            @shell = shell {
-              minimum_size 320, 240
-              text "#{app_name}"
-              grid_layout
-              label(:center) {
-                text "Hello, World!"
-                font height: 40
-                layout_data :center, :center, true, true
-              }
-            }
-            @shell.open
+          def open
+            app_view.open
           end
         end
         
-        #{class_name(app_name)}.new.start
+        #{class_name(app_name)}.new.open
       MULTI_LINE_STRING
     end
 
@@ -182,10 +161,19 @@ class Scaffold
             # 
             # }
         
+            ## Add custom widget content under body shell
+            #
             body {
               shell {
-                text '#{custom_shell_name}'
-                # fill in with widget content
+                # add custom widget content
+                minimum_size 320, 240
+                text "#{human_name(app_dir)}"
+                grid_layout
+                label(:center) {
+                  text "Hello, World!"
+                  font height: 40
+                  layout_data :center, :center, true, true
+                }
               }
             }
         
