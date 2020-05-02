@@ -314,8 +314,6 @@ Eventually, it will launch an advanced "Hello, World!" app window having the tit
 
 ![Glimmer Scaffold App](images/glimmer-scaffolding-app.png)
 
-![Glimmer Scaffold App](images/glimmer-scaffolding-app-icon.png)
-
 #### Custom Shell
 
 To scaffold a Glimmer custom shell (full window view) for an existing Glimmer app, run the following command:
