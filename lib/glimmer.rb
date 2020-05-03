@@ -54,36 +54,6 @@ module Glimmer
     def enable_logging
       @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}
     end
-
-    # Sets current DSL (e.g. :swt)
-    def dsl=(dsl_name)
-      Glimmer::DSL::Engine.dsl = dsl_name
-    end
-
-    # Currently set DSL (e.g. :swt or :xml)
-    def dsl
-      Glimmer::DSL::Engine.dsl
-    end
-
-    # All configured DSLs as symbols
-    def dsls
-      Glimmer::DSL::Engine.dsls
-    end
-
-    def disable_dsl(dsl_name)
-      Glimmer::DSL::Engine.disable_dsl(dsl_name)
-    end
-
-    def enable_dsl(dsl_name)
-      Glimmer::DSL::Engine.enable_dsl(dsl_name)
-    end
-
-    # Resets Glimmer's configuration and DSL activity. Useful in rspec before or after block in tests.
-    def reset
-      Glimmer::DSL::Engine.parent_stack.clear
-      Glimmer::DSL::Engine.dsl_stack.clear
-      Glimmer::DSL::Engine.disabled_dsls.clear
-    end
   end
 
   def method_missing(method_symbol, *args, &block)

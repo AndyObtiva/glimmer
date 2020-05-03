@@ -21,7 +21,7 @@ module GlimmerSpec
     end
 
     it 'disables SWT DSL to build an XML document containing SWT keywords' do
-      Glimmer.disable_dsl(:swt)
+      Glimmer::DSL::Engine.disable_dsl(:swt)
 
       @target = html {
         shell {
@@ -33,8 +33,8 @@ module GlimmerSpec
     end
 
     it 'disables SWT and XML DSLs to build a CSS style sheet containing SWT and XML keywords' do
-      Glimmer.disable_dsl(:swt)
-      Glimmer.disable_dsl(:xml)
+      Glimmer::DSL::Engine.disable_dsl(:swt)
+      Glimmer::DSL::Engine.disable_dsl(:xml)
 
       @target = css {
         shell {
@@ -58,12 +58,12 @@ module GlimmerSpec
     end
 
     it 'enables disabled DSLs' do
-      Glimmer.disable_dsl(:swt)
-      Glimmer.disable_dsl(:xml)
-      Glimmer.disable_dsl(:css)
-      Glimmer.enable_dsl(:swt)
-      Glimmer.enable_dsl(:xml)
-      Glimmer.enable_dsl(:css)
+      Glimmer::DSL::Engine.disable_dsl(:swt)
+      Glimmer::DSL::Engine.disable_dsl(:xml)
+      Glimmer::DSL::Engine.disable_dsl(:css)
+      Glimmer::DSL::Engine.enable_dsl(:swt)
+      Glimmer::DSL::Engine.enable_dsl(:xml)
+      Glimmer::DSL::Engine.enable_dsl(:css)
 
       @target = shell {
         @browser = browser {

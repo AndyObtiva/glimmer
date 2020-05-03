@@ -41,6 +41,13 @@ module Glimmer
         def disabled_dsls
           @disabled_dsls ||= []
         end
+    
+        # Resets Glimmer's engine activity and configuration. Useful in rspec before or after blocks in tests.
+        def reset
+          parent_stack.clear
+          dsl_stack.clear
+          disabled_dsls.clear
+        end
 
         # Dynamic expression chains of responsibility indexed by dsl
         def dynamic_expression_chains_of_responsibility

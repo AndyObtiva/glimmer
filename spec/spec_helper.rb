@@ -70,7 +70,7 @@ RSpec.configure do |config|
 
   config.after do
     @target.dispose if @target && @target.respond_to?(:dispose)
-    Glimmer.reset
+    Glimmer::DSL::Engine.reset
   end
   # config.profile_examples = 20
   config.fail_fast = true
