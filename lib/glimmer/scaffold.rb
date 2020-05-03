@@ -299,8 +299,7 @@ class Scaffold
       <<~MULTI_LINE_STRING
         $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
         
-        require 'bundler/setup'
-        Bundler.require(:default)
+        require 'glimmer'
         require '#{custom_widget_file_path}'
       MULTI_LINE_STRING
     end
@@ -333,6 +332,14 @@ class Scaffold
       lines[require_line_index...require_line_index] = [
         "require 'bundler/setup'",
         'Bundler.require(:default, :development)',
+      ]
+      configure_block_line_index = lines.index(lines.detect {|l| l.include?('RSpec.configure do') }) + 1
+      lines[configure_block_line_index...configure_block_line_index] = [
+        '  # The following ensures rspec tests that instantiate and set Glimmer DSL widgets in @target get cleaned after',
+        '  config.after do',
+        '    @target.dispose if @target && @target.respond_to?(:dispose)',
+        '    Glimmer::DSL::Engine.reset',
+        '  end',
       ]
       
       lines << "\nrequire 'glimmer/rake_task'\n"

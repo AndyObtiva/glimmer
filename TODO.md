@@ -4,8 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Rename CSS DSL ruleset to simply rule
-- Augment scaffold rspec support with glimmer appropriate before and after blocks
 - Make scaffold gems avoid bundler in requiring
 - Move logging/swt-package-require methods on Glimmer to a Glimmer::Config and Glimmer::Logger
 - Refactor hellocomputed

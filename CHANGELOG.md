@@ -13,6 +13,7 @@
 - Support disable_dsl/enable_dsl/enabled_dsls=
 - Minify CSS produced by CSS DSL
 - Avoid using p in CSS DSL as it clashes with HTML p. Use pv instead (property value).
+- Configure scaffold rspec_helper with glimmer-appropriate after block
 
 ## 0.6.0
 
