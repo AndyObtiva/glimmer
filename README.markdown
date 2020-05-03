@@ -1818,6 +1818,15 @@ Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 puts @css
 ```
 
+##### Listing / Enabling / Disabling DSLs
+
+Glimmer provides a number of methods on Glimmer::DSL::Engine to configure DSL support or inquire about it:
+- `Glimmer::DSL::Engine.dsls`: Lists available Glimmer DSLs
+- `Glimmer::DSL::Engine.disable_dsl(dsl_name)`: Disables a specific DSL. Useful when there is no need for certain DSLs in a certain application.
+- `Glimmer::DSL::Engine.disabled_dsls': Lists disabled DSLs
+- `Glimmer::DSL::Engine.enable_dsl(dsl_name)`: Re-enables disabled DSL
+- `Glimmer::DSL::Engine.enabled_dsls=(dsl_names)`: Disables all DSLs except the ones specified.
+
 #### Video Widget
 
 ![Video Widget](images/glimmer-video-widget.png)
@@ -1969,7 +1978,7 @@ For example, after imports, `org.eclipse.swt.graphics.Color` can be referenced b
 Nonetheless, you can disable automatic import if needed via this Glimmer configuration option:
 
 ```ruby
-Glimmer.import_swt_packages = false
+Glimmer::Config.import_swt_packages = false
 ```
 
 To import SWT Java packages manually instead, you have 2 options:
