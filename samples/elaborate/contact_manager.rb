@@ -1,4 +1,4 @@
-require_relative "contact_manager_presenter"
+require_relative "contact_manager/contact_manager_presenter"
 
 class ContactManager
   include Glimmer

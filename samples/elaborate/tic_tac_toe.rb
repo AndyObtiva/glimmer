@@ -1,10 +1,10 @@
-require_relative "tic_tac_toe_board"
+require_relative "tic_tac_toe/board"
 
 class TicTacToe
   include Glimmer
 
   def initialize
-    @tic_tac_toe_board = TicTacToeBoard.new
+    @tic_tac_toe_board = Board.new
     @shell = shell {
       text "Tic-Tac-Toe"
       composite {
@@ -16,7 +16,7 @@ class TicTacToe
               text        bind(@tic_tac_toe_board[row, column], :sign)
               enabled     bind(@tic_tac_toe_board[row, column], :empty)
               on_widget_selected {
-                @tic_tac_toe_board.mark_box(row, column)
+                @tic_tac_toe_board.mark(row, column)
               }
             }
           }
@@ -24,8 +24,8 @@ class TicTacToe
       }
     }
     observe(@tic_tac_toe_board, :game_status) { |game_status|
-      display_win_message if game_status == TicTacToeBoard::WIN
-      display_draw_message if game_status == TicTacToeBoard::DRAW
+      display_win_message if game_status == Board::WIN
+      display_draw_message if game_status == Board::DRAW
     }
   end
 

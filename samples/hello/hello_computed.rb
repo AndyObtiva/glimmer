@@ -1,4 +1,4 @@
-require_relative "contact"
+require_relative "hello_computed/contact"
 
 class HelloComputed
   include Glimmer
