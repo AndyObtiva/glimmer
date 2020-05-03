@@ -143,9 +143,9 @@ https://www.eclipse.org/swt/faq.php
 
 ## Pre-requisites
 
-* Java SE Runtime Environment 7 or higher (find at https://www.oracle.com/java/technologies/javase-downloads.html)
-* JRuby 9.2.11.1 (supporting Ruby 2.5.x syntax) (find at https://www.jruby.org/download)
-* SWT 4.15 (comes included in Glimmer gem)
+- SWT 4.15 (comes included in Glimmer gem)
+- JRuby 9.2.11.1 (supporting Ruby 2.5.x syntax) (find at https://www.jruby.org/download)
+- Java SE Runtime Environment 7 or higher (find at https://www.oracle.com/java/technologies/javase-downloads.html)
 
 On **Mac** and **Linux**, an easy way to obtain JRuby is through [RVM](http://rvm.io) by running:
 
@@ -1895,9 +1895,6 @@ glimmer samples/hello_combo.rb
 glimmer samples/hello_list_single_selection.rb
 glimmer samples/hello_list_multi_selection.rb
 glimmer samples/hellocomputed/hello_computed.rb
-glimmer samples/video/hello_video.rb
-glimmer samples/video/hello_looped_video_with_black_background.rb
-glimmer samples/video/hello_video_observers.rb
 ```
 
 ### Elaborate Samples
@@ -1908,39 +1905,11 @@ For more elaborate samples, check the following:
 glimmer samples/login.rb # demonstrates basic data-binding
 glimmer samples/contactmanager/contact_manager.rb # demonstrates table data-binding
 glimmer samples/tictactoe/tic_tac_toe.rb # demonstrates a full MVC application
-glimmer samples/gladiator.rb # demonstrates a text editor with tree/list data-binding
 ```
 
 ![Gladiator](images/glimmer-gladiator.png)
 
 Gladiator (short for Glimmer Editor) is an on-going sample project under continuous development. It is used as the main text editor for developing Glimmer.
-
-It currently supports the following text editing features:
-- File explorer navigation to open file
-- File lookup by name
-- Find & Replace
-- Show Line Numbers
-- Jump to Line
-- Remember last opened file, caret position, and top line
-- Autosave on focus out/quit/open new file
-- Watch open file for external changes to reflect in editor
-- Duplicate Line(s)
-- Kill Line(s)
-- Move up one line
-- Move down one line
-
-Gladiator has been made available in [Glimmer's gem](https://rubygems.org/gems/glimmer) via the `gladiator` command should others find useful too.
-
-If you cloned this project and followed [CONTRIBUTING.md](CONTRIBUTING.md) instructions, you may invoke via `bin/gladiator` instead. 
-
-Gotcha:
-
-Gladiator repetitively displays a signaling error that is harmless in practice:
-```
-The signal HUP is in use by the JVM and will not work correctly on this platform
-The signal INT is in use by the JVM and will not work correctly on this platform
-The signal TERM is in use by the JVM and will not work correctly on this platform
-```
 
 ## In Production
 

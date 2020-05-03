@@ -8,7 +8,6 @@ ${DIR}/../bin/glimmer \
   "${DIR}hello_tab.rb" \
   "${DIR}hello_world.rb" \
   "${DIR}login.rb" \
-  "${DIR}gladiator.rb" \
   "${DIR}contactmanager/contact_manager.rb" \
   "${DIR}hellocomputed/hello_computed.rb" \
   "${DIR}tictactoe/tic_tac_toe.rb" \
