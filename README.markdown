@@ -46,7 +46,7 @@ shell {
           text        bind(@tic_tac_toe_board[row, column], :sign)
           enabled     bind(@tic_tac_toe_board[row, column], :empty)
           on_widget_selected {
-            @tic_tac_toe_board.mark_box(row, column)
+            @tic_tac_toe_board.mark(row, column)
           }
         }
       }
