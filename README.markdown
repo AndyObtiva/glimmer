@@ -345,7 +345,7 @@ It is important to specify a namespace to avoid having your gem clash with exist
 
 The Ruby gem name will follow the convention "glimmer-cs-customwidgetname-namespace" (the 'cs' is for Custom Shell)
 
-Only official Glimmer gems created by the Glimmer project committers will have no namespace (e.g. "glimmer-cs-gladiator" Ruby gem)
+Only official Glimmer gems created by the Glimmer project committers will have no namespace (e.g. [glimmer-cs-gladiator](https://rubygems.org/gems/glimmer-cs-gladiator) Ruby gem)
 
 Example: [https://github.com/AndyObtiva/glimmer-cs-gladiator](https://github.com/AndyObtiva/glimmer-cs-gladiator)
 
@@ -361,7 +361,7 @@ It is important to specify a namespace to avoid having your gem clash with exist
 
 The Ruby gem name will follow the convention "glimmer-cw-customwidgetname-namespace" (the 'cw' is for Custom Widget)
 
-Only official Glimmer gems created by the Glimmer project committers will have no namespace (e.g. "glimmer-cw-video" Ruby gem)
+Only official Glimmer gems created by the Glimmer project committers will have no namespace (e.g. [glimmer-cw-video](https://rubygems.org/gems/glimmer-cw-video) Ruby gem)
 
 Example: [https://github.com/AndyObtiva/glimmer-cw-video](https://github.com/AndyObtiva/glimmer-cw-video)
 
