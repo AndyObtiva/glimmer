@@ -31,7 +31,7 @@ module Glimmer
         begin
           @swt_layout_data = swt_layout_data_class.new(*args)
         rescue => e
-          Glimmer.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
+          Glimmer::Config.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
           @swt_layout_data = args.first if args.count == 1
         end
         @widget_proxy.swt_widget.setLayoutData(@swt_layout_data)

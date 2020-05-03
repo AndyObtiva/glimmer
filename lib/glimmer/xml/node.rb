@@ -37,7 +37,7 @@ module Glimmer
               attribute.parent = nil #attributes do not usually have parents
             end
           end
-          Glimmer.logger&.debug(attributes)
+          Glimmer::Config.logger&.debug(attributes)
         end
       end
 

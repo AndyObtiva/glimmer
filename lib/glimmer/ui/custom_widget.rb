@@ -36,15 +36,15 @@ module Glimmer
                 return constant if constant.ancestors.include?(Glimmer::UI::CustomWidget)
                 constant
               rescue => e
-                # Glimmer.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
+                # Glimmer::Config.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
                 result
               end
             end
           end
           raise "#{underscored_custom_widget_name} has no custom widget class!"
         rescue => e
-          Glimmer.logger&.debug e.message
-          Glimmer.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
+          Glimmer::Config.logger&.debug e.message
+          Glimmer::Config.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
           nil
         end
  

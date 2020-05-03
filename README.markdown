@@ -1985,12 +1985,12 @@ https://github.com/jruby/jruby/wiki/CallingJavaFromJRuby
 
 ## Logging
 
-Glimmer comes with a Ruby Logger accessible via `Glimmer.logger`
+Glimmer comes with a Ruby Logger accessible via `Glimmer::Config.logger`
 Its level of logging defaults to `Logger::WARN`
 It may be configured to show a different level of logging as follows:
 ```ruby
-Glimmer.enable_logging
-Glimmer.logger.level = Logger::DEBUG
+Glimmer::Config.enable_logging
+Glimmer::Config.logger.level = Logger::DEBUG
 ```
 This results in more verbose debugging log to `STDOUT`, which is helpful in troubleshooting Glimmer DSL syntax when needed.
 

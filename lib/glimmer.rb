@@ -23,36 +23,11 @@ module Glimmer
 
   class << self
     def included(klass)
-      if import_swt_packages
+      if Config.import_swt_packages
         klass.include(SWT::Packages)
         klass.extend(SWT::Packages)
         klass.extend(Glimmer)
       end
-    end
-
-    # Tells Glimmer to import SWT packages into including class (default: true)
-    def import_swt_packages=(value)
-      @@import_swt_packages = !!value
-    end
-
-    # Returns whether Glimmer will import SWT packages into including class
-    def import_swt_packages
-      unless defined? @@import_swt_packages
-        @@import_swt_packages = true
-      end
-      @@import_swt_packages
-    end
-
-    # Returns Glimmer logger (standard Ruby logger)
-    def logger
-      # unless defined? @@logger
-      #   @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}
-      # end
-      @@logger if defined? @@logger
-    end
-
-    def enable_logging
-      @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}
     end
   end
 
@@ -61,26 +36,20 @@ module Glimmer
     if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
       raise InvalidKeywordError, "Glimmer excluded keyword: #{method_symbol}"
     end
-    Glimmer.logger&.debug "Interpreting keyword: #{method_symbol}"
+    Glimmer::Config.logger&.debug "Interpreting keyword: #{method_symbol}"
     Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
   rescue InvalidKeywordError => e
     if !method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
-      Glimmer.logger&.error e.message
+      Glimmer::Config.logger&.error e.message
     end
-    Glimmer.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
+    Glimmer::Config.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
     super(method_symbol, *args, &block)
   end
 end
 
-if ENV['GLIMMER_LOGGER_LEVEL']
-  Glimmer.enable_logging
-  Glimmer.logger.level = ENV['GLIMMER_LOGGER_LEVEL'].downcase
-end
-
 $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 
-require 'glimmer/launcher'
-require Glimmer::Launcher.swt_jar_file # TODO move into swt/dsl.rb
+require 'glimmer/config'
 require 'glimmer/swt/packages'
 require 'glimmer/dsl/swt/dsl'
 require 'glimmer/dsl/xml/dsl'

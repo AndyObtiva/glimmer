@@ -43,12 +43,12 @@ module Glimmer
           negative ? ~bit_value : bit_value
         rescue => e
           begin
-#             Glimmer.logger&.debug(e.full_message)
+#             Glimmer::Config.logger&.debug(e.full_message)
             alternative_swt_constant_symbol = SWT.constants.find {|c| c.to_s.upcase == swt_constant_symbol.to_s.upcase}
             bit_value = SWT.const_get(alternative_swt_constant_symbol)
             negative ? ~bit_value : bit_value
           rescue => e
-#             Glimmer.logger&.debug(e.full_message)
+#             Glimmer::Config.logger&.debug(e.full_message)
             bit_value = Glimmer::SWT::SWTProxy::EXTRA_STYLES[swt_constant_symbol]
             if bit_value
               negative ? ~bit_value : bit_value

@@ -34,8 +34,8 @@ module Glimmer
           end
           swt_layout_class
         rescue => e
-          Glimmer.logger&.debug e.message
-          # Glimmer.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
+          Glimmer::Config.logger&.debug e.message
+          # Glimmer::Config.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
           raise e
         end
       end

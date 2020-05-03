@@ -24,7 +24,7 @@ module Glimmer
             name_space_visitor = Glimmer::XML::NameSpaceVisitor.new(args[0].to_s)
             Glimmer::XML::DepthFirstSearchIterator.new(node, name_space_visitor).iterate
             def node.process_block(block)
-              Glimmer.logger&.debug 'block'
+              Glimmer::Config.logger&.debug 'block'
               #NOOP
             end
           end

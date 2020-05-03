@@ -50,8 +50,8 @@ module Glimmer
       end
 
       def append_attributes(node)
-        Glimmer.logger&.debug "Take 3"
-        Glimmer.logger&.debug(node.attributes)
+        Glimmer::Config.logger&.debug "Take 3"
+        Glimmer::Config.logger&.debug(node.attributes)
         node.attributes.each do |attribute, value|
           attribute_name = attribute
           attribute_name = "#{attribute.name_space.name}:#{attribute.name}" if attribute.is_a?(Node)

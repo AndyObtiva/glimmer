@@ -1,3 +1,5 @@
+require 'glimmer/launcher'
+require Glimmer::Launcher.swt_jar_file
 require 'glimmer/dsl/engine'
 Dir[File.expand_path('../*_expression.rb', __FILE__)].each {|f| require f}
 

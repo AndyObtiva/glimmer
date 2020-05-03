@@ -4,9 +4,7 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Make scaffold gems avoid bundler in requiring
-- Move logging/swt-package-require methods on Glimmer to a Glimmer::Config and Glimmer::Logger
-- Refactor hellocomputed
+- Reorganize samples as hello and elaborate inside samples directory
 
 ## Soon
 

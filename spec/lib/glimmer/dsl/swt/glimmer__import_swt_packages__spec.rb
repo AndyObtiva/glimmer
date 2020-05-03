@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Glimmer do
   after do
-    Glimmer.import_swt_packages = true
+    Glimmer::Config.import_swt_packages = true
     %w[
       SomeApp
       AnotherApp
@@ -22,7 +22,7 @@ describe Glimmer do
 
     expect(SomeApp::Label).to eq(org.eclipse.swt.widgets.Label)
 
-    Glimmer.import_swt_packages = false
+    Glimmer::Config.import_swt_packages = false
 
     class AnotherApp
       include Glimmer
@@ -38,7 +38,7 @@ describe Glimmer do
 
     expect(SomeWidget::Label).to eq(org.eclipse.swt.widgets.Label)
 
-    Glimmer.import_swt_packages = false
+    Glimmer::Config.import_swt_packages = false
 
     class AnotherWidget
       include Glimmer::UI::CustomWidget
@@ -54,7 +54,7 @@ describe Glimmer do
 
     expect(SomeShell::Label).to eq(org.eclipse.swt.widgets.Label)
 
-    Glimmer.import_swt_packages = false
+    Glimmer::Config.import_swt_packages = false
 
     class AnotherShell
       include Glimmer::UI::CustomShell

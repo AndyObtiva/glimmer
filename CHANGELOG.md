@@ -14,6 +14,7 @@
 - Minify CSS produced by CSS DSL
 - Avoid using p in CSS DSL as it clashes with HTML p. Use pv instead (property value).
 - Configure scaffold rspec_helper with glimmer-appropriate after block
+- Move logger/import_swt_packages methods on Glimmer to Glimmer::Config
 
 ## 0.6.0
 
