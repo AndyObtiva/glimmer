@@ -6,6 +6,10 @@
 - Scaffold a Glimmer app: provide a standard structure for building a Glimmer app (models, views, and assets [images, videos, sounds])
 - Scaffold a Glimmer custom shell
 - Scaffold a Glimmer custom widget
+- Scaffold a Glimmer custom widget gem
+- Scaffold a Glimmer custom shell gem
+- Extract Video widget into its own custom widget glimmer-video gem
+- Extract Gladiator into its own custom shell glimmer-gladiator gem
 
 ## 0.6.0
 

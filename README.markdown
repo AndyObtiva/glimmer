@@ -346,7 +346,7 @@ The Ruby gem name will follow the convention "glimmer-cs-customwidgetname-namesp
 
 Only official Glimmer gems created by the Glimmer project committers will have no namespace (e.g. "glimmer-cs-gladiator" Ruby gem)
 
-Example: https://github.com/AndyObtiva/glimmer-cs-gladiator
+Example: [https://github.com/AndyObtiva/glimmer-cs-gladiator](https://github.com/AndyObtiva/glimmer-cs-gladiator)
 
 #### Custom Widget Gem
 
@@ -362,7 +362,7 @@ The Ruby gem name will follow the convention "glimmer-cw-customwidgetname-namesp
 
 Only official Glimmer gems created by the Glimmer project committers will have no namespace (e.g. "glimmer-cw-video" Ruby gem)
 
-Example: https://github.com/AndyObtiva/glimmer-cw-video
+Example: [https://github.com/AndyObtiva/glimmer-cw-video](https://github.com/AndyObtiva/glimmer-cw-video)
 
 ## Girb (Glimmer irb) Command
 
@@ -1909,7 +1909,8 @@ glimmer samples/tictactoe/tic_tac_toe.rb # demonstrates a full MVC application
 
 ![Gladiator](images/glimmer-gladiator.png)
 
-Gladiator (short for Glimmer Editor) is an on-going sample project under continuous development. It is used as the main text editor for developing Glimmer.
+[Gladiator](https://github.com/AndyObtiva/glimmer-cs-gladiator) (short for Glimmer Editor) is a Glimmer sample project under on-going development.
+You may check it out to learn how to build a Glimmer Custom Shell gem.
 
 ## In Production
 

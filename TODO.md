@@ -4,11 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Load gems via bundler in glimmer app/gem
-- Scaffold a Glimmer custom widget gem
-- Extract Video widget into its own custom widget glimmer-video gem
-- Scaffold a Glimmer custom shell gem
-- Extract Gladiator into its own custom shell glimmer-gladiator gem
 - Support disabling DSLs
 
 ## Gladiator (Glimmer Editor)
