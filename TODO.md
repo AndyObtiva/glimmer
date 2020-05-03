@@ -4,22 +4,11 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Avoid using p in CSS DSL as it clashes with HTML p. Use pv instead (property value).
 - Rename CSS DSL ruleset to simply rule
 - Augment scaffold rspec support with glimmer appropriate before and after blocks
 - Make scaffold gems avoid bundler in requiring
 - Move logging/swt-package-require methods on Glimmer to a Glimmer::Config and Glimmer::Logger
 - Refactor hellocomputed
-
-## Gladiator (Glimmer Editor)
-
-- Fix issue with Find not working for more than one occurrence in a line
-- Fix issue with file lookup list and file explorer tree not showing up upon launching in a new directory until resizing window
-- Fix issue with line numbers not scrolling perfectly along with open file (off by a few pixels)
-- Fix issue with line numbers sometimes getting clipped when openig a new file until resizing window
-- Fix issue with not autosaving right away when making changes with Find/Replace (until focusing in and out of text editor area)
-- Fix issue with crashing upon permission denied for opening a file
-- Implement Undo/Redo (it partially works right now from text widget built-in undo/redo)
 
 ## Soon
 
@@ -91,7 +80,6 @@ bind_content(model, 'addresses').each { |address|
 - Implement a Graphical Glimmer sample launcher
 - Support => syntax for computed_for data-binding
 - Support data binding boolean properties ending with ? bidirectionally (already supported for read-only)
-- Add popups to Gladiator showing the shortcut of each field (e.g. CMD+L for Line)
 - Support XML Top-Level Static Expression (xml { })
 - Support XML DSL comments <!-- COMMENT -->
 - Support XML Document Declaration Tag: <?xml version="1.0" encoding="UTF-8" standalone="no" ?>

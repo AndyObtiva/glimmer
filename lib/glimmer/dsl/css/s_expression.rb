@@ -1,6 +1,6 @@
 require 'glimmer/dsl/static_expression'
 require 'glimmer/css/style_sheet'
-require 'glimmer/css/rule_set'
+require 'glimmer/css/rule'
 
 module Glimmer
   module DSL
@@ -16,8 +16,8 @@ module Glimmer
         end
 
         def interpret(parent, keyword, *args, &block)
-          Glimmer::CSS::RuleSet.new(args.first.to_s).tap do |rule_set|
-            parent.rule_sets << rule_set
+          Glimmer::CSS::Rule.new(args.first.to_s).tap do |rule|
+            parent.rules << rule
           end
         end
       end

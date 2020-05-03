@@ -1,11 +1,11 @@
 require 'glimmer/dsl/expression'
 require 'glimmer/css/style_sheet'
-require 'glimmer/css/rule_set'
+require 'glimmer/css/rule'
 
 module Glimmer
   module DSL
     module CSS
-      class RuleSetExpression < Expression
+      class RuleExpression < Expression
         include ParentExpression
 
         def can_interpret?(parent, keyword, *args, &block)
@@ -15,8 +15,8 @@ module Glimmer
         end
 
         def interpret(parent, keyword, *args, &block)
-          Glimmer::CSS::RuleSet.new(keyword.to_s.downcase).tap do |rule_set|
-            parent.rule_sets << rule_set
+          Glimmer::CSS::Rule.new(keyword.to_s.downcase).tap do |rule|
+            parent.rules << rule
           end
         end
       end

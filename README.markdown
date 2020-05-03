@@ -1797,16 +1797,21 @@ Once done, you may call `to_s` or `to_css` to get the formatted CSS output.
 
 `css` is the only top-level keyword in the Glimmer CSS DSL
 
+Selectors may be specified by `s` keyword or HTML element keyword directly (e.g. `body`)
+Rule property values may be specified by `pv` keyword or underscored property name directly (e.g. `font_size`)
+
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
 @css = css {
   body {
-    font_size "1.1em"
+    font_size '1.1em'
+    pv 'background', 'white'
   }
   
   s('body > h1') {
     background_color :red
+    pv 'font-size', '2em'
   }
 }
 puts @css

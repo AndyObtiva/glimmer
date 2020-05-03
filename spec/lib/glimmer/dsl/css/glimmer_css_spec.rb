@@ -68,12 +68,12 @@ describe "Glimmer CSS DSL" do
   it 'renders two custom selectors with two custom properties each' do
     @target = css {
       s('body#app h1#title') {
-        p 'font-size', '2em'
-        p 'font-family', '"Times New Roman", Times, serif'
+        pv 'font-size', '2em'
+        pv 'font-family', '"Times New Roman", Times, serif'
       }
       s('section#menu > a#home') {
-        p 'background', 'red'
-        p 'text_align', 'center'
+        pv 'background', 'red'
+        pv 'text_align', 'center'
       }
     }
    

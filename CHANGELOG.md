@@ -12,6 +12,7 @@
 - Extract Gladiator into its own custom shell glimmer-gladiator gem
 - Support disable_dsl/enable_dsl/enabled_dsls=
 - Minify CSS produced by CSS DSL
+- Avoid using p in CSS DSL as it clashes with HTML p. Use pv instead (property value).
 
 ## 0.6.0
 

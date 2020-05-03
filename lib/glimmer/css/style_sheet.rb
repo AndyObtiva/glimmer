@@ -1,16 +1,16 @@
-require 'glimmer/css/rule_set'
+require 'glimmer/css/rule'
 
 module Glimmer
   module CSS
     class StyleSheet
-      attr_reader :rule_sets
+      attr_reader :rules
 
       def initialize
-        @rule_sets = []
+        @rules = []
       end
 
       def to_css
-        rule_sets.map(&:to_css).join
+        rules.map(&:to_css).join
       end
 
       alias to_s to_css      

@@ -1,6 +1,6 @@
 module Glimmer
   module CSS
-    class RuleSet
+    class Rule
       attr_reader :selector, :properties
 
       def initialize(selector)
