@@ -66,7 +66,7 @@ module Glimmer
         @@mutex.synchronize do
           unless @glimmer_lib
             @glimmer_lib = GLIMMER_LIB_GEM
-            glimmer_gem_listing = `jgem list #{GLIMMER_LIB_GEM}`
+            glimmer_gem_listing = `jgem list #{GLIMMER_LIB_GEM}`.split("\n").map {|l| l.split.first}
             if !glimmer_gem_listing.include?(GLIMMER_LIB_GEM) && File.exists?(GLIMMER_LIB_LOCAL)
               @glimmer_lib = GLIMMER_LIB_LOCAL
               puts "[DEVELOPMENT MODE] (detected #{@glimmer_lib})"

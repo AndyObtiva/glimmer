@@ -5,6 +5,9 @@ Here is a list of tasks to do (please delete once done):
 ## Up Next
 
 - Support disabling DSLs
+- Augment scaffold rspec support with glimmer appropriate before and after blocks
+- Make scaffold gems avoid bundler in requiring
+- Refactor hellocomputed
 
 ## Gladiator (Glimmer Editor)
 

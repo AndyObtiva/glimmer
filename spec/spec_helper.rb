@@ -70,8 +70,7 @@ RSpec.configure do |config|
 
   config.after do
     @target.dispose if @target && @target.respond_to?(:dispose)
-    Glimmer::DSL::Engine.parent_stack.clear # ensures no conflict in using Glimmer across tests
-    Glimmer::DSL::Engine.dsl_stack.clear
+    Glimmer.reset
   end
   # config.profile_examples = 20
   config.fail_fast = true
