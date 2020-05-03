@@ -72,9 +72,9 @@ RSpec.configure do |config|
     @target.dispose if @target && @target.respond_to?(:dispose)
     Glimmer::DSL::Engine.reset
   end
-  # config.profile_examples = 20
-  config.fail_fast = true
-  # config.formatter = 'documentation'
+#   config.profile_examples = 20
+#   config.fail_fast = true
+#   config.formatter = 'documentation'
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin

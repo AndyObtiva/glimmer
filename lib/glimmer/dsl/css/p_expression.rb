@@ -2,6 +2,7 @@ require 'glimmer/dsl/static_expression'
 require 'glimmer/css/style_sheet'
 require 'glimmer/css/rule_set'
 
+# TODO avoid using p as it clashes with HTML p
 module Glimmer
   module DSL
     module CSS

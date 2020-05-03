@@ -4,9 +4,11 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Support disabling DSLs
+- Avoid using p in CSS DSL as it clashes with HTML p. Use pv instead (property value).
+- Rename CSS DSL ruleset to simply rule
 - Augment scaffold rspec support with glimmer appropriate before and after blocks
 - Make scaffold gems avoid bundler in requiring
+- Move logging/swt-package-require methods on Glimmer to a Glimmer::Config and Glimmer::Logger
 - Refactor hellocomputed
 
 ## Gladiator (Glimmer Editor)

@@ -14,10 +14,8 @@ module Glimmer
       end
 
       def to_css
-        css = "#{@selector} {\n"
-        @properties.each do |name, value|
-          css << "  #{name}: #{value};\n"
-        end
+        css = "#{@selector}{"
+        css << @properties.map { |name, value| "#{name}:#{value}" }.join(';')
         css << "}"
       end
 

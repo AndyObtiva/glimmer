@@ -41,6 +41,11 @@ module Glimmer
         def disabled_dsls
           @disabled_dsls ||= []
         end
+
+        def enabled_dsls=(dsl_names)
+          dsls.each {|dsl_name| disable_dsl(dsl_name)}
+          dsl_names.each {|dsl_name| enable_dsl(dsl_name)}
+        end
     
         # Resets Glimmer's engine activity and configuration. Useful in rspec before or after blocks in tests.
         def reset

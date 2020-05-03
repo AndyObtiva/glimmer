@@ -10,8 +10,7 @@ module Glimmer
       end
 
       def to_css
-        rule_set_css = rule_sets.map(&:to_css).join("\n\n")
-        "#{rule_set_css}\n"
+        rule_sets.map(&:to_css).join
       end
 
       alias to_s to_css      

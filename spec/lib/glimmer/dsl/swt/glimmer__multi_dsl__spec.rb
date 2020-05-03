@@ -45,16 +45,7 @@ module GlimmerSpec
         }
       }
        
-      expect(@target.to_s).to eq(<<~CSS
-        shell {
-          background: red;
-        }
-
-        html {
-          color: blue;
-        }
-      CSS
-      )
+      expect(@target.to_s).to eq('shell{background:red}html{color:blue}')
     end
 
     it 'enables disabled DSLs' do
@@ -78,6 +69,26 @@ module GlimmerSpec
       @browser.on_completed do
         expect(@browser.swt_widget.getText).to eq('<html><body><input type="text" value="Hello, World!"></body></html>')
       end
+    end
+
+    it 'enables specified DSLs only' do
+      Glimmer::DSL::Engine.enabled_dsls = [:xml, :css]
+      expect(Glimmer::DSL::Engine.disabled_dsls).to eq([:swt])
+
+      @target = html {
+        shell {
+          browser
+        }
+        style {
+          css {
+            body {
+              font_size '1.1em'
+            }
+          }
+        }
+      }
+       
+      expect(@target.to_s).to eq('<html><shell><browser/></shell><style>body{font-size:1.1em}</style></html>')
     end
   end
 end

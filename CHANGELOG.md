@@ -10,6 +10,8 @@
 - Scaffold a Glimmer custom shell gem
 - Extract Video widget into its own custom widget glimmer-video gem
 - Extract Gladiator into its own custom shell glimmer-gladiator gem
+- Support disable_dsl/enable_dsl/enabled_dsls=
+- Minify CSS produced by CSS DSL
 
 ## 0.6.0
 
