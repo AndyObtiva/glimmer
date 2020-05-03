@@ -4,11 +4,10 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Reorganize samples as hello and elaborate inside samples directory
+- Support web UIs via Opal Ruby (https://github.com/opal/opal)
 
 ## Soon
 
-- Support web UIs via Opal Ruby (https://github.com/opal/opal)
 - Support porting an existing Glimmer SWT app into a web app with very little effort
 - DSL syntax for MessageBox
 message_box {

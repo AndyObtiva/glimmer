@@ -15,6 +15,7 @@
 - Avoid using p in CSS DSL as it clashes with HTML p. Use pv instead (property value).
 - Configure scaffold rspec_helper with glimmer-appropriate after block
 - Move logger/import_swt_packages methods on Glimmer to Glimmer::Config
+- Reorganize samples as hello and elaborate inside samples directory
 
 ## 0.6.0
 

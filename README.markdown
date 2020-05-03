@@ -7,7 +7,7 @@ Glimmer is a native-UI cross-platform desktop development library written in Rub
 
 ### Hello World
 
-Glimmer code (from `samples/hello_world.rb`):
+Glimmer code (from `samples/hello/hello_world.rb`):
 ```ruby
 include Glimmer
 
@@ -21,7 +21,7 @@ shell {
 
 Run:
 ```
-glimmer samples/hello_world.rb
+glimmer samples/hello/hello_world.rb
 ```
 
 Glimmer app:
@@ -30,7 +30,7 @@ Glimmer app:
 
 ### Tic Tac Toe
 
-Glimmer code (from `samples/tictactoe/tic_tac_toe.rb`):
+Glimmer code (from `samples/elaborate/tic_tac_toe.rb`):
 
 ```ruby
 # ...
@@ -58,7 +58,7 @@ shell {
 Run:
 
 ```
-glimmer samples/tictactoe/tic_tac_toe.rb
+glimmer samples/elaborate/tic_tac_toe.rb
 ```
 
 Glimmer app:
@@ -195,7 +195,7 @@ the glimmer ruby gem and SWT jar dependency.
 
 Example:
 ```
-glimmer samples/hello_world.rb
+glimmer samples/hello/hello_world.rb
 ```
 This runs the Glimmer "Hello, World!" sample.
 
@@ -203,7 +203,7 @@ If you cloned this project locally, you may run `bin/glimmer` instead.
 
 Example:
 ```
-bin/glimmer samples/hello_world.rb
+bin/glimmer samples/hello/hello_world.rb
 ```
 
 ### Advanced Usage
@@ -238,24 +238,24 @@ Concerning Glimmer options:
 - "--debug"           : Displays extra debugging information and passes "--debug" to JRuby
 - "--log-level=VALUE" : Sets Glimmer's Ruby logger level ("ERROR" / "WARN" / "INFO" / "DEBUG"; default is "WARN")
 
-Example: glimmer samples/hello_world.rb
+Example: glimmer samples/hello/hello_world.rb
 
-This runs the Glimmer application samples/hello_world.rb
+This runs the Glimmer application samples/hello/hello_world.rb
 ```
 
 Example (Glimmer/JRuby option specified):
 ```
-glimmer --debug samples/hello_world.rb
+glimmer --debug samples/hello/hello_world.rb
 ```
 
 Runs Glimmer application with JRuby debug option to enable JRuby debugging.
 
 Example (Multiple apps):
 ```
-glimmer samples/hello_world.rb samples/hello_tab.rb
+glimmer samples/hello/hello_world.rb samples/hello_tab.rb
 ```
 
-Launches samples/hello_world.rb and samples/hello_tab.rb at the same time, each in a separate JRuby thread.
+Launches samples/hello/hello_world.rb and samples/hello_tab.rb at the same time, each in a separate JRuby thread.
 
 ### Scaffolding
 
@@ -427,7 +427,7 @@ Every **widget** is sufficiently declared by name, but may optionally be accompa
 - SWT **style** ***argument*** wrapped by parenthesis according to [Glimmer Style Guide](#glimmer-coding-style) (see [next section](#widget-styles) for details).
 - Ruby block containing **properties** (widget attributes) and **content** (nested widgets)
 
-For example, if we were to revisit `samples/hello_world.rb` above (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+For example, if we were to revisit `samples/hello/hello_world.rb` above (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
 shell {
@@ -481,7 +481,7 @@ It is centered upon initial display and has a minimum width of 130 (can be re-ce
 
 Check out the [samples](samples) directory for more examples.
 
-Example from [hello_tab.rb](samples/hello_tab.rb) sample (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+Example from [hello_tab.rb](samples/hello/hello_tab.rb) sample (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ![Hello Tab 1](images/glimmer-hello-tab1.png)
 
@@ -927,7 +927,7 @@ composite {
 # ...
 ```
 
-Here is a more sophisticated example taken from [hello_computed.rb](samples/hellocomputed/hello_computed.rb) sample:
+Here is a more sophisticated example taken from [hello_computed.rb](samples/hello/hello_computed.rb) sample:
 ```ruby
 shell {
   text "Hello Computed"
@@ -1110,7 +1110,7 @@ This example demonstrates computed value data binding whereby the value of `name
 
 This example demonstrates nested indexed computed value data binding whereby the value of `profiles[0].name` depends on changes to both nested `profiles[0].first_name` and `profiles[0].last_name`.
 
-Example from [samples/hello_combo.rb](samples/hello_combo.rb) sample (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+Example from [samples/hello/hello_combo.rb](samples/hello_combo.rb) sample (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ![Hello Combo](images/glimmer-hello-combo.png)
 
@@ -1155,7 +1155,7 @@ HelloCombo.new.launch
 
 `combo` widget is data-bound to the country of a person. Note that it expects `person` object to have `:country` attribute and `:country_options` attribute containing all available countries.
 
-Example from [samples/hello_list_single_selection.rb](samples/hello_list_single_selection.rb) sample:
+Example from [samples/hello/hello_list_single_selection.rb](samples/hello_list_single_selection.rb) sample:
 
 ![Hello List Single Selection](images/glimmer-hello-list-single-selection.png)
 
@@ -1179,7 +1179,7 @@ shell {
 
 Nonetheless, in the next example, a multi-selection list is declared instead allowing data-binding of multiple selection values to the bindable attribute on the model.
 
-Example from [samples/hello_list_multi_selection.rb](samples/hello_list_multi_selection.rb) sample (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+Example from [samples/hello/hello_list_multi_selection.rb](samples/hello_list_multi_selection.rb) sample (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ![Hello List Multi Selection](images/glimmer-hello-list-multi-selection.png)
 
@@ -1279,7 +1279,7 @@ shell {
           text        bind(@tic_tac_toe_board[row, column], :sign)
           enabled     bind(@tic_tac_toe_board[row, column], :empty)
           on_widget_selected {
-            @tic_tac_toe_board.mark_box(row, column)
+            @tic_tac_toe_board.mark(row, column)
           }
         }
       }
@@ -1288,9 +1288,9 @@ shell {
 }
 ```
 
-Note that every Tic Tac Toe grid cell has its `text` and `enabled` properties data-bound to the `sign` and `empty` attributes on the `TicTacToeBoard` model respectively.
+Note that every Tic Tac Toe grid cell has its `text` and `enabled` properties data-bound to the `sign` and `empty` attributes on the `TicTacToe::Board` model respectively.
 
-Next however, each of these Tic Tac Toe grid cells, which are clickable buttons, have an `on_widget_selected` observer, which once triggered, marks the box (cell) on the `TicTacToeBoard` to make a move.
+Next however, each of these Tic Tac Toe grid cells, which are clickable buttons, have an `on_widget_selected` observer, which once triggered, marks the cell on the `TicTacToe::Board` to make a move.
 
 **Regarding number 2**, you can figure out all available events by looking at the `org.eclipse.swt.SWT` API:
 
@@ -1361,8 +1361,8 @@ class TicTacToe
   def initialize
     # ...
     observe(@tic_tac_toe_board, :game_status) { |game_status|
-      display_win_message if game_status == TicTacToeBoard::WIN
-      display_draw_message if game_status == TicTacToeBoard::DRAW
+      display_win_message if game_status == Board::WIN
+      display_draw_message if game_status == Board::DRAW
     }
   end
   # ...
@@ -1371,7 +1371,7 @@ end
 
 Observers can be a good mechanism for displaying dialog messages in Glimmer (using SWT's `MessageBox`).
 
-Look at [`samples/tictactoe/tic_tac_toe.rb`](samples/tictactoe/tic_tac_toe.rb) for more details starting with the code included below.
+Look at [`samples/elaborate/tictactoe/tic_tac_toe.rb`](samples/tictactoe/tic_tac_toe.rb) for more details starting with the code included below.
 
 ```ruby
 class TicTacToe
@@ -1381,8 +1381,8 @@ class TicTacToe
   def initialize
     # ...
     observe(@tic_tac_toe_board, :game_status) { |game_status|
-      display_win_message if game_status == TicTacToeBoard::WIN
-      display_draw_message if game_status == TicTacToeBoard::DRAW
+      display_win_message if game_status == Board::WIN
+      display_draw_message if game_status == Board::DRAW
     }
   end
 
@@ -1893,13 +1893,13 @@ samples/launch
 For "Hello, World!" type samples, check the following:
 
 ```
-glimmer samples/hello_world.rb
-glimmer samples/hello_browser.rb
-glimmer samples/hello_tab.rb
-glimmer samples/hello_combo.rb
-glimmer samples/hello_list_single_selection.rb
-glimmer samples/hello_list_multi_selection.rb
-glimmer samples/hellocomputed/hello_computed.rb
+glimmer samples/hello/hello_world.rb
+glimmer samples/hello/hello_browser.rb # demonstrates browser widget
+glimmer samples/hello/hello_tab.rb # demonstrates tabs
+glimmer samples/hello/hello_combo.rb # demonstrates combo data-binding
+glimmer samples/hello/hello_list_single_selection.rb # demonstrates list single-selection data-binding
+glimmer samples/hello/hello_list_multi_selection.rb # demonstrates list multi-selection data-binding
+glimmer samples/hello/hello_computed.rb # demonstrates computed data-binding
 ```
 
 ### Elaborate Samples
@@ -1907,9 +1907,9 @@ glimmer samples/hellocomputed/hello_computed.rb
 For more elaborate samples, check the following:
 
 ```
-glimmer samples/login.rb # demonstrates basic data-binding
-glimmer samples/contactmanager/contact_manager.rb # demonstrates table data-binding
-glimmer samples/tictactoe/tic_tac_toe.rb # demonstrates a full MVC application
+glimmer samples/elaborate/login.rb # demonstrates general data-binding
+glimmer samples/elaborate/contact_manager.rb # demonstrates table data-binding
+glimmer samples/elaborate/tic_tac_toe.rb # demonstrates a full MVC application
 ```
 
 ![Gladiator](images/glimmer-gladiator.png)
