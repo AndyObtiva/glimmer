@@ -227,6 +227,7 @@ glimmer package:jar                                               # Generate JAR
 glimmer package:native                                            # Generate Native files (DMG/PKG/APP on the Mac)
 glimmer scaffold[app_name]                                        # Scaffold a Glimmer application directory structure to begin building a new app
 glimmer scaffold:custom_shell[custom_shell_name,namespace]        # Scaffold a Glimmer::UI::CustomShell subclass (represents a full window view) under app/views (namespace is optional)
+glimmer scaffold:custom_shell_gem[custom_widget_name,namespace]   # Scaffold a Glimmer::UI::CustomShell subclass (represents a full window view) under its own Ruby gem project (namespace is required)
 glimmer scaffold:custom_widget[custom_widget_name,namespace]      # Scaffold a Glimmer::UI::CustomWidget subclass (represents a part of a view) under app/views (namespace is optional)
 glimmer scaffold:custom_widget_gem[custom_widget_name,namespace]  # Scaffold a Glimmer::UI::CustomWidget subclass (represents a part of a view) under its own Ruby gem project (namespace is required)
 
@@ -235,13 +236,13 @@ automatically preloading the glimmer Ruby gem and SWT jar dependency.
 
 Optionally, extra Glimmer options, JRuby options and environment variables may be passed in.
 
-Concerning Glimmer options:
+Glimmer options:
 - "--debug"           : Displays extra debugging information and passes "--debug" to JRuby
 - "--log-level=VALUE" : Sets Glimmer's Ruby logger level ("ERROR" / "WARN" / "INFO" / "DEBUG"; default is "WARN")
 
-Example: glimmer samples/hello/hello_world.rb
+Example: glimmer samples/hello_world.rb
 
-This runs the Glimmer application samples/hello/hello_world.rb
+This runs the Glimmer application samples/hello_world.rb
 ```
 
 Example (Glimmer/JRuby option specified):
