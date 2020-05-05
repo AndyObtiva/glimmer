@@ -426,7 +426,7 @@ In Glimmer DSL, widgets are declared with lowercase underscored names mirroring 
 - `list` instantiates `org.eclipse.swt.widgets.List`
 
 Every **widget** is sufficiently declared by name, but may optionally be accompanied with:
-- SWT **style** ***argument*** wrapped by parenthesis according to [Glimmer Style Guide](#glimmer-coding-style) (see [next section](#widget-styles) for details).
+- SWT **style** ***argument*** wrapped by parenthesis according to [Glimmer Style Guide](#glimmer-style-guide) (see [next section](#widget-styles) for details).
 - Ruby block containing **properties** (widget attributes) and **content** (nested widgets)
 
 For example, if we were to revisit `samples/hello/hello_world.rb` above (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
@@ -453,7 +453,7 @@ Note that `shell` instantiates the outer shell **widget**, in other words, the w
 # ...
 ```
 
-The first line declares a **property** called `text`, which sets the title of the shell (window) to `"Glimmer"`. **Properties** always have ***arguments*** (not wrapped by parenthesis according to [Glimmer Style Guide](#glimmer-coding-style)), such as the text `"Glimmer"` in this case, and do **NOT** have a ***block*** (this distinguishes them from **widget** declarations).
+The first line declares a **property** called `text`, which sets the title of the shell (window) to `"Glimmer"`. **Properties** always have ***arguments*** (not wrapped by parenthesis according to [Glimmer Style Guide](#glimmer-style-guide)), such as the text `"Glimmer"` in this case, and do **NOT** have a ***block*** (this distinguishes them from **widget** declarations).
 
 The second line declares the `label` **widget**, which is followed by a Ruby **content** ***block*** that contains its `text` **property** with value `"Hello, World!"`
 
@@ -692,7 +692,7 @@ SWT widgets receive `SWT` styles in their constructor as per this guide:
 
 https://wiki.eclipse.org/SWT_Widget_Style_Bits
 
-Glimmer DSL facilitates that by passing symbols representing `SWT` constants as widget method arguments (i.e. inside widget `()` parentheses according to [Glimmer Style Guide](#glimmer-coding-style). See example below) in lower case version (e.g. `SWT::MULTI` becomes `:multi`).
+Glimmer DSL facilitates that by passing symbols representing `SWT` constants as widget method arguments (i.e. inside widget `()` parentheses according to [Glimmer Style Guide](#glimmer-style-guide). See example below) in lower case version (e.g. `SWT::MULTI` becomes `:multi`).
 
 These styles customize widget look, feel, and behavior.
 
