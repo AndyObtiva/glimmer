@@ -278,6 +278,8 @@ letting Glimmer scaffolding take care of initial app file structure concerns, su
 - Icon
 - Bin file for starting application
 
+NOTE: Scaffolding currently supports Mac packaging only at the moment. 
+
 #### App
 
 Before you start, make sure you are in a JRuby environment with Glimmer gem installed as per "Direct Install" pre-requisites. 
