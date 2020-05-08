@@ -39,6 +39,14 @@ module Glimmer
         @display ||= @swt_widget.getDisplay
         @swt_widget.setLayout(FillLayout.new)
         @swt_widget.setMinimumSize(WIDTH_MIN, HEIGHT_MIN)
+        on_event_show do
+          Thread.new do      
+            sleep(0.25)
+            async_exec do
+              @swt_widget.setActive
+            end
+          end
+        end
       end
 
       # Centers shell within monitor it is in

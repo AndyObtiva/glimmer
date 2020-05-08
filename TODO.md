@@ -4,11 +4,16 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
+- Make shell activate itself upon becoming visible
+- Fix issue with infinite loop upon encountering an exception with dynamic SWT expressions
+
+## Side Project (opal-spike branch)
+
 - Support web UIs via Opal Ruby (https://github.com/opal/opal)
+- Support porting an existing Glimmer SWT app into a web app with very little effort
 
 ## Soon
 
-- Support porting an existing Glimmer SWT app into a web app with very little effort
 - DSL syntax for MessageBox
 message_box {
   text 'Red Label'
@@ -44,6 +49,10 @@ bind_content(model, 'addresses').each { |address|
 - Web Support (e.g. via Opal?)
 - Make Glimmer defaults configurable
 
+## Issues
+
+- Fix issue with not being able to data-bind layout data like exclude (often done along with visiblity on the widget)
+
 ## Technical Tasks
 
 - Support Tree databinding in the other direction (from tree update to model)
@@ -67,7 +76,6 @@ bind_content(model, 'addresses').each { |address|
 - Support proper `dispose` of widgets across the board (already support garbage collecting observers upon dispose... check if anything else is missing, like nested widget disposal)
 - Support reading Bundler Gemfile in glimmer command if available
 - Support question mark ending data-binding properties
-- Automatically repack parent when data-binding layout or layout data properties have changes
 - consider detecting type on widget property method and automatically invoking right converter (e.g. :to_s for String text property, :to_i for Integer property, etc...)
 - Check into issues of closing a shell and repasting its code in girb
 - Provide girb option to run without including Glimmer. Useful when testing an application that is not a "hello, world!" sort of example
