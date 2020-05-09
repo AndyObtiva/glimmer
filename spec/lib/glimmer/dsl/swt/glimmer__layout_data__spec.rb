@@ -120,7 +120,7 @@ module GlimmerSpec
     end
 
     describe 'GridData' do
-      it "sets RowData with all properties specified via property methods" do
+      it "sets layout data with all properties specified via property methods" do
         @target = shell {
           composite {
             # grid_layout # default layout

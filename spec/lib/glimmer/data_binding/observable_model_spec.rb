@@ -25,7 +25,7 @@ module GlimmerSpec
       end
     end
 
-    it "observes model" do
+    it 'observes model' do
       person = Person.new
       person.name = "Marty"
       expect(person.name).to eq("Marty")
@@ -34,6 +34,16 @@ module GlimmerSpec
       person.name = "Julia"
       expect(observer.observed_name).to eq("Julia")
       expect(person.name).to eq("Julia")
+    end
+
+    it 'implements inspect (to avoid printing all observers by default)' do
+      person = Person.new
+      person.name = "Marty"
+      expect(person.name).to eq("Marty")
+      observer = SpecObserver.new
+      observer.observe(person, :name)
+      expect(person.inspect).to_not include('SpecObserver')
+      expect(person.inspect).to match(/#<GlimmerSpec::Person:0x.*>/)
     end
   end
 end
