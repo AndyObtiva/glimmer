@@ -328,7 +328,7 @@ class Scaffold
     def spec_helper_file
       content = File.read('spec/spec_helper.rb')
       lines = content.split("\n")
-      require_line_index = lines.index(lines.detect {|l| l.include?('glimmer-cw-video') })
+      require_line_index = lines.index(lines.detect {|l| l.include?(current_dir_name) })
       lines[require_line_index...require_line_index] = [
         "require 'bundler/setup'",
         'Bundler.require(:default, :development)',
