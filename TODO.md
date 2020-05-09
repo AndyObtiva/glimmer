@@ -4,7 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Make shell activate itself upon becoming visible
 - Fix issue with infinite loop upon encountering an exception with dynamic SWT expressions
 
 ## Side Project (opal-spike branch)

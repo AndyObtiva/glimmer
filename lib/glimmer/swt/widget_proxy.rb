@@ -172,6 +172,13 @@ module Glimmer
               }
             end
           },
+          Java::OrgEclipseSwtWidgets::MenuItem => {
+            :selection => proc do |observer|
+              on_widget_selected { |selection_event|
+                observer.call(@swt_widget.getSelection)
+              }
+            end
+          },
           Java::OrgEclipseSwtWidgets::Spinner => {
             :selection => proc do |observer|
               on_widget_selected { |selection_event|
@@ -231,7 +238,7 @@ module Glimmer
       def add_observer(observer, property_name)
         property_listener_installers = @swt_widget.class.ancestors.map {|ancestor| widget_property_listener_installers[ancestor]}.compact
         widget_listener_installers = property_listener_installers.map{|installer| installer[property_name.to_s.to_sym]}.compact if !property_listener_installers.empty?
-        widget_listener_installers.each do |widget_listener_installer|
+        widget_listener_installers.to_a.each do |widget_listener_installer|
           widget_listener_installer.call(observer)
         end
       end

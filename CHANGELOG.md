@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.7.1
+
+- Make shell auto-activate on show with 0.25 delay 
+- Support bidirectional data-binding of menu item selection (e.g. radio menu item)
+- Fix crash issue with data-binding widget properties that are not supported in both directions
+
 ## 0.7.0
 
 - Expose `rake glimmer:package` rake task via `glimmer package` command

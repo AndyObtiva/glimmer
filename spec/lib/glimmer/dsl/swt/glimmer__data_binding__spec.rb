@@ -292,7 +292,7 @@ module GlimmerSpec
       expect(person.adult).to eq(true)
     end
 
-    it "tests spinner widget data binding integer property" do
+    it "tests spinner widget data binding integer selection property" do
       person = Person.new
       person.age = 17
 
@@ -312,6 +312,81 @@ module GlimmerSpec
       @spinner.swt_widget.setSelection(34)
       @spinner.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
       expect(person.age).to eq(34)
+    end
+
+    it "tests menu item widget data binding boolean selection property" do
+      person = Person.new
+      person.adult = false
+
+      @target = shell {
+        menu_bar {
+          menu {
+            @menu_item = menu_item(:radio) {
+              text 'Adult'
+              selection bind(person, :adult)
+            }
+          }
+        }
+      }
+
+      expect(@menu_item.swt_widget.getSelection).to eq(false)
+
+      person.adult = true
+      expect(@menu_item.swt_widget.getSelection).to eq(true)
+
+      @menu_item.swt_widget.setSelection(false)
+      @menu_item.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
+      expect(person.adult).to eq(false)
+    end
+
+    it "tests menu item widget ready-only data binding of boolean selection property" do
+      person = Person.new
+      person.age = 17
+
+      @target = shell {
+        menu_bar {
+          menu {
+            @menu_item = menu_item(:radio) {
+              text 'Adult'
+              selection bind(person, :age, on_write: lambda {|v| person.age}) {|a| a >= 18}
+            }
+          }
+        }
+      }
+
+      expect(@menu_item.swt_widget.getSelection).to eq(false)
+
+      person.age = 20
+      expect(@menu_item.swt_widget.getSelection).to eq(true)
+
+      @menu_item.swt_widget.setSelection(false)
+      @menu_item.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
+      expect(person.age).to eq(20)
+    end
+
+    it "tests menu item widget one-direction-only data binding of boolean enabled property" do
+      person = Person.new
+      person.adult = false
+
+      @target = shell {
+        menu_bar {
+          menu {
+            @menu_item = menu_item(:radio) {
+              text 'Smoker'
+              enabled bind(person, :adult)
+            }
+          }
+        }
+      }
+
+      expect(@menu_item.swt_widget.getEnabled).to eq(false)
+
+      person.adult = true
+      expect(@menu_item.swt_widget.getEnabled).to eq(true)
+
+      @menu_item.swt_widget.setEnabled(false)
+      @menu_item.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)
+      expect(person.adult).to eq(true)
     end
 
     context 'focus' do
