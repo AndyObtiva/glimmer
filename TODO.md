@@ -74,7 +74,6 @@ bind_content(model, 'addresses').each { |address|
 - Support reading Bundler Gemfile in glimmer command if available
 - Support question mark ending data-binding properties
 - consider detecting type on widget property method and automatically invoking right converter (e.g. :to_s for String text property, :to_i for Integer property, etc...)
-- Check into issues of closing a shell and repasting its code in girb
 - Provide girb option to run without including Glimmer. Useful when testing an application that is not a "hello, world!" sort of example
 - Correct attribute/property naming (unify as attributes)
 - Make WidgetProxy and custom widgets proxy method calls to wrapped widget

@@ -4,6 +4,8 @@
 
 - Fix crash issue with data-binding widget properties that are not supported in both directions
 - Fix issue with scaffolding gems not having the right name
+- Fix display of rdoc gem message on every glimmer app run
+- Fix issues in closing a shell in girb
 - Make shell auto-activate on show with 0.25 delay 
 - Support bidirectional data-binding of menu item selection (e.g. radio menu item)
 - Override inspect on Observables to avoid getting frozen while printing very long messages on logging/error-raising
