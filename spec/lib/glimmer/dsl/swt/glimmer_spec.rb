@@ -313,13 +313,30 @@ module GlimmerSpec
 
     it "tests shell_containing_undefined_command" do
       @target = shell {
-        expect do
+        expect {
           undefined_command(:undefined_parameter) {
           }
-        end.to raise_error(NoMethodError)
+        }.to raise_error(NoMethodError)
       }
     end
 
+    it "tests shell with invalid parent" do
+      @target = shell {
+        button {
+          expect {
+            shell
+          }.to raise_error(Glimmer::Error)
+        }
+      }
+    end
+
+    it "tests shell with valid shell parent" do
+      @target = shell {
+        @nested_shell = shell
+      }
+
+      expect(@nested_shell).to be_a(Glimmer::SWT::ShellProxy)
+    end
 
     it 'sets background image via image path' do
       @target = shell {

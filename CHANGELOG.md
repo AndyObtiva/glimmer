@@ -9,6 +9,7 @@
 - Make shell auto-activate on show with 0.25 delay 
 - Support bidirectional data-binding of menu item selection (e.g. radio menu item)
 - Override inspect on Observables to avoid getting frozen while printing very long messages on logging/error-raising
+- Added validation for shell widget parentage (being a shell or nil) in shell expression
 
 ## 0.7.0
 

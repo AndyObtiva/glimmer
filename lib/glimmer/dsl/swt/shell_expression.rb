@@ -9,6 +9,11 @@ module Glimmer
       class ShellExpression < StaticExpression
         include TopLevelExpression
         include ParentExpression
+
+        def can_interpret?(parent, keyword, *args, &block)
+          keyword == 'shell' and
+            (parent.nil? or parent.is_a?(Glimmer::SWT::ShellProxy))
+        end
   
         def interpret(parent, keyword, *args, &block)
           args = [parent] + args unless parent.nil?
