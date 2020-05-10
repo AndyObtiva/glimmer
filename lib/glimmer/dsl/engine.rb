@@ -49,7 +49,9 @@ module Glimmer
     
         # Resets Glimmer's engine activity and configuration. Useful in rspec before or after blocks in tests.
         def reset
-          parent_stack.clear
+          parent_stacks.values.each do |a_parent_stack|
+            a_parent_stack.clear
+          end
           dsl_stack.clear
           disabled_dsls.clear
         end
@@ -96,7 +98,8 @@ module Glimmer
               if retrieved_static_expression.nil? && Glimmer::DSL::Engine.dsl && (static_expression_dsl.nil? || !Glimmer::DSL::Engine.static_expressions[keyword][static_expression_dsl].is_a?(TopLevelExpression))
                 begin
                   return Glimmer::DSL::Engine.interpret(keyword, *args, &block)
-                rescue => e 
+                rescue => e
+                  Glimmer::DSL::Engine.reset
                   raise e if static_expression_dsl.nil?
                 end
               end
@@ -113,7 +116,8 @@ module Glimmer
                 end
               end
             rescue => e
-              Glimmer::DSL::Engine.dsl_stack.pop
+#               Glimmer::DSL::Engine.dsl_stack.pop
+                Glimmer::DSL::Engine.reset
               raise e
             end
           end
@@ -138,7 +142,8 @@ module Glimmer
             dsl_stack.pop
           end
         rescue => e
-          dsl_stack.pop
+#           dsl_stack.pop
+          reset
           raise e
         end
 
