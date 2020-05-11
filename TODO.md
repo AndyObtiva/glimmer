@@ -88,6 +88,7 @@ bind_content(model, 'addresses').each { |address|
 - Extract XML DSL into its own glimmer-dsl-xml gem
 - Extract CSS DSL into its own glimmer-dsl-css gem
 - Log to SysLog using this gem: https://www.rubydoc.info/gems/syslog-logger/1.6.8
+- Implement Glimmer#respond_to? to accommodate method_missing
 
 ## Samples
 
@@ -110,3 +111,4 @@ bind_content(model, 'addresses').each { |address|
 - Document on_ SWT event listeners for events declared on SWT constant like show and hide
 - Document Glimmer DSL in full detail by generating translated documentation from SWT API (write a program) and adding to it
 - Document how to use Glimmer as the View layer only of a Java app rebuilding tic tac toe following that kind of application architecture.
+- Document how to prototype UI using girb
