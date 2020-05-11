@@ -7,10 +7,10 @@
 - Fix display of rdoc gem message on every glimmer app run
 - Fix issues in closing a shell in girb
 - Fix issue with Glimmer not clearing DSL Engine parent stacks when DSL interpretation raises exception
-- Make shell auto-activate on show with 0.25 delay 
+- Fix freezing issue upon logging observables and raising observable errors by overriding inspect on Observable to avoid printing nested tree of observers
+- Added validation for shell widget parentage (accepting a shell or nil) in shell expression
 - Support bidirectional data-binding of menu item selection (e.g. radio menu item)
-- Override inspect on Observables to avoid getting frozen while printing very long messages on logging/error-raising
-- Added validation for shell widget parentage (being a shell or nil) in shell expression
+- Make shell auto-activate on show with 0.25 delay 
 
 ## 0.7.0
 
