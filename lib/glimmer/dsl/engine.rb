@@ -100,7 +100,7 @@ module Glimmer
                   return Glimmer::DSL::Engine.interpret(keyword, *args, &block)
                 rescue => e
                   Glimmer::DSL::Engine.reset
-                  raise e if static_expression_dsl.nil?
+                  raise e if static_expression_dsl.nil? || !Glimmer::DSL::Engine.static_expressions[keyword][static_expression_dsl].is_a?(TopLevelExpression)
                 end
               end
               raise Glimmer::Error, "Unsupported keyword: #{keyword}" unless static_expression_dsl || retrieved_static_expression
