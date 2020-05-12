@@ -203,10 +203,9 @@ module Glimmer
       end
 
       def evaluate_property
-        unless model.nil?
-          value = invoke_property_reader(model, property_name)
-          convert_on_read(value)        
-        end
+        value = nil        
+        value = invoke_property_reader(model, property_name) unless model.nil?
+        convert_on_read(value)
       end
 
       def evaluate_options_property

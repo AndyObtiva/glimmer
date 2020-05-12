@@ -1,4 +1,4 @@
-# Glimmer 0.7.1 Beta (JRuby Desktop UI DSL + Data-Binding)
+# Glimmer 0.7.2 Beta (JRuby Desktop UI DSL + Data-Binding)
 [![Gem Version](https://badge.fury.io/rb/glimmer.svg)](http://badge.fury.io/rb/glimmer)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master)
 
@@ -71,7 +71,7 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
 ## Table of Contents
 
 <!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
-- [Glimmer 0.7.1 Beta (JRuby Desktop UI DSL + Data-Binding)](#glimmer-058-beta-jruby-desktop-ui-dsl--data-binding)
+- [Glimmer 0.7.2 Beta (JRuby Desktop UI DSL + Data-Binding)](#glimmer-058-beta-jruby-desktop-ui-dsl--data-binding)
   - [Examples](#examples)
     - [Hello World](#hello-world)
     - [Tic Tac Toe](#tic-tac-toe)
@@ -164,7 +164,7 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.7.1
+jgem install glimmer -v 0.7.2
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -175,7 +175,7 @@ Otherwise, you may also run `jruby -S gem install ...`
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.7.1'
+gem 'glimmer', '~> 0.7.2'
 ```
 
 And, then run:

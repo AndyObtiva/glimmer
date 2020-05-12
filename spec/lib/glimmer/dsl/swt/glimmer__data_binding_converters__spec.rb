@@ -6,7 +6,7 @@ module GlimmerSpec
 
     before(:all) do
       class Person
-        attr_accessor :name, :age
+        attr_accessor :name, :age, :spouse
       end
     end
 
@@ -150,6 +150,38 @@ module GlimmerSpec
 
       person.name = 'Johnny Francone'
       expect(@text.swt_widget.getText).to eq('Johnny')
+    end
+
+    it "converts nil value on read from model" do
+      person = Person.new
+      person.name = 'John'
+      spouse = Person.new
+      spouse.name = 'Mary'
+      person.spouse = spouse
+
+      @target = shell {
+        composite {
+          @text = text {
+            text bind(person, :name) {|n| n.nil? ? 'ANONYMOUS' : n.upcase}
+          }
+          @text2 = text {
+            text bind(person, 'spouse.name') {|n| n.nil? ? 'ANONYMOUS' : n.upcase}
+          }
+        }
+      }
+
+      expect(@text.swt_widget.getText).to eq('JOHN')
+      expect(@text2.swt_widget.getText).to eq('MARY')
+
+      person.name = 'Johnny'
+      expect(@text.swt_widget.getText).to eq('JOHNNY')
+      spouse.name = 'Marianne'
+      expect(@text2.swt_widget.getText).to eq('MARIANNE')
+
+      person.name = nil
+      expect(@text.swt_widget.getText).to eq('ANONYMOUS')
+      person.spouse = nil
+      expect(@text2.swt_widget.getText).to eq('ANONYMOUS')
     end
 
     it "converts value on read and write from model via value method symbols" do
