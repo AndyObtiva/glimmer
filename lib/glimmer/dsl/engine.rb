@@ -153,12 +153,13 @@ module Glimmer
         #
         # For example, a shell widget would get properties set and children added
         def add_content(parent, expression, &block)
-          time = Time.now.to_f
-          dsl_stack.push(expression.class.dsl)
-          parent_stack.push(parent) if expression.is_a?(ParentExpression)
-          expression.add_content(parent, &block) if block_given?
-          parent_stack.pop if expression.is_a?(ParentExpression)
-          dsl_stack.pop
+          if block_given? && expression.is_a?(ParentExpression)
+            dsl_stack.push(expression.class.dsl)
+            parent_stack.push(parent) 
+            expression.add_content(parent, &block)
+            parent_stack.pop
+            dsl_stack.pop
+          end
         end
 
         # Current parent while evaluating Glimmer DSL (nil if just started or done evaluatiing)
