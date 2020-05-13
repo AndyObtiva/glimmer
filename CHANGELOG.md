@@ -3,6 +3,7 @@
 ## 0.7.2
 
 - Fix issue with data binding a nested value with an on_read converter block not getting triggered if model value was nil
+- Fix issue with glimmer command triggered rake tasks not honoring glimmer application local Rakefile settings
 
 ## 0.7.1
 

@@ -3,6 +3,8 @@ require 'rake'
 
 require_relative 'rake_task'
 
+load File.expand_path('./Rakefile') if File.exist?(File.expand_path('./Rakefile'))
+
 module Glimmer
   class Launcher
     OPERATING_SYSTEMS_SUPPORTED = ["mac", "windows", "linux"]

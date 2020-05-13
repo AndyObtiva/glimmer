@@ -4,7 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Fix issue with triggering rake task through glimmer command not honoring Rakefile settings
 
 ## Side Project (opal-spike branch)
 
