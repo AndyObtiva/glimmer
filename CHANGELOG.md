@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.7.3
+
+- Fix issue with rake tasks getting included twice
+
 ## 0.7.2
 
 - Fix issue with data binding a nested value with an on_read converter block not getting triggered if model value was nil

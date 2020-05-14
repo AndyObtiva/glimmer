@@ -3,8 +3,6 @@ require 'rake'
 
 require_relative 'rake_task'
 
-load File.expand_path('./Rakefile') if File.exist?(File.expand_path('./Rakefile'))
-
 module Glimmer
   class Launcher
     OPERATING_SYSTEMS_SUPPORTED = ["mac", "windows", "linux"]
@@ -137,6 +135,7 @@ module Glimmer
     private
 
     def launch_application
+      load File.expand_path('./Rakefile') if File.exist?(File.expand_path('./Rakefile'))
       threads = @application_paths.map do |application_path|
         Thread.new do
           self.class.launch(
