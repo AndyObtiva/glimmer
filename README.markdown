@@ -6,7 +6,7 @@ Glimmer is a native-UI cross-platform desktop development library written in Rub
 
 ## Examples
 
-### Hello World
+### Hello, World!
 
 Glimmer code (from `samples/hello/hello_world.rb`):
 ```ruby
