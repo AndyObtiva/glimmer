@@ -20,33 +20,39 @@ module Glimmer
       alias opened_before? opened_before
 
       # Instantiates ShellProxy with same arguments expected by SWT Shell
-      def initialize(*args)
-        if args.first.is_a?(ShellProxy)
-          args[0] = args[0].swt_widget
-        end
-        style_args = args.select {|arg| arg.is_a?(Symbol) || arg.is_a?(String)}
-        if style_args.any?
-          style_arg_start_index = args.index(style_args.first)
-          style_arg_last_index = args.index(style_args.last)
-          args[style_arg_start_index..style_arg_last_index] = SWTProxy[style_args]
-        end
-        if args.first.nil? || (!args.first.is_a?(Display) && !args.first.is_a?(Shell))
-          @display = DisplayProxy.instance.swt_display
-          args = [@display] + args
-        end
-        args = args.compact
-        @swt_widget = Shell.new(*args)
-        @display ||= @swt_widget.getDisplay
-        @swt_widget.setLayout(FillLayout.new)
-        @swt_widget.setMinimumSize(WIDTH_MIN, HEIGHT_MIN)
-        on_event_show do
-          Thread.new do      
-            sleep(0.25)
-            async_exec do
-              @swt_widget.setActive
+      # if swt_widget keyword arg was passed, then it is assumed the shell has already been instantiated
+      # and the proxy wraps it instead of creating a new one.
+      def initialize(*args, swt_widget: nil)
+        if swt_widget
+          @swt_widget = swt_widget
+        else
+          if args.first.is_a?(ShellProxy)
+            args[0] = args[0].swt_widget
+          end
+          style_args = args.select {|arg| arg.is_a?(Symbol) || arg.is_a?(String)}
+          if style_args.any?
+            style_arg_start_index = args.index(style_args.first)
+            style_arg_last_index = args.index(style_args.last)
+            args[style_arg_start_index..style_arg_last_index] = SWTProxy[style_args]
+          end
+          if args.first.nil? || (!args.first.is_a?(Display) && !args.first.is_a?(Shell))
+            @display = DisplayProxy.instance.swt_display
+            args = [@display] + args
+          end
+          args = args.compact
+          @swt_widget = Shell.new(*args)
+          @swt_widget.setLayout(FillLayout.new)
+          @swt_widget.setMinimumSize(WIDTH_MIN, HEIGHT_MIN)
+          on_event_show do
+            Thread.new do      
+              sleep(0.25)
+              async_exec do
+                @swt_widget.setActive
+              end
             end
           end
         end
+        @display ||= @swt_widget.getDisplay
       end
 
       # Centers shell within monitor it is in
@@ -103,7 +109,7 @@ module Glimmer
           @swt_widget.setSize(bounds.width, bounds.height)
           @swt_widget.setLocation(bounds.x, bounds.y)
         }
-        @swt_widget.pack
+        @swt_widget.layout(true, true)
         @swt_widget.removeControlListener(listener.swt_listener)
         @swt_widget.setMinimumSize(minimum_size)
       end

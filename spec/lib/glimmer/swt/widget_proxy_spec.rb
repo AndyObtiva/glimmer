@@ -69,5 +69,55 @@ module GlimmerSpec
         end
       end
     end
+
+    describe '#pack_same_size' do
+      it 'packs composite widget content while maintaining the same size despite child text widget needing more space with more content' do
+        @target = shell {
+          alpha 0 # keep invisible while running specs
+          grid_layout 1, false
+          @composite = composite {
+            @text = text {
+              layout_data :fill, :fill, true, true
+              text 'A'
+            }
+          }
+        }
+
+        @target.pack
+
+        text_width = @text.swt_widget.getSize.x
+        composite_width = @composite.swt_widget.getSize.x
+        shell_width = @target.swt_widget.getSize.x
+
+        @text.swt_widget.setText('A very long text it cannot fit in the screen if you keep reading on' + ' and on'*60)
+        @composite.pack_same_size
+
+        expect(@text.swt_widget.getSize.x).to eq(text_width)
+        expect(@composite.swt_widget.getSize.x).to eq(composite_width)
+        expect(@target.swt_widget.getSize.x).to eq(shell_width)
+      end
+      it 'packs text widget content while maintaining the same size despite needing more space with more content' do
+        @target = shell {
+          alpha 0 # keep invisible while running specs
+          grid_layout 1, false
+          @text = text {
+            layout_data :fill, :fill, true, true
+            text 'A'
+          }
+        }
+
+        @target.pack
+
+        text_width = @text.swt_widget.getSize.x
+        shell_width = @target.swt_widget.getSize.x
+
+        @text.swt_widget.setText('A very long text it cannot fit in the screen if you keep reading on' + ' and on'*60)
+        @text.pack_same_size
+
+        expect(@text.swt_widget.getSize.x).to eq(text_width)
+        expect(@target.swt_widget.getSize.x).to eq(shell_width)
+      end
+    end
+
   end
 end

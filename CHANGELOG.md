@@ -3,6 +3,8 @@
 ## 0.7.3
 
 - Fix issue with rake tasks getting included twice
+- Fix pack_same_size for shell_proxy
+- Add pack_same_size to widget_proxy similar to that of shell_proxy
 
 ## 0.7.2
 

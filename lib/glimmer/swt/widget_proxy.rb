@@ -102,6 +102,20 @@ module Glimmer
         end
       end
 
+      def pack_same_size
+        bounds = @swt_widget.getBounds
+        listener = on_control_resized {
+          @swt_widget.setSize(bounds.width, bounds.height)
+          @swt_widget.setLocation(bounds.x, bounds.y)
+        }
+        if @swt_widget.is_a?(Composite)
+          @swt_widget.layout(true, true)
+        else
+          @swt_widget.pack(true)
+        end
+        @swt_widget.removeControlListener(listener.swt_listener)
+      end
+
       def widget_property_listener_installers
         @swt_widget_property_listener_installers ||= {
           Java::OrgEclipseSwtWidgets::Control => {
