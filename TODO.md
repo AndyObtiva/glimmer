@@ -4,6 +4,8 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
+- Have tree data-binding auto-embed models as tree item data
+- Support read-only data-binding
 - Make scaffolded apps launch from bin file not app file
 
 ## Side Project (opal-spike branch)
@@ -55,7 +57,8 @@ bind_content(model, 'addresses').each { |address|
 ## Technical Tasks
 
 - Support Tree databinding in the other direction (from tree update to model)
-- Improve tree databinding so that replacing content array value still updates the tree (instead of clearing and readding elements)
+- Improve tree databinding so that replacing content array value updates the tree (instead of clearing and rereading elements)
+- Support Tree selection databinding (just like List)
 - Figure out what is missing from table databinding (bidirectional?)
 - Explore rewriting shine with Ruby 2 support
 - Consider need for a startup progress dialog (with Glimmer branding)
@@ -98,6 +101,7 @@ end
 task :hello do
   puts 'my friend'
 end
+- Support data-binding shell size and location
 
 ## Samples
 

@@ -17,7 +17,13 @@ module Glimmer
         end
   
         def interpret(parent, keyword, *args, &block)
-          Glimmer::SWT::WidgetProxy.new(keyword, parent, args)
+          begin
+            class_name = "#{keyword.camelcase(:upper)}Proxy".to_sym
+            widget_class = Glimmer::SWT.const_get(class_name)
+          rescue
+            widget_class = Glimmer::SWT::WidgetProxy
+          end
+          widget_class.new(keyword, parent, args)
         end
       end
     end
@@ -25,3 +31,4 @@ module Glimmer
 end
 
 require 'glimmer/swt/widget_proxy'
+require 'glimmer/swt/tree_proxy'

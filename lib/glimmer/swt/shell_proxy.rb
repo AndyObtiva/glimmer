@@ -102,15 +102,12 @@ module Glimmer
       end
 
       def pack_same_size
-        minimum_size = @swt_widget.getMinimumSize
         bounds = @swt_widget.getBounds
         width = @swt_widget.getBounds.width
         height = @swt_widget.getBounds.height
         x = @swt_widget.getBounds.x
         y = @swt_widget.getBounds.y
-        @swt_widget.setMinimumSize(bounds.width, bounds.height)
         @swt_widget.pack
-        @swt_widget.setMinimumSize(minimum_size)
         @swt_widget.setSize(width, height)
         @swt_widget.setLocation(x, y)
       end
