@@ -4,7 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Have tree data-binding auto-embed models as tree item data
 - Support read-only data-binding
 - Make scaffolded apps launch from bin file not app file
 

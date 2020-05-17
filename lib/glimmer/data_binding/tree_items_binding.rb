@@ -41,6 +41,7 @@ module Glimmer
 
       def populate_tree_node(model_tree_node, parent, tree_properties)
         table_item = TreeItem.new(parent, SWT::SWTProxy[:none])
+        table_item.setData(model_tree_node)
         table_item.setText((model_tree_node && model_tree_node.send(tree_properties[:text])).to_s)
         [model_tree_node && model_tree_node.send(tree_properties[:children])].flatten.to_a.compact.each do |child|
           observe(child, @tree_properties[:text])

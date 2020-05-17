@@ -194,5 +194,43 @@ module GlimmerSpec
       expect(node1.getText()).to eq("Bruce Ting")
       expect(node2.getText()).to eq("Julia Fang")
     end
+
+    it 'stores models as tree item data' do
+      person1 = Manager.new
+      person1.name = 'Sean'
+
+      person2 = Manager.new
+      person2.name = 'Chuck'
+
+      person3 = Manager.new
+      person3.name = 'Mark'
+      person4 = Manager.new
+      person4.name = 'Derrick'
+
+      person2.people = [person3, person4]
+
+      person1.people = [person2]
+
+      company1 = Company.new
+      company1.owner = person1
+
+      @target = shell {
+        @tree = tree {
+          items bind(company1, :owner), tree_properties(children: :people, text: :name)
+        }
+      }
+
+      person1_tree_item = @tree.swt_widget.getItems.first
+      expect(person1_tree_item.getData).to eq(person1)
+
+      person2_tree_item = person1_tree_item.getItems.first
+      expect(person2_tree_item.getData).to eq(person2)
+
+      person3_tree_item = person2_tree_item.getItems.first
+      expect(person3_tree_item.getData).to eq(person3)
+      
+      person4_tree_item = person2_tree_item.getItems.last
+      expect(person4_tree_item.getData).to eq(person4)      
+    end
   end
 end
