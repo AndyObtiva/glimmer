@@ -3,18 +3,21 @@ require 'glimmer/swt/widget_proxy'
 module Glimmer
   module SWT
     class TreeProxy < Glimmer::SWT::WidgetProxy
-      def select(text:)
-        depth_first_search = lambda do |tree_item, found|
-          found << tree_item if tree_item.getText == text
-          tree_item.getItems.each do |child_tree_item|
-            depth_first_search.call(child_tree_item, found)
-          end
-        end
-
+      # Performs depth first search for tree items matching block condition
+      # Returns a Java TreeItem array to easily set as selection on org.eclipse.swt.Tree when needed
+      def depth_first_search(&condition)
         found = []
-        depth_first_search.call(swt_widget.getItems.first, found)
-        
-        swt_widget.setSelection(found.to_java(TreeItem))
+        recursive_depth_first_search(swt_widget.getItems.first, found, &condition)
+        found.to_java(TreeItem)
+      end
+
+      private
+
+      def recursive_depth_first_search(tree_item, found, &condition)
+        found << tree_item if condition.nil? || condition.call(tree_item)
+        tree_item.getItems.each do |child_tree_item|
+          recursive_depth_first_search(child_tree_item, found, &condition)
+        end
       end
     end
   end
