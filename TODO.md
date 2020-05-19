@@ -4,8 +4,9 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Support read-only data-binding
+- Support built-in Tree editing (e.g. renaming file nodes, adding new nodes)
 - Make scaffolded apps launch from bin file not app file
+- Make scaffolded custom shells launchable as standalone apps too
 
 ## Side Project (opal-spike branch)
 
@@ -14,12 +15,12 @@ Here is a list of tasks to do (please delete once done):
 
 ## Soon
 
+- DSL syntax for dialogs
 - DSL syntax for MessageBox
 message_box {
   text 'Red Label'
   message 'This is a red label'
 }.open
-- DSL syntax for dialogs
 - Support publishing a Glimmer app for Windows (exe file)
 - Support publishing a Glimmer app for Linux
 (https://github.com/jruby/jruby/wiki/StandaloneJarsAndClasses - https://github.com/jruby/warbler - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/packager.html )
@@ -55,7 +56,6 @@ bind_content(model, 'addresses').each { |address|
 
 ## Technical Tasks
 
-- Support Tree databinding in the other direction (from tree update to model)
 - Improve tree databinding so that replacing content array value updates the tree (instead of clearing and rereading elements)
 - Support Tree selection databinding (just like List)
 - Figure out what is missing from table databinding (bidirectional?)

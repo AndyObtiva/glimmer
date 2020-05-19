@@ -348,7 +348,7 @@ module GlimmerSpec
           menu {
             @menu_item = menu_item(:radio) {
               text 'Adult'
-              selection bind(person, :age, on_write: lambda {|v| person.age}) {|a| a >= 18}
+              selection bind(person, :age, read_only: true) {|a| a >= 18}
             }
           }
         }

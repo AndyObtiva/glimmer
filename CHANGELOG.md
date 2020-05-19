@@ -7,6 +7,7 @@
 - Add pack_same_size to widget_proxy similar to that of shell_proxy
 - Have tree data-binding auto-embed models as tree item data
 - TreeProxy#depth_first_search implementation
+- Support read-only data-binding
 
 ## 0.7.2
 
