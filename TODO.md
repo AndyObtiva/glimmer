@@ -5,6 +5,8 @@ Here is a list of tasks to do (please delete once done):
 ## Up Next
 
 - Support built-in Tree editing (e.g. renaming file nodes, adding new nodes)
+- Support Tree selection databinding (just like List)
+- Make :virtual a default tree SWT style
 - Make scaffolded apps launch from bin file not app file
 - Make scaffolded custom shells launchable as standalone apps too
 
@@ -49,6 +51,7 @@ bind_content(model, 'addresses').each { |address|
 - Scroll bar listener support
 - Web Support (e.g. via Opal?)
 - Make Glimmer defaults configurable
+- Extract FileTree Glimmer Custom widget from Gladiator
 
 ## Issues
 
@@ -57,7 +60,6 @@ bind_content(model, 'addresses').each { |address|
 ## Technical Tasks
 
 - Improve tree databinding so that replacing content array value updates the tree (instead of clearing and rereading elements)
-- Support Tree selection databinding (just like List)
 - Figure out what is missing from table databinding (bidirectional?)
 - Explore rewriting shine with Ruby 2 support
 - Consider need for a startup progress dialog (with Glimmer branding)
