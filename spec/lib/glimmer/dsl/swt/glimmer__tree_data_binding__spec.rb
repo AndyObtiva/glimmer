@@ -102,7 +102,7 @@ module GlimmerSpec
 
       manager.name = "Tim Lee Harkins"
 
-      root_node = @tree.swt_widget.getItems[0]
+      root_node = @tree.swt_widget.getItems.first
       expect(root_node.getText()).to eq("Tim Lee Harkins")
       root_node_nested_indexed = @tree_nested_indexed.swt_widget.getItems[0]
       expect(root_node_nested_indexed.getText()).to eq("Tim Lee Harkins")
@@ -124,8 +124,9 @@ module GlimmerSpec
       person3.age = 37
       person3.adult = true
 
+      old_people = manager.people.clone
+
       manager.people << person3
-      manager.people = manager.people
 
       root_node = @tree.swt_widget.getItems.first
       expect(root_node.getItems.size).to eq(3)
@@ -135,7 +136,28 @@ module GlimmerSpec
       expect(root_node_nested_indexed.getItems.size).to eq(3)
       node3_nested_indexed = root_node_nested_indexed.getItems.last
       expect(node3_nested_indexed.getText()).to eq("Bob David Kennith")
+      
+      manager.people = old_people
+      
+      root_node = @tree.swt_widget.getItems.first
+      expect(root_node.getItems.size).to eq(2)
+      expect(root_node.getText()).to eq("Tim Lee Harkins")
+      root_node_nested_indexed = @tree_nested_indexed.swt_widget.getItems[0]
+      expect(root_node_nested_indexed.getText()).to eq("Tim Lee Harkins")
 
+      person1.name = "Bruce A. Ting"
+      node1 = @tree.swt_widget.getItems.first.getItems.first
+      expect(node1.getText()).to eq("Bruce A. Ting")
+      node1_nested_indexed = @tree_nested_indexed.swt_widget.getItems.first.getItems.first
+      expect(node1_nested_indexed.getText()).to eq("Bruce A. Ting")
+
+      person2.name = "Julia Katherine Fang"
+      node2 = @tree.swt_widget.getItems.first.getItems.last
+      expect(node2.getText()).to eq("Julia Katherine Fang")
+      node2_nested_indexed = @tree_nested_indexed.swt_widget.getItems.first.getItems.last
+      expect(node2_nested_indexed.getText()).to eq("Julia Katherine Fang")
+
+      manager.people << person3
       manager.people.delete_at(0)
 
       root_node = @tree.swt_widget.getItems.first
