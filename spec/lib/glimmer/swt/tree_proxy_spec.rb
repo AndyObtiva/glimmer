@@ -6,21 +6,12 @@ module GlimmerSpec
 
     before(:all) do
       class Person
-        attr_accessor :name
+        attr_accessor :name, :coworkers
 
         def initialize(name)
           @name = name
+          @coworkers = []
         end
-
-      end
-
-      class Manager < Person
-        def initialize(name)
-          super
-          @people = []
-        end
-
-        attr_accessor :people
       end
 
       class Company
@@ -35,7 +26,6 @@ module GlimmerSpec
     after(:all) do
       %w[
         Person
-        Manager
         Company
       ].each do |constant|
         Object.send(:remove_const, constant) if Object.const_defined?(constant)
@@ -54,22 +44,22 @@ module GlimmerSpec
     end
 
     describe '#depth_first_search' do
-      let(:person4) {Manager.new('Mark')}
-      let(:person5) {Manager.new('Derrick')}
+      let(:person4) {Person.new('Mark')}
+      let(:person5) {Person.new('Derrick')}
       let(:person2) do 
-        Manager.new('Chuck').tap do |person|
-          person.people = [person4, person5]
+        Person.new('Chuck').tap do |person|
+          person.coworkers = [person4, person5]
         end
       end
-      let(:person6) { Manager.new('Juana') }
+      let(:person6) { Person.new('Juana') }
       let(:person3) do
-        Manager.new('John').tap do |person|
-          person.people = [person6]
+        Person.new('John').tap do |person|
+          person.coworkers = [person6]
         end
       end
       let(:person1) do 
-        Manager.new('Sean').tap do |person|
-          person.people = [person2, person3]
+        Person.new('Sean').tap do |person|
+          person.coworkers = [person2, person3]
         end
       end
       let(:company1) do 
@@ -81,7 +71,7 @@ module GlimmerSpec
       before do
         @target = shell {
           @tree = tree {
-            items bind(company1, :owner), tree_properties(children: :people, text: :name)
+            items bind(company1, :owner), tree_properties(children: :coworkers, text: :name)
           }
         }
       end
