@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'spec_helper'
 
 module GlimmerSpec
   describe "Glimmer Tree Data Binding" do
@@ -6,15 +6,15 @@ module GlimmerSpec
 
     before(:all) do
       class Person
-        attr_accessor :name, :age, :adult, :people
+        attr_accessor :name, :age, :adult, :coworkers
       end
 
       class Manager < Person
         def initialize
-          @people = []
+          @coworkers = []
         end
 
-        attr_accessor :people
+        attr_accessor :coworkers
       end
 
       class Company
@@ -70,8 +70,8 @@ module GlimmerSpec
       manager.name = "Tim Harkins"
       manager.age = 79
       manager.adult = true
-      manager.people << person1
-      manager.people << person2
+      manager.coworkers << person1
+      manager.coworkers << person2
 
       company = Company.new
       company.owner = manager
@@ -82,18 +82,16 @@ module GlimmerSpec
       @target = shell {
       
       # TODO make this modification to test data-binding in the other direction (from view to model)
-#         @tree = tree(:virtual, :border, :edit_on_single_clickd) {
-#           items bind(company, :owner), tree_properties(children: :people, text: :name)
+#         @tree = tree(:virtual, :border, :edit_on_single_click) {
+#           items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
 #           on_tree_item_edit {|tree_item|
 #             do something
-#           }
-#           on_mouse_up {
-#             @tree.edit_selected_tree_item
 #           }
 #         }
       
         @tree = tree(:virtual, :border) {
-          items bind(company, :owner), tree_properties(children: :people, text: :name)
+          items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
+#           selection bind(coworkers_presenter, :selected_person) # TODO implement
         }
       }
 
@@ -126,16 +124,16 @@ module GlimmerSpec
       person3.age = 37
       person3.adult = true
 
-      old_people = manager.people.clone
+      old_coworkers = manager.coworkers.clone
 
-      manager.people << person3
+      manager.coworkers << person3
 
       root_node = @tree.swt_widget.getItems.first
       expect(root_node.getItems.size).to eq(3)
       node3 = root_node.getItems.last
       expect(node3.getText()).to eq("Bob David Kennith")
       
-      manager.people = old_people
+      manager.coworkers = old_coworkers
       
       root_node = @tree.swt_widget.getItems.first
       expect(root_node.getItems.size).to eq(2)
@@ -149,8 +147,8 @@ module GlimmerSpec
       node2 = @tree.swt_widget.getItems.first.getItems.last
       expect(node2.getText()).to eq("Julia Katherine Fang")
 
-      manager.people << person3
-      manager.people.delete_at(0)
+      manager.coworkers << person3
+      manager.coworkers.delete_at(0)
 
       root_node = @tree.swt_widget.getItems.first
       expect(root_node.getItems.size).to eq(2)
@@ -158,7 +156,15 @@ module GlimmerSpec
       node2 = root_node.getItems.last
       expect(node1.getText()).to eq("Julia Katherine Fang")
       expect(node2.getText()).to eq("Bob David Kennith")
+      
+      
+#       @tree.depth_first_search {|ti| ti.getData
+#       @tree.edit_selected_tree_item
+#       text_widget = @tree.swt_widget.getChildren.detect {|child| child.is_a?(Text)
+#       expect(text_widget).to_not be_nil
     end
+    
+    #TODO test case when no tree item is selected to edit
     
     it "data binds tree widget to an indexed string property" do
       person1 = Person.new
@@ -175,8 +181,8 @@ module GlimmerSpec
       manager.name = "Tim Harkins"
       manager.age = 79
       manager.adult = true
-      manager.people << person1
-      manager.people << person2
+      manager.coworkers << person1
+      manager.coworkers << person2
 
       company = Company.new
       company.owner = manager
@@ -186,7 +192,7 @@ module GlimmerSpec
 
       @target = shell {
         @tree_nested_indexed = tree(:virtual, :border) {
-          items bind(company_group, "companies[0].owner"), tree_properties(children: :people, text: :name)
+          items bind(company_group, "companies[0].owner"), tree_properties(children: :coworkers, text: :name)
         }
       }
 
@@ -210,16 +216,16 @@ module GlimmerSpec
       person3.age = 37
       person3.adult = true
 
-      old_people = manager.people.clone
+      old_coworkers = manager.coworkers.clone
 
-      manager.people << person3
+      manager.coworkers << person3
 
       root_node_nested_indexed = @tree_nested_indexed.swt_widget.getItems.first
       expect(root_node_nested_indexed.getItems.size).to eq(3)
       node3_nested_indexed = root_node_nested_indexed.getItems.last
       expect(node3_nested_indexed.getText()).to eq("Bob David Kennith")
       
-      manager.people = old_people
+      manager.coworkers = old_coworkers
       
       root_node_nested_indexed = @tree_nested_indexed.swt_widget.getItems[0]
       expect(root_node_nested_indexed.getText()).to eq("Tim Lee Harkins")
@@ -232,8 +238,8 @@ module GlimmerSpec
       node2_nested_indexed = @tree_nested_indexed.swt_widget.getItems.first.getItems.last
       expect(node2_nested_indexed.getText()).to eq("Julia Katherine Fang")
 
-      manager.people << person3
-      manager.people.delete_at(0)
+      manager.coworkers << person3
+      manager.coworkers.delete_at(0)
 
       root_node_nested_indexed = @tree_nested_indexed.swt_widget.getItems.first
       expect(root_node_nested_indexed.getItems.size).to eq(2)
@@ -258,8 +264,8 @@ module GlimmerSpec
       manager.name = "Tim Harkins"
       manager.age = 79
       manager.adult = true
-      manager.people << person1
-      manager.people << person2
+      manager.coworkers << person1
+      manager.coworkers << person2
 
       company = Company.new
       company.owner = manager
@@ -269,7 +275,7 @@ module GlimmerSpec
 
       @target = shell {
         @tree = red_tree(:virtual, :border) {
-          items bind(company, :owner), tree_properties(children: :people, text: :name)
+          items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
         }
       }
 
@@ -298,16 +304,16 @@ module GlimmerSpec
       person4 = Manager.new
       person4.name = 'Derrick'
 
-      person2.people = [person3, person4]
+      person2.coworkers = [person3, person4]
 
-      person1.people = [person2]
+      person1.coworkers = [person2]
 
       company1 = Company.new
       company1.owner = person1
 
       @target = shell {
         @tree = tree {
-          items bind(company1, :owner), tree_properties(children: :people, text: :name)
+          items bind(company1, :owner), tree_properties(children: :coworkers, text: :name)
         }
       }
 
