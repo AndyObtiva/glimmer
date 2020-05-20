@@ -224,6 +224,10 @@ module Glimmer
       def dispose
         body_root.dispose
       end
+      
+      def method_missing(method, *args, &block)
+        body_root.send(method, *args, &block)
+      end
 
       private
 

@@ -4,12 +4,9 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Support built-in Tree editing (e.g. renaming file nodes, adding new nodes)
-- Support Tree selection databinding (just like List)
-- Make :virtual a default tree SWT style
+- Support table single selection databinding
 - Make scaffolded apps launch from bin file not app file
 - Make scaffolded custom shells launchable as standalone apps too
-- Support table single selection databinding
 
 ## Side Project (opal-spike branch)
 
@@ -61,6 +58,7 @@ bind_content(model, 'addresses').each { |address|
 ## Technical Tasks
 
 - Improve tree databinding so that replacing content array value updates the tree (instead of clearing and rereading elements)
+- Maintain tree item expansion on data-binding related changes
 - Support table multi selection databinding
 - Support table cell editing databinding
 - Explore rewriting shine with Ruby 2 support

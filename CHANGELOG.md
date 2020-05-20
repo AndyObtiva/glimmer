@@ -5,6 +5,9 @@
 - Have tree data-binding auto-embed models as tree item data
 - TreeProxy#depth_first_search implementation
 - Support read-only data-binding
+- Make :virtual a default tree SWT style
+- Support Tree selection databinding (just like List)
+- Support built-in Tree editing (i.e. editing tree item text)
 
 ## 0.7.3
 

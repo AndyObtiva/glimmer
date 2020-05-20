@@ -82,10 +82,12 @@ module GlimmerSpec
       end
     end
     
+    let(:selected_coworker) { person2 }
+    
     let(:company) do
       Company.new.tap do |c|
         c.owner = manager
-        c.selected_coworker = person2
+        c.selected_coworker = selected_coworker
       end
     end
     
@@ -305,6 +307,24 @@ module GlimmerSpec
       
       selection = @tree.swt_widget.getSelection
       expect(selection.size).to eq(0)
+      
+      company.selected_coworker = selected_coworker
+      
+      selection = @tree.swt_widget.getSelection
+      expect(selection.size).to eq(1)
+      expect(selection.first.getData).to eq(person2)
+      
+      person3 = Person.new
+      person3.name = "Bob David Kennith"
+      person3.age = 37
+      person3.adult = true
+
+      manager.coworkers << person3
+
+      # test that it maintains selection
+      selection = @tree.swt_widget.getSelection
+      expect(selection.size).to eq(1)
+      expect(selection.first.getData).to eq(person2)      
     end
     
     it "triggers tree widget editing which is done via ENTER key" do
@@ -333,6 +353,11 @@ module GlimmerSpec
       expect(@write_done).to eq(true)
       expect(@cancel_done).to be_nil
       expect(person2.name).to eq('Julie Fan')
+      
+      # test that it maintains selection
+      selection = @tree.swt_widget.getSelection
+      expect(selection.size).to eq(1)
+      expect(selection.first.getData).to eq(person2)            
     end    
     
     it "triggers tree widget editing which is done via focus out" do
@@ -361,6 +386,11 @@ module GlimmerSpec
       expect(@write_done).to eq(true)
       expect(@cancel_done).to be_nil
       expect(person2.name).to eq('Julie Fan')
+      
+      # test that it maintains selection
+      selection = @tree.swt_widget.getSelection
+      expect(selection.size).to eq(1)
+      expect(selection.first.getData).to eq(person2)
     end
     
     it "triggers tree widget editing and cancels by not making a changing and focusing out" do
@@ -387,7 +417,12 @@ module GlimmerSpec
       expect(@write_done).to be_nil
       expect(@cancel_done).to eq(true)
       expect(person2.name).to eq('Julia Fang')
-    end    
+      
+      # test that it maintains selection
+      selection = @tree.swt_widget.getSelection
+      expect(selection.size).to eq(1)
+      expect(selection.first.getData).to eq(person2)
+    end
     
     it "triggers tree widget editing and cancels by hitting escape button after making a change" do
       @target = shell {      
@@ -414,7 +449,12 @@ module GlimmerSpec
       expect(@write_done).to be_nil
       expect(@cancel_done).to eq(true)
       expect(person2.name).to eq('Julia Fang')
-    end    
+      
+      # test that it maintains selection
+      selection = @tree.swt_widget.getSelection
+      expect(selection.size).to eq(1)
+      expect(selection.first.getData).to eq(person2)
+    end
     
   end
 end

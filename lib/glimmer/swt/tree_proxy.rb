@@ -83,6 +83,7 @@ module Glimmer
       private
 
       def recursive_depth_first_search(tree_item, found, &condition)
+        return if tree_item.nil?
         found << tree_item if condition.nil? || condition.call(tree_item)
         tree_item.getItems.each do |child_tree_item|
           recursive_depth_first_search(child_tree_item, found, &condition)

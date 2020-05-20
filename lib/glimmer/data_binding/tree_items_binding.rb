@@ -41,9 +41,11 @@ module Glimmer
 
       def populate_tree(model_tree_root_node, parent, tree_properties)
         # TODO make it change things by delta instead of removing all
-        # TODO make it maintain selection and expansion
+        selected_tree_item_model = parent.swt_widget.getSelection.map(&:getData).first
         parent.swt_widget.removeAll
         populate_tree_node(model_tree_root_node, parent.swt_widget, tree_properties)
+        tree_item_to_select = parent.depth_first_search {|ti| ti.getData == selected_tree_item_model}
+        parent.swt_widget.setSelection(tree_item_to_select)
       end
 
       def populate_tree_node(model_tree_node, parent, tree_properties)
