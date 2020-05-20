@@ -42,6 +42,7 @@ module Glimmer
       def populate_tree(model_tree_root_node, parent, tree_properties)
         # TODO make it change things by delta instead of removing all
         selected_tree_item_model = parent.swt_widget.getSelection.map(&:getData).first
+        # TODO clean all observers when removing all tree items
         parent.swt_widget.removeAll
         populate_tree_node(model_tree_root_node, parent.swt_widget, tree_properties)
         tree_item_to_select = parent.depth_first_search {|ti| ti.getData == selected_tree_item_model}
@@ -55,7 +56,9 @@ module Glimmer
         table_item.setData(model_tree_node)
         table_item.setText((model_tree_node && model_tree_node.send(tree_properties[:text])).to_s)
         [model_tree_node && model_tree_node.send(tree_properties[:children])].flatten.to_a.compact.each do |child|
+          # TODO remove previous observers
           observe(child, @tree_properties[:text])
+          observe(child, @tree_properties[:children])
           populate_tree_node(child, table_item, tree_properties)
         end
       end

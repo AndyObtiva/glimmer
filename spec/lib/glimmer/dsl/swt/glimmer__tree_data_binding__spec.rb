@@ -7,14 +7,14 @@ module GlimmerSpec
     before(:all) do
       class Person
         attr_accessor :name, :age, :adult, :coworkers
-      end
-
-      class Manager < Person
-        attr_accessor :coworkers
         
         def initialize
           @coworkers = []
         end
+      end
+
+      class Manager < Person
+        attr_accessor :coworkers
       end
 
       class Company
@@ -146,6 +146,13 @@ module GlimmerSpec
       expect(root_node.getItems.size).to eq(3)
       node3 = root_node.getItems.last
       expect(node3.getText).to eq("Bob David Kennith")
+      
+      person2.coworkers << person3
+
+      node2 = @tree.swt_widget.getItems.first.getItems[1]
+      expect(node2.getItems.size).to eq(1)
+      node2a = node2.getItems.first
+      expect(node2a.getText).to eq("Bob David Kennith")
       
       manager.coworkers = old_coworkers
       
