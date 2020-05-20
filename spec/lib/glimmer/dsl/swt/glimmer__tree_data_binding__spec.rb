@@ -55,42 +55,50 @@ module GlimmerSpec
         Object.send(:remove_const, constant) if Object.const_defined?(constant)
       end
     end
-
-    it "data binds tree widget to a string property" do
-      person1 = Person.new
-      person1.name = "Bruce Ting"
-      person1.age = 45
-      person1.adult = true
-
-      person2 = Person.new
-      person2.name = "Julia Fang"
-      person2.age = 17
-      person2.adult = false
-
-      manager = Manager.new
-      manager.name = "Tim Harkins"
-      manager.age = 79
-      manager.adult = true
-      manager.coworkers << person1
-      manager.coworkers << person2
-
-      company = Company.new
-      company.owner = manager
-      company.selected_coworker = person2
-
-      company_group = CompanyGroup.new
-      company_group.companies << company
-      
+    
+    let(:person1) do
+      Person.new.tap do |person|
+        person.name = "Bruce Ting"
+        person.age = 45
+        person.adult = true
+      end
+    end
+    
+    let(:person2) do
+      Person.new.tap do |person|
+        person.name = "Julia Fang"
+        person.age = 17
+        person.adult = false
+      end
+    end
+    
+    let(:manager) do
+      Manager.new.tap do |m|
+        m.name = "Tim Harkins"
+        m.age = 79
+        m.adult = true
+        m.coworkers << person1
+        m.coworkers << person2
+      end
+    end
+    
+    let(:company) do
+      Company.new.tap do |c|
+        c.owner = manager
+        c.selected_coworker = person2
+      end
+    end
+    
+    let(:company_group) do
+      CompanyGroup.new.tap do |cg|
+        cg.companies << company
+      end
+    end
+    
+    it "data binds tree widget tree item text to a string property" do
       @target = shell {
-      
-      # TODO make this modification to test data-binding in the other direction (from view to model)
-#         @tree = tree(:virtual, :border, :edit_on_single_click) {
-#           items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
-#         }
-      
         @tree = tree {
           items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
-          selection bind(company, :selected_coworker)
         }
       }
       
@@ -110,28 +118,6 @@ module GlimmerSpec
       expect(node1.getText).to eq("Bruce Ting")
       expect(node2.getText).to eq("Julia Fang")
       
-      selection = @tree.swt_widget.getSelection
-      expect(selection.size).to eq(1)
-      expect(selection.first.getData).to eq(person2)
-                  
-      expect(@tree.tree_editor_text_proxy).to be_nil
-      @write_done = false
-      @tree.edit_selected_tree_item(after_write: -> { @write_done = true })
-      expect(@tree.tree_editor_text_proxy).to_not be_nil
-      @tree.tree_editor_text_proxy.swt_widget.setText('Julie Fan')
-      # simulate hitting enter to trigger write action
-      event = Event.new
-      event.keyCode = Glimmer::SWT::SWTProxy[:cr]
-      event.doit = true
-      event.character = "\n"
-      event.display =@tree.tree_editor_text_proxy.swt_widget.getDisplay
-      event.item = @tree.tree_editor_text_proxy.swt_widget
-      event.widget = @tree.tree_editor_text_proxy.swt_widget
-      event.type = Glimmer::SWT::SWTProxy[:keydown]
-      @tree.tree_editor_text_proxy.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:keydown], event)
-      expect(@write_done).to eq(true)
-      expect(person2.name).to eq('Julie Fan')      
-
       manager.name = "Tim Lee Harkins"
 
       root_node = @tree.swt_widget.getItems.first
@@ -182,34 +168,20 @@ module GlimmerSpec
       node2 = root_node.getItems.last
       expect(node1.getText).to eq("Julia Katherine Fang")
       expect(node2.getText).to eq("Bob David Kennith")
+      
+      manager.coworkers = []
+      root_node = @tree.swt_widget.getItems.first
+      expect(root_node.getItems.size).to eq(0)
+      
+      manager.coworkers = nil
+      root_node = @tree.swt_widget.getItems.first
+      expect(root_node.getItems.size).to eq(0)
+      
+      company.owner = nil
+      expect(@tree.swt_widget.getItems.size).to eq(0)
     end
     
-    #TODO test case when no tree item is selected to edit
-    
-    it "data binds tree widget to an indexed string property" do
-      person1 = Person.new
-      person1.name = "Bruce Ting"
-      person1.age = 45
-      person1.adult = true
-
-      person2 = Person.new
-      person2.name = "Julia Fang"
-      person2.age = 17
-      person2.adult = false
-
-      manager = Manager.new
-      manager.name = "Tim Harkins"
-      manager.age = 79
-      manager.adult = true
-      manager.coworkers << person1
-      manager.coworkers << person2
-
-      company = Company.new
-      company.owner = manager
-
-      company_group = CompanyGroup.new
-      company_group.companies << company
-
+    it "data binds tree widget tree item text to an indexed string property" do
       @target = shell {
         @tree_nested_indexed = tree(:virtual, :border) {
           items bind(company_group, "companies[0].owner"), tree_properties(children: :coworkers, text: :name)
@@ -220,7 +192,7 @@ module GlimmerSpec
 
       manager.name = "Tim Lee Harkins"
 
-      root_node_nested_indexed = @tree_nested_indexed.swt_widget.getItems[0]
+      root_node_nested_indexed = @tree_nested_indexed.swt_widget.getItems.first
       expect(root_node_nested_indexed.getText).to eq("Tim Lee Harkins")
 
       person1.name = "Bruce A. Ting"
@@ -269,30 +241,7 @@ module GlimmerSpec
       expect(node2_nested_indexed.getText).to eq("Bob David Kennith")
     end
     
-    it "data binds tree widget to a string property for a custom widget tree" do
-      person1 = Person.new
-      person1.name = "Bruce Ting"
-      person1.age = 45
-      person1.adult = true
-
-      person2 = Person.new
-      person2.name = "Julia Fang"
-      person2.age = 17
-      person2.adult = false
-
-      manager = Manager.new
-      manager.name = "Tim Harkins"
-      manager.age = 79
-      manager.adult = true
-      manager.coworkers << person1
-      manager.coworkers << person2
-
-      company = Company.new
-      company.owner = manager
-
-      company_group = CompanyGroup.new
-      company_group.companies << company
-
+    it "data binds custom tree widget tree item text to a string property" do
       @target = shell {
         @tree = red_tree(:virtual, :border) {
           items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
@@ -313,41 +262,159 @@ module GlimmerSpec
     end
 
     it 'stores models as tree item data' do
-      person1 = Manager.new
-      person1.name = 'Sean'
-
-      person2 = Manager.new
-      person2.name = 'Chuck'
-
-      person3 = Manager.new
-      person3.name = 'Mark'
-      person4 = Manager.new
-      person4.name = 'Derrick'
-
-      person2.coworkers = [person3, person4]
-
-      person1.coworkers = [person2]
-
-      company1 = Company.new
-      company1.owner = person1
-
       @target = shell {
         @tree = tree {
-          items bind(company1, :owner), tree_properties(children: :coworkers, text: :name)
+          items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
         }
       }
 
       person1_tree_item = @tree.swt_widget.getItems.first
-      expect(person1_tree_item.getData).to eq(person1)
+      expect(person1_tree_item.getData).to eq(manager)
 
-      person2_tree_item = person1_tree_item.getItems.first
-      expect(person2_tree_item.getData).to eq(person2)
+      person2_tree_item = person1_tree_item.getItems[0]
+      expect(person2_tree_item.getData).to eq(person1)
 
-      person3_tree_item = person2_tree_item.getItems.first
-      expect(person3_tree_item.getData).to eq(person3)
-      
-      person4_tree_item = person2_tree_item.getItems.last
-      expect(person4_tree_item.getData).to eq(person4)      
+      person3_tree_item = person1_tree_item.getItems[1]
+      expect(person3_tree_item.getData).to eq(person2)
     end
+    
+    it "data binds tree widget selection" do
+      @target = shell {      
+        @tree = tree {
+          items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
+          selection bind(company, :selected_coworker)
+        }
+      }
+      
+      expect(@tree.swt_widget.getItems.size).to eq(1)
+
+      root_node = @tree.swt_widget.getItems[0]
+      expect(root_node.getText).to eq("Tim Harkins")
+
+      expect(root_node.getItems.size).to eq(2)
+      node1 = root_node.getItems[0]
+      node2 = root_node.getItems[1]
+      expect(node1.getText).to eq("Bruce Ting")
+      expect(node2.getText).to eq("Julia Fang")
+      
+      selection = @tree.swt_widget.getSelection
+      expect(selection.size).to eq(1)
+      expect(selection.first.getData).to eq(person2)
+      
+      company.selected_coworker = nil
+      
+      selection = @tree.swt_widget.getSelection
+      expect(selection.size).to eq(0)
+    end
+    
+    it "triggers tree widget editing which is done via ENTER key" do
+      @target = shell {      
+        @tree = tree {
+          items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
+          selection bind(company, :selected_coworker)
+        }
+      }
+      
+      expect(@tree.tree_editor_text_proxy).to be_nil
+      @write_done = false
+      @tree.edit_selected_tree_item(after_write: -> { @write_done = true })
+      expect(@tree.tree_editor_text_proxy).to_not be_nil
+      @tree.tree_editor_text_proxy.swt_widget.setText('Julie Fan')
+      # simulate hitting enter to trigger write action
+      event = Event.new
+      event.keyCode = Glimmer::SWT::SWTProxy[:cr]
+      event.doit = true
+      event.character = "\n"
+      event.display = @tree.tree_editor_text_proxy.swt_widget.getDisplay
+      event.item = @tree.tree_editor_text_proxy.swt_widget
+      event.widget = @tree.tree_editor_text_proxy.swt_widget
+      event.type = Glimmer::SWT::SWTProxy[:keydown]
+      @tree.tree_editor_text_proxy.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:keydown], event)
+      expect(@write_done).to eq(true)
+      expect(@cancel_done).to be_nil
+      expect(person2.name).to eq('Julie Fan')
+    end    
+    
+    it "triggers tree widget editing which is done via focus out" do
+      @target = shell {
+        @tree = tree {
+          items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
+          selection bind(company, :selected_coworker)
+        }
+      }
+      
+      expect(@tree.tree_editor_text_proxy).to be_nil
+      @write_done = false
+      @tree.edit_selected_tree_item(after_write: -> { @write_done = true })
+      expect(@tree.tree_editor_text_proxy).to_not be_nil
+      @tree.tree_editor_text_proxy.swt_widget.setText('Julie Fan')
+      # simulate hitting enter to trigger write action
+      event = Event.new
+      event.keyCode = Glimmer::SWT::SWTProxy[:cr]
+      event.doit = true
+      event.character = "\n"
+      event.display = @tree.tree_editor_text_proxy.swt_widget.getDisplay
+      event.item = @tree.tree_editor_text_proxy.swt_widget
+      event.widget = @tree.tree_editor_text_proxy.swt_widget
+      event.type = Glimmer::SWT::SWTProxy[:focusout]
+      @tree.tree_editor_text_proxy.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:focusout], event)
+      expect(@write_done).to eq(true)
+      expect(@cancel_done).to be_nil
+      expect(person2.name).to eq('Julie Fan')
+    end
+    
+    it "triggers tree widget editing and cancels by not making a changing and focusing out" do
+      @target = shell {      
+        @tree = tree {
+          items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
+          selection bind(company, :selected_coworker)
+        }
+      }
+      
+      expect(@tree.tree_editor_text_proxy).to be_nil
+      @tree.edit_selected_tree_item(after_write: -> { @write_done = true }, after_cancel: -> { @cancel_done = true })
+      expect(@tree.tree_editor_text_proxy).to_not be_nil
+      # simulate hitting enter to trigger write action
+      event = Event.new
+      event.keyCode = nil
+      event.doit = true
+      event.character = nil
+      event.display = @tree.tree_editor_text_proxy.swt_widget.getDisplay
+      event.item = @tree.tree_editor_text_proxy.swt_widget
+      event.widget = @tree.tree_editor_text_proxy.swt_widget
+      event.type = Glimmer::SWT::SWTProxy[:focusout]
+      @tree.tree_editor_text_proxy.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:focusout], event)
+      expect(@write_done).to be_nil
+      expect(@cancel_done).to eq(true)
+      expect(person2.name).to eq('Julia Fang')
+    end    
+    
+    it "triggers tree widget editing and cancels by hitting escape button after making a change" do
+      @target = shell {      
+        @tree = tree {
+          items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
+          selection bind(company, :selected_coworker)
+        }
+      }
+      
+      expect(@tree.tree_editor_text_proxy).to be_nil
+      @tree.edit_selected_tree_item(after_write: -> { @write_done = true }, after_cancel: -> { @cancel_done = true })
+      expect(@tree.tree_editor_text_proxy).to_not be_nil
+      @tree.tree_editor_text_proxy.swt_widget.setText('Julie Fan')
+      # simulate hitting enter to trigger write action
+      event = Event.new
+      event.keyCode = Glimmer::SWT::SWTProxy[:esc]
+      event.doit = true
+      event.character = nil
+      event.display = @tree.tree_editor_text_proxy.swt_widget.getDisplay
+      event.item = @tree.tree_editor_text_proxy.swt_widget
+      event.widget = @tree.tree_editor_text_proxy.swt_widget
+      event.type = Glimmer::SWT::SWTProxy[:keydown]
+      @tree.tree_editor_text_proxy.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:keydown], event)
+      expect(@write_done).to be_nil
+      expect(@cancel_done).to eq(true)
+      expect(person2.name).to eq('Julia Fang')
+    end    
+    
   end
 end

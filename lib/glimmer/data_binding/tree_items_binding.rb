@@ -22,7 +22,7 @@ module Glimmer
         else # assume custom widget
           @tree.body_root.tree_properties = @tree_properties
         end
-        call(@model_binding.evaluate_property)
+        call
         model = model_binding.base_model
         observe(model, model_binding.property_name_expression)
         @tree.on_widget_disposed do |dispose_event|
@@ -30,21 +30,25 @@ module Glimmer
         end
       end
 
-      def call(model_tree_root_node=nil)
-        if model_tree_root_node and model_tree_root_node.respond_to?(@tree_properties[:children])
-          observe(model_tree_root_node, @tree_properties[:text])
-          observe(model_tree_root_node, @tree_properties[:children])
-          @model_tree_root_node = model_tree_root_node
+      def call(new_value=nil)
+        @model_tree_root_node = @model_binding.evaluate_property
+        if @model_tree_root_node and @model_tree_root_node.respond_to?(@tree_properties[:children])
+          observe(@model_tree_root_node, @tree_properties[:text]) # TODO unregister if node changes
+          observe(@model_tree_root_node, @tree_properties[:children]) # TODO unregister if node changes
         end
         populate_tree(@model_tree_root_node, @tree, @tree_properties)
       end
 
       def populate_tree(model_tree_root_node, parent, tree_properties)
+        # TODO make it change things by delta instead of removing all
+        # TODO make it maintain selection and expansion
         parent.swt_widget.removeAll
         populate_tree_node(model_tree_root_node, parent.swt_widget, tree_properties)
       end
 
       def populate_tree_node(model_tree_node, parent, tree_properties)
+        return if model_tree_node.nil?
+        # TODO anticipate default tree properties if none were passed (like literal values text and children)
         table_item = TreeItem.new(parent, SWT::SWTProxy[:none])
         table_item.setData(model_tree_node)
         table_item.setText((model_tree_node && model_tree_node.send(tree_properties[:text])).to_s)
