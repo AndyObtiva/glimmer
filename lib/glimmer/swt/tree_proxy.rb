@@ -11,6 +11,18 @@ module Glimmer
         found.to_java(TreeItem)
       end
 
+      def widget_property_listener_installers
+        super.merge({
+          Java::OrgEclipseSwtWidgets::Tree => {
+            selection: lambda do |observer|
+              on_widget_selected { |selection_event|
+                observer.call(@swt_widget.getSelection)
+              }
+            end
+          },        
+        })
+      end
+      
       private
 
       def recursive_depth_first_search(tree_item, found, &condition)
@@ -18,6 +30,14 @@ module Glimmer
         tree_item.getItems.each do |child_tree_item|
           recursive_depth_first_search(child_tree_item, found, &condition)
         end
+      end
+      
+      def property_type_converters
+        super.merge({
+          selection: lambda do |value|
+            depth_first_search {|ti| ti.getData == value}
+          end,
+        })
       end
     end
   end

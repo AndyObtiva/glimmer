@@ -5,6 +5,8 @@ require 'glimmer/swt/font_proxy'
 require 'glimmer/swt/swt_proxy'
 require 'glimmer/data_binding/observable_widget'
 
+# TODO refactor to make file smaller and extract sub-widget-proxies out of this
+
 module Glimmer
   module SWT
     # Proxy for SWT Widget objects
@@ -31,17 +33,17 @@ module Glimmer
       }
 
       DEFAULT_INITIALIZERS = {
-        "composite" => proc do |composite|
+        "composite" => lambda do |composite|
           composite.setLayout(GridLayout.new)
         end,
-        "table" => proc do |table|
+        "table" => lambda do |table|
           table.setHeaderVisible(true)
           table.setLinesVisible(true)
         end,
-        "table_column" => proc do |table_column|
+        "table_column" => lambda do |table_column|
           table_column.setWidth(80)
         end,
-        "group" => proc do |group|
+        "group" => lambda do |group|
           group.setLayout(GridLayout.new)
         end,
       }
@@ -119,7 +121,7 @@ module Glimmer
       def widget_property_listener_installers
         @swt_widget_property_listener_installers ||= {
           Java::OrgEclipseSwtWidgets::Control => {
-            :focus => proc do |observer|
+            :focus => lambda do |observer|
               on_focus_gained { |focus_event|
                 observer.call(true)
               }
@@ -129,12 +131,12 @@ module Glimmer
             end,
           },
           Java::OrgEclipseSwtWidgets::Text => {
-            :text => proc do |observer|
+            :text => lambda do |observer|
               on_modify_text { |modify_event|
                 observer.call(@swt_widget.getText)
               }
             end,
-            :caret_position => proc do |observer|
+            :caret_position => lambda do |observer|
               on_event_keydown { |event|
                 observer.call(@swt_widget.getCaretPosition)
               }
@@ -148,7 +150,7 @@ module Glimmer
                 observer.call(@swt_widget.getCaretPosition)
               }
             end,
-            :selection_count => proc do |observer|
+            :selection_count => lambda do |observer|
               on_event_keydown { |event|
                 observer.call(@swt_widget.getSelectionCount)
               }
@@ -162,7 +164,7 @@ module Glimmer
                 observer.call(@swt_widget.getSelectionCount)
               }
             end,
-            :top_index => proc do |observer|
+            :top_index => lambda do |observer|
               @last_top_index = @swt_widget.getTopIndex
               on_paint_control { |event|
                 if @swt_widget.getTopIndex != @last_top_index
@@ -173,33 +175,33 @@ module Glimmer
             end,
           },
           Java::OrgEclipseSwtCustom::StyledText => {
-            :text => proc do |observer|
+            :text => lambda do |observer|
               on_modify_text { |modify_event|
                 observer.call(@swt_widget.getText)
               }
             end,
           },
           Java::OrgEclipseSwtWidgets::Button => {
-            :selection => proc do |observer|
+            :selection => lambda do |observer|
               on_widget_selected { |selection_event|
                 observer.call(@swt_widget.getSelection)
               }
             end
           },
           Java::OrgEclipseSwtWidgets::MenuItem => {
-            :selection => proc do |observer|
+            :selection => lambda do |observer|
               on_widget_selected { |selection_event|
                 observer.call(@swt_widget.getSelection)
               }
             end
           },
           Java::OrgEclipseSwtWidgets::Spinner => {
-            :selection => proc do |observer|
+            :selection => lambda do |observer|
               on_widget_selected { |selection_event|
                 observer.call(@swt_widget.getSelection)
               }
             end
-          }
+          },
         }
       end
 
@@ -409,7 +411,7 @@ module Glimmer
       end
 
       def property_type_converters
-        color_converter = proc do |value|
+        color_converter = lambda do |value|
           if value.is_a?(Symbol) || value.is_a?(String)
             ColorProxy.new(value).swt_color
           else
@@ -419,7 +421,7 @@ module Glimmer
         # TODO consider detecting type on widget method and automatically invoking right converter (e.g. :to_s for String, :to_i for Integer)
         @property_type_converters ||= {
           :background => color_converter,
-          :background_image => proc do |value|
+          :background_image => lambda do |value|
             if value.is_a?(String)
               if value.start_with?('uri:classloader')
                 value = value.sub(/^uri\:classloader\:\//, '')
@@ -440,7 +442,7 @@ module Glimmer
             end
           end,
           :foreground => color_converter,
-          :font => proc do |value|
+          :font => lambda do |value|
             if value.is_a?(Hash)
               font_properties = value
               FontProxy.new(self, font_properties).swt_font
@@ -448,17 +450,17 @@ module Glimmer
               value
             end
           end,
-          :items => proc do |value|
+          :items => lambda do |value|
             value.to_java :string
           end,
-          :text => proc do |value|
+          :text => lambda do |value|
             if swt_widget.is_a?(Browser)
               value.to_s
             else
               value.to_s
             end
           end,
-          :visible => proc do |value|
+          :visible => lambda do |value|
             !!value
           end,
         }

@@ -10,27 +10,28 @@ module GlimmerSpec
       end
 
       class Manager < Person
+        attr_accessor :coworkers
+        
         def initialize
           @coworkers = []
         end
-
-        attr_accessor :coworkers
       end
 
       class Company
+        attr_accessor :selected_coworker
+        attr_accessor :owner
+        
         def initialize
           @owner = []
         end
-
-        attr_accessor :owner
       end
 
       class CompanyGroup
+        attr_accessor :companies
+        
         def initialize
           @companies = []
         end
-
-        attr_accessor :companies
       end
 
       class ::RedTree
@@ -75,10 +76,11 @@ module GlimmerSpec
 
       company = Company.new
       company.owner = manager
+      company.selected_coworker = person2
 
       company_group = CompanyGroup.new
       company_group.companies << company
-
+      
       @target = shell {
       
       # TODO make this modification to test data-binding in the other direction (from view to model)
@@ -91,7 +93,7 @@ module GlimmerSpec
       
         @tree = tree(:virtual, :border) {
           items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
-#           selection bind(coworkers_presenter, :selected_person) # TODO implement
+          selection bind(company, :selected_coworker)
         }
       }
 
@@ -105,6 +107,10 @@ module GlimmerSpec
       node2 = root_node.getItems[1]
       expect(node1.getText()).to eq("Bruce Ting")
       expect(node2.getText()).to eq("Julia Fang")
+      
+      selection = @tree.swt_widget.getSelection
+      expect(selection.size).to eq(1)
+      expect(selection.first.getData).to eq(person2)
 
       manager.name = "Tim Lee Harkins"
 
@@ -156,9 +162,7 @@ module GlimmerSpec
       node2 = root_node.getItems.last
       expect(node1.getText()).to eq("Julia Katherine Fang")
       expect(node2.getText()).to eq("Bob David Kennith")
-      
-      
-#       @tree.depth_first_search {|ti| ti.getData
+            
 #       @tree.edit_selected_tree_item
 #       text_widget = @tree.swt_widget.getChildren.detect {|child| child.is_a?(Text)
 #       expect(text_widget).to_not be_nil
