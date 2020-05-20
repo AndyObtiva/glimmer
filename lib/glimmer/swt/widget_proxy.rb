@@ -25,6 +25,7 @@ module Glimmer
       DEFAULT_STYLES = {
         "text"        => [:border],
         "table"       => [:border],
+        "tree"       =>  [:virtual, :border, :h_scroll, :v_scroll],
         "spinner"     => [:border],
         "styled_text" => [:border],
         "list"        => [:border, :v_scroll],

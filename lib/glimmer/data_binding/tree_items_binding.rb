@@ -17,6 +17,11 @@ module Glimmer
         @tree = parent
         @model_binding = model_binding
         @tree_properties = [tree_properties].flatten.first.to_h
+        if @tree.respond_to?(:tree_properties=)
+          @tree.tree_properties = @tree_properties
+        else # assume custom widget
+          @tree.body_root.tree_properties = @tree_properties
+        end
         call(@model_binding.evaluate_property)
         model = model_binding.base_model
         observe(model, model_binding.property_name_expression)
