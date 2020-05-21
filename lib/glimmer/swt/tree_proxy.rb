@@ -17,11 +17,17 @@ module Glimmer
       end
     
       # Performs depth first search for tree items matching block condition
-      # Returns a Java TreeItem array to easily set as selection on org.eclipse.swt.Tree when needed
+      # If no condition block is passed, returns all tree items
+      # Returns a Java TreeItem array to easily set as selection on org.eclipse.swt.Tree if needed
       def depth_first_search(&condition)
         found = []
         recursive_depth_first_search(swt_widget.getItems.first, found, &condition)
         found.to_java(TreeItem)
+      end
+      
+      # Returns all tree items including descendants
+      def all_tree_items
+        depth_first_search
       end
 
       def widget_property_listener_installers

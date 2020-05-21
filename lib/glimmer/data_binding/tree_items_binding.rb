@@ -32,17 +32,17 @@ module Glimmer
 
       def call(new_value=nil)
         @model_tree_root_node = @model_binding.evaluate_property
-        if @model_tree_root_node and @model_tree_root_node.respond_to?(@tree_properties[:children])
-          observe(@model_tree_root_node, @tree_properties[:text]) # TODO unregister if node changes
-          observe(@model_tree_root_node, @tree_properties[:children]) # TODO unregister if node changes
-        end
         populate_tree(@model_tree_root_node, @tree, @tree_properties)
       end
 
       def populate_tree(model_tree_root_node, parent, tree_properties)
         # TODO make it change things by delta instead of removing all
         selected_tree_item_model = parent.swt_widget.getSelection.map(&:getData).first
-        # TODO clean all observers when removing all tree items
+        parent.all_tree_items.each do |tree_item|
+          tree_item.getData('observer_registrations').each do |key, observer_registration|
+            observer_registration.unregister
+          end
+        end
         parent.swt_widget.removeAll
         populate_tree_node(model_tree_root_node, parent.swt_widget, tree_properties)
         tree_item_to_select = parent.depth_first_search {|ti| ti.getData == selected_tree_item_model}
@@ -52,14 +52,15 @@ module Glimmer
       def populate_tree_node(model_tree_node, parent, tree_properties)
         return if model_tree_node.nil?
         # TODO anticipate default tree properties if none were passed (like literal values text and children)
-        table_item = TreeItem.new(parent, SWT::SWTProxy[:none])
-        table_item.setData(model_tree_node)
-        table_item.setText((model_tree_node && model_tree_node.send(tree_properties[:text])).to_s)
+        tree_item = TreeItem.new(parent, SWT::SWTProxy[:none])
+        observer_registrations = @tree_properties.reduce({}) do |hash, key_value_pair|
+          hash.merge(key_value_pair.first => observe(model_tree_node, key_value_pair.last))
+        end
+        tree_item.setData('observer_registrations', observer_registrations)
+        tree_item.setData(model_tree_node)
+        tree_item.setText((model_tree_node && model_tree_node.send(tree_properties[:text])).to_s)
         [model_tree_node && model_tree_node.send(tree_properties[:children])].flatten.to_a.compact.each do |child|
-          # TODO remove previous observers
-          observe(child, @tree_properties[:text])
-          observe(child, @tree_properties[:children])
-          populate_tree_node(child, table_item, tree_properties)
+          populate_tree_node(child, tree_item, tree_properties)
         end
       end
     end
