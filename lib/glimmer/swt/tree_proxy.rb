@@ -42,6 +42,10 @@ module Glimmer
         })
       end
       
+      def edit_in_progress?
+        !!@edit_in_progress
+      end
+      
       def edit_selected_tree_item(before_write: nil, after_write: nil, after_cancel: nil)
         edit_tree_item(swt_widget.getSelection.first, before_write: before_write, after_write: after_write, after_cancel: after_cancel)
       end
@@ -56,11 +60,13 @@ module Glimmer
             cancel = lambda {
               @tree_editor_text_proxy.swt_widget.dispose
               @tree_editor_text_proxy = nil
-              after_cancel&.call            
+              after_cancel&.call
+              @edit_in_progress = false
             }
             action = lambda { |event|
-              if !action_taken
+              if !action_taken && !@edit_in_progress
                 action_taken = true
+                @edit_in_progress = true
                 new_text = @tree_editor_text_proxy.swt_widget.getText
                 if new_text == tree_item.getText
                   cancel.call
@@ -74,6 +80,7 @@ module Glimmer
                   @tree_editor_text_proxy.swt_widget.dispose
                   @tree_editor_text_proxy = nil
                   after_write&.call
+                  @edit_in_progress = false
                 end
               end
             }
