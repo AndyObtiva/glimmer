@@ -43,27 +43,30 @@ module Glimmer
       end
       
       def edit_selected_tree_item(after_write: nil, after_cancel: nil)
-        selected_tree_item = swt_widget.getSelection.first
-        return if selected_tree_item.nil?
+        edit_tree_item(swt_widget.getSelection.first, after_write: after_write, after_cancel: after_cancel)
+      end
+            
+      def edit_tree_item(tree_item, after_write: nil, after_cancel: nil)
+        return if tree_item.nil?
         content {
           @tree_editor_text_proxy = text {
             focus true
-            text selected_tree_item.getText
+            text tree_item.getText
             action_taken = false
             action = lambda { |event|
               if !action_taken
                 action_taken = true
                 new_text = @tree_editor_text_proxy.swt_widget.getText
-                if new_text == selected_tree_item.getText
+                if new_text == tree_item.getText
                   @tree_editor_text_proxy.swt_widget.dispose
                   @tree_editor_text_proxy = nil
                   after_cancel&.call
                 else
-                  selected_tree_item.setText(new_text)
-                  model = selected_tree_item.getData
+                  tree_item.setText(new_text)
+                  model = tree_item.getData
                   model.send("#{tree_properties[:text]}=", new_text) # makes tree update itself, so must search for selected tree item again
-                  selected_tree_item = depth_first_search { |ti| ti.getData == model }
-                  swt_widget.showItem(selected_tree_item.first)
+                  tree_item = depth_first_search { |ti| ti.getData == model }
+                  swt_widget.showItem(tree_item.first)
                   @tree_editor_text_proxy.swt_widget.dispose
                   @tree_editor_text_proxy = nil
                   after_write&.call
@@ -83,7 +86,7 @@ module Glimmer
           }
           @tree_editor_text_proxy.swt_widget.selectAll
         }
-        @tree_editor.setEditor(@tree_editor_text_proxy.swt_widget, selected_tree_item);      
+        @tree_editor.setEditor(@tree_editor_text_proxy.swt_widget, tree_item);      
       end
       
       private

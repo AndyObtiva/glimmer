@@ -334,7 +334,7 @@ module GlimmerSpec
       expect(selection.first.getData).to eq(person2)      
     end
     
-    it "triggers tree widget editing which is done via ENTER key" do
+    it "triggers tree widget editing on selected tree item which is done via ENTER key" do
       @target = shell {      
         @tree = tree {
           items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
@@ -367,7 +367,40 @@ module GlimmerSpec
       expect(selection.first.getData).to eq(person2)            
     end    
     
-    it "triggers tree widget editing which is done via focus out" do
+    it "triggers tree widget editing on specified tree item which is done via ENTER key" do
+      @target = shell {      
+        @tree = tree {
+          items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
+          selection bind(company, :selected_coworker)
+        }
+      }
+      
+      expect(@tree.tree_editor_text_proxy).to be_nil
+      @write_done = false
+      @tree.edit_tree_item(@tree.swt_widget.getSelection.first, after_write: -> { @write_done = true })
+      expect(@tree.tree_editor_text_proxy).to_not be_nil
+      @tree.tree_editor_text_proxy.swt_widget.setText('Julie Fan')
+      # simulate hitting enter to trigger write action
+      event = Event.new
+      event.keyCode = Glimmer::SWT::SWTProxy[:cr]
+      event.doit = true
+      event.character = "\n"
+      event.display = @tree.tree_editor_text_proxy.swt_widget.getDisplay
+      event.item = @tree.tree_editor_text_proxy.swt_widget
+      event.widget = @tree.tree_editor_text_proxy.swt_widget
+      event.type = Glimmer::SWT::SWTProxy[:keydown]
+      @tree.tree_editor_text_proxy.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:keydown], event)
+      expect(@write_done).to eq(true)
+      expect(@cancel_done).to be_nil
+      expect(person2.name).to eq('Julie Fan')
+      
+      # test that it maintains selection
+      selection = @tree.swt_widget.getSelection
+      expect(selection.size).to eq(1)
+      expect(selection.first.getData).to eq(person2)            
+    end    
+    
+    it "triggers tree widget editing on selected tree item which is done via focus out" do
       @target = shell {
         @tree = tree {
           items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
@@ -400,7 +433,7 @@ module GlimmerSpec
       expect(selection.first.getData).to eq(person2)
     end
     
-    it "triggers tree widget editing and cancels by not making a changing and focusing out" do
+    it "triggers tree widget editing on selected tree item and cancels by not making a changing and focusing out" do
       @target = shell {      
         @tree = tree {
           items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
@@ -431,7 +464,7 @@ module GlimmerSpec
       expect(selection.first.getData).to eq(person2)
     end
     
-    it "triggers tree widget editing and cancels by hitting escape button after making a change" do
+    it "triggers tree widget editing on selected tree item and cancels by hitting escape button after making a change" do
       @target = shell {      
         @tree = tree {
           items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
