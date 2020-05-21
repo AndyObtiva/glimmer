@@ -377,7 +377,7 @@ module GlimmerSpec
       
       expect(@tree.tree_editor_text_proxy).to be_nil
       @write_done = false
-      @tree.edit_tree_item(@tree.swt_widget.getSelection.first, after_write: -> { @write_done = true })
+      @tree.edit_tree_item(@tree.swt_widget.getSelection.first, before_write: -> {expect(person2.name).to eq('Julia Fang')}, after_write: -> { @write_done = true })
       expect(@tree.tree_editor_text_proxy).to_not be_nil
       @tree.tree_editor_text_proxy.swt_widget.setText('Julie Fan')
       # simulate hitting enter to trigger write action

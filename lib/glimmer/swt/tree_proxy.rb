@@ -42,26 +42,30 @@ module Glimmer
         })
       end
       
-      def edit_selected_tree_item(after_write: nil, after_cancel: nil)
-        edit_tree_item(swt_widget.getSelection.first, after_write: after_write, after_cancel: after_cancel)
+      def edit_selected_tree_item(before_write: nil, after_write: nil, after_cancel: nil)
+        edit_tree_item(swt_widget.getSelection.first, before_write: before_write, after_write: after_write, after_cancel: after_cancel)
       end
             
-      def edit_tree_item(tree_item, after_write: nil, after_cancel: nil)
+      def edit_tree_item(tree_item, before_write: nil, after_write: nil, after_cancel: nil)
         return if tree_item.nil?
         content {
           @tree_editor_text_proxy = text {
             focus true
             text tree_item.getText
             action_taken = false
+            cancel = lambda {
+              @tree_editor_text_proxy.swt_widget.dispose
+              @tree_editor_text_proxy = nil
+              after_cancel&.call            
+            }
             action = lambda { |event|
               if !action_taken
                 action_taken = true
                 new_text = @tree_editor_text_proxy.swt_widget.getText
                 if new_text == tree_item.getText
-                  @tree_editor_text_proxy.swt_widget.dispose
-                  @tree_editor_text_proxy = nil
-                  after_cancel&.call
+                  cancel.call
                 else
+                  before_write&.call
                   tree_item.setText(new_text)
                   model = tree_item.getData
                   model.send("#{tree_properties[:text]}=", new_text) # makes tree update itself, so must search for selected tree item again
@@ -78,9 +82,7 @@ module Glimmer
               if key_event.keyCode == swt(:cr)
                 action.call(key_event)
               elsif key_event.keyCode == swt(:esc)
-                @tree_editor_text_proxy.swt_widget.dispose
-                @tree_editor_text_proxy = nil
-                after_cancel&.call
+                cancel.call
               end
             }
           }
