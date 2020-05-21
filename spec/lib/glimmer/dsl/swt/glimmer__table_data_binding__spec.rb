@@ -45,27 +45,38 @@ module GlimmerSpec
       ].each do |constant|
         Object.send(:remove_const, constant) if Object.const_defined?(constant)
       end
-
     end
 
+    let(:person1) do
+      Person.new.tap do |person|
+        person.name = "Bruce Ting"
+        person.age = 45
+        person.adult = true
+      end
+    end
+
+    let(:person2) do
+      Person.new.tap do |person|
+        person.name = "Julia Fang"
+        person.age = 17
+        person.adult = false
+      end
+    end
+    
+    let(:group) do
+      PersonGroup.new.tap do |g|
+        g.people << person1
+        g.people << person2
+      end
+    end
+
+    let(:community) do
+      PersonCommunity.new.tap do |c|
+        c.groups << group
+      end
+    end 
+
     it "data binds text widget to a string property" do
-      person1 = Person.new
-      person1.name = "Bruce Ting"
-      person1.age = 45
-      person1.adult = true
-
-      person2 = Person.new
-      person2.name = "Julia Fang"
-      person2.age = 17
-      person2.adult = false
-
-      group = PersonGroup.new
-      group.people << person1
-      group.people << person2
-
-      community = PersonCommunity.new
-      community.groups << group
-
       @target = shell {
         @table = table {
           table_column {
@@ -169,23 +180,6 @@ module GlimmerSpec
     end
 
     it "data binds text widget to a string property for a custom widget table" do
-      person1 = Person.new
-      person1.name = "Bruce Ting"
-      person1.age = 45
-      person1.adult = true
-
-      person2 = Person.new
-      person2.name = "Julia Fang"
-      person2.age = 17
-      person2.adult = false
-
-      group = PersonGroup.new
-      group.people << person1
-      group.people << person2
-
-      community = PersonCommunity.new
-      community.groups << group
-
       @target = shell {
         @table = red_table {
           table_column {
