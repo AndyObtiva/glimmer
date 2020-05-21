@@ -75,11 +75,11 @@ module Glimmer
                   tree_item.setText(new_text)
                   model = tree_item.getData
                   model.send("#{tree_properties[:text]}=", new_text) # makes tree update itself, so must search for selected tree item again
-                  tree_item = depth_first_search { |ti| ti.getData == model }
-                  swt_widget.showItem(tree_item.first)
+                  edited_tree_item = depth_first_search { |ti| ti.getData == model }.first
+                  swt_widget.showItem(edited_tree_item)
                   @tree_editor_text_proxy.swt_widget.dispose
                   @tree_editor_text_proxy = nil
-                  after_write&.call
+                  after_write&.call(edited_tree_item)
                   @edit_in_progress = false
                 end
               end
