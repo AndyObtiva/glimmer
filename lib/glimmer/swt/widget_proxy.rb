@@ -324,10 +324,12 @@ module Glimmer
       end
 
       def add_listener(underscored_listener_name, &block)
-        widget_add_listener_method, listener_class, listener_method = self.class.find_listener(@swt_widget.getClass, underscored_listener_name)
-        listener = listener_class.new(listener_method => block)
+        widget_add_listener_method, listener_class, listener_method = self.class.find_listener(@swt_widget.getClass, underscored_listener_name)        
+        widget_listener_proxy = nil
+        safe_block = lambda { |event| block.call(event) unless @swt_widget.isDisposed }
+        listener = listener_class.new(listener_method => safe_block)
         @swt_widget.send(widget_add_listener_method, listener)
-        WidgetListenerProxy.new(listener)
+        widget_listener_proxy = WidgetListenerProxy.new(swt_widget: @swt_widget, swt_listener: listener, widget_add_listener_method: widget_add_listener_method, swt_listener_class: listener_class, swt_listener_method: listener_method)
       end
 
       # Looks through SWT class add***Listener methods till it finds one for which
@@ -378,8 +380,10 @@ module Glimmer
 
       def add_swt_event_listener(swt_constant, &block)
         event_type = SWTProxy[swt_constant]
-        @swt_widget.addListener(event_type, &block)
-        WidgetListenerProxy.new(@swt_widget.getListeners(event_type).last)
+        widget_listener_proxy = nil
+        safe_block = lambda { |event| block.call(event) unless @swt_widget.isDisposed }
+        @swt_widget.addListener(event_type, &safe_block)
+        widget_listener_proxy = WidgetListenerProxy.new(swt_widget: @swt_widget, swt_listener: @swt_widget.getListeners(event_type).last, event_type: event_type, swt_constant: swt_constant)
       end
 
       def widget_custom_attribute_mapping

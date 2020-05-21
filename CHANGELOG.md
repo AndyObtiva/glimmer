@@ -8,6 +8,8 @@
 - Make :virtual a default tree SWT style
 - Support Tree selection databinding (just like List)
 - Support built-in Tree editing (i.e. editing tree item text)
+- Support unregistering widget listeners
+- Added tab item proxy dispose method that automatically unsets/disposes tab item inner control before disposing tab item itself
 
 ## 0.7.3
 

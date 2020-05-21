@@ -26,6 +26,7 @@ module Glimmer
 
       def call(model_collection=nil)
         if model_collection and model_collection.is_a?(Array)
+          # TODO clean observer registrations 
           observe(model_collection, @column_properties)
           @model_collection = model_collection
         end
