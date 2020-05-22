@@ -2251,6 +2251,11 @@ Exec failed with code 2 command [[/usr/bin/SetFile, -c, icnC, /var/folders/4_/g1
 * [Code Blog](http://andymaleh.blogspot.com/search/label/Glimmer)
 * [JRuby Cookbook by Justin Edelson & Henry Liu](http://shop.oreilly.com/product/9780596519650.do)
 
+## Help
+
+You may submit issues on GitHub.
+
+If you need live help, try the #glimmer irc channel on [mibbit](https://mibbit.com/). If no one was available, you may leave a GitHub issue message to schedule a meetup on irc.
 
 ## Feature Suggestions
 
