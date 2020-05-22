@@ -368,68 +368,71 @@ module GlimmerSpec
       expect(@composite.swt_widget.getBackgroundImage).to eq(image)
     end
 
-    context 'focus' do
-      after do
-        if @target
-          @target.async_exec do
-            @target.dispose
+    unless ENV['CI'].to_s.downcase == 'true'
+      context 'focus' do
+        after do
+          if @target
+            @target.async_exec do
+              @target.dispose
+            end
+            @target.open
           end
-          @target.open
         end
-      end
-
-      it 'does not focus widget when not declaring focus true' do
-        @target = shell {
-          alpha 0 # keep invisible while running specs
-          @text1 = text {
-            text "First one is focused by default"
+  
+        it 'does not focus widget when not declaring focus true' do
+          @target = shell {
+            alpha 0 # keep invisible while running specs
+            @text1 = text {
+              text "First one is focused by default"
+            }
+            @text2 = text {
+              text "Not focused"
+            }
           }
-          @text2 = text {
-            text "Not focused"
-          }
-        }
-
-        @target.async_exec do
-          expect(@text1.swt_widget.isFocusControl).to eq(true)
-          expect(@text2.swt_widget.isFocusControl).to eq(false)
+  
+          @target.async_exec do
+            expect(@text1.swt_widget.isFocusControl).to eq(true)
+            expect(@text2.swt_widget.isFocusControl).to eq(false)
+          end
         end
-      end
-
-      it 'does not focus widget when declaring focus false' do
-        @target = shell {
-          alpha 0 # keep invisible while running specs
-          @text1 = text {
-            text "First one is focused by default"
+  
+        it 'does not focus widget when declaring focus false' do
+          @target = shell {
+            alpha 0 # keep invisible while running specs
+            @text1 = text {
+              text "First one is focused by default"
+            }
+            @text2 = text {
+              focus false
+              text "Not focused"
+            }
           }
-          @text2 = text {
-            focus false
-            text "Not focused"
-          }
-        }
-
-        @target.async_exec do
-          expect(@text1.swt_widget.isFocusControl).to eq(true)
-          expect(@text2.swt_widget.isFocusControl).to eq(false)
+  
+          @target.async_exec do
+            expect(@text1.swt_widget.isFocusControl).to eq(true)
+            expect(@text2.swt_widget.isFocusControl).to eq(false)
+          end
         end
-      end
-
-      it 'focuses widget when declaring focus true' do
-        @target = shell {
-          alpha 0 # keep invisible while running specs
-          @text1 = text {
-            text "Not focused"
+  
+        it 'focuses widget when declaring focus true' do
+          @target = shell {
+            alpha 0 # keep invisible while running specs
+            @text1 = text {
+              text "Not focused"
+            }
+            @text2 = text {
+              focus true
+              text "Focused"
+            }
           }
-          @text2 = text {
-            focus true
-            text "Focused"
-          }
-        }
-
-        @target.async_exec do
-          expect(@text1.swt_widget.isFocusControl).to eq(false)
-          expect(@text2.swt_widget.isFocusControl).to eq(true)
+  
+          @target.async_exec do
+            expect(@text1.swt_widget.isFocusControl).to eq(false)
+            expect(@text2.swt_widget.isFocusControl).to eq(true)
+          end
         end
       end
     end
+
   end
 end

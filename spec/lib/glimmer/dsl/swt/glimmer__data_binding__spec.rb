@@ -389,50 +389,52 @@ module GlimmerSpec
       expect(person.adult).to eq(true)
     end
 
-    context 'focus' do
-      after do
-        if @target
-          @target.async_exec do
-            @target.dispose
+    unless ENV['CI'].to_s.downcase == 'true'
+      context 'focus' do
+        after do
+          if @target
+            @target.async_exec do
+              @target.dispose
+            end
+            @target.open
           end
-          @target.open
         end
-      end
-
-      it 'tests widget data binding focus' do
-        person = Person.new
-        expect(person.adult).to be_nil
-
-        @target = shell {
-          alpha 0 # keep invisible while running specs
-          @text1 = text {
-            text "First one is focused by default"
+  
+        it 'tests widget data binding focus' do
+          person = Person.new
+          expect(person.adult).to be_nil
+  
+          @target = shell {
+            alpha 0 # keep invisible while running specs
+            @text1 = text {
+              text "First one is focused by default"
+            }
+            @text2 = text {
+              focus bind(person, :adult)
+              text "Not focused"
+            }
           }
-          @text2 = text {
-            focus bind(person, :adult)
-            text "Not focused"
-          }
-        }
-
-        @target.async_exec do
-          expect(@text1.swt_widget.isFocusControl).to eq(true)
-          expect(@text2.swt_widget.isFocusControl).to eq(false)
-
-          person.adult = true
-
-          expect(@text1.swt_widget.isFocusControl).to eq(false)
-          expect(@text2.swt_widget.isFocusControl).to eq(true)
-
-          expect(@text1.swt_widget.setFocus).to eq(true)
-
-          expect(person.adult).to eq(false)
-
-          expect(@text2.swt_widget.setFocus).to eq(true)
-
-          expect(person.adult).to eq(true)
+  
+          @target.async_exec do
+            expect(@text1.swt_widget.isFocusControl).to eq(true)
+            expect(@text2.swt_widget.isFocusControl).to eq(false)
+  
+            person.adult = true
+  
+            expect(@text1.swt_widget.isFocusControl).to eq(false)
+            expect(@text2.swt_widget.isFocusControl).to eq(true)
+  
+            expect(@text1.swt_widget.setFocus).to eq(true)
+  
+            expect(person.adult).to eq(false)
+  
+            expect(@text2.swt_widget.setFocus).to eq(true)
+  
+            expect(person.adult).to eq(true)
+          end
+  
+          # TODO test data binding in the other direction (from widget to model)
         end
-
-        # TODO test data binding in the other direction (from widget to model)
       end
     end
 
