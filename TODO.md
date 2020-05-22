@@ -103,6 +103,7 @@ task :hello do
   puts 'my friend'
 end
 - Support data-binding shell size and location
+- Support data-bind two widget attributes to each other
 
 ## Samples
 
