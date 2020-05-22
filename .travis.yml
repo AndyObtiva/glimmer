@@ -1,4 +1,10 @@
 language: ruby
 rvm:
   - jruby-9.2.11.1
-os: osx
+jobs:
+  include:
+    - os: linux
+      dist: xenial
+      services: 
+        - xvfb
+    - os: osx
