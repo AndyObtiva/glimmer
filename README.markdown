@@ -4,6 +4,9 @@
 
 Glimmer is a native-UI cross-platform desktop development library written in Ruby. Glimmer's main innovation is a JRuby DSL that enables productive and efficient authoring of desktop application user-interfaces while relying on the robust Eclipse SWT library. Glimmer additionally innovates by having built-in data-binding support to greatly facilitate synchronizing the UI with domain models. As a result, that achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about UI concerns, or alternatively drive development UI-first, and then write clean business models test-first afterwards.
 
+[<img src="https://covers.oreillystatic.com/images/9780596519650/lrg.jpg" width=105 /><br /> 
+Featured in<br />JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do)
+
 ## Examples
 
 ### Hello, World!
@@ -2198,6 +2201,8 @@ Exec failed with code 2 command [[/usr/bin/SetFile, -c, icnC, /var/folders/4_/g1
 * [InfoQ Article](http://www.infoq.com/news/2008/02/glimmer-jruby-swt)
 * [RubyConf 2008 Video](https://confreaks.tv/videos/rubyconf2008-desktop-development-with-glimmer)
 * [Code Blog](http://andymaleh.blogspot.com/search/label/Glimmer)
+* [JRuby Cookbook by Justin Edelson & Henry Liu](http://shop.oreilly.com/product/9780596519650.do)
+
 
 ## Feature Suggestions
 
