@@ -1,15 +1,18 @@
 # Change Log
 
-## 0.7.4
+## 0.7.5
 
-- Have tree data-binding auto-embed models as tree item data
-- TreeProxy#depth_first_search implementation
-- Support read-only data-binding
 - Make :virtual a default tree SWT style
 - Support Tree selection databinding (just like List)
 - Support built-in Tree editing (i.e. editing tree item text)
 - Support unregistering widget listeners
 - Added tab item proxy dispose method that automatically unsets/disposes tab item inner control before disposing tab item itself
+
+## 0.7.4
+
+- Have tree data-binding auto-embed models as tree item data
+- TreeProxy#depth_first_search implementation
+- Support read-only data-binding
 
 ## 0.7.3
 

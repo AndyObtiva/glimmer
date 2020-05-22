@@ -1,4 +1,4 @@
-# Glimmer 0.7.4 Beta (Desktop Development Library for Ruby)
+# Glimmer 0.7.5 Beta (Desktop Development Library for Ruby)
 [![Gem Version](https://badge.fury.io/rb/glimmer.svg)](http://badge.fury.io/rb/glimmer)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master)
 
@@ -74,7 +74,7 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
 ## Table of Contents
 
 <!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
-- [Glimmer 0.7.4 Beta (JRuby Desktop UI DSL + Data-Binding)](#glimmer-058-beta-jruby-desktop-ui-dsl--data-binding)
+- [Glimmer 0.7.5 Beta (JRuby Desktop UI DSL + Data-Binding)](#glimmer-058-beta-jruby-desktop-ui-dsl--data-binding)
   - [Examples](#examples)
     - [Hello World](#hello-world)
     - [Tic Tac Toe](#tic-tac-toe)
@@ -167,7 +167,7 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.7.4
+jgem install glimmer -v 0.7.5
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -178,7 +178,7 @@ Otherwise, you may also run `jruby -S gem install ...`
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.7.4'
+gem 'glimmer', '~> 0.7.5'
 ```
 
 And, then run:
@@ -737,6 +737,7 @@ Glimmer ships with SWT style **smart defaults** so you wouldn't have to set them
 
 - `text(:border)`
 - `table(:border)`
+- `tree(:border, :virtual, :v_scroll, :h_scroll)`
 - `spinner(:border)`
 - `list(:border, :v_scroll)`
 - `button(:push)`
@@ -1078,7 +1079,7 @@ https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/
 
 Data-binding is done with `bind` command following widget property to bind and taking model and bindable attribute as arguments.
 
-Data-binding examples:
+#### General data-binding examples:
 
 `text bind(contact, :first_name)`
 
@@ -1101,6 +1102,10 @@ This example also specifies a converter on read of the model property, but via a
 
 This is a block shortcut version of the syntax above it. It facilitates formatting model data for read-only widgets since it's a very common view concern. It also saves the developer from having to create a separate formatter/presenter for the model when the view can be an active view that handles common simple formatting operations directly.
 
+`text bind(contact, 'address.street', read_only: true)
+
+This is read-ohly data-binding. It doesn't update contact.address.street when widget text property is changed.
+
 `text bind(contact, 'addresses[1].street')`
 
 This example binds the text property of a widget like `label` to the nested indexed address street of a contact. This is called nested indexed property data binding.
@@ -1118,6 +1123,8 @@ This example demonstrates computed value data binding whereby the value of `name
 This example demonstrates nested indexed computed value data binding whereby the value of `profiles[0].name` depends on changes to both nested `profiles[0].first_name` and `profiles[0].last_name`.
 
 Example from [samples/hello/hello_combo.rb](samples/hello_combo.rb) sample (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+#### Combo
 
 ![Hello Combo](images/glimmer-hello-combo.png)
 
@@ -1161,6 +1168,8 @@ HelloCombo.new.launch
 ```
 
 `combo` widget is data-bound to the country of a person. Note that it expects `person` object to have `:country` attribute and `:country_options` attribute containing all available countries.
+
+#### List
 
 Example from [samples/hello/hello_list_single_selection.rb](samples/hello_list_single_selection.rb) sample:
 
@@ -1242,6 +1251,45 @@ The Glimmer code is not much different from above except for passing the `:multi
 Note that in all the data-binding examples above, there was also an observer attached to the `button` widget to trigger an action on the model, which in turn triggers a data-binding update on the `list` or `combo`. Observers will be discussed in more details in the [next section](#observer).
 
 You may learn more about Glimmer's data-binding syntax by reading the [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer) mentioned in resources and opening up the samples under the [samples](samples) directory.
+
+#### Tree
+
+The SWT Tree widget visualizes a tree data-structure, such as an employment or composition hierarchy.
+
+To data-bind a Tree, you need the root model, the children querying method, and the text display attribute on each child.
+
+This involves using the `bind` keyword mentioned above in addition to a special `tree_properties` keyword that takes the children and text attribute methods.
+
+Example:
+
+```ruby
+shell {      
+  @tree = tree {
+    items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
+    selection bind(company, :selected_coworker)
+  }
+}
+```
+
+The code above includes two data-bindings:
+- Tree `items`, which first bind to the root node (company.owner), and then dig down via `coworkers` `children` method, using the `name` `text` attribute for displaying each tree item. 
+- Tree `selection`, which binds the single tree item selected by the user to the attribute denoted by the `bind` keyword
+
+Additionally, Tree `items` data-binding automatically stores each node model unto the SWT TreeItem object via `setData` method. This enables things like searchability.
+
+The tree widget in Glimmer is represented by a subclass of `WidgetProxy` called `TreeProxy`.
+TreeProxy includes a `depth_first_search` method that takes a block to look for a tree item.
+
+Example:
+
+```ruby
+found_array = @tree.depth_first_search { |tree_item| tree_item.getData == company.owner }
+```
+
+This finds the root node. The array is a Java array. This enables easy passing of it to SWT `Tree#setSelection` method, which expects a Java array of `TreeItem` objects.
+
+To edit a tree, you must invoke `TreeProxy#edit_selected_tree_item` or `TreeProxy#edit_tree_item`. This automatically leverages the SWT TreeEditor custom class behind the scenes, displaying
+a text widget to the user to change the selected or passed tree item text into something else. It automatically persists the change to `items` data-bound model on ENTER/FOCUS-OUT or cancels on ESC/NO-CHANGE.
 
 ### Observer
 
