@@ -346,7 +346,7 @@ module GlimmerSpec
 
     context 'UI code execution' do
       after do
-        if @target
+        if @target && !@target.swt_widget.isDisposed
           @target.async_exec do
             @target.dispose
           end
