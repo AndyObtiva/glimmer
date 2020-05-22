@@ -1,0 +1,4 @@
+language: ruby
+rvm:
+  - jruby-9.2.11.1
+os: osx
