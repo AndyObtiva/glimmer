@@ -116,6 +116,11 @@ module Glimmer
         end
       end
     end
+    
+    attr_reader :application_paths
+    attr_reader :env_vars
+    attr_reader :glimmer_options
+    attr_reader :jruby_options
 
     def initialize(raw_options)
       @application_paths = extract_application_paths(raw_options)

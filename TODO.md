@@ -4,8 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Support table single selection databinding
-- Support table cell editing databinding
 - Maintain tree item expansion on data-binding related changes
 - Make scaffolded apps launch from bin file not app file
 - Make scaffolded custom shells launchable as standalone apps too
@@ -60,6 +58,8 @@ bind_content(model, 'addresses').each { |address|
 ## Technical Tasks
 
 - Improve tree databinding so that replacing content array value updates the tree (instead of clearing and rereading elements)
+- Support table single selection databinding
+- Support table cell editing databinding
 - Support table multi selection databinding
 - Explore rewriting shine with Ruby 2 support
 - Consider need for a startup progress dialog (with Glimmer branding)
