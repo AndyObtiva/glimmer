@@ -7,4 +7,7 @@ jobs:
       dist: xenial
       services: 
         - xvfb
+      apt:
+        packages:
+          - webkit2gtk
     - os: osx
