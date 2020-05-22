@@ -1976,7 +1976,7 @@ glimmer samples/elaborate/contact_manager.rb # demonstrates table data-binding
 glimmer samples/elaborate/tic_tac_toe.rb # demonstrates a full MVC application
 ```
 
-![Gladiator](images/glimmer-gladiator.png)
+![Gladiator](https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-gladiator/v0.1.5/images/glimmer-gladiator.png)
 
 [Gladiator](https://github.com/AndyObtiva/glimmer-cs-gladiator) (short for Glimmer Editor) is a Glimmer sample project under on-going development.
 You may check it out to learn how to build a Glimmer Custom Shell gem.
