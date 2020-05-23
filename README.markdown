@@ -74,12 +74,10 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
 
 ## Table of Contents
 
-<!-- TOC START min:1 max:3 link:true asterisk:false update:true -->
-- [Glimmer 0.7.5 Beta (JRuby Desktop UI DSL + Data-Binding)](#glimmer-058-beta-jruby-desktop-ui-dsl--data-binding)
+- [Glimmer 0.7.5 Beta (Desktop Development Library for Ruby)](#glimmer-075-beta-desktop-development-library-for-ruby)
   - [Examples](#examples)
-    - [Hello World](#hello-world)
+    - [Hello, World!](#hello-world)
     - [Tic Tac Toe](#tic-tac-toe)
-  - [Table of Contents](#table-of-contents)
   - [Background](#background)
   - [Platform Support](#platform-support)
   - [Pre-requisites](#pre-requisites)
@@ -89,6 +87,7 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
   - [Glimmer Command](#glimmer-command)
     - [Basic Usage](#basic-usage)
     - [Advanced Usage](#advanced-usage)
+    - [Scaffolding](#scaffolding)
   - [Girb (Glimmer irb) Command](#girb-glimmer-irb-command)
   - [Glimmer DSL Syntax](#glimmer-dsl-syntax)
     - [Widgets](#widgets)
@@ -103,6 +102,9 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
     - [Miscellaneous](#miscellaneous)
   - [Glimmer Style Guide](#glimmer-style-guide)
   - [Samples](#samples)
+    - [Hello Samples](#hello-samples)
+    - [Elaborate Samples](#elaborate-samples)
+  - [In Production](#in-production)
   - [SWT Reference](#swt-reference)
   - [SWT Packages](#swt-packages)
   - [Logging](#logging)
@@ -115,15 +117,14 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
     - [Self Signed Certificate](#self-signed-certificate)
     - [Gotchas](#gotchas)
   - [Resources](#resources)
+  - [Help](#help)
+    - [Issues](#issues)
+    - [IRC Channel](#irc-channel)
   - [Feature Suggestions](#feature-suggestions)
   - [Change Log](#change-log)
   - [Contributing](#contributing)
   - [Contributors](#contributors)
   - [License](#license)
-<!-- TOC END -->
-
-
-
 ## Background
 
 Ruby is a dynamically-typed object-oriented language, which provides great productivity gains due to its powerful expressive syntax and dynamic nature. While it is proven by the Ruby on Rails framework for web development, it currently lacks a robust platform-independent framework for building desktop applications. Given that Java libraries can now be utilized in Ruby code through JRuby, Eclipse technologies, such as SWT, JFace, and RCP can help fill the gap of desktop application development with Ruby.
