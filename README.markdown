@@ -2254,13 +2254,15 @@ Exec failed with code 2 command [[/usr/bin/SetFile, -c, icnC, /var/folders/4_/g1
 
 ## Help
 
+### Issues
+
 You may submit [issues](https://github.com/AndyObtiva/glimmer/issues) on [GitHub](https://github.com/AndyObtiva/glimmer/issues).
 
 [Click here to submit an issue.](https://github.com/AndyObtiva/glimmer/issues)
 
 ### IRC Channel
 
-If you need live help, try the [#glimmer](http://widget.mibbit.com/?settings=7514b8a196f8f1de939a351245db7aa8&server=irc.mibbit.net&channel=%23glimmer) IRC channel on [mibbit](http://widget.mibbit.com/?settings=7514b8a196f8f1de939a351245db7aa8&server=irc.mibbit.net&channel=%23glimmer). If no one was available, you may leave a GitHub issue message to schedule a meetup on IRC. 
+If you need live help, try the [#glimmer](http://widget.mibbit.com/?settings=7514b8a196f8f1de939a351245db7aa8&server=irc.mibbit.net&channel=%23glimmer) IRC channel on [irc.mibbit.net](http://widget.mibbit.com/?settings=7514b8a196f8f1de939a351245db7aa8&server=irc.mibbit.net&channel=%23glimmer). If no one was available, you may [leave a GitHub issue](https://github.com/AndyObtiva/glimmer/issues) to schedule a meetup on IRC. 
 
 [Click here to connect to #glimmer IRC channel immediately via a web interface.](http://widget.mibbit.com/?settings=7514b8a196f8f1de939a351245db7aa8&server=irc.mibbit.net&channel=%23glimmer)
 
