@@ -151,6 +151,20 @@ module Glimmer
                 observer.call(@swt_widget.getCaretPosition)
               }
             end,
+            :selection => lambda do |observer|
+              on_event_keydown { |event|
+                observer.call(@swt_widget.getSelection)
+              }
+              on_event_keyup { |event|
+                observer.call(@swt_widget.getSelection)
+              }
+              on_event_mousedown { |event|
+                observer.call(@swt_widget.getSelection)
+              }
+              on_event_mouseup { |event|
+                observer.call(@swt_widget.getSelection)
+              }
+            end,
             :selection_count => lambda do |observer|
               on_event_keydown { |event|
                 observer.call(@swt_widget.getSelectionCount)
