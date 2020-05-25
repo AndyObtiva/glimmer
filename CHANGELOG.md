@@ -5,6 +5,7 @@
 - Support text widget selection data-binding explicitly
 - Make specs pass on Linux
 - Maintain tree item expansion on data-binding related changes
+- Make scaffolded apps launch from bin file not app file
 
 ## 0.7.5
 

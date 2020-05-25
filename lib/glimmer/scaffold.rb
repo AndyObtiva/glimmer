@@ -286,8 +286,6 @@ class Scaffold
             app_view.open
           end
         end
-        
-        #{class_name(app_name)}.new.open
       MULTI_LINE_STRING
     end
 
@@ -307,8 +305,10 @@ class Scaffold
     def app_bin_file(app_name)
       <<~MULTI_LINE_STRING
         #!/usr/bin/env ruby
-
+        
         require_relative '../app/#{file_name(app_name)}'
+        
+        #{class_name(app_name)}.new.open
       MULTI_LINE_STRING
     end
 
