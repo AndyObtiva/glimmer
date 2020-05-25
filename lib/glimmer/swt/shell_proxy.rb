@@ -47,7 +47,7 @@ module Glimmer
             Thread.new do      
               sleep(0.25)
               async_exec do
-                @swt_widget.setActive
+                @swt_widget.setActive unless @swt_widget.isDisposed
               end
             end
           end

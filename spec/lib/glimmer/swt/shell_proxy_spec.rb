@@ -58,9 +58,8 @@ module GlimmerSpec
         shell_width = @target.swt_widget.getSize.x
 
         @text.swt_widget.setText('A very long text it cannot fit in the screen if you keep reading on' + ' and on'*60)
-        # packing shell should resize text widget
-        @target.pack
-
+        @target.pack # packing shell should resize text widget
+ 
         expect(@text.swt_widget.getSize.x > text_width).to eq(true)
         expect(@target.swt_widget.getSize.x > shell_width).to eq(true)
       end
@@ -76,14 +75,13 @@ module GlimmerSpec
             text 'A'
           }
         }
-
+ 
         text_width = @text.swt_widget.getSize.x
         shell_width = @target.swt_widget.getSize.x
-
+ 
         @text.swt_widget.setText('A very long text it cannot fit in the screen if you keep reading on' + ' and on'*60)
-        # packing shell should resize text widget
-        @target.pack_same_size
-
+        @target.pack_same_size # packing shell should resize text widget but keep same shell size
+ 
         expect(@text.swt_widget.getSize.x > text_width).to eq(true)
         expect(@target.swt_widget.getSize.x).to eq(shell_width)
       end
@@ -91,29 +89,34 @@ module GlimmerSpec
 
     describe 'visibility observation' do
       it 'notifies when becoming visible' do
+        @shown = false
         @target = described_class.new
         @target.swt_widget.setAlpha(0) # keep invisible while running specs
         @target.on_event_show {
-          expect(@target.visible?).to eq(true)
-          @target.close
+          @shown = true
         }
+        @target.async_exec do
+          expect(@target.visible?).to eq(true)
+          expect(@shown).to eq(true)
+          @target.close
+        end
         expect(@target.visible?).to eq(false)
+        expect(@shown).to eq(false)
         @target.show
       end
 
       it 'notifies when becoming non-visible (observed with alternative syntax)' do
         @target = described_class.new
         @target.swt_widget.setAlpha(0) # keep invisible while running specs
+        @target.on_event_hide {
+          expect(@target.visible?).to eq(false)
+          @target.close
+        }
         @target.async_exec do
-          expect(@target.visible?).to eq(true)
-          @target.on_event_hide {
-            expect(@target.visible?).to eq(false)
-            @target.close
-          }
           @target.hide
         end
         @target.show
       end
     end
   end
-end
+end        
