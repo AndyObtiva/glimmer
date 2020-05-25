@@ -6,7 +6,7 @@ module GlimmerSpec
 
     before(:all) do
       class Person
-        attr_accessor :name, :age, :adult
+        attr_accessor :name, :age, :adult, :name_selection
         attr_reader :id
 
         def initialize(id = nil)
@@ -133,6 +133,72 @@ module GlimmerSpec
 
       @text.swt_widget.setText("Allen Deiley")
       expect(person.name).to eq("Allen Deiley")
+    end
+    
+    context "text widget selection" do
+      it "updates text widget selection when hitting key down" do
+        person = Person.new
+        person.name = "Bruce Ting"
+        person.name_selection = Point.new(1,4)
+  
+        @target = shell {
+          composite {
+            @text = text {
+              text bind(person, :name)
+              selection bind(person, :name_selection)
+            }
+          }
+        }
+  
+        expect(@text.swt_widget.getText).to eq("Bruce Ting")
+        expect(@text.swt_widget.getSelection.x).to eq(1)
+        expect(@text.swt_widget.getSelection.y).to eq(4)
+        
+        @text.swt_widget.setSelection(Point.new(2, 4))
+        event = Event.new
+        event.keyCode = Glimmer::SWT::SWTProxy[:arrow_right]
+        event.doit = true
+        event.character = 26.chr
+        event.display = Glimmer::SWT::DisplayProxy.instance.swt_display
+        event.item = @text.swt_widget
+        event.widget = @text.swt_widget
+        event.type = Glimmer::SWT::SWTProxy[:keydown]
+        @text.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:keydown], event)
+        
+        expect(person.name_selection.x).to eq(2)
+        expect(person.name_selection.y).to eq(4)
+      end
+       
+      it "updates text widget selection when clicking mouse down" do
+        person = Person.new
+        person.name = "Bruce Ting"
+        person.name_selection = Point.new(1,4)
+  
+        @target = shell {
+          composite {
+            @text = text {
+              text bind(person, :name)
+              selection bind(person, :name_selection)
+            }
+          }
+        }
+  
+        expect(@text.swt_widget.getText).to eq("Bruce Ting")
+        expect(@text.swt_widget.getSelection.x).to eq(1)
+        expect(@text.swt_widget.getSelection.y).to eq(4)
+        
+        @text.swt_widget.setSelection(Point.new(2, 4))
+        event = Event.new
+        event.doit = true
+        event.display = Glimmer::SWT::DisplayProxy.instance.swt_display
+        event.item = @text.swt_widget
+        event.widget = @text.swt_widget
+        event.type = Glimmer::SWT::SWTProxy[:mousedown]
+        @text.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:mousedown], event)
+        
+        expect(person.name_selection.x).to eq(2)
+        expect(person.name_selection.y).to eq(4)
+      end    
     end
 
     it "tests red label custom widget data binding string property" do

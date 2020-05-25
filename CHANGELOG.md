@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.7.6
+
+- Support text widget selection data-binding explicitly
+
 ## 0.7.5
 
 - Make :virtual a default tree SWT style
