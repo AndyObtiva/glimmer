@@ -9,5 +9,5 @@ jobs:
         - xvfb
       apt:
         packages:
-          - webkit2gtk
+          - libswt-webkit-gtk-3-jni
     - os: osx
