@@ -276,26 +276,28 @@ module GlimmerSpec
       expect(@button.swt_widget.text).to eq( "Push Me")
     end
 
-    it "tests shell and browser default" do
-      @target = shell {
-        @browser = browser {
-          text <<~HTML
-          <html>
-          <head>
-          </head>
-          <body>
-          <form>
-          <input id="answer" value="42">
-          </form>
-          </body>
-          </html>
-          HTML
-          on_completed {
-            expect(@browser.swt_widget.evaluate("document.getElementById('answer').value")).to eq('42')
+    unless OS.linux?
+      it "tests shell and browser default" do
+        @target = shell {
+          @browser = browser {
+            text <<~HTML
+            <html>
+            <head>
+            </head>
+            <body>
+            <form>
+            <input id="answer" value="42">
+            </form>
+            </body>
+            </html>
+            HTML
+            on_completed {
+              expect(@browser.swt_widget.evaluate("document.getElementById('answer').value")).to eq('42')
+            }
           }
         }
-      }
-      expect(@browser.swt_widget.is_a?(Browser)).to be_truthy
+        expect(@browser.swt_widget.is_a?(Browser)).to be_truthy
+      end
     end
 
     it "tests shell_and_table_and_table_column_defaults" do

@@ -7,7 +7,4 @@ jobs:
       dist: xenial
       services: 
         - xvfb
-      apt:
-        packages:
-          - libswt-webkit-gtk-3-jni
     - os: osx
