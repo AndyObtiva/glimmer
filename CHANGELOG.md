@@ -3,6 +3,8 @@
 ## 0.7.6
 
 - Support text widget selection data-binding explicitly
+- Make specs pass on Linux
+- Maintain tree item expansion on data-binding related changes
 
 ## 0.7.5
 

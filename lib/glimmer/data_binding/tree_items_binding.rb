@@ -38,13 +38,16 @@ module Glimmer
       def populate_tree(model_tree_root_node, parent, tree_properties)
         # TODO make it change things by delta instead of removing all
         selected_tree_item_model = parent.swt_widget.getSelection.map(&:getData).first
-        parent.all_tree_items.each do |tree_item|
+        old_tree_items = parent.all_tree_items
+        old_tree_item_expansion_by_data = old_tree_items.reduce({}) {|hash, ti| hash.merge(ti.getData => ti.getExpanded)}
+        old_tree_items.each do |tree_item|
           tree_item.getData('observer_registrations').each do |key, observer_registration|
             observer_registration.unregister
-          end
-        end
+          end          
+        end        
         parent.swt_widget.removeAll
         populate_tree_node(model_tree_root_node, parent.swt_widget, tree_properties)
+        parent.all_tree_items.each { |ti| ti.setExpanded(!!old_tree_item_expansion_by_data[ti.getData]) }
         tree_item_to_select = parent.depth_first_search {|ti| ti.getData == selected_tree_item_model}
         parent.swt_widget.setSelection(tree_item_to_select)
       end

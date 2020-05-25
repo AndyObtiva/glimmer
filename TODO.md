@@ -4,9 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
-- Make specs pass on Linux
-- Support automatic one-way data-binding read-only or write-only)
-- Maintain tree item expansion on data-binding related changes
 - Make scaffolded apps launch from bin file not app file
 - Make scaffolded custom shells launchable as standalone apps too
 

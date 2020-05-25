@@ -120,7 +120,13 @@ module GlimmerSpec
       expect(node1.getText).to eq("Bruce Ting")
       expect(node2.getText).to eq("Julia Fang")
       
+      @tree.swt_widget.getItems.first.setExpanded(true)
+      
       manager.name = "Tim Lee Harkins"
+      
+      # maintains expansion on tree item text change
+      
+      expect(@tree.swt_widget.getItems.first.getExpanded).to eq(true)
 
       root_node = @tree.swt_widget.getItems.first
       expect(root_node.getText).to eq("Tim Lee Harkins")
