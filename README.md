@@ -3,7 +3,7 @@
 [![Travis CI](https://travis-ci.com/AndyObtiva/glimmer.svg?branch=master)](https://travis-ci.com/github/AndyObtiva/glimmer)
 <!-- [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master) -->
 
-Glimmer is a native-UI cross-platform desktop development library written in Ruby. Glimmer's main innovation is a JRuby DSL that enables productive and efficient authoring of desktop application user-interfaces while relying on the robust Eclipse SWT library. Glimmer additionally innovates by having built-in data-binding support to greatly facilitate synchronizing the UI with domain models. As a result, that achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about UI concerns, or alternatively drive development UI-first, and then write clean business models test-first afterwards.
+Glimmer is a native-GUI cross-platform desktop development library written in Ruby. Glimmer's main innovation is a JRuby DSL that enables productive and efficient authoring of desktop application user-interfaces while relying on the robust Eclipse SWT library. Glimmer additionally innovates by having built-in data-binding support to greatly facilitate synchronizing the GUI with domain models. As a result, that achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about GUI concerns, or alternatively drive development GUI-first, and then write clean business models test-first afterwards.
 
 [<img src="https://covers.oreillystatic.com/images/9780596519650/lrg.jpg" width=105 /><br /> 
 Featured in<br />JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do)
@@ -132,7 +132,7 @@ Ruby is a dynamically-typed object-oriented language, which provides great produ
 
 These are all the things that separate Glimmer from other Ruby desktop development GUI libraries:
 
-- Programmer-friendly declarative UI DSL
+- Programmer-friendly declarative GUI DSL
 - Bidirectional data-binding support
 - Scaffolding support for generating apps and custom widgets/shells (gems)
 - Native executable packaging support (e.g. generate Mac DMG/PKG/APP file)
@@ -145,12 +145,12 @@ Glimmer runs on the following platforms:
 - Windows
 - Linux
 
-Glimmer's UI has the native look and feel of each operating system it runs on since it uses SWT behind the scenes, which leverages the following native libraries:
+Glimmer's GUI has the native look and feel of each operating system it runs on since it uses SWT behind the scenes, which leverages the following native libraries:
 - Win32 on Windows
 - Cocoa on Mac
 - GTK on Linux
 
-More info about the SWT UI on various platforms can be found on the Eclipse WIKI and SWT FAQ:
+More info about the SWT GUI on various platforms can be found on the Eclipse WIKI and SWT FAQ:
 
 https://wiki.eclipse.org/SWT/Devel/Gtk/Dev_guide#Win32.2FCocoa.2FGTK
 https://www.eclipse.org/swt/faq.php
@@ -418,7 +418,7 @@ You will learn more about widgets next.
 
 ### Widgets
 
-Glimmer UIs (user interfaces) are modeled with widgets, which are wrappers around the SWT library widgets found here:
+Glimmer GUIs (user interfaces) are modeled with widgets, which are wrappers around the SWT library widgets found here:
 
 https://www.eclipse.org/swt/widgets/
 
@@ -527,7 +527,7 @@ shell {
 
 #### Display
 
-SWT Display is a singleton in Glimmer. It is used in SWT to represent your display device, allowing you to manage UI globally 
+SWT Display is a singleton in Glimmer. It is used in SWT to represent your display device, allowing you to manage GUI globally 
 and access available monitors. 
 It is automatically instantiated upon first instantiation of a `shell` widget. 
 Alternatively, for advanced use cases, it can be created explicitly with Glimmer `display` keyword. When a `shell` is later declared, it
@@ -555,7 +555,7 @@ Glimmer follows Proxy Design Pattern by having Ruby proxy wrappers for all SWT o
 - `Glimmer::SWT:TabItemProxy` wraps `org.eclipse.swt.widget.TabItem` (also adds a composite to enable adding content under tab items directly in Glimmer)
 - `Glimmer::SWT:LayoutProxy` wraps all descendants of `org.eclipse.swt.widget.Layout`
 - `Glimmer::SWT:LayoutDataProxy` wraps all layout data objects
-- `Glimmer::SWT:DisplayProxy` wraps `org.eclipse.swt.widget.Display` (manages displaying UI)
+- `Glimmer::SWT:DisplayProxy` wraps `org.eclipse.swt.widget.Display` (manages displaying GUI)
 - `Glimmer::SWT:ColorProxy` wraps `org.eclipse.swt.graphics.Color`
 - `Glimmer::SWT:FontProxy` wraps `org.eclipse.swt.graphics.Font`
 - `Glimmer::SWT::WidgetListenerProxy` wraps all widget listeners
@@ -1414,7 +1414,7 @@ Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 The shell declared above has been modified so that the minimize button works just like the close button. Once you minimize the shell (iconify it), it closes.
 
-The alternative syntax can be helpful if you prefer to separate Glimmer observer declarations from Glimmer UI declarations, or would like to add observers dynamically based on some logic later on.
+The alternative syntax can be helpful if you prefer to separate Glimmer observer declarations from Glimmer GUI declarations, or would like to add observers dynamically based on some logic later on.
 
 #### Observing Models
 
@@ -1948,7 +1948,7 @@ This relies on Glimmer's [Multi-DSL Support](https://github.com/AndyObtiva/glimm
 - Widget property declarations always have arguments and never take a block
 - Widget property arguments are never wrapped inside parentheses
 - Widget listeners are always declared starting with `on_` prefix and affixing listener event method name afterwards in underscored lowercase form
-- Widget listeners are always followed by a block using curly braces (Only when declared in DSL. When invoked on widget object directly outside of UI declarations, standard Ruby conventions apply)
+- Widget listeners are always followed by a block using curly braces (Only when declared in DSL. When invoked on widget object directly outside of GUI declarations, standard Ruby conventions apply)
 - Data-binding is done via `bind` keyword, which always takes arguments wrapped in parentheses
 - Custom widget body, before_body, and after_body blocks open their blocks and close them with curly braces.
 - Custom widgets receive additional arguments to SWT style called options. These are passed as the last argument inside the parentheses, a hash of option names pointing to values.
