@@ -2247,7 +2247,7 @@ Exec failed with code 2 command [[/usr/bin/SetFile, -c, icnC, /var/folders/4_/g1
 
 ## Resources
 
-* [Codemaster Blog](http://andymaleh.blogspot.com/search/label/Glimmer)
+* [Code Master Blog](http://andymaleh.blogspot.com/search/label/Glimmer)
 * [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer)
 * [InfoQ Article](http://www.infoq.com/news/2008/02/glimmer-jruby-swt)
 * [RubyConf 2008 Video](https://confreaks.tv/videos/rubyconf2008-desktop-development-with-glimmer)
