@@ -2284,8 +2284,10 @@ These features have been suggested. You might see them in a future version of Gl
 
 ## Contributors
 
-* Andy Maleh (Founder)
-* Dennis Theisen
+* [Andy Maleh](https://github.com/AndyObtiva) (Founder)
+* [Dennis Theisen](https://github.com/Soleone) (Contributor)
+
+[Click here to view contributor commits.](https://github.com/AndyObtiva/glimmer/graphs/contributors)
 
 ## License
 
