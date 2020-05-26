@@ -130,14 +130,6 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
 
 Ruby is a dynamically-typed object-oriented language, which provides great productivity gains due to its powerful expressive syntax and dynamic nature. While it is proven by the Ruby on Rails framework for web development, it currently lacks a robust platform-independent framework for building desktop applications. Given that Java libraries can now be utilized in Ruby code through JRuby, Eclipse technologies, such as SWT, JFace, and RCP can help fill the gap of desktop application development with Ruby.
 
-These are all the things that separate Glimmer from other Ruby desktop development GUI libraries:
-
-- Programmer-friendly declarative GUI DSL
-- Bidirectional data-binding support
-- Scaffolding support for generating apps and custom widgets/shells (gems)
-- Native executable packaging support (e.g. generate Mac DMG/PKG/APP file)
-- Native look and feel on Mac, Windows, and Linux
-
 ## Platform Support
 
 Glimmer runs on the following platforms:
