@@ -1,4 +1,4 @@
-# Glimmer 0.7.6 Beta (Desktop Development Library for Ruby)
+# Glimmer 0.7.7 Beta (Desktop Development Library for Ruby)
 [![Gem Version](https://badge.fury.io/rb/glimmer.svg)](http://badge.fury.io/rb/glimmer)
 [![Travis CI](https://travis-ci.com/AndyObtiva/glimmer.svg?branch=master)](https://travis-ci.com/github/AndyObtiva/glimmer)
 <!-- [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master) -->
@@ -74,7 +74,7 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
 
 ## Table of Contents
 
-- [Glimmer 0.7.6 Beta (Desktop Development Library for Ruby)](#glimmer-075-beta-desktop-development-library-for-ruby)
+- [Glimmer 0.7.7 Beta (Desktop Development Library for Ruby)](#glimmer-075-beta-desktop-development-library-for-ruby)
   - [Examples](#examples)
     - [Hello, World!](#hello-world)
     - [Tic Tac Toe](#tic-tac-toe)
@@ -170,7 +170,7 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.7.6
+jgem install glimmer -v 0.7.7
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -181,7 +181,7 @@ Otherwise, you may also run `jruby -S gem install ...`
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.7.6'
+gem 'glimmer', '~> 0.7.7'
 ```
 
 And, then run:

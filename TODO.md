@@ -4,6 +4,8 @@ Here is a list of tasks to do (please delete once done):
 
 ## Up Next
 
+- Make scaffolded custom shells launchable as standalone apps too
+
 ## Side Project (opal-spike branch)
 
 - Support web UIs via Opal Ruby (https://github.com/opal/opal)
@@ -100,8 +102,6 @@ task :hello do
 end
 - Support data-binding shell size and location
 - Support data-bind two widget attributes to each other
-- Make scaffolded custom shells launchable as standalone apps too
-
 
 ## Samples
 

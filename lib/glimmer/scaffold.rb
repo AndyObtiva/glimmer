@@ -155,7 +155,7 @@ class Scaffold
       end
       mkdir 'bin'
       write "bin/#{file_name(app_name)}", app_bin_file(app_name)
-      FileUtils.chmod 0755, "bin/#{app_name.underscore}"
+      FileUtils.chmod 0755, "bin/#{file_name(app_name)}"
       system "bash -c '#{RVM_FUNCTION}\n cd .\n bundle\n glimmer package\n'"
       system "open packages/bundles/#{human_name(app_name).gsub(' ', '\ ')}.app"
       # TODO generate rspec test suite
@@ -253,7 +253,7 @@ class Scaffold
     end
 
     def class_name(app_name)
-      app_name.camelcase(:upper)
+      app_name.underscore.camelcase(:upper)
     end
 
     def file_name(app_name)
@@ -265,7 +265,7 @@ class Scaffold
     end
 
     def compact_name(gem_name)
-      gem_name.camelcase.downcase
+      gem_name.underscore.camelcase.downcase
     end
 
     def app_main_file(app_name)

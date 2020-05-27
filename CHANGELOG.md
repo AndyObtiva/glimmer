@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.7.7
+
+- Fix issue with scaffolding apps with dash in their name
+
 ## 0.7.6
 
 - Support text widget selection data-binding explicitly
