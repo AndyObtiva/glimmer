@@ -193,11 +193,21 @@ class Scaffold
       write '.ruby-gemset', gem_name
       write 'VERSION', '1.0.0'
       write 'Gemfile', GEMFILE_GEM      
-      write 'Rakefile', gem_rakefile
+      write 'Rakefile', gem_rakefile(custom_shell_name, namespace)
       append "lib/#{gem_name}.rb", gem_main_file(custom_shell_name, namespace)
       mkdir 'lib/views'
       custom_shell(custom_shell_name, namespace)
-      system "bash -c '#{RVM_FUNCTION}\n cd .\n bundle\n'"
+      mkdir 'bin'
+      write "bin/#{file_name(custom_shell_name)}", gem_bin_file(gem_name, custom_shell_name, namespace)
+      FileUtils.chmod 0755, "bin/#{file_name(custom_shell_name)}"      
+      if OS.mac?
+        mkdir_p 'package/macosx'
+        icon_file = "package/macosx/#{human_name(custom_shell_name)}.icns"
+        cp File.expand_path('../../../icons/scaffold_app.icns', __FILE__), icon_file
+        puts "Created #{current_dir_name}/#{icon_file}"
+      end
+      system "bash -c '#{RVM_FUNCTION}\n cd .\n bundle\n glimmer package\n'"
+      system "open packages/bundles/#{human_name(custom_shell_name).gsub(' ', '\ ')}.app"
       puts "Finished creating #{gem_name} Ruby gem."
       puts 'Edit Rakefile to configure gem details.'
       puts 'Run `rake` to execute specs.'
@@ -259,6 +269,7 @@ class Scaffold
     def file_name(app_name)
       app_name.underscore
     end
+    alias dsl_widget_name file_name
 
     def human_name(app_name)
       app_name.underscore.titlecase
@@ -312,7 +323,19 @@ class Scaffold
       MULTI_LINE_STRING
     end
 
-    def gem_rakefile
+    def gem_bin_file(gem_name, custom_shell_name, namespace)
+      <<~MULTI_LINE_STRING
+        #!/usr/bin/env ruby
+        
+        require_relative '../lib/#{gem_name}'
+        
+        include Glimmer
+        
+        #{dsl_widget_name(custom_shell_name)}.open
+      MULTI_LINE_STRING
+    end
+
+    def gem_rakefile(custom_shell_name = nil, namespace = nil)
       rakefile_content = File.read('Rakefile')
       lines = rakefile_content.split("\n")
       require_rake_line_index = lines.index(lines.detect {|l| l.include?("require 'rake'") })
@@ -321,8 +344,21 @@ class Scaffold
       lines.insert(gem_files_line_index, "  gem.files = Dir['lib/**/*.rb']")
       spec_pattern_line_index = lines.index(lines.detect {|l| l.include?('spec.pattern =') })
       lines.insert(spec_pattern_line_index+1, "  spec.ruby_opts = [Glimmer::Launcher.jruby_swt_options]")
-      lines << "\nrequire 'glimmer/rake_task'\n"
-      lines.join("\n")
+      lines << "\nrequire 'glimmer/rake_task'\n"       
+      file_content = lines.join("\n")
+      if custom_shell_name
+        file_content << <<~MULTI_LINE_STRING  
+          Glimmer::Package.javapackager_extra_args =
+            " -name '#{human_name(custom_shell_name)}'" +
+            " -title '#{human_name(custom_shell_name)}'" +
+            " -Bmac.CFBundleName='#{human_name(custom_shell_name)}'" +
+            " -Bmac.CFBundleIdentifier='org.#{namespace ? compact_name(namespace) : compact_name(custom_shell_name)}.application.#{compact_name(custom_shell_name)}'" 
+            # " -BlicenseType=" +
+            # " -Bmac.category=" +
+            # " -Bmac.signing-key-developer-id-app="
+        MULTI_LINE_STRING
+      end
+      file_content
     end
 
     def spec_helper_file

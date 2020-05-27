@@ -3,6 +3,7 @@
 ## 0.7.7
 
 - Fix issue with scaffolding apps with dash in their name
+- Make scaffolded custom shells launchable as standalone apps (native executables) too
 
 ## 0.7.6
 

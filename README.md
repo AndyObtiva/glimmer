@@ -342,9 +342,11 @@ glimmer scaffold:custom_widget[custom_widget_name]
 
 #### Custom Shell Gem
 
-Custom shell gems are self-contained Glimmer apps as well as reusable custom shells.
+Custom shell gems are self-contained Glimmer apps as well as reusable custom shells. 
+As such, they are packaged as both a native executable (e.g. Mac DMG/PKG/APP) and a Ruby gem.
+Of course, you can build a Ruby gem and disregard its native executable packaging if you do not need it.
 
-To scaffold a Glimmer custom shell gem (full window view externalized into a gem) for an existing Glimmer app, run the following command:
+To scaffold a Glimmer custom shell gem (full window view distributed as a Ruby gem), run the following command:
 
 ```
 glimmer scaffold:custom_shell_gem[custom_shell_name, namespace]
@@ -352,7 +354,7 @@ glimmer scaffold:custom_shell_gem[custom_shell_name, namespace]
 
 It is important to specify a namespace to avoid having your gem clash with existing gems.
 
-The Ruby gem name will follow the convention "glimmer-cs-customwidgetname-namespace" (the 'cs' is for Custom Shell)
+The Ruby gem name will follow the convention "glimmer-cs-customwidgetname-namespace" (the 'cs' is for Custom Shell).
 
 Only official Glimmer gems created by the Glimmer project committers will have no namespace (e.g. [glimmer-cs-gladiator](https://rubygems.org/gems/glimmer-cs-gladiator) Ruby gem)
 
@@ -360,7 +362,7 @@ Example: [https://github.com/AndyObtiva/glimmer-cs-gladiator](https://github.com
 
 #### Custom Widget Gem
 
-To scaffold a Glimmer custom widget gem (part of a view externalized into a gem) for an existing Glimmer app, run the following command:
+To scaffold a Glimmer custom widget gem (part of a view distributed as a Ruby gem), run the following command:
 
 ```
 glimmer scaffold:custom_widget_gem[custom_widget_name, namespace]
