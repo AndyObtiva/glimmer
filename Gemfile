@@ -12,7 +12,7 @@ gem 'rdoc', '6.2.1'
 group :development do
   gem "rspec-mocks", "~> 3.5.0"
   gem "rspec", "~> 3.5.0"
-  gem "coveralls", "= 0.8.5", require: false
-  gem "simplecov", "~> 0.10.0", require: nil
   gem "puts_debuggerer", "~> 0.8.1", require: false
 end
+
+gem 'simplecov', '~> 0.17.1', require: false, group: :test

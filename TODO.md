@@ -100,6 +100,7 @@ task :hello do
 end
 - Support data-binding shell size and location
 - Support data-bind two widget attributes to each other
+- Generate rspec test suite for app scaffolding
 
 ## Samples
 

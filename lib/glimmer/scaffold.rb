@@ -77,7 +77,7 @@ class Scaffold
     GEMFILE_APP = <<~MULTI_LINE_STRING
       # frozen_string_literal: true
       
-      source "https://rubygems.org"
+      source 'https://rubygems.org'
       
       git_source(:github) {|repo_name| "https://github.com/\#{repo_name}" }
       
@@ -91,16 +91,16 @@ class Scaffold
     GEMFILE_GEM = <<~MULTI_LINE_STRING
       # frozen_string_literal: true
       
-      source "https://rubygems.org"
+      source 'https://rubygems.org'
       
       git_source(:github) {|repo_name| "https://github.com/\#{repo_name}" }
       
       gem 'glimmer', '~> #{VERSION}'
       
       group :development do
-        gem "rspec", "~> 3.5.0"
-        gem "jeweler", "2.3.9"
-        gem "simplecov", ">= 0"
+        gem 'rspec', '~> 3.5.0'
+        gem 'jeweler', '2.3.9'
+        gem 'simplecov', '>= 0'
       end
     MULTI_LINE_STRING
 

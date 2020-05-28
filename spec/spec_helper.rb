@@ -1,15 +1,13 @@
-require 'coveralls'
-Coveralls.wear!
 require 'bundler'
 require 'puts_debuggerer' unless ENV['puts_debuggerer'] == 'false'
-require_relative '../lib/glimmer'
 begin
-  Bundler.require(:default, :development)
+  Bundler.require(:default, :development, :test)
 rescue Bundler::BundlerError => e
   $stderr.puts e.message
   $stderr.puts "Run `bundle install` to install missing gems"
   exit e.status_code
 end
+require_relative '../lib/glimmer/swt/packages'
 module GlimmerSpec
   include Glimmer::SWT::Packages # makes SWT packages available to namespace containing specs
 end
@@ -134,3 +132,21 @@ RSpec::Matchers.define :have_style do |style|
     expect(widget.getStyle & Glimmer::SWT::SWTProxy[style]).to eq(Glimmer::SWT::SWTProxy[style])
   end
 end
+begin
+  ENV['APP_ENV'] = 'test'
+  require "simplecov"
+  module SimpleCov::Configuration
+    def clean_filters
+      @filters = []
+    end
+  end
+  SimpleCov.configure do
+    clean_filters
+    load_adapter 'test_frameworks'
+  end
+  SimpleCov.start
+rescue LoadError, StandardError => e
+  puts 'Failed to load/configure SimpleCov'
+  puts e.full_message
+end
+require_relative '../lib/glimmer'
