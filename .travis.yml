@@ -18,5 +18,5 @@ jobs:
       script:
         - bundle exec rspec
       after_script:
-        - echo $(pwd) && echo $(readlink -f .) && ./cc-test-reporter after-build --prefix $(readlink -f .) --exit-code $TRAVIS_TEST_RESULT
+        - ./cc-test-reporter after-build --prefix '/home/travis/' --exit-code $TRAVIS_TEST_RESULT
     - os: osx
