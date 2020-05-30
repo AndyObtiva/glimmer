@@ -359,7 +359,10 @@ The Ruby gem name will follow the convention "glimmer-cs-customwidgetname-namesp
 
 Only official Glimmer gems created by the Glimmer project committers will have no namespace (e.g. [glimmer-cs-gladiator](https://rubygems.org/gems/glimmer-cs-gladiator) Ruby gem)
 
-Example: [https://github.com/AndyObtiva/glimmer-cs-gladiator](https://github.com/AndyObtiva/glimmer-cs-gladiator)
+Examples: 
+
+- [glimmer-cs-gladiator](https://github.com/AndyObtiva/glimmer-cs-gladiator): Gladiator (Glimmer Editor)
+- [glimmer-cs-calculator](https://github.com/AndyObtiva/glimmer-cs-calculator): Glimmer Calculator
 
 #### Custom Widget Gem
 
@@ -1977,10 +1980,20 @@ glimmer samples/hello/hello_computed.rb # demonstrates computed data-binding
 For more elaborate samples, check the following:
 
 ```
-glimmer samples/elaborate/login.rb # demonstrates general data-binding
+glimmer samples/elaborate/login.rb # demonstrates basic data-binding
 glimmer samples/elaborate/contact_manager.rb # demonstrates table data-binding
 glimmer samples/elaborate/tic_tac_toe.rb # demonstrates a full MVC application
 ```
+
+### External Samples
+
+#### [Glimmer Calculator](https://github.com/AndyObtiva/glimmer-cs-calculator)
+
+![Glimmer Calculator](https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/v1.0.0/glimmer-cs-calculator-screenshot.png)
+
+[Glimmer Calculator](https://github.com/AndyObtiva/glimmer-cs-calculator) is a basic calculator sample project demonstrating data-binding and TDD (test-driven-development) with Glimmer following the MVP pattern (Model-View-Presenter).
+
+#### [Gladiator](https://github.com/AndyObtiva/glimmer-cs-gladiator)
 
 ![Gladiator](https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-gladiator/v0.1.5/images/glimmer-gladiator.png)
 
