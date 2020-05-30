@@ -104,10 +104,9 @@ end
 
 ## Samples
 
-- Scientific Calculator
-- Business Accounting app
 - HR Employee Management app
 - Medical Patient Management app
+- Business Accounting app
 
 ## Documentation Tasks
 
