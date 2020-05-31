@@ -1542,17 +1542,17 @@ Notice how `Red::Composite` became `red__composite` with double-underscore, whic
 
 Keep in mind that namespaces are not needed to be specified if the Custom Widget class has a unique name, not clashing with a basic SWT widget or another custom widget name.
 
-Custom Widgets have the following attributes (attribute readers) available to call from inside the `#body` method:
+Custom Widgets have the following attributes available to call from inside the `#body` method:
 - `#parent`: Glimmer object parenting custom widget
 - `#swt_style`: SWT style integer. Can be useful if you want to allow consumers to customize a widget inside the custom widget body
-- `#options`: a hash of options passed in parentheses when declaring a custom widget (useful for passing in model data) (e.g. `calendar(events: events)`). Custom widget class can declare option names (array) with `.options` method as shown below, which generates attribute readers for every option (not to be confused with `#options` instance method for retrieving options hash containing names & values)
+- `#options`: a hash of options passed in parentheses when declaring a custom widget (useful for passing in model data) (e.g. `calendar(events: events)`). Custom widget class can declare option names (array) with `::options` class method as shown below, which generates attribute accessors for every option (not to be confused with `#options` instance method for retrieving options hash containing names & values)
 - `#content`: nested block underneath custom widget. It will be automatically called at the end of processing the custom widget body. Alternatively, the custom widget body may call `content.call` at the place where the content is needed to show up as shown in the following example.
 - `#body_root`: top-most (root) widget returned from `#body` method.
 - `#swt_widget`: actual SWT widget for `body_root`
 
 Additionally, custom widgets can call the following class methods:
-- `.options`: declares a list of options by taking an option name array (symbols/strings). This generates option attribute readers (e.g. `options :orientation, :bg_color` generates `#orientation` and `#bg_color` attribute readers)
-- `.option`: declares a single option taking option name and default value as arguments (also generates an attribute reader just like `.options`)
+- `.options`: declares a list of options by taking an option name array (symbols/strings). This generates option attribute accessors (e.g. `options :orientation, :bg_color` generates `#orientation`, `#orientation=(v)`, `#bg_color`, and `#bg_color=(v)` attribute accessors)
+- `.option`: declares a single option taking option name and default value as arguments (also generates attribute accessors just like `.options`)
 
 #### Content/Options Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 

@@ -491,10 +491,6 @@ class Scaffold
       if %i[gem app].include?(shell_type)
         custom_shell_file_content += <<-MULTI_LINE_STRING
 
-    def greeting=(text)
-      options[:greeting] = text
-    end
-                    
     def display_about_dialog
       message_box = MessageBox.new(swt_widget)
       message_box.setText("About")

@@ -5,6 +5,7 @@
 - Fix verbiage for summary/description in scaffolding custom shell gems (change custom widget reference to custom shell)
 - Scaffolding builds a proper binary for custom shell gems and includes it in executables in Rakefile
 - Scaffolding adds about/preferences menu actions to apps/custom-shell-gems
+- Make custom widget/shell options writable 
 
 ## 0.7.7
 

@@ -5,7 +5,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Next Revision
 
-- Make custom widget/shell options writable 
 - Support dialog Glimmer DSL keyword
 
 ## Next Minor Version

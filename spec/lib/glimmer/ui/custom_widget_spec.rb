@@ -17,10 +17,14 @@ module GlimmerSpec
 
       class ::ColoredLabel
         include Glimmer::UI::CustomWidget
+        
+        options :color, :foreground_color
 
         body {
           label(swt_style) {
             background options[:color]
+            # foreground can change after instantiation via data-binding
+            foreground bind(self, :foreground_color)
           }
         }
       end
@@ -171,11 +175,15 @@ module GlimmerSpec
 
     it "builds custom widget with an option" do
       @target = shell {
-        @colored_label = colored_label(color: :blue)
+        @colored_label = colored_label(color: :blue, foreground_color: :red)
       }
 
       expect(@colored_label.swt_widget.getParent).to eq(@target.swt_widget)
       expect(@colored_label.swt_widget.getBackground).to eq(Glimmer::SWT::ColorProxy.new(:blue).swt_color)
+      expect(@colored_label.swt_widget.getForeground).to eq(Glimmer::SWT::ColorProxy.new(:red).swt_color)
+      
+      @colored_label.foreground_color = :white
+      expect(@colored_label.swt_widget.getForeground).to eq(Glimmer::SWT::ColorProxy.new(:white).swt_color)
     end
 
     it "builds custom widget with namespace" do

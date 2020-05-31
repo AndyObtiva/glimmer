@@ -83,7 +83,7 @@ module Glimmer
           else
             new_options = new_options.reduce({}) {|new_options_hash, new_option| new_options_hash.merge(new_option => nil)}
             @options = options.merge(new_options)
-            def_option_attr_readers(new_options)
+            def_option_attr_accessors(new_options)
           end
         end
 
@@ -91,14 +91,17 @@ module Glimmer
           new_option = new_option.to_s.to_sym
           new_options = {new_option => new_option_default}
           @options = options.merge(new_options)
-          def_option_attr_readers(new_options)
+          def_option_attr_accessors(new_options)
         end
 
-        def def_option_attr_readers(new_options)
+        def def_option_attr_accessors(new_options)
           new_options.each do |option, default|
             class_eval <<-end_eval, __FILE__, __LINE__
               def #{option}
                 options[:#{option}]
+              end
+              def #{option}=(option_value)
+                self.options[:#{option}] = option_value
               end
             end_eval
           end
