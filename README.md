@@ -113,7 +113,8 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
   - [Raw JRuby Command](#raw-jruby-command)
     - [Mac Support](#mac-support)
   - [Packaging & Distribution](#packaging--distribution)
-    - [Defaults](#defaults)
+    - [Packaging Defaults](#packaging-defaults)
+    - [Packaging Configuration](#packaging-configuration)
     - [javapackager Extra Arguments](#javapackager-extra-arguments)
     - [Mac Application Distribution](#mac-application-distribution)
     - [Self Signed Certificate](#self-signed-certificate)
@@ -2131,25 +2132,14 @@ Glimmer simplifies the process of Mac packaging via the `glimmer package` comman
 glimmer package
 ```
 
-This will generate a JAR file under `./dist` directory, which is then used to generate a DMG file (and pkg/app) under `./packages/bundles`. 
+This will automatically generate a JAR file under `./dist` directory using Warbler, which is then used to automatically generate a DMG file (and pkg/app) under `./packages/bundles` using `javapackager`. 
 JAR file name will match your application local directory name (e.g. `MathBowling.jar` for `~/code/MathBowling`)
 DMG file name will match the humanized local directory name + dash + application version (e.g. `Math Bowling-1.0.dmg` for `~/code/MathBowling` with version 1.0 or unspecified)
 
-THe `glimmer package` command will automatically set "mac.CFBundleIdentifier" to ="org.#{project_name}.application.#{project_name}". 
+The `glimmer package` command will automatically set "mac.CFBundleIdentifier" to ="org.#{project_name}.application.#{project_name}". 
 You may override by configuring as an extra argument for javapackger (e.g. Glimmer::Package.javapackager_extra_args = " -Bmac.CFBundleIdentifier=org.andymaleh.application.MathBowling")
 
-### Packaging Configuration
-
-- Ensure you have a Ruby script under `bin` directory that launches the application, preferably matching your project directory name (e.g. `bin/math_bowling`) :
-```ruby
-require_relative '../app/my_application.rb'
-```
-- Include Icon (Optional): If you'd like to include an icon for your app (.icns format on the Mac), place it under `package/macosx` matching the humanized application local directory name (e.g. 'Math Bowling.icns' [containing space] for MathBowling or math_bowling). You may generate your Mac icon easily using tools like Image2Icon (http://www.img2icnsapp.com/) or manually using the Mac terminal command `iconutil` (iconutil guide: https://applehelpwriter.com/tag/iconutil/)
-- Include Version (Optional): Create a `VERSION` file in your application and fill it your app version on one line (e.g. `1.1.0`)
-- Include License (Optional): Create a `LICENSE.txt` file in your application and fill it up with your license (e.g. MIT). It will show up to people when installing your app. Note that, you may optionally also specify license type, but you'd have to do so manually via `-BlicenseType=MIT` shown in an [example below](#javapackager-extra-arguments).
-- Extra args (Optional): You may optionally add the following to `Rakefile` to configure extra arguments for javapackager: `Glimmer::Packager.javapackager_extra_args = "..."` (Useful to avoid re-entering extra arguments on every run of rake task.). Read about them in [their section below](#javapackager-extra-arguments).
-
-### Defaults
+### Packaging Defaults
 
 Glimmer employs smart defaults in packaging.
 
@@ -2164,6 +2154,17 @@ glimmer package:config
 ```
 
 This will generate `config/warble.rb`, which you may configure and then run `glimmer package` afterwards.
+
+### Packaging Configuration
+
+- Ensure you have a Ruby script under `bin` directory that launches the application, preferably matching your project directory name (e.g. `bin/math_bowling`) :
+```ruby
+require_relative '../app/my_application.rb'
+```
+- Include Icon (Optional): If you'd like to include an icon for your app (.icns format on the Mac), place it under `package/macosx` matching the humanized application local directory name (e.g. 'Math Bowling.icns' [containing space] for MathBowling or math_bowling). You may generate your Mac icon easily using tools like Image2Icon (http://www.img2icnsapp.com/) or manually using the Mac terminal command `iconutil` (iconutil guide: https://applehelpwriter.com/tag/iconutil/)
+- Include Version (Optional): Create a `VERSION` file in your application and fill it your app version on one line (e.g. `1.1.0`)
+- Include License (Optional): Create a `LICENSE.txt` file in your application and fill it up with your license (e.g. MIT). It will show up to people when installing your app. Note that, you may optionally also specify license type, but you'd have to do so manually via `-BlicenseType=MIT` shown in an [example below](#javapackager-extra-arguments).
+- Extra args (Optional): You may optionally add the following to `Rakefile` to configure extra arguments for javapackager: `Glimmer::Packager.javapackager_extra_args = "..."` (Useful to avoid re-entering extra arguments on every run of rake task.). Read about them in [their section below](#javapackager-extra-arguments).
 
 ### javapackager Extra Arguments
 
