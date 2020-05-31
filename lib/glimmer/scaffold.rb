@@ -107,7 +107,7 @@ class Scaffold
     RAKEFILE = <<~MULTI_LINE_STRING
       require 'glimmer/rake_task'
       
-      ## Uncomment the following section if you would like to customize javapackager
+      ## Use the following configuration if you would like to customize javapackager
       ## arguments for `glimmer package` command.
       #
       # Glimmer::Package.javapackager_extra_args =
@@ -146,7 +146,7 @@ class Scaffold
       write "app/#{file_name(app_name)}.rb", app_main_file(app_name)
       mkdir 'app/models'
       mkdir 'app/views'
-      custom_shell('AppView', current_dir_name)
+      custom_shell('AppView', current_dir_name, :app)
       if OS.mac?
         mkdir_p 'package/macosx'
         icon_file = "package/macosx/#{human_name(app_name)}.icns"
@@ -161,12 +161,12 @@ class Scaffold
       # TODO generate rspec test suite
     end
 
-    def custom_shell(custom_shell_name, namespace)
+    def custom_shell(custom_shell_name, namespace, shell_type = nil)
       namespace ||= current_dir_name
       root_dir = File.exists?('app') ? 'app' : 'lib'
       parent_dir = "#{root_dir}/views/#{file_name(namespace)}"
       mkdir_p parent_dir unless File.exists?(parent_dir)
-      write "#{parent_dir}/#{file_name(custom_shell_name)}.rb", custom_shell_file(custom_shell_name, namespace)
+      write "#{parent_dir}/#{file_name(custom_shell_name)}.rb", custom_shell_file(custom_shell_name, namespace, shell_type)
     end
 
     def custom_widget(custom_widget_name, namespace)
@@ -196,7 +196,7 @@ class Scaffold
       write 'Rakefile', gem_rakefile(custom_shell_name, namespace)
       append "lib/#{gem_name}.rb", gem_main_file(custom_shell_name, namespace)
       mkdir 'lib/views'
-      custom_shell(custom_shell_name, namespace)
+      custom_shell(custom_shell_name, namespace, :gem)
       mkdir 'bin'
       write "bin/#{gem_name}", gem_bin_file(gem_name, custom_shell_name, namespace)
       write "bin/#{file_name(custom_shell_name)}", gem_bin_command_file(gem_name)
@@ -292,7 +292,8 @@ class Scaffold
           include Glimmer
         
           APP_ROOT = File.expand_path('../..', __FILE__)        
-          VERSION = File.read(File.expand_path('VERSION', APP_ROOT))
+          VERSION = File.read(File.join(APP_ROOT, 'VERSION'))
+          LICENSE = File.read(File.join(APP_ROOT, 'LICENSE.txt'))          
                     
           def open
             app_view.open
@@ -400,52 +401,147 @@ class Scaffold
       lines.join("\n")
     end
 
-    def custom_shell_file(custom_shell_name, namespace)
+    def custom_shell_file(custom_shell_name, namespace, shell_type)    
       namespace_type = class_name(namespace) == class_name(current_dir_name) ? 'class' : 'module'
 
-      <<~MULTI_LINE_STRING
-        #{namespace_type} #{class_name(namespace)}
-          class #{class_name(custom_shell_name)}
-            include Glimmer::UI::CustomShell
+      custom_shell_file_content = <<-MULTI_LINE_STRING
+#{namespace_type} #{class_name(namespace)}
+  class #{class_name(custom_shell_name)}
+    include Glimmer::UI::CustomShell
+    
+      MULTI_LINE_STRING
+      
+      if shell_type == :gem
+        custom_shell_file_content += <<-MULTI_LINE_STRING
+    GEM_ROOT = File.expand_path('../../../..', __FILE__)
+    VERSION = File.read(File.join(GEM_ROOT, 'VERSION'))
+    LICENSE = File.read(File.join(GEM_ROOT, 'LICENSE.txt'))
         
-            ## Add options like the following to configure CustomShell by outside consumers
-            #
-            # options :title, :background_color
-            # option :width, 320
-            # option :height, 240
-        
-            ## Uncomment before_body block to pre-initialize variables to use in body
-            #
-            #
-            # before_body {
-            # 
-            # }
-        
-            ## Uncomment after_body block to setup observers for widgets in body
-            #
-            # after_body {
-            # 
-            # }
-        
-            ## Add widget content inside custom shell body
-            ## Top-most widget must be a shell or another custom shell
-            #
-            body {
-              shell {
-                # Replace example content below with custom shell content
-                minimum_size 320, 240
-                text "#{human_name(namespace)} - #{human_name(custom_shell_name)}"
-                grid_layout
-                label {
-                  text "Hello, World!"
-                  font height: 40
-                  layout_data :center, :center, true, true
-                }
+        MULTI_LINE_STRING
+      end
+      
+      custom_shell_file_content += <<-MULTI_LINE_STRING
+    ## Add options like the following to configure CustomShell by outside consumers
+    #
+    # options :title, :background_color
+    # option :width, 320
+    # option :height, 240
+    option :greeting, 'Hello, World!'
+
+    ## Use before_body block to pre-initialize variables to use in body
+    #
+    #
+      MULTI_LINE_STRING
+      
+      if %i[gem app].include?(shell_type)
+        custom_shell_file_content += <<-MULTI_LINE_STRING
+    before_body {
+      Display.setAppName('#{shell_type == :gem ? human_name(custom_shell_name) : human_name(namespace)}')
+      Display.setAppVersion(VERSION)
+    }
+        MULTI_LINE_STRING
+      else
+        custom_shell_file_content += <<-MULTI_LINE_STRING
+    # before_body {
+    #
+    # }
+        MULTI_LINE_STRING
+      end
+
+      custom_shell_file_content += <<-MULTI_LINE_STRING
+
+    ## Use after_body block to setup observers for widgets in body
+    #
+    # after_body {
+    # 
+    # }
+
+    ## Add widget content inside custom shell body
+    ## Top-most widget must be a shell or another custom shell
+    #
+    body {
+      shell {
+        # Replace example content below with custom shell content
+        minimum_size 320, 240
+        text "#{human_name(namespace)} - #{human_name(custom_shell_name)}"
+        grid_layout
+      MULTI_LINE_STRING
+      
+      if %i[gem app].include?(shell_type)
+        custom_shell_file_content += <<-MULTI_LINE_STRING      
+        on_about {
+          display_about_dialog
+        }
+        on_preferences {
+          display_preferences_dialog
+        }
+        MULTI_LINE_STRING
+      end
+      
+      custom_shell_file_content += <<-MULTI_LINE_STRING
+        label(:center) {
+          text bind(self, :greeting)
+          font height: 40
+          layout_data :fill, :center, true, true
+        }
+      }
+    }
+      MULTI_LINE_STRING
+
+      if %i[gem app].include?(shell_type)
+        custom_shell_file_content += <<-MULTI_LINE_STRING
+
+    def greeting=(text)
+      options[:greeting] = text
+    end
+                    
+    def display_about_dialog
+      message_box = MessageBox.new(swt_widget)
+      message_box.setText("About")
+      message = "#{human_name(namespace)} - #{human_name(custom_shell_name)} \#{VERSION}\n\n"
+      message += LICENSE
+      message_box.setMessage(message)
+      message_box.open
+    end
+    
+    def display_preferences_dialog
+      shell(swt_widget, :dialog_trim, :application_modal) {
+        text 'Preferences'
+        grid_layout {
+          margin_height 5
+          margin_width 5
+        }
+        group {
+          row_layout {
+            type :vertical
+            spacing 10
+          }
+          text 'Greeting'
+          font style: :bold
+          [
+            'Hello, World!', 
+            'Howdy, Partner!'
+          ].each do |greeting_text|
+            button(:radio) {
+              text greeting_text
+              selection bind(self, :greeting) { |g| g == greeting_text }
+              layout_data {
+                width 160
+              }
+              on_widget_selected { |event|
+                self.greeting = event.widget.getText
               }
             }
-        
           end
-        end
+        }
+      }.open
+    end
+        MULTI_LINE_STRING
+      end
+      
+      custom_shell_file_content += <<-MULTI_LINE_STRING
+  end
+end
       MULTI_LINE_STRING
     end
 
@@ -462,14 +558,14 @@ class Scaffold
             # options :custom_text, :background_color
             # option :foreground_color, :red
         
-            ## Uncomment before_body block to pre-initialize variables to use in body
+            ## Use before_body block to pre-initialize variables to use in body
             #
             #
             # before_body {
             # 
             # }
         
-            ## Uncomment after_body block to setup observers for widgets in body
+            ## Use after_body block to setup observers for widgets in body
             #
             # after_body {
             # 

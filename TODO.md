@@ -1,14 +1,17 @@
+
 # TODO
 
 Here is a list of tasks to do (please delete once done):
 
 ## Next Revision
 
-- Scaffolding adds about/preferences menu actions to apps/custom-shell-gems
+- Make custom widget/shell options writable 
+- Support dialog Glimmer DSL keyword
 
 ## Next Minor Version
 
 - Make custom widget option method receive default: hash key instead of 2nd argument
+- Move about/preferences menu listeners from ShellProxy to DisplayProxy where they truly belong (adjusting scaffolding accordingly)
 
 ## Side Project (opal-spike branch)
 
@@ -17,7 +20,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Soon
 
-- DSL syntax for dialogs
 - DSL syntax for MessageBox
 message_box {
   text 'Red Label'
