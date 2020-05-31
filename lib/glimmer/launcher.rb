@@ -27,7 +27,7 @@ module Glimmer
       Optionally, extra Glimmer options, JRuby options and environment variables may be passed in.
     
       Glimmer options:
-      - "--quiet"           : Does not announce file path of Glimmer application being launched nor enable logging
+      - "--quiet"           : Does not announce file path of Glimmer application being launched
       - "--debug"           : Displays extra debugging information, passes "--debug" to JRuby, and enables debug logging
       - "--log-level=VALUE" : Sets Glimmer's Ruby logger level ("ERROR" / "WARN" / "INFO" / "DEBUG"; default is none)
     
