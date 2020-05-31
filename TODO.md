@@ -2,7 +2,14 @@
 
 Here is a list of tasks to do (please delete once done):
 
-## Up Next
+## Next Revision
+
+- Scaffolding builds a proper binary for custom shell gems and include it in executables in Rakefile
+- Scaffolding adds about/preferences menu actions to apps/custom-shell-gems
+
+## Next Minor Version
+
+- Make custom widget option method receive default: hash key instead of 2nd argument
 
 ## Side Project (opal-spike branch)
 
@@ -101,9 +108,6 @@ end
 - Support data-binding shell size and location
 - Support data-bind two widget attributes to each other
 - Generate rspec test suite for app scaffolding
-- Make custom widget option method receive default: hash key instead of 2nd argument
-- Make scaffolding build a proper binary for custom shell gems and include it in executables in Rakefile
-- Make scaffolding add about/preferences menu actions to apps/custom-shell-gems
 
 ## Samples
 

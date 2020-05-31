@@ -1,4 +1,4 @@
-# Glimmer 0.7.7 Beta (Desktop Development Library for Ruby)
+# Glimmer 0.7.8 Beta (Desktop Development Library for Ruby)
 [![Gem Version](https://badge.fury.io/rb/glimmer.svg)](http://badge.fury.io/rb/glimmer)
 [![Travis CI](https://travis-ci.com/AndyObtiva/glimmer.svg?branch=master)](https://travis-ci.com/github/AndyObtiva/glimmer)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/38fbc278022862794414/test_coverage)](https://codeclimate.com/github/AndyObtiva/glimmer/test_coverage)
@@ -75,7 +75,7 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
 
 ## Table of Contents
 
-- [Glimmer 0.7.7 Beta (Desktop Development Library for Ruby)](#glimmer-077-beta-desktop-development-library-for-ruby)
+- [Glimmer 0.7.8 Beta (Desktop Development Library for Ruby)](#glimmer-078-beta-desktop-development-library-for-ruby)
   - [Examples](#examples)
     - [Hello, World!](#hello-world)
     - [Tic Tac Toe](#tic-tac-toe)
@@ -173,7 +173,7 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer -v 0.7.7
+jgem install glimmer -v 0.7.8
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -184,7 +184,7 @@ Otherwise, you may also run `jruby -S gem install ...`
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer', '~> 0.7.7'
+gem 'glimmer', '~> 0.7.8'
 ```
 
 And, then run:
@@ -236,7 +236,7 @@ glimmer package:jar                                               # Generate JAR
 glimmer package:native                                            # Generate Native files (DMG/PKG/APP on the Mac)
 glimmer scaffold[app_name]                                        # Scaffold a Glimmer application directory structure to begin building a new app
 glimmer scaffold:custom_shell[custom_shell_name,namespace]        # Scaffold a Glimmer::UI::CustomShell subclass (represents a full window view) under app/views (namespace is optional)
-glimmer scaffold:custom_shell_gem[custom_widget_name,namespace]   # Scaffold a Glimmer::UI::CustomShell subclass (represents a full window view) under its own Ruby gem project (namespace is required)
+glimmer scaffold:custom_shell_gem[custom_shell_name,namespace]    # Scaffold a Glimmer::UI::CustomShell subclass (represents a full window view) under its own Ruby gem + app project (namespace is required)
 glimmer scaffold:custom_widget[custom_widget_name,namespace]      # Scaffold a Glimmer::UI::CustomWidget subclass (represents a part of a view) under app/views (namespace is optional)
 glimmer scaffold:custom_widget_gem[custom_widget_name,namespace]  # Scaffold a Glimmer::UI::CustomWidget subclass (represents a part of a view) under its own Ruby gem project (namespace is required)
 

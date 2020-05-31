@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.7.8
+
+- Fix verbiage for summary/description in scaffolding custom shell gems (change custom widget reference to custom shell)
+
 ## 0.7.7
 
 - Fix issue with scaffolding apps with dash in their name

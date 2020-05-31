@@ -179,7 +179,7 @@ class Scaffold
 
     def custom_shell_gem(custom_shell_name, namespace)
       gem_name = "glimmer-cs-#{compact_name(custom_shell_name)}"
-      gem_summary = "Glimmer Custom Widget - #{human_name(custom_shell_name)}"
+      gem_summary = "#{human_name(custom_shell_name)} - Glimmer Custom Shell"
       if namespace
         gem_name += "-#{compact_name(namespace)}"
         gem_summary += " (#{human_name(namespace)})"
@@ -217,7 +217,7 @@ class Scaffold
 
     def custom_widget_gem(custom_widget_name, namespace)
       gem_name = "glimmer-cw-#{compact_name(custom_widget_name)}"
-      gem_summary = "Glimmer Custom Widget - #{human_name(custom_widget_name)}"
+      gem_summary = "#{human_name(custom_widget_name)} - Glimmer Custom Widget"
       if namespace
         gem_name += "-#{compact_name(namespace)}"
         gem_summary += " (#{human_name(namespace)})"
