@@ -281,7 +281,7 @@ getting you to a running and delivered state of an advanced "Hello, World!" Glim
 This should greatly facilitate building a new Glimmer app by helping you be productive and focus on app details while 
 letting Glimmer scaffolding take care of initial app file structure concerns, such as adding:
 - Main application class that includes Glimmer
-- Main application view that houses main window content
+- Main application view that houses main window content, about dialog, and preferences dialog
 - View and Model directories
 - Rakefile including Glimmer tasks
 - Version
@@ -348,8 +348,10 @@ glimmer scaffold:custom_widget[custom_widget_name]
 #### Custom Shell Gem
 
 Custom shell gems are self-contained Glimmer apps as well as reusable custom shells. 
-As such, they are packaged as both a native executable (e.g. Mac DMG/PKG/APP) and a Ruby gem.
-Of course, you can build a Ruby gem and disregard its native executable packaging if you do not need it.
+They have everything scaffolded Glimmer apps come with in addition to gem content like a Jeweler Rakefile that can build gemspec and release gems. 
+Unlike scaffolded Glimmer apps, custom shell gem content lives under the `lib` directory (not `app`).
+They can be packaged as both a native executable (e.g. Mac DMG/PKG/APP) and a Ruby gem.
+Of course, you can just build a Ruby gem and disregard native executable packaging if you do not need it.
 
 To scaffold a Glimmer custom shell gem (full window view distributed as a Ruby gem), run the following command:
 
@@ -625,6 +627,12 @@ Shell widget proxy has extra methods specific to SWT Shell:
 - `#visible=`: Setting to true opens/shows shell. Setting to false hides the shell.
 - `#pack`: Packs contained widgets using SWT's `Shell#pack` method
 - `#pack_same_size`: Packs contained widgets without changing shell's size when widget sizes change
+
+#### Dialog
+
+Dialog is a variation on Shell. It is basically a shell that is modal (blocks what's behind it) and belongs to another shell. It only has a close button.
+
+Glimmer facilitates building dialogs by using the `dialog` keyword, which automatically adds the SWT::DIALOG_TRIM and SWT::APPLICATION_MODAL [widget styles](#widget-styles) needed for a dialog.
 
 #### Menus
 

@@ -6,6 +6,7 @@
 - Scaffolding builds a proper binary for custom shell gems and includes it in executables in Rakefile
 - Scaffolding adds about/preferences menu actions to apps/custom-shell-gems
 - Make custom widget/shell options writable 
+- Support "dialog" Glimmer DSL keyword
 
 ## 0.7.7
 

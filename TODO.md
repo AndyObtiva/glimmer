@@ -5,8 +5,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Next Revision
 
-- Support dialog Glimmer DSL keyword
-
 ## Next Minor Version
 
 - Make custom widget option method receive default: hash key instead of 2nd argument

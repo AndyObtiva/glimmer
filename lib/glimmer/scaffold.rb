@@ -501,7 +501,7 @@ class Scaffold
     end
     
     def display_preferences_dialog
-      shell(swt_widget, :dialog_trim, :application_modal) {
+      dialog(swt_widget) {
         text 'Preferences'
         grid_layout {
           margin_height 5
