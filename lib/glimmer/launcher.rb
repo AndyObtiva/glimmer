@@ -8,7 +8,7 @@ module Glimmer
     OPERATING_SYSTEMS_SUPPORTED = ["mac", "windows", "linux"]
     
     TEXT_USAGE_PREFIX = <<~MULTI_LINE_STRING
-      Usage: glimmer [--debug] [--log-level=VALUE] [[ENV_VAR=VALUE]...] [[-jruby-option]...] (application.rb or task[task_args]) [[application2.rb]...]
+      Usage: glimmer [--quiet] [--debug] [--log-level=VALUE] [[ENV_VAR=VALUE]...] [[-jruby-option]...] (application.rb or task[task_args]) [[application2.rb]...]
     
       Runs Glimmer applications/tasks.
     
@@ -27,8 +27,9 @@ module Glimmer
       Optionally, extra Glimmer options, JRuby options and environment variables may be passed in.
     
       Glimmer options:
-      - "--debug"           : Displays extra debugging information and passes "--debug" to JRuby
-      - "--log-level=VALUE" : Sets Glimmer's Ruby logger level ("ERROR" / "WARN" / "INFO" / "DEBUG"; default is "WARN")
+      - "--quiet"           : Does not announce file path of Glimmer application being launched nor enable logging
+      - "--debug"           : Displays extra debugging information, passes "--debug" to JRuby, and enables debug logging
+      - "--log-level=VALUE" : Sets Glimmer's Ruby logger level ("ERROR" / "WARN" / "INFO" / "DEBUG"; default is none)
     
       Example: glimmer samples/hello_world.rb
     
@@ -37,7 +38,7 @@ module Glimmer
 
     GLIMMER_LIB_LOCAL = File.expand_path(File.join(__FILE__, '..', '..', 'glimmer.rb'))
     GLIMMER_LIB_GEM = 'glimmer'
-    GLIMMER_OPTIONS = %w[--log-level]
+    GLIMMER_OPTIONS = %w[--log-level --quiet]
     GLIMMER_OPTION_ENV_VAR_MAPPING = {
       '--log-level' => 'GLIMMER_LOGGER_LEVEL'
     }
@@ -77,8 +78,8 @@ module Glimmer
       end
 
       def glimmer_option_env_vars(glimmer_options)
-        glimmer_options.reduce({}) do |hash, pair|
-          hash.merge(GLIMMER_OPTION_ENV_VAR_MAPPING[pair.first] => pair.last)
+        GLIMMER_OPTION_ENV_VAR_MAPPING.reduce({}) do |hash, pair|
+          glimmer_options[pair.first] ? hash.merge(GLIMMER_OPTION_ENV_VAR_MAPPING[pair.first] => glimmer_options[pair.first]) : hash
         end
       end
 
@@ -108,7 +109,7 @@ module Glimmer
           Rake::Task[rake_task].invoke(*rake_task_args)
         else
           @@mutex.synchronize do
-            puts "Launching Glimmer Application: #{application}" unless application.to_s.match(/(irb)|(gladiator)/)
+            puts "Launching Glimmer Application: #{application}" if jruby_options_string.to_s.include?('--debug') || glimmer_options['--quiet'].to_s.downcase != 'true'
           end
           command = "#{env_vars_string} jruby #{jruby_options_string}#{jruby_os_specific_options} #{devmode_require}-r #{the_glimmer_lib} -S #{application}"
           puts command if jruby_options_string.to_s.include?('--debug')
@@ -123,6 +124,8 @@ module Glimmer
     attr_reader :jruby_options
 
     def initialize(raw_options)
+      raw_options << '--quiet' if !caller.join("\n").include?('/bin/glimmer:') && !raw_options.join.include?('--quiet=')
+      raw_options << '--log-level=DEBUG' if raw_options.join.include?('--debug') && !raw_options.join.include?('--log-level=')
       @application_paths = extract_application_paths(raw_options)
       @env_vars = extract_env_vars(raw_options)
       @glimmer_options = extract_glimmer_options(raw_options)
@@ -140,7 +143,7 @@ module Glimmer
     private
 
     def launch_application
-      load File.expand_path('./Rakefile') if File.exist?(File.expand_path('./Rakefile'))
+      load File.expand_path('./Rakefile') if File.exist?(File.expand_path('./Rakefile')) && caller.join("\n").include?('/bin/glimmer:')
       threads = @application_paths.map do |application_path|
         Thread.new do
           self.class.launch(
@@ -188,8 +191,8 @@ module Glimmer
       end.each do |glimmer_option|
         options.delete(glimmer_option)
       end.reduce({}) do |hash, glimmer_option_string|
-        match = glimmer_option_string.match(/^([^=]+)=?(.*)$/)
-        hash.merge(match[1] => match[2])
+        match = glimmer_option_string.match(/^([^=]+)=?(.+)?$/)
+        hash.merge(match[1] => (match[2] || 'true'))
       end
     end
   end

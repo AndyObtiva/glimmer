@@ -154,8 +154,9 @@ https://www.eclipse.org/swt/faq.php
 ## Pre-requisites
 
 - SWT 4.15 (comes included in Glimmer gem)
-- JRuby 9.2.11.1 (supporting Ruby 2.5.x syntax) (find at https://www.jruby.org/download)
-- Java SE Runtime Environment 7 or higher (find at https://www.oracle.com/java/technologies/javase-downloads.html)
+- JRuby 9.2.11.1 (supporting Ruby 2.5.x syntax) (find at [https://www.jruby.org/download](https://www.jruby.org/download))
+- Java SE Runtime Environment 7 or higher (find at [https://www.oracle.com/java/technologies/javase-downloads.html](https://www.oracle.com/java/technologies/javase-downloads.html))
+- (Optional) RVM is needed for [Scaffolding](#scaffolding) only (find at [https://rvm.io/](https://rvm.io/))
 
 On **Mac** and **Linux**, an easy way to obtain JRuby is through [RVM](http://rvm.io) by running:
 
@@ -221,7 +222,7 @@ bin/glimmer samples/hello/hello_world.rb
 Below are the full usage instructions that come up when running `glimmer` without args.
 
 ```
-Usage: glimmer [--debug] [--log-level=VALUE] [[ENV_VAR=VALUE]...] [[-jruby-option]...] (application.rb or task[task_args]) [[application2.rb]...]
+Usage: glimmer [--quiet] [--debug] [--log-level=VALUE] [[ENV_VAR=VALUE]...] [[-jruby-option]...] (application.rb or task[task_args]) [[application2.rb]...]
 
 Runs Glimmer applications/tasks.
 
@@ -246,8 +247,9 @@ automatically preloading the glimmer Ruby gem and SWT jar dependency.
 Optionally, extra Glimmer options, JRuby options and environment variables may be passed in.
 
 Glimmer options:
-- "--debug"           : Displays extra debugging information and passes "--debug" to JRuby
-- "--log-level=VALUE" : Sets Glimmer's Ruby logger level ("ERROR" / "WARN" / "INFO" / "DEBUG"; default is "WARN")
+- "--quiet"           : Does not announce file path of Glimmer application being launched nor enable logging
+- "--debug"           : Displays extra debugging information, passes "--debug" to JRuby, and enables debug logging
+- "--log-level=VALUE" : Sets Glimmer's Ruby logger level ("ERROR" / "WARN" / "INFO" / "DEBUG"; default is none)
 
 Example: glimmer samples/hello_world.rb
 
@@ -287,7 +289,7 @@ letting Glimmer scaffolding take care of initial app file structure concerns, su
 - Icon
 - Bin file for starting application
 
-NOTE: Scaffolding currently supports Mac packaging only at the moment. 
+NOTE: Scaffolding requires RVM and currently supports Mac packaging only at the moment. 
 
 #### App
 

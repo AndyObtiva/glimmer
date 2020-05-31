@@ -4,7 +4,6 @@ Here is a list of tasks to do (please delete once done):
 
 ## Next Revision
 
-- Scaffolding builds a proper binary for custom shell gems and include it in executables in Rakefile
 - Scaffolding adds about/preferences menu actions to apps/custom-shell-gems
 
 ## Next Minor Version

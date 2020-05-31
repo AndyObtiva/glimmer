@@ -198,7 +198,8 @@ class Scaffold
       mkdir 'lib/views'
       custom_shell(custom_shell_name, namespace)
       mkdir 'bin'
-      write "bin/#{file_name(custom_shell_name)}", gem_bin_file(gem_name, custom_shell_name, namespace)
+      write "bin/#{gem_name}", gem_bin_file(gem_name, custom_shell_name, namespace)
+      write "bin/#{file_name(custom_shell_name)}", gem_bin_command_file(gem_name)
       FileUtils.chmod 0755, "bin/#{file_name(custom_shell_name)}"      
       if OS.mac?
         mkdir_p 'package/macosx'
@@ -335,13 +336,30 @@ class Scaffold
       MULTI_LINE_STRING
     end
 
+    def gem_bin_command_file(gem_name)
+      <<~MULTI_LINE_STRING
+        #!/usr/bin/env ruby
+        
+        require 'glimmer/launcher'
+        
+        runner = File.expand_path("../#{gem_name}", __FILE__)
+        launcher = Glimmer::Launcher.new([runner] + ARGV)
+        launcher.launch
+      MULTI_LINE_STRING
+    end
+
     def gem_rakefile(custom_shell_name = nil, namespace = nil)
       rakefile_content = File.read('Rakefile')
       lines = rakefile_content.split("\n")
       require_rake_line_index = lines.index(lines.detect {|l| l.include?("require 'rake'") })
       lines.insert(require_rake_line_index, "require 'glimmer/launcher'")
       gem_files_line_index = lines.index(lines.detect {|l| l.include?('# dependencies defined in Gemfile') })
-      lines.insert(gem_files_line_index, "  gem.files = Dir['lib/**/*.rb']")
+      if custom_shell_name
+        lines.insert(gem_files_line_index, "  gem.files = Dir['VERSION', 'LICENSE.txt', 'lib/**/*.rb', 'bin/**/*']")
+        lines.insert(gem_files_line_index+1, "  gem.executables = ['#{file_name(custom_shell_name)}']")
+      else
+        lines.insert(gem_files_line_index, "  gem.files = Dir['lib/**/*.rb']")
+      end
       spec_pattern_line_index = lines.index(lines.detect {|l| l.include?('spec.pattern =') })
       lines.insert(spec_pattern_line_index+1, "  spec.ruby_opts = [Glimmer::Launcher.jruby_swt_options]")
       lines << "\nrequire 'glimmer/rake_task'\n"       
