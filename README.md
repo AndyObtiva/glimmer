@@ -2125,12 +2125,22 @@ Glimmer apps may be packaged and distributed on the Mac, Windows, and Linux via 
 - Warbler (https://github.com/jruby/warbler): Enables bundling a Glimmer app into a JAR file
 - javapackager (https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html): Enables packaging a JAR file as a DMG file on Mac, EXE on Windows, and multiple Linux supported formats on Linux.
 
-Glimmer simplifies the process for Mac packaging by providing a rake task.
+Glimmer simplifies the process of Mac packaging via the `glimmer package` command. It works out of the box for any application scaffolded by Glimmer Scaffolding:
 
-To use:
-- Create `Rakefile` in your app root directory
-- Add the following line to it: `require 'glimmer/rake_task'`
-- Create a Ruby script under bin (e.g. `bin/math_bowling`) to require the application file that uses Glimmer (e.g. `'../app/my_application.rb'`):
+```
+glimmer package
+```
+
+This will generate a JAR file under `./dist` directory, which is then used to generate a DMG file (and pkg/app) under `./packages/bundles`. 
+JAR file name will match your application local directory name (e.g. `MathBowling.jar` for `~/code/MathBowling`)
+DMG file name will match the humanized local directory name + dash + application version (e.g. `Math Bowling-1.0.dmg` for `~/code/MathBowling` with version 1.0 or unspecified)
+
+THe `glimmer package` command will automatically set "mac.CFBundleIdentifier" to ="org.#{project_name}.application.#{project_name}". 
+You may override by configuring as an extra argument for javapackger (e.g. Glimmer::Package.javapackager_extra_args = " -Bmac.CFBundleIdentifier=org.andymaleh.application.MathBowling")
+
+### Packaging Configuration
+
+- Ensure you have a Ruby script under `bin` directory that launches the application, preferably matching your project directory name (e.g. `bin/math_bowling`) :
 ```ruby
 require_relative '../app/my_application.rb'
 ```
@@ -2138,18 +2148,6 @@ require_relative '../app/my_application.rb'
 - Include Version (Optional): Create a `VERSION` file in your application and fill it your app version on one line (e.g. `1.1.0`)
 - Include License (Optional): Create a `LICENSE.txt` file in your application and fill it up with your license (e.g. MIT). It will show up to people when installing your app. Note that, you may optionally also specify license type, but you'd have to do so manually via `-BlicenseType=MIT` shown in an [example below](#javapackager-extra-arguments).
 - Extra args (Optional): You may optionally add the following to `Rakefile` to configure extra arguments for javapackager: `Glimmer::Packager.javapackager_extra_args = "..."` (Useful to avoid re-entering extra arguments on every run of rake task.). Read about them in [their section below](#javapackager-extra-arguments).
-
-Now, you can run the following rake command to package your app into a Mac DMG file (using both Warbler and javapackager):
-```
-rake glimmer:package
-```
-
-This will generate a JAR file under `./dist` directory, which is then used to generate a DMG file (and pkg/app) under `./packages/bundles`. 
-JAR file name will match your application local directory name (e.g. `MathBowling.jar` for `~/code/MathBowling`)
-DMG file name will match the humanized local directory name + dash + application version (e.g. `Math Bowling-1.0.dmg` for `~/code/MathBowling` with version 1.0 or unspecified)
-
-THe rake task will automatically set "mac.CFBundleIdentifier" to ="org.#{project_name}.application.#{project_name}". 
-You may override by configuring as an extra argument for javapackger (e.g. Glimmer::Package.javapackager_extra_args = " -Bmac.CFBundleIdentifier=org.andymaleh.application.MathBowling")
 
 ### Defaults
 
@@ -2159,13 +2157,13 @@ The package application name (shows up in top menu bar on the Mac) will be a hum
 
 Also, the package will only include these directories: app, config, db, lib, script, bin, docs, fonts, images, sounds, videos
 
-After running once, you will find a `config/warble.rb` file. It has the JAR packaging configuration. You may adjust included directories in it if needed, and then rerun `rake glimmer:package` and it will pick up your custom configuration. Alternatively, if you'd like to customize the included directories to begin with, don't run `rake glimmer:package` right away. Run this command first:
+After running once, you will find a `config/warble.rb` file. It has the JAR packaging configuration. You may adjust included directories in it if needed, and then rerun `glimmer package` and it will pick up your custom configuration. Alternatively, if you'd like to customize the included directories to begin with, don't run `glimmer package` right away. Run this command first:
 
 ```
-rake glimmer:package:config
+glimmer package:config
 ```
 
-This will generate `config/warble.rb`, which you may configure and then run `rake glimmer:package` afterwards.
+This will generate `config/warble.rb`, which you may configure and then run `glimmer package` afterwards.
 
 ### javapackager Extra Arguments
 
@@ -2193,7 +2191,7 @@ https://developer.apple.com/library/archive/releasenotes/General/SubmittingToMac
 Example (env var):
 
 ```
-JAVAPACKAGER_EXTRA_ARGS='-Bmac.CFBundleName="Math Bowling Game"' rake glimmer:package
+JAVAPACKAGER_EXTRA_ARGS='-Bmac.CFBundleName="Math Bowling Game"' glimmer package
 ```
 
 That overrides the default application display name.
@@ -2238,7 +2236,7 @@ Example:
 Glimmer::Package.javapackager_extra_args = '-Bmac.signing-key-developer-id-app="Andy Maleh"'
 ```
 
-Now, when you run `rake glimmer:package`, it builds a self-signed DMG file. When you make available online, and users download, upon launching application, they are presented with your certificate, which they have to sign if they trust you in order to use the application.
+Now, when you run `glimmer package`, it builds a self-signed DMG file. When you make available online, and users download, upon launching application, they are presented with your certificate, which they have to sign if they trust you in order to use the application.
 
 ### Gotchas
 
@@ -2255,7 +2253,7 @@ Glimmer::Package.javapackager_extra_args = '-srcfiles "ACME.txt" -BlicenseFile="
 
 2. Mounted DMG Residue
 
-If you run `rake glimmer:package` multiple times, sometimes it leaves a mounted DMG project in your finder. Unmount before you run the command again or it might fail with an error saying: "Error: Bundler "DMG Installer" (dmg) failed to produce a bundle."
+If you run `glimmer package` multiple times, sometimes it leaves a mounted DMG project in your finder. Unmount before you run the command again or it might fail with an error saying: "Error: Bundler "DMG Installer" (dmg) failed to produce a bundle."
 
 By the way, keep in mind that during normal operation, it does also indicate a false-negative while completing successfully similar to the following (please ignore): 
 
