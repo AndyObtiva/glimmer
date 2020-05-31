@@ -75,7 +75,7 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
 
 ## Table of Contents
 
-- [Glimmer 0.7.7 Beta (Desktop Development Library for Ruby)](#glimmer-075-beta-desktop-development-library-for-ruby)
+- [Glimmer 0.7.7 Beta (Desktop Development Library for Ruby)](#glimmer-077-beta-desktop-development-library-for-ruby)
   - [Examples](#examples)
     - [Hello, World!](#hello-world)
     - [Tic Tac Toe](#tic-tac-toe)
@@ -105,6 +105,7 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
   - [Samples](#samples)
     - [Hello Samples](#hello-samples)
     - [Elaborate Samples](#elaborate-samples)
+    - [External Samples](#external-samples)
   - [In Production](#in-production)
   - [SWT Reference](#swt-reference)
   - [SWT Packages](#swt-packages)
