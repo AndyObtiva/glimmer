@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib".freeze]
   s.authors = ["AndyMaleh".freeze]
   s.date = "2020-05-31"
-  s.description = "Desktop Development Library for Ruby".freeze
+  s.description = "Ruby Desktop Development GUI Library".freeze
   s.email = "andy.am@gmail.com".freeze
   s.executables = ["glimmer".freeze, "girb".freeze]
   s.extra_rdoc_files = [
@@ -125,7 +125,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/AndyObtiva/glimmer".freeze
   s.licenses = ["MIT".freeze]
   s.rubygems_version = "3.0.6".freeze
-  s.summary = "Desktop Development Library for Ruby".freeze
+  s.summary = "Ruby Desktop Development GUI Library".freeze
 
   if s.respond_to? :specification_version then
     s.specification_version = 4
