@@ -1,4 +1,4 @@
-# Glimmer 0.7.8 Beta (Desktop Development Library for Ruby)
+# Glimmer 0.7.8 Beta (Desktop Development GUI Library for Ruby)
 [![Gem Version](https://badge.fury.io/rb/glimmer.svg)](http://badge.fury.io/rb/glimmer)
 [![Travis CI](https://travis-ci.com/AndyObtiva/glimmer.svg?branch=master)](https://travis-ci.com/github/AndyObtiva/glimmer)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/38fbc278022862794414/test_coverage)](https://codeclimate.com/github/AndyObtiva/glimmer/test_coverage)
@@ -75,7 +75,7 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
 
 ## Table of Contents
 
-- [Glimmer 0.7.8 Beta (Desktop Development Library for Ruby)](#glimmer-078-beta-desktop-development-library-for-ruby)
+- [Glimmer 0.7.8 Beta (Desktop Development GUI Library for Ruby)](#glimmer-078-beta-desktop-development-library-for-ruby)
   - [Examples](#examples)
     - [Hello, World!](#hello-world)
     - [Tic Tac Toe](#tic-tac-toe)
