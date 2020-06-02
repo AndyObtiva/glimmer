@@ -632,7 +632,7 @@ Shell widget proxy has extra methods specific to SWT Shell:
 
 Dialog is a variation on Shell. It is basically a shell that is modal (blocks what's behind it) and belongs to another shell. It only has a close button.
 
-Glimmer facilitates building dialogs by using the `dialog` keyword, which automatically adds the SWT::DIALOG_TRIM and SWT::APPLICATION_MODAL [widget styles](#widget-styles) needed for a dialog.
+Glimmer facilitates building dialogs by using the `dialog` keyword, which automatically adds the SWT.DIALOG_TRIM and SWT.APPLICATION_MODAL [widget styles](#widget-styles) needed for a dialog.
 
 #### Menus
 
@@ -1324,7 +1324,7 @@ Glimmer supports observing widgets with two main types of events:
 
 Additionally, there are two more types of events:
 - SWT `display` supports global listeners called filters that run on any widget. They are hooked via `on_event_{swt-event-constant}`
-- the `shell` widget supports Mac application menu item observers (`on_about` and `on_preferences`), which you can read about under [Miscellaneous](#miscellaneous).
+- SWT `display` supports Mac application menu item observers (`on_about` and `on_preferences`), which you can read about under [Miscellaneous](#miscellaneous).
 
 Number 1 is more commonly used in SWT applications, so make it your starting point. Number 2 covers events not found in number 1, so look into it if you don't find an SWT listener you need in number 1.
 
@@ -1705,52 +1705,61 @@ shell { |app_shell|
 
 #### Application Menu Items (About/Preferences)
 
-Mac applications always have About and Preferences menu items. Glimmer provides widget observer hooks for them on the `shell` widget:
+Mac applications always have About and Preferences menu items. Glimmer provides widget observer hooks for them on the `display`:
 - `on_about`: executes code when user selects App Name -> About
 - `on_preferences`: executes code when user selects App Name -> Preferences or hits 'CMD+,' on the Mac
 
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
-shell { |shell_proxy|
-  text 'Application Menu Items'
-  fill_layout {
-    margin_width 15
-    margin_height 15
-  }
-  label {
-    text 'Application Menu Items'
-    font height: 30
-  }
-  on_about {
-    message_box = MessageBox.new(shell_proxy.swt_widget)
-    message_box.setText("About")
-    message_box.setMessage("About Application")
-    message_box.open
-  }
-  on_preferences {
-    preferences_dialog = shell(:dialog_trim, :application_modal) {
-      text 'Preferences'
-      row_layout {
-        type :vertical
-        margin_left 15
-        margin_top 15
-        margin_right 15
-        margin_bottom 15
+class Example
+  def initialize
+    display {
+      on_about {
+        message_box = MessageBox.new(@shell_proxy.swt_widget)
+        message_box.setText("About")
+        message_box.setMessage("About Application")
+        message_box.open
       }
-      label {
-        text 'Check one of these options:'
-      }
-      button(:radio) {
-        text 'Option 1'
-      }
-      button(:radio) {
-        text 'Option 2'
+      on_preferences {
+        preferences_dialog = dialog {
+          text 'Preferences'
+          row_layout {
+            type :vertical
+            margin_left 15
+            margin_top 15
+            margin_right 15
+            margin_bottom 15
+          }
+          label {
+            text 'Check one of these options:'
+          }
+          button(:radio) {
+            text 'Option 1'
+          }
+          button(:radio) {
+            text 'Option 2'
+          }
+        }
+        preferences_dialog.open
       }
     }
-    preferences_dialog.open
-  }
-}.open
+    @shell_proxy = shell {
+      text 'Application Menu Items'
+      fill_layout {
+        margin_width 15
+        margin_height 15
+      }
+      label {
+        text 'Application Menu Items'
+        font height: 30
+      }
+    }
+    @shell_proxy.open
+  end
+end
+
+Example.new
 ```
 
 #### App Name and Version

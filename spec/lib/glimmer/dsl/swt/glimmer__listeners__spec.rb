@@ -132,13 +132,13 @@ module GlimmerSpec
           about_menu_item = system_menu.getItems.find {|menu_item| menu_item.getID == swt('ID_ABOUT')}
           expect(about_menu_item.getListeners(swt(:Selection)).count).to eq(0)
         end
-        @target = shell {
+        @target = display {
           on_about {
             # No Op
           }
         }
         if OS.mac?
-	  expect(about_menu_item.getListeners(swt(:Selection)).count).to eq(1)
+	       expect(about_menu_item.getListeners(swt(:Selection)).count).to eq(1)
         end	
       end
       it 'listens to preferences menu item selection' do
@@ -147,7 +147,7 @@ module GlimmerSpec
           preferences_menu_item = system_menu.getItems.find {|menu_item| menu_item.getID == swt('ID_PREFERENCES')}
           expect(preferences_menu_item.getListeners(swt(:Selection)).count).to eq(0)
         end
-        @target = shell {
+        @target = display {
           on_preferences {
             # No Op
           }

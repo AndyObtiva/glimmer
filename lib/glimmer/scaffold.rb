@@ -438,6 +438,14 @@ class Scaffold
     before_body {
       Display.setAppName('#{shell_type == :gem ? human_name(custom_shell_name) : human_name(namespace)}')
       Display.setAppVersion(VERSION)
+      @display = display {
+        on_about {
+          display_about_dialog
+        }
+        on_preferences {
+          display_preferences_dialog
+        }
+      }
     }
         MULTI_LINE_STRING
       else
@@ -465,20 +473,6 @@ class Scaffold
         minimum_size 320, 240
         text "#{human_name(namespace)} - #{human_name(custom_shell_name)}"
         grid_layout
-      MULTI_LINE_STRING
-      
-      if %i[gem app].include?(shell_type)
-        custom_shell_file_content += <<-MULTI_LINE_STRING      
-        on_about {
-          display_about_dialog
-        }
-        on_preferences {
-          display_preferences_dialog
-        }
-        MULTI_LINE_STRING
-      end
-      
-      custom_shell_file_content += <<-MULTI_LINE_STRING
         label(:center) {
           text bind(self, :greeting)
           font height: 40

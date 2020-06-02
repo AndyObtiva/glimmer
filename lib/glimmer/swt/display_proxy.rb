@@ -16,6 +16,8 @@ module Glimmer
     class DisplayProxy
       include_package 'org.eclipse.swt.widgets'
 
+      OBSERVED_MENU_ITEMS = ['about', 'preferences']
+
       class << self
         # Returns singleton instance
         def instance(*args)
@@ -52,6 +54,9 @@ module Glimmer
         if observation_request.start_with?('on_event_')
           constant_name = observation_request.sub(/^on_event_/, '')
           SWTProxy.has_constant?(constant_name)
+        elsif observation_request.start_with?('on_')
+          event_name = observation_request.sub(/^on_/, '')
+          OBSERVED_MENU_ITEMS.include?(event_name)
         else
           false
         end
@@ -61,6 +66,15 @@ module Glimmer
         if observation_request.start_with?('on_event_')
           constant_name = observation_request.sub(/^on_event_/, '')
           add_swt_event_listener(constant_name, &block)
+        elsif observation_request.start_with?('on_')
+          event_name = observation_request.sub(/^on_/, '')
+          if OBSERVED_MENU_ITEMS.include?(event_name)
+            if OS.mac?
+              system_menu = swt_display.getSystemMenu
+              menu_item = system_menu.getItems.find {|menu_item| menu_item.getID == SWTProxy["ID_#{event_name.upcase}"]}
+              menu_item.addListener(SWTProxy[:Selection], &block)
+            end
+          end
         end
       end
 

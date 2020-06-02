@@ -14,7 +14,6 @@ module Glimmer
 
       WIDTH_MIN = 130
       HEIGHT_MIN = 0
-      OBSERVED_MENU_ITEMS = ['about', 'preferences']
 
       attr_reader :opened_before
       alias opened_before? opened_before
@@ -125,30 +124,6 @@ module Glimmer
       def start_event_loop
         until @swt_widget.isDisposed
           @display.sleep unless @display.readAndDispatch
-        end
-      end
-
-      def can_handle_observation_request?(observation_request)
-        result = false
-        if observation_request.start_with?('on_')
-          event_name = observation_request.sub(/^on_/, '')
-          result = OBSERVED_MENU_ITEMS.include?(event_name)
-        end
-        result || super
-      end
-
-      def handle_observation_request(observation_request, &block)
-        if observation_request.start_with?('on_')
-          event_name = observation_request.sub(/^on_/, '')
-          if OBSERVED_MENU_ITEMS.include?(event_name)
-            if OS.mac?
-              system_menu = DisplayProxy.instance.swt_display.getSystemMenu
-              menu_item = system_menu.getItems.find {|menu_item| menu_item.getID == SWTProxy["ID_#{event_name.upcase}"]}
-              menu_item.addListener(SWTProxy[:Selection], &block)
-            end
-          else
-            super
-          end
         end
       end
 
