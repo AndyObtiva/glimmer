@@ -163,6 +163,27 @@ module GlimmerSpec
         expect(menu2_menu1_menu1_menu_item2.getText).to eq('File 2')
         expect(menu2_menu1_menu1_menu_item2).to have_style(:push)
       end
+    
+      it "attaches on_widget_selected for a dropdown menu on encapsulated cascade menu item" do        
+        @target = shell {
+          @label = label {
+            text 'Right-Click Me'
+            @pop_up_menu = menu {
+              @history_menu = menu {
+                text '&History'
+                on_widget_selected {
+                  @history_selected = true
+                }
+              }
+            }
+          }
+        }
+        
+        expect(@history_selected).to eq(nil)
+        @history_menu.swt_menu_item.notifyListeners(Glimmer::SWT::SWTProxy[:selection], nil)        
+        
+        expect(@history_selected).to eq(true)
+      end    
     end
 
     context 'Custom shell/menu parents' do

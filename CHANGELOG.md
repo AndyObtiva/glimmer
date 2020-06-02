@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.8.0
+
+- Delegate listeners for menu items (:cascade) encapsulated by menus (dropdown menus)
+
 ## 0.7.8
 
 - Fix verbiage for summary/description in scaffolding custom shell gems (change custom widget reference to custom shell)
