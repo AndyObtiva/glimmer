@@ -79,6 +79,23 @@ module Glimmer
           super(attribute_name)
         end
       end
+      
+      def can_handle_observation_request?(observation_request, super_only: false)
+        super_result = super(observation_request)
+        if observation_request.start_with?('on_') && !super_result && !super_only
+          return menu_item_proxy.can_handle_observation_request?(observation_request)
+        else
+          super_result
+        end
+      end
+      
+      def handle_observation_request(observation_request, &block)
+        if can_handle_observation_request?(observation_request, super_only: true)
+          super
+        else
+          menu_item_proxy.handle_observation_request(observation_request, &block)
+        end
+      end      
     end
   end
 end
