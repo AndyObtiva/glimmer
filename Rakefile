@@ -10,27 +10,21 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 require 'rake'
-begin
-  jeweler_required = require 'jeweler'
-rescue Exception
-  jeweler_required = nil
+require 'juwelier'
+Juwelier::Tasks.new do |gem|
+  # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
+  gem.name = "glimmer"
+  gem.homepage = "http://github.com/AndyObtiva/glimmer"
+  gem.license = "MIT"
+  gem.summary = %Q{Ruby Desktop Development GUI Library}
+  gem.description = %Q{Ruby Desktop Development GUI Library}
+  gem.email = "andy.am@gmail.com"
+  gem.authors = ["AndyMaleh"]
+  gem.executables = ['glimmer', 'girb']
+  gem.files = Dir['RUBY_VERSION', 'VERSION', 'bin/**/*', 'lib/**/*', 'vendor/**/*', 'icons/**/*']
+  # dependencies defined in Gemfile
 end
-unless jeweler_required.nil?
-  Jeweler::Tasks.new do |gem|
-    # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-    gem.name = "glimmer"
-    gem.homepage = "http://github.com/AndyObtiva/glimmer"
-    gem.license = "MIT"
-    gem.summary = %Q{Ruby Desktop Development GUI Library}
-    gem.description = %Q{Ruby Desktop Development GUI Library}
-    gem.email = "andy.am@gmail.com"
-    gem.authors = ["AndyMaleh"]
-    gem.executables = ['glimmer', 'girb']
-    gem.files = Dir['RUBY_VERSION', 'VERSION', 'bin/**/*', 'lib/**/*', 'vendor/**/*', 'icons/**/*']
-    # dependencies defined in Gemfile
-  end
-  Jeweler::RubygemsDotOrgTasks.new
-end
+Juwelier::RubygemsDotOrgTasks.new
 
 require 'rspec/core'
 require 'rspec/core/rake_task'
@@ -47,7 +41,23 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.ruby_opts = [Glimmer::Launcher.jruby_swt_options]
 end
 
+desc "Code coverage detail"
+task :simplecov do
+  ENV['COVERAGE'] = "true"
+  Rake::Task['spec'].execute
+end
+
 task :default => :spec
+
+require 'rdoc/task'
+Rake::RDocTask.new do |rdoc|
+  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title = "glimmer #{version}"
+  rdoc.rdoc_files.include('README*')
+  rdoc.rdoc_files.include('lib/**/*.rb')
+end
 
 task :no_puts_debuggerer do
   ENV['puts_debuggerer'] = 'false'
