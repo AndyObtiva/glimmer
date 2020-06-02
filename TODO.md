@@ -12,7 +12,6 @@ The next version/revision to be developed will include a version number in one o
 
 ### Next Minor Version (0.8.0)
 
-- Make custom widget option method receive "default: hash key" instead of 2nd argument
 - Move about/preferences menu listeners from ShellProxy to DisplayProxy where they truly belong (adjusting scaffolding accordingly)
 - Ensure Scaffolding doesn't lock Bundler to v1 via Jeweler (consider switching to Juwelier instead)
 
