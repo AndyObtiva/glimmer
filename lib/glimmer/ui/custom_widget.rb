@@ -70,7 +70,7 @@ module Glimmer
           @custom_widget_namespaces = Set[Object, Glimmer::UI]
         end
 
-        # Allows defining convenience option readers for an array of option names
+        # Allows defining convenience option accessors for an array of option names
         # Example: `options :color1, :color2` defines `#color1` and `#color2`
         # where they return the instance values `options[:color1]` and `options[:color2]`
         # respectively.
@@ -87,9 +87,9 @@ module Glimmer
           end
         end
 
-        def option(new_option, new_option_default = nil)
+        def option(new_option, default: nil)
           new_option = new_option.to_s.to_sym
-          new_options = {new_option => new_option_default}
+          new_options = {new_option => default}
           @options = options.merge(new_options)
           def_option_attr_accessors(new_options)
         end

@@ -3,6 +3,7 @@
 ## 0.8.0
 
 - Delegate listeners for menu items (:cascade) encapsulated by menus (dropdown menus)
+- Make custom widget option method receive "default: hash key" instead of 2nd argument (adjusting scaffolding accordingly)
 
 ## 0.7.8
 

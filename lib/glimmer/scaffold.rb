@@ -424,9 +424,9 @@ class Scaffold
     ## Add options like the following to configure CustomShell by outside consumers
     #
     # options :title, :background_color
-    # option :width, 320
-    # option :height, 240
-    option :greeting, 'Hello, World!'
+    # option :width, default: 320
+    # option :height, default: 240
+    option :greeting, default: 'Hello, World!'
 
     ## Use before_body block to pre-initialize variables to use in body
     #
@@ -552,7 +552,7 @@ end
             ## Add options like the following to configure CustomWidget by outside consumers
             #
             # options :custom_text, :background_color
-            # option :foreground_color, :red
+            # option :foreground_color, default: :red
         
             ## Use before_body block to pre-initialize variables to use in body
             #

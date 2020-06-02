@@ -1559,8 +1559,8 @@ Custom Widgets have the following attributes available to call from inside the `
 - `#swt_widget`: actual SWT widget for `body_root`
 
 Additionally, custom widgets can call the following class methods:
-- `.options`: declares a list of options by taking an option name array (symbols/strings). This generates option attribute accessors (e.g. `options :orientation, :bg_color` generates `#orientation`, `#orientation=(v)`, `#bg_color`, and `#bg_color=(v)` attribute accessors)
-- `.option`: declares a single option taking option name and default value as arguments (also generates attribute accessors just like `.options`)
+- `::options(*option_names)`: declares a list of options by taking an option name array (symbols/strings). This generates option attribute accessors (e.g. `options :orientation, :bg_color` generates `#orientation`, `#orientation=(v)`, `#bg_color`, and `#bg_color=(v)` attribute accessors)
+- `::option(option_name, default: nil)`: declares a single option taking option name and default value as arguments (also generates attribute accessors just like `::options`)
 
 #### Content/Options Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
@@ -1570,7 +1570,7 @@ class Sandwich
   include Glimmer::UI::CustomWidget
 
   options :orientation, :bg_color
-  option :fg_color, :black
+  option :fg_color, default: :black
 
   body {
     composite(swt_style) { # gets custom widget style

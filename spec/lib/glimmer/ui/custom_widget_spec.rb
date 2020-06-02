@@ -18,7 +18,8 @@ module GlimmerSpec
       class ::ColoredLabel
         include Glimmer::UI::CustomWidget
         
-        options :color, :foreground_color
+        option :color
+        option :foreground_color, default: :red
 
         body {
           label(swt_style) {
@@ -175,7 +176,7 @@ module GlimmerSpec
 
     it "builds custom widget with an option" do
       @target = shell {
-        @colored_label = colored_label(color: :blue, foreground_color: :red)
+        @colored_label = colored_label(color: :blue)
       }
 
       expect(@colored_label.swt_widget.getParent).to eq(@target.swt_widget)
