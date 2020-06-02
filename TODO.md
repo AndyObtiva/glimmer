@@ -2,17 +2,15 @@
 
 Here is a list of tasks to do (moved to CHANGELOG.md once done). 
 
-## Next (0.8.0)
+## Next
 
-The next version/revision to be developed will include a version number in one of the following 3 sections (rest are TBD).
+Next is minor version 0.8.0
 
 ### Next Revision (TBD)
 
 - Fix pack_same_size to make it work on both linux and mac (test windows too)
 
 ### Next Minor Version (0.8.0)
-
-- Ensure Scaffolding doesn't lock Bundler to v1 via Jeweler (consider switching to Juwelier instead)
 
 ### Next Major Version (TBD)
 
