@@ -106,9 +106,21 @@ module Glimmer
         height = @swt_widget.getBounds.height
         x = @swt_widget.getBounds.x
         y = @swt_widget.getBounds.y
-        @swt_widget.pack
-        @swt_widget.setSize(width, height)
-        @swt_widget.setLocation(x, y)
+        if OS.windows?
+          minimum_size = @swt_widget.getMinimumSize
+          @swt_widget.setMinimumSize(bounds.width, bounds.height)
+          listener = on_control_resized {
+            @swt_widget.setSize(bounds.width, bounds.height)
+            @swt_widget.setLocation(bounds.x, bounds.y)
+          }
+          @swt_widget.pack
+          @swt_widget.removeControlListener(listener.swt_listener)
+          @swt_widget.setMinimumSize(minimum_size)
+        else
+          @swt_widget.pack
+          @swt_widget.setSize(width, height)
+          @swt_widget.setLocation(x, y)
+        end
       end
 
       def content(&block)

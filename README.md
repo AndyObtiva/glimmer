@@ -75,7 +75,7 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
 
 ## Table of Contents
 
-- [Glimmer 0.8.0 Beta (Ruby Desktop Development GUI Library)](#glimmer-080-beta-desktop-development-library-for-ruby)
+ - [Glimmer 0.8.0 Beta (Ruby Desktop Development GUI Library)](#glimmer-080-beta-desktop-development-library-for-ruby)
   - [Examples](#examples)
     - [Hello, World!](#hello-world)
     - [Tic Tac Toe](#tic-tac-toe)

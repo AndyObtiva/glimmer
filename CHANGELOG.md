@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.8.1
+
+- Fix pack_same_size to make it work on Windows and Linux too
+
 ## 0.8.0
 
 - Delegate listeners for menu items (:cascade) encapsulated by menus (dropdown menus)

@@ -4,13 +4,9 @@ Here is a list of tasks to do (moved to CHANGELOG.md once done).
 
 ## Next
 
-Next is minor version 0.8.0
+### Next Revision (0.8.1)
 
-### Next Revision (TBD)
-
-- Fix pack_same_size to make it work on both linux and mac (test windows too)
-
-### Next Minor Version (0.8.0)
+### Next Minor Version (TBD)
 
 ### Next Major Version (TBD)
 
