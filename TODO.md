@@ -54,7 +54,7 @@ bind_content(model, 'addresses').each { |address|
 - Image custom widget similar to video, and supporting gif
 - Automatic relayout of glimmer widgets (or parent widget) when disposing a widget (or as an option when disposing)
 - Scroll bar listener support
-- Web Support (e.g. via Opal?)
+- Support Ruby TK as an alternative to SWT
 - Make Glimmer defaults configurable
 - Extract FileTree Glimmer Custom widget from Gladiator
 
