@@ -4,7 +4,7 @@ Here is a list of tasks to do (moved to CHANGELOG.md once done).
 
 ## Next
 
-### Next Revision (0.8.1)
+### Next Revision (TBD)
 
 ### Next Minor Version (TBD)
 
