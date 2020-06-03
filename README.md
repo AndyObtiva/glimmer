@@ -2199,6 +2199,8 @@ The Glimmer rake task allows passing extra options to javapackager via:
 Example (Rakefile):
 
 ```ruby
+require 'glimmer/rake_task'
+
 Glimmer::Package.javapackager_extra_args = '-BlicenseType="MIT" -Bmac.category="public.app-category.business" -Bmac.signing-key-developer-id-app="Andy Maleh"'
 ```
 
