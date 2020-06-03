@@ -29,14 +29,14 @@ namespace :glimmer do
     end
 
     desc 'Generate JAR file'
-    task :jar => 'package:config' do
+    task :jar do
       system('mkdir -p dist')
       puts "Generating JAR with Warbler..."
       system('warble')
     end
 
     desc 'Generate Native files (DMG/PKG/APP on the Mac)'
-    task :native => 'package:jar' do
+    task :native do
       require 'facets/string/titlecase'
       require 'facets/string/underscore'
       project_name = File.basename(File.expand_path('.'))
@@ -57,7 +57,11 @@ namespace :glimmer do
   end
 
   desc 'Package app for distribution (generating config, jar, and native files)'
-  task :package => 'package:native'
+  task :package do
+    Rake::Task['glimmer:package:config'].execute
+    Rake::Task['glimmer:package:jar'].execute
+    Rake::Task['glimmer:package:native'].execute
+  end
 
 
   desc 'Scaffold a Glimmer application directory structure to begin building a new app'
