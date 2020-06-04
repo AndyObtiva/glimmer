@@ -2286,6 +2286,7 @@ Exec failed with code 2 command [[/usr/bin/SetFile, -c, icnC, /var/folders/4_/g1
 * [Code Master Blog](http://andymaleh.blogspot.com/search/label/Glimmer)
 * [JRuby Cookbook by Justin Edelson & Henry Liu](http://shop.oreilly.com/product/9780596519650.do)
 * [RubyConf 2008 Video](https://confreaks.tv/videos/rubyconf2008-desktop-development-with-glimmer)
+* [MountainWest RubyConf 2011 Video](https://confreaks.tv/videos/mwrc2011-whatever-happened-to-desktop-development-in-ruby)
 * [InfoQ Article](http://www.infoq.com/news/2008/02/glimmer-jruby-swt)
 * [DZone Tutorial](https://dzone.com/articles/an-introduction-glimmer)
 
