@@ -1269,7 +1269,7 @@ The Glimmer code is not much different from above except for passing the `:multi
 
 Note that in all the data-binding examples above, there was also an observer attached to the `button` widget to trigger an action on the model, which in turn triggers a data-binding update on the `list` or `combo`. Observers will be discussed in more details in the [next section](#observer).
 
-You may learn more about Glimmer's data-binding syntax by reading the [Eclipse Zone Tutorial](http://eclipse.dzone.com/articles/an-introduction-glimmer) mentioned in resources and opening up the samples under the [samples](samples) directory.
+You may learn more about Glimmer's data-binding syntax by reading the code under the [samples](samples) directory.
 
 #### Tree
 
