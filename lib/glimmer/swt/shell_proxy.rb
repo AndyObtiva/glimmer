@@ -102,24 +102,22 @@ module Glimmer
 
       def pack_same_size
         bounds = @swt_widget.getBounds
-        width = @swt_widget.getBounds.width
-        height = @swt_widget.getBounds.height
-        x = @swt_widget.getBounds.x
-        y = @swt_widget.getBounds.y
-        if OS.windows?
+        if OS.mac?
+          @swt_widget.pack
+          @swt_widget.setBounds(bounds)
+        elsif OS.windows? || OS::Underlying.windows?
           minimum_size = @swt_widget.getMinimumSize
           @swt_widget.setMinimumSize(bounds.width, bounds.height)
-          listener = on_control_resized {
-            @swt_widget.setSize(bounds.width, bounds.height)
-            @swt_widget.setLocation(bounds.x, bounds.y)
-          }
+          listener = on_control_resized { @swt_widget.setBounds(bounds) }
           @swt_widget.pack
           @swt_widget.removeControlListener(listener.swt_listener)
           @swt_widget.setMinimumSize(minimum_size)
-        else
+        elsif OS.linux?          
+          minimum_size = @swt_widget.getMinimumSize
+          @swt_widget.setMinimumSize(bounds.width, bounds.height)
           @swt_widget.pack
-          @swt_widget.setSize(width, height)
-          @swt_widget.setLocation(x, y)
+          @swt_widget.setMinimumSize(minimum_size)
+          @swt_widget.setBounds(bounds)
         end
       end
 
