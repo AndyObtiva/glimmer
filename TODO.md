@@ -6,7 +6,15 @@ Here is a list of tasks to do (moved to CHANGELOG.md once done).
 
 ### Next Revision (TBD)
 
-### Next Minor Version (TBD)
+### Next Minor Version (0.8.2)
+
+- Test/iron-out support for packaging a Glimmer app on Windows (exe file)
+- Test/iron-out support for packaging a Glimmer app on Linux
+- DSL syntax for MessageBox
+message_box {
+  text 'Red Label'
+  message 'This is a red label'
+}.open
 
 ### Next Major Version (TBD)
 
@@ -18,16 +26,6 @@ N/A
 - Support porting an existing Glimmer SWT app into a web app with very little effort
 
 ## Soon
-
-- DSL syntax for MessageBox
-message_box {
-  text 'Red Label'
-  message 'This is a red label'
-}.open
-- Support publishing a Glimmer app for Windows (exe file)
-- Support publishing a Glimmer app for Linux
-(https://github.com/jruby/jruby/wiki/StandaloneJarsAndClasses - https://github.com/jruby/warbler - https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/packager.html )
-- Support eager/lazy/manual loading of SWT packages/classes. Give consumers the option to use eager (java_import), lazy (include_package), or manual, to be done in their apps.
 
 ## Feature Suggestions
 - Glimmer Wizard: provide a standard structure for building a Glimmer wizard (multi-step/multi-screen process)
@@ -50,9 +48,9 @@ bind_content(model, 'addresses').each { |address|
 - Image custom widget similar to video, and supporting gif
 - Automatic relayout of glimmer widgets (or parent widget) when disposing a widget (or as an option when disposing)
 - Scroll bar listener support
-- Support Ruby TK as an alternative to SWT
 - Make Glimmer defaults configurable
 - Extract FileTree Glimmer Custom widget from Gladiator
+
 
 ## Issues
 
@@ -60,34 +58,42 @@ bind_content(model, 'addresses').each { |address|
 
 ## Technical Tasks
 
+- Explore supporting new Shine data-binding syntax (data-binding with spaceship operator <=>):
+items <=> 'model.property' # bidirectional
+items <= 'model.property' # ready-only
+items <=> binding('model.property') # bidirectional explicit binding
+items <= binding('model.property') # ready-only explicit binding
+items <= binding('model.property') {|x| x + 2} # read-only explicit binding with converter
+items <=> binding('model.property') { # bidirectional explicit binding on_read/on_write converters
+  on_read {|v| !v}
+  on_write {|v| !v}
+}
 - Improve tree databinding so that replacing content array value updates the tree (instead of clearing and rereading elements)
 - Support table single selection databinding
 - Support table cell editing databinding
 - Support table multi selection databinding
-- Explore rewriting shine with Ruby 2 support
+items <=> binding {
+  path 'model.property'
+  on_read {|v| !v}
+  on_write {|v| !v}
+}
 - Consider need for a startup progress dialog (with Glimmer branding)
 - Externalize constants to make easily configurable
-- Restore badges for README
 - Check for need to recursively call dispose on widget descendants
 - Report a friendly error message for  can't modify frozen NilClass when mistakenly observing a nil model instead of doing a nested bind(self, 'model.property')
 - Provide general DSL to construct any object with Glimmer even if not a widget. Useful for easily setting style_range on a StyledText widget. Maybe make it work like layout_data where it knows type to instantiate automatically. With style_range, that's easy since it can be inferred from args.
 - Consider implementing Glimmer.app_dir as Pathname object referring to app root path of Glimmer application project (not Glimmer library)
-- Support a Glimmer custom widget (custom shell) publishing/consumption mechanism that bypasses Ruby gems by pre-downloading their code directly by convention of custom widget name and github repository name (e.g. containing word glimmer or a special prefix like 'glimmer_public__some_widget_name'). Also, gets packaged when shipping a product or a gem. This should make 100s if not 1000s of widget available very easily online as authors won't be required beyond following a GitHub hosting convention from creating Ruby gems
-- Support a Glimmer ruby gem generator for custom widgets to easily and quickly wrap and publish as a Ruby gem if desired (despite option of github convention consumption mentioned above)
-- Put Glimmer on Travis CI and test on many platforms and with many jruby versions
 - Get rid of dispose widget error upon quitting a Glimmer app
 - Make observers 'method?' friendly
 - Compose ModelBinding out of another ModelBinding (nesting deeper)
 - add a `#shell` method to WidgetProxy and custom widget classes to get ShellProxy containing them (or custom shell [think about the implications of this one])
-- Support proper `dispose` of widgets across the board (already support garbage collecting observers upon dispose... check if anything else is missing, like nested widget disposal)
-- Support reading Bundler Gemfile in glimmer command if available
-- Support question mark ending data-binding properties
+- Support proper `dispose` of widgets across the board (already supporting garbage collecting observers upon dispose... check if anything else is missing, like nested widget disposal)
 - consider detecting type on widget property method and automatically invoking right converter (e.g. :to_s for String text property, :to_i for Integer property, etc...)
 - Provide girb option to run without including Glimmer. Useful when testing an application that is not a "hello, world!" sort of example
 - Correct attribute/property naming (unify as attributes)
 - Make WidgetProxy and custom widgets proxy method calls to wrapped widget
 - Implement a Graphical Glimmer sample launcher
-- Support => syntax for computed_for data-binding
+- Support `=>` syntax alternative for `computed_by` data-binding
 - Support data binding boolean properties ending with ? bidirectionally (already supported for read-only)
 - Support XML Top-Level Static Expression (xml { })
 - Support XML DSL comments <!-- COMMENT -->
@@ -102,6 +108,8 @@ bind_content(model, 'addresses').each { |address|
 - Support data-binding shell size and location
 - Support data-bind two widget attributes to each other
 - Generate rspec test suite for app scaffolding
+- Support eager/lazy/manual loading of SWT packages/classes. Give consumers the option to use eager (java_import), lazy (include_package), or manual, to be done in their apps.
+- Consider dropping duality of data-binding syntax: bind(model, 'property'). Unify by always using bind('model.property') instead, which is simpler and better as it supports the case of model being nil starting with self as the model.
 
 ## Samples
 
