@@ -31,6 +31,8 @@ N/A
 - Glimmer Wizard: provide a standard structure for building a Glimmer wizard (multi-step/multi-screen process)
 - bind_content: an iterator that enables spawning widgets based on a variable collection (e.g. `bind_content('user.addresses').each { |address| address_widget {...} }` spawns 3 `AddressWidget`s if `user.addresses` is set with 3 addresses; and replaces with 2 `AddressWidget`s if `user.addresses` is reset with 2 addresses only). Needs further thought on naming and functionality.
 Another idea in which each is triggered upon every update to bind's content:
+
+```ruby
 bind_content(model, 'username') { |username|
   label {
     text username
@@ -45,6 +47,8 @@ bind_content(model, 'addresses').each { |address|
     bind(address, :zip)    
   }
 }
+```
+
 - Image custom widget similar to video, and supporting gif
 - Automatic relayout of glimmer widgets (or parent widget) when disposing a widget (or as an option when disposing)
 - Scroll bar listener support
@@ -79,6 +83,7 @@ items <=> binding {
   on_write {|v| !v}
 }
 ```
+
 - Consider need for a startup progress dialog (with Glimmer branding)
 - Externalize constants to make easily configurable
 - Check for need to recursively call dispose on widget descendants
