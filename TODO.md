@@ -59,6 +59,7 @@ bind_content(model, 'addresses').each { |address|
 ## Technical Tasks
 
 - Explore supporting new Shine data-binding syntax (data-binding with spaceship operator <=>):
+```ruby
 items <=> 'model.property' # bidirectional
 items <= 'model.property' # ready-only
 items <=> binding('model.property') # bidirectional explicit binding
@@ -77,6 +78,7 @@ items <=> binding {
   on_read {|v| !v}
   on_write {|v| !v}
 }
+```
 - Consider need for a startup progress dialog (with Glimmer branding)
 - Externalize constants to make easily configurable
 - Check for need to recursively call dispose on widget descendants
