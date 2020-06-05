@@ -73,17 +73,16 @@ items <=> binding('model.property') { # bidirectional explicit binding on_read/o
   on_read {|v| !v}
   on_write {|v| !v}
 }
-- Improve tree databinding so that replacing content array value updates the tree (instead of clearing and rereading elements)
-- Support table single selection databinding
-- Support table cell editing databinding
-- Support table multi selection databinding
 items <=> binding {
   path 'model.property'
   on_read {|v| !v}
   on_write {|v| !v}
 }
 ```
-
+- Improve tree databinding so that replacing content array value updates the tree (instead of clearing and rereading elements)
+- Support table single selection databinding
+- Support table cell editing databinding
+- Support table multi selection databinding
 - Consider need for a startup progress dialog (with Glimmer branding)
 - Externalize constants to make easily configurable
 - Check for need to recursively call dispose on widget descendants
