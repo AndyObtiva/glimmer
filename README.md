@@ -2008,13 +2008,13 @@ glimmer samples/elaborate/tic_tac_toe.rb # demonstrates a full MVC application
 
 #### [Glimmer Calculator](https://github.com/AndyObtiva/glimmer-cs-calculator)
 
-![Glimmer Calculator](https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/v1.0.0/glimmer-cs-calculator-screenshot.png)
+[![Glimmer Calculator](https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/v1.0.0/glimmer-cs-calculator-screenshot.png)]((https://github.com/AndyObtiva/glimmer-cs-calculator))
 
 [Glimmer Calculator](https://github.com/AndyObtiva/glimmer-cs-calculator) is a basic calculator sample project demonstrating data-binding and TDD (test-driven-development) with Glimmer following the MVP pattern (Model-View-Presenter).
 
 #### [Gladiator](https://github.com/AndyObtiva/glimmer-cs-gladiator)
 
-![Gladiator](https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-gladiator/v0.1.5/images/glimmer-gladiator.png)
+[![Gladiator](https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-gladiator/v0.1.5/images/glimmer-gladiator.png)]((https://github.com/AndyObtiva/glimmer-cs-gladiator))
 
 [Gladiator](https://github.com/AndyObtiva/glimmer-cs-gladiator) (short for Glimmer Editor) is a Glimmer sample project under on-going development.
 You may check it out to learn how to build a Glimmer Custom Shell gem.
