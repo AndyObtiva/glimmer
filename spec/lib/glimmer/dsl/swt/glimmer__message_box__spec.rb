@@ -63,6 +63,26 @@ module GlimmerSpec
       expect(@message_box.swt_widget).to have_style(:icon_error)
       expect(@message_box.swt_widget).to have_style(:ok)
       expect(@message_box.swt_widget).to have_style(:cancel)
-    end    
+    end
+    
+    it 'data-binds message box text and message' do
+      MessageData = Struct.new(:text, :message)
+      data = MessageData.new('Hello', 'Hello, this is a greeting!')
+      
+      @target = shell
+      @message_box = message_box(@target) {
+        text bind(data, :text)
+        message bind(data, :message)
+      }
+
+      expect(@message_box.swt_widget.getText).to eq('Hello')
+      expect(@message_box.swt_widget.getMessage).to eq('Hello, this is a greeting!')
+      
+      data.text = 'Howdy'
+      data.message = 'Howdy Partner!'
+
+      expect(@message_box.swt_widget.getText).to eq('Howdy')
+      expect(@message_box.swt_widget.getMessage).to eq('Howdy Partner!')
+    end
   end
 end
