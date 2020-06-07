@@ -18,6 +18,10 @@ module Glimmer
         @swt_widget = MessageBox.new(parent, style)
       end
       
+      def open
+        @swt_widget.open
+      end
+      
       # TODO refactor the following methods to put in a JavaBean mixin or somethin (perhaps contribute to OSS project too)
       
       def attribute_setter(attribute_name)
