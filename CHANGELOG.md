@@ -3,6 +3,7 @@
 ## 0.8.2
 
 - Fix Glimmer::SWT::ShellProxy#pack_same_size for Linux
+- DSL keyword 'message_box'
 
 ## 0.8.1
 
