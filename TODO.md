@@ -6,32 +6,16 @@ Here is a list of tasks to do (moved to CHANGELOG.md once done).
 
 ### Next Revision (TBD)
 
-### Next Minor Version (0.8.2)
-
-- Test/iron-out support for packaging a Glimmer app on Windows (exe file)
-- Test/iron-out support for packaging a Glimmer app on Linux
-- DSL syntax for MessageBox
-message_box {
-  text 'Red Label'
-  message 'This is a red label'
-}.open
+### Next Minor Version (TBD)
 
 ### Next Major Version (TBD)
 
 N/A
 
-## Side Project (opal-spike branch)
-
-- Support web UIs via Opal Ruby (https://github.com/opal/opal)
-- Support porting an existing Glimmer SWT app into a web app with very little effort
-
-## Soon
-
 ## Feature Suggestions
 - Glimmer Wizard: provide a standard structure for building a Glimmer wizard (multi-step/multi-screen process)
 - bind_content: an iterator that enables spawning widgets based on a variable collection (e.g. `bind_content('user.addresses').each { |address| address_widget {...} }` spawns 3 `AddressWidget`s if `user.addresses` is set with 3 addresses; and replaces with 2 `AddressWidget`s if `user.addresses` is reset with 2 addresses only). Needs further thought on naming and functionality.
 Another idea in which each is triggered upon every update to bind's content:
-
 ```ruby
 bind_content(model, 'username') { |username|
   label {
@@ -48,13 +32,10 @@ bind_content(model, 'addresses').each { |address|
   }
 }
 ```
-
 - Image custom widget similar to video, and supporting gif
-- Automatic relayout of glimmer widgets (or parent widget) when disposing a widget (or as an option when disposing)
 - Scroll bar listener support
-- Make Glimmer defaults configurable
 - Extract FileTree Glimmer Custom widget from Gladiator
-- Build a Smalltalk-VM-like Ruby app to allow people to build and edit GUI apps without restarting
+- Support Cygwin with glimmer command
 
 ## Issues
 
@@ -116,12 +97,25 @@ items <=> binding {
 - Generate rspec test suite for app scaffolding
 - Support eager/lazy/manual loading of SWT packages/classes. Give consumers the option to use eager (java_import), lazy (include_package), or manual, to be done in their apps.
 - Consider dropping duality of data-binding syntax: bind(model, 'property'). Unify by always using bind('model.property') instead, which is simpler and better as it supports the case of model being nil starting with self as the model.
+- Automatic relayout of glimmer widgets (or parent widget) when disposing a widget (or as an option when disposing)
+- Make Glimmer defaults configurable
 
 ## Samples
 
 - HR Employee Management app
 - Medical Patient Management app
 - Business Accounting app
+
+## Side Projects
+
+### opal-spike branch
+
+- Support web UIs via Opal Ruby (https://github.com/opal/opal)
+- Support porting an existing Glimmer SWT app into a web app with very little effort
+
+### glimmertalk project
+
+- Build a Smalltalk-like Ruby app to allow people to build and edit GUI apps without restarting
 
 ## Documentation Tasks
 

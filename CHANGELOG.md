@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.8.2
+
+- Fix Glimmer::SWT::ShellProxy#pack_same_size for Linux
+
 ## 0.8.1
 
 - Fix Glimmer::SWT::ShellProxy#pack_same_size for Windows
