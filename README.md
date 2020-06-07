@@ -2008,7 +2008,7 @@ glimmer samples/elaborate/tic_tac_toe.rb # demonstrates a full MVC application
 
 #### [Glimmer Calculator](https://github.com/AndyObtiva/glimmer-cs-calculator)
 
-[<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/v1.0.0/glimmer-cs-calculator-screenshot.png" />]((https://github.com/AndyObtiva/glimmer-cs-calculator))
+[<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/v1.0.0/glimmer-cs-calculator-screenshot.png" />](https://github.com/AndyObtiva/glimmer-cs-calculator)
 
 [Glimmer Calculator](https://github.com/AndyObtiva/glimmer-cs-calculator) is a basic calculator sample project demonstrating data-binding and TDD (test-driven-development) with Glimmer following the MVP pattern (Model-View-Presenter).
 
