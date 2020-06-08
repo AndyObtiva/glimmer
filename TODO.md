@@ -54,7 +54,7 @@ bind_content(model, 'addresses').each { |address|
 - Scroll bar listener support
 - Make Glimmer defaults configurable
 - Extract FileTree Glimmer Custom widget from Gladiator
-
+- Build a Smalltalk-VM-like Ruby app to allow people to build and edit GUI apps without restarting
 
 ## Issues
 
