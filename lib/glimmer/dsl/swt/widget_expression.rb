@@ -32,3 +32,4 @@ end
 
 require 'glimmer/swt/widget_proxy'
 require 'glimmer/swt/tree_proxy'
+require 'glimmer/swt/table_proxy'

@@ -15,6 +15,7 @@ module GlimmerSpec
 
       class PersonGroup
         attr_accessor :people
+        attr_accessor :selected_person
 
         def initialize
           @people = []
@@ -63,10 +64,13 @@ module GlimmerSpec
       end
     end
     
-    let(:group) do
+    let(:selected_person) { person2 }
+    
+    let(:group) do    
       PersonGroup.new.tap do |g|
         g.people << person1
         g.people << person2
+        g.selected_person = person2
       end
     end
 
@@ -76,7 +80,7 @@ module GlimmerSpec
       end
     end 
 
-    it "data binds text widget to a string property" do
+    it "data binds table items" do
       @target = shell {
         @table = table {
           table_column {
@@ -133,28 +137,28 @@ module GlimmerSpec
       expect(@table_nested_indexed.swt_widget.getItems[1].getText(2)).to eq("false")
 
       person3 = Person.new
-      person3.name = "Andrea Shingle"
+      person3.name = "Andrea Sherlock"
       person3.age = 23
       person3.adult = true
 
       group.people << person3
 
       expect(@table.swt_widget.getItems.size).to eq(3)
-      expect(@table.swt_widget.getItems[2].getText(0)).to eq("Andrea Shingle")
+      expect(@table.swt_widget.getItems[2].getText(0)).to eq("Andrea Sherlock")
       expect(@table.swt_widget.getItems[2].getText(1)).to eq("23")
       expect(@table.swt_widget.getItems[2].getText(2)).to eq("true")
 
       group.people.delete person2
 
       expect(@table.swt_widget.getItems.size).to eq(2)
-      expect(@table.swt_widget.getItems[1].getText(0)).to eq("Andrea Shingle")
+      expect(@table.swt_widget.getItems[1].getText(0)).to eq("Andrea Sherlock")
       expect(@table.swt_widget.getItems[1].getText(1)).to eq("23")
       expect(@table.swt_widget.getItems[1].getText(2)).to eq("true")
 
       group.people.delete_at(0)
 
       expect(@table.swt_widget.getItems.size).to eq(1)
-      expect(@table.swt_widget.getItems[0].getText(0)).to eq("Andrea Shingle")
+      expect(@table.swt_widget.getItems[0].getText(0)).to eq("Andrea Sherlock")
       expect(@table.swt_widget.getItems[0].getText(1)).to eq("23")
       expect(@table.swt_widget.getItems[0].getText(2)).to eq("true")
 
@@ -177,6 +181,51 @@ module GlimmerSpec
       person1.name = "Bruce Flee"
 
       expect(@table.swt_widget.getItems[1].getText(0)).to eq("Bruce Flee")
+    end
+
+    it "data binds table selection" do
+      @target = shell {
+        @table = table {
+          table_column {
+            text "Name"
+            width 120
+          }
+          table_column {
+            text "Age"
+            width 120
+          }
+          table_column {
+            text "Adult"
+            width 120
+          }
+          items bind(group, :people), column_properties(:name, :age, :adult)
+          selection bind(group, :selected_person)
+        }
+      }
+
+      selection = @table.swt_widget.getSelection
+      
+      expect(selection.size).to eq(1)
+      expect(selection.first.getData).to eq(person2)
+
+      person3 = Person.new
+      person3.name = "Andrea Sherlock"
+      person3.age = 23
+      person3.adult = true
+      
+      group.people << person3
+
+      group.people.delete person2
+
+      selection = @table.swt_widget.getSelection
+      expect(selection.size).to eq(1)
+      expect(selection.first.getData).to eq(person1)
+
+      group.selected_person = person1
+
+      selection = @table.swt_widget.getSelection
+      expect(selection.size).to eq(1)
+      expect(selection.first.getData).to eq(person1)
     end
 
     it "data binds text widget to a string property for a custom widget table" do
