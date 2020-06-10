@@ -16,6 +16,11 @@ module Glimmer
         @table = parent
         @model_binding = model_binding
         @column_properties = column_properties
+        if @table.respond_to?(:column_properties=)
+          @table.column_properties = @column_properties
+        else # assume custom widget
+          @table.body_root.column_properties = @column_properties
+        end
         call(@model_binding.evaluate_property)
         model = model_binding.base_model
         observe(model, model_binding.property_name_expression)

@@ -6,7 +6,7 @@ module Glimmer
       include Glimmer
       
       attr_reader :table_editor, :table_editor_text_proxy
-      attr_accessor :table_properties
+      attr_accessor :column_properties
       
       def initialize(underscored_widget_name, parent, args)
         super
@@ -44,11 +44,11 @@ module Glimmer
         !!@edit_in_progress
       end
       
-      def edit_selected_table_item(before_write: nil, after_write: nil, after_cancel: nil)
-        edit_table_item(swt_widget.getSelection.first, before_write: before_write, after_write: after_write, after_cancel: after_cancel)
+      def edit_selected_table_item(column_index, before_write: nil, after_write: nil, after_cancel: nil)
+        edit_table_item(swt_widget.getSelection.first, column_index, before_write: before_write, after_write: after_write, after_cancel: after_cancel)
       end
             
-      def edit_table_item(table_item, before_write: nil, after_write: nil, after_cancel: nil)
+      def edit_table_item(table_item, column_index, before_write: nil, after_write: nil, after_cancel: nil)
         return if table_item.nil?
         content {
           @table_editor_text_proxy = text {
@@ -72,7 +72,7 @@ module Glimmer
                   before_write&.call
                   table_item.setText(new_text)
                   model = table_item.getData
-                  model.send("#{table_properties[:text]}=", new_text) # makes table update itself, so must search for selected table item again
+                  model.send("#{column_properties[column_index]}=", new_text) # makes table update itself, so must search for selected table item again
                   edited_table_item = search { |ti| ti.getData == model }.first
                   swt_widget.showItem(edited_table_item)
                   @table_editor_text_proxy.swt_widget.dispose
@@ -93,7 +93,7 @@ module Glimmer
           }
           @table_editor_text_proxy.swt_widget.selectAll
         }
-        @table_editor.setEditor(@table_editor_text_proxy.swt_widget, table_item);      
+        @table_editor.setEditor(@table_editor_text_proxy.swt_widget, table_item, column_index)
       end
       
       private

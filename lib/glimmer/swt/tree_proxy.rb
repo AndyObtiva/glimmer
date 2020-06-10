@@ -95,7 +95,7 @@ module Glimmer
           }
           @tree_editor_text_proxy.swt_widget.selectAll
         }
-        @tree_editor.setEditor(@tree_editor_text_proxy.swt_widget, tree_item);      
+        @tree_editor.setEditor(@tree_editor_text_proxy.swt_widget, tree_item)
       end
       
       private
