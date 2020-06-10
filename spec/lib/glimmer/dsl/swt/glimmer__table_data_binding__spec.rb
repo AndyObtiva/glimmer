@@ -203,8 +203,7 @@ module GlimmerSpec
         }
       }
 
-      selection = @table.swt_widget.getSelection
-      
+      selection = @table.swt_widget.getSelection      
       expect(selection.size).to eq(1)
       expect(selection.first.getData).to eq(person2)
 
@@ -214,6 +213,10 @@ module GlimmerSpec
       person3.adult = true
       
       group.people << person3
+
+      selection = @table.swt_widget.getSelection
+      expect(selection.size).to eq(1)
+      expect(selection.first.getData).to eq(person2)
 
       group.people.delete person2
 
