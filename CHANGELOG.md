@@ -4,6 +4,7 @@
 
 - Fix Glimmer::SWT::ShellProxy#pack_same_size for Linux
 - DSL keyword 'message_box'
+- Support table single selection databinding
 
 ## 0.8.1
 

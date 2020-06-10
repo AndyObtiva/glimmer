@@ -148,19 +148,27 @@ module GlimmerSpec
       expect(@table.swt_widget.getItems[2].getText(1)).to eq("23")
       expect(@table.swt_widget.getItems[2].getText(2)).to eq("true")
 
+      person3.name = "Andrea Sherloque"
+      person3.age = 13
+      person3.adult = false
+
+      expect(@table.swt_widget.getItems[2].getText(0)).to eq("Andrea Sherloque")
+      expect(@table.swt_widget.getItems[2].getText(1)).to eq("13")
+      expect(@table.swt_widget.getItems[2].getText(2)).to eq("false")
+
       group.people.delete person2
 
       expect(@table.swt_widget.getItems.size).to eq(2)
-      expect(@table.swt_widget.getItems[1].getText(0)).to eq("Andrea Sherlock")
-      expect(@table.swt_widget.getItems[1].getText(1)).to eq("23")
-      expect(@table.swt_widget.getItems[1].getText(2)).to eq("true")
+      expect(@table.swt_widget.getItems[1].getText(0)).to eq("Andrea Sherloque")
+      expect(@table.swt_widget.getItems[1].getText(1)).to eq("13")
+      expect(@table.swt_widget.getItems[1].getText(2)).to eq("false")
 
       group.people.delete_at(0)
 
       expect(@table.swt_widget.getItems.size).to eq(1)
-      expect(@table.swt_widget.getItems[0].getText(0)).to eq("Andrea Sherlock")
-      expect(@table.swt_widget.getItems[0].getText(1)).to eq("23")
-      expect(@table.swt_widget.getItems[0].getText(2)).to eq("true")
+      expect(@table.swt_widget.getItems[0].getText(0)).to eq("Andrea Sherloque")
+      expect(@table.swt_widget.getItems[0].getText(1)).to eq("13")
+      expect(@table.swt_widget.getItems[0].getText(2)).to eq("false")
 
       group.people.clear
 

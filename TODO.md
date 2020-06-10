@@ -8,7 +8,6 @@ Here is a list of tasks to do (moved to CHANGELOG.md once done).
 
 ### Next Minor Version (0.8.2)
 
-- Support table single selection databinding
 - Support table cell editing databinding
 - Support table multi selection databinding
 

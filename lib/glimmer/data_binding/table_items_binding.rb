@@ -24,11 +24,10 @@ module Glimmer
         end
       end
 
-      def call(model_collection=nil)
-        if model_collection and model_collection.is_a?(Array)
-          # TODO clean observer registrations 
-          observe(model_collection, @column_properties)
-          @model_collection = model_collection
+      def call(new_model_collection=nil)
+        if new_model_collection and new_model_collection.is_a?(Array)
+          observe(new_model_collection, @column_properties)
+          @model_collection = new_model_collection
         end
         populate_table(@model_collection, @table, @column_properties)
       end
@@ -41,8 +40,6 @@ module Glimmer
           for index in 0..(column_properties.size-1)
             table_item.setText(index, model.send(column_properties[index]).to_s)
           end
-        # TODO set data
-#           table_item.setData('observer_registrations', observer_registrations)
           table_item.setData(model)
         end
         selected_table_item = parent.search {|item| item.getData == selected_table_item_model}.first || parent.swt_widget.getItems.first
