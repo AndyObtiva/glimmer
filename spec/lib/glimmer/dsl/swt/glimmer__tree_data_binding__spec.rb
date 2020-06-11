@@ -452,7 +452,7 @@ module GlimmerSpec
       expect(selection.first.getData).to eq(person2)
     end
     
-    it "triggers tree widget editing on selected tree item and cancels by not making a changing and focusing out" do
+    it "triggers tree widget editing on selected tree item and cancels by not making a change and focusing out" do
       @target = shell {      
         @tree = tree {
           items bind(company, :owner), tree_properties(children: :coworkers, text: :name)
