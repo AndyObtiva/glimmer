@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + "/node_visitor"
+require "glimmer/xml/node_visitor"
 
 module Glimmer
   module XML
