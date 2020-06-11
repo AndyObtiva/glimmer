@@ -5,7 +5,7 @@ module Glimmer
     class TableProxy < Glimmer::SWT::WidgetProxy
       include Glimmer
       
-      module TableEvent        
+      module TableListenerEvent        
         def table_item
           table_item_and_column_index[:table_item]
         end
@@ -126,7 +126,7 @@ module Glimmer
       
       def add_listener(underscored_listener_name, &block)
         enhanced_block = lambda do |event|
-          event.extend(TableEvent)
+          event.extend(TableListenerEvent)
           block.call(event)
         end
         super(underscored_listener_name, &enhanced_block)
@@ -137,7 +137,11 @@ module Glimmer
       def property_type_converters
         super.merge({
           selection: lambda do |value|
-            search {|ti| ti.getData == value}
+            if value.is_a?(Array)
+              search {|ti| value.include?(ti.getData) }
+            else
+              search {|ti| ti.getData == value}
+            end
           end,
         })
       end

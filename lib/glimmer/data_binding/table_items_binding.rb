@@ -38,7 +38,7 @@ module Glimmer
       end
 
       def populate_table(model_collection, parent, column_properties)
-        selected_table_item_model = parent.swt_widget.getSelection.first&.getData
+        selected_table_item_models = parent.swt_widget.getSelection.map(&:getData)
         parent.swt_widget.removeAll
         model_collection.each do |model|
           table_item = TableItem.new(parent.swt_widget, SWT::SWTProxy[:none])
@@ -47,8 +47,9 @@ module Glimmer
           end
           table_item.setData(model)
         end
-        selected_table_item = parent.search {|item| item.getData == selected_table_item_model}.first || parent.swt_widget.getItems.first
-        parent.swt_widget.setSelection([selected_table_item].to_java(TableItem)) if selected_table_item
+        selected_table_items = parent.search {|item| selected_table_item_models.include?(item.getData) }
+        selected_table_items = [parent.swt_widget.getItems.first].to_java(TableItem) if selected_table_items.empty? && !parent.swt_widget.getItems.empty?
+        parent.swt_widget.setSelection(selected_table_items) unless selected_table_items.empty?
       end
     end
   end

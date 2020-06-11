@@ -8,8 +8,6 @@ Here is a list of tasks to do (moved to CHANGELOG.md once done).
 
 ### Next Minor Version (0.8.2)
 
-- Support table multi selection databinding
-
 ### Next Major Version (TBD)
 
 N/A
@@ -101,7 +99,6 @@ items <=> binding {
 - Ensure support for packaging on Windows (exe file)
 - Ensure support for packaging on Linux
 - Refactor entire codebase to get rid of Java getters/setters in favor of Ruby attributes
-- Support table column data-binding converters
 
 ## Samples
 

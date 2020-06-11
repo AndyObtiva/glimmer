@@ -16,6 +16,7 @@ module GlimmerSpec
       class PersonGroup
         attr_accessor :people
         attr_accessor :selected_person
+        attr_accessor :selected_people
 
         def initialize
           @people = []
@@ -65,12 +66,14 @@ module GlimmerSpec
     end
     
     let(:selected_person) { person2 }
+    let(:selected_people) { [person1, person2] }
     
     let(:group) do    
       PersonGroup.new.tap do |g|
         g.people << person1
         g.people << person2
-        g.selected_person = person2
+        g.selected_person = selected_person
+        g.selected_people = selected_people
       end
     end
 
@@ -191,7 +194,7 @@ module GlimmerSpec
       expect(@table.swt_widget.getItems[1].getText(0)).to eq("Bruce Flee")
     end
 
-    it "data binds table selection" do
+    it "data binds table single selection" do
       @target = shell {
         @table = table {
           table_column {
@@ -237,6 +240,61 @@ module GlimmerSpec
       selection = @table.swt_widget.getSelection
       expect(selection.size).to eq(1)
       expect(selection.first.getData).to eq(person1)
+
+      # TODO test triggering selection from table directly
+    end
+
+    it "data binds table multi selection" do
+      @target = shell {
+        @table = table(:multi) {
+          table_column {
+            text "Name"
+            width 120
+          }
+          table_column {
+            text "Age"
+            width 120
+          }
+          table_column {
+            text "Adult"
+            width 120
+          }
+          items bind(group, :people), column_properties(:name, :age, :adult)
+          selection bind(group, :selected_people)
+        }
+      }
+
+      selection = @table.swt_widget.getSelection      
+      expect(selection.size).to eq(2)
+      expect(selection[0].getData).to eq(person1)
+      expect(selection[1].getData).to eq(person2)
+
+      person3 = Person.new
+      person3.name = "Andrea Sherlock"
+      person3.age = 23
+      person3.adult = true
+      
+      group.people << person3
+
+      selection = @table.swt_widget.getSelection
+      expect(selection.size).to eq(2)
+      expect(selection[0].getData).to eq(person1)
+      expect(selection[1].getData).to eq(person2)
+
+      group.people.delete person2
+
+      selection = @table.swt_widget.getSelection
+      expect(selection.size).to eq(1)
+      expect(selection.first.getData).to eq(person1)
+
+      group.selected_people = [person1, person3]
+
+      selection = @table.swt_widget.getSelection
+      expect(selection.size).to eq(2)
+      expect(selection[0].getData).to eq(person1)
+      expect(selection[1].getData).to eq(person3)
+      
+      # TODO test triggering selection from table directly
     end
 
     it "data binds text widget to a string property for a custom widget table" do
