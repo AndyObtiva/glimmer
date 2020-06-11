@@ -20,7 +20,7 @@ module Glimmer
       # If no condition block is passed, returns all table items
       # Returns a Java TableItem array to easily set as selection on org.eclipse.swt.Table if needed
       def search(&condition)
-        swt_widget.getItems.select {|item| condition.call(item)}.to_java(TableItem)
+        swt_widget.getItems.select {|item| condition.nil? || condition.call(item)}.to_java(TableItem)
       end
       
       # Returns all table items including descendants
