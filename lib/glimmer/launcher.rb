@@ -1,4 +1,3 @@
-require 'os'
 require 'rake'
 
 require_relative 'rake_task'

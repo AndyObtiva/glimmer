@@ -1,3 +1,6 @@
+require 'super_module'
+require 'java'
+require 'nested_inherited_jruby_include_package'
 require 'glimmer/launcher'
 require Glimmer::Launcher.swt_jar_file
 require 'glimmer/dsl/engine'

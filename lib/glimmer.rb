@@ -2,14 +2,9 @@
 # interfaces using the robust platform-independent Eclipse SWT library. Glimmer
 # comes with built-in data-binding support to greatly facilitate synchronizing
 # UI with domain models.
-require 'facets'
-require 'super_module'
+require 'facets' unless RUBY_ENGINE == 'opal'
 require 'logger'
-require 'java'
 require 'set'
-require 'nested_inherited_jruby_include_package'
-require 'fileutils'
-require 'os'
 
 # Glimmer provides a JRuby Desktop UI DSL + Data-Binding functionality
 #
@@ -23,6 +18,7 @@ module Glimmer
 
   class << self
     def included(klass)
+      return if RUBY_ENGINE == 'opal'
       if Config.import_swt_packages
         klass.include(SWT::Packages)
         klass.extend(SWT::Packages)
@@ -50,9 +46,10 @@ end
 $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 
 require 'glimmer/config'
-require 'glimmer/swt/packages'
-require 'glimmer/dsl/swt/dsl'
+require 'glimmer/swt/packages' unless RUBY_ENGINE == 'opal'
+require 'glimmer/dsl/swt/dsl' unless RUBY_ENGINE == 'opal'
 require 'glimmer/dsl/xml/dsl'
 require 'glimmer/dsl/css/dsl'
+require 'glimmer/dsl/opal/dsl' if RUBY_ENGINE == 'opal'
 require 'glimmer/error'
 require 'glimmer/invalid_keyword_error'

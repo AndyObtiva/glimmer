@@ -1,3 +1,5 @@
+require 'os'
+
 module Glimmer
   module Package
     class << self
