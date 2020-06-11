@@ -1271,6 +1271,61 @@ Note that in all the data-binding examples above, there was also an observer att
 
 You may learn more about Glimmer's data-binding syntax by reading the code under the [samples](samples) directory.
 
+#### Table
+
+The SWT Tree widget renders a multi-column data table, such as a contact listing or a sales report.
+
+To data-bind a Table, you need the main model, the collection property, and the text display attribute for each table column.
+
+This involves using the `bind` keyword mentioned above in addition to a special `column_properties` keyword that takes the table column text attribute methods.
+
+It assumes you have defined the table columns via `table_column` widget.
+
+Example:
+
+```ruby
+shell {      
+  @table = table {
+    table_column {
+      text "Name"
+      width 120
+    }
+    table_column {
+      text "Age"
+      width 120
+    }
+    table_column {
+      text "Adult"
+      width 120
+    }
+    items bind(group, :people), column_properties(:name, :age, :adult)
+    selection bind(group, :selected_person)
+  }
+}
+```
+
+The code above includes two data-bindings:
+- Table `items`, which first bind to the model collection property (group.people), and then maps each column property (name, age, adult) for displaying each table item column. 
+- Table `selection`, which binds the single table item selected by the user to the attribute denoted by the `bind` keyword (or binds multiple table items selected for a table with `:multi` SWT style)
+
+Additionally, Table `items` data-binding automatically stores each node model unto the SWT TableItem object via `setData` method. This enables things like searchability.
+
+The table widget in Glimmer is represented by a subclass of `WidgetProxy` called `TableProxy`.
+TableProxy includes a `search` method that takes a block to look for a table item.
+
+Example:
+
+```ruby
+found_array = @table.search { |table_item| table_item.getData == company.owner }
+```
+
+This finds a person. The array is a Java array. This enables easy passing of it to SWT `Table#setSelection` method, which expects a Java array of `TableItem` objects.
+
+To edit a table, you must invoke `TableProxy#edit_selected_table_item(column_index, before_write: nil, after_write: nil, after_cancel: nil)` or `TableProxy#edit_table_item(table_item, column_index, before_write: nil, after_write: nil, after_cancel: nil)`. 
+This automatically leverages the SWT TableEditor custom class behind the scenes, displaying a text widget to the user to change the selected or 
+passed table item text into something else. 
+It automatically persists the change to `items` data-bound model on ENTER/FOCUS-OUT or cancels on ESC/NO-CHANGE.
+
 #### Tree
 
 The SWT Tree widget visualizes a tree data-structure, such as an employment or composition hierarchy.

@@ -22,7 +22,16 @@ unless jeweler_required.nil?
     gem.homepage = "http://github.com/AndyObtiva/glimmer"
     gem.license = "MIT"
     gem.summary = %Q{Ruby Desktop Development GUI Library}
-    gem.description = %Q{Ruby Desktop Development GUI Library (JRuby on SWT). Changes: Fix Glimmer::SWT::ShellProxy#pack_same_size for Windows}
+    gem.description = <<~MULTI_LINE_STRING
+      Ruby Desktop Development GUI Library (JRuby on SWT). 
+      
+      Changes: 
+      - `message_box` DSL keyword
+      - Table single/multi selection databinding
+      - Table cell editing databinding
+      - Enhance table listener events with table_item and column_index methods
+      - Fix `Glimmer::SWT::ShellProxy#pack_same_size` for Linux
+    MULTI_LINE_STRING
     gem.email = "andy.am@gmail.com"
     gem.authors = ["AndyMaleh"]
     gem.executables = ['glimmer', 'girb']
