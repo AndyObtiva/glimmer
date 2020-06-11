@@ -13,7 +13,7 @@ module Glimmer
   
         def can_interpret?(parent, keyword, *args, &block)
           keyword.to_s.end_with?('_layout') and
-            widget?(parent) and
+            parent.respond_to?(:swt_widget) and
             parent.swt_widget.is_a?(Composite) and
             Glimmer::SWT::LayoutProxy.layout_exists?(keyword.to_s)
         end

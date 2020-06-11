@@ -13,7 +13,7 @@ module Glimmer
         def can_interpret?(parent, keyword, *args, &block)
           custom_widget_class = UI::CustomWidget.for(keyword)
           custom_widget_class and
-            (widget?(parent) or
+            (parent.respond_to?(:swt_widget) or
             custom_widget_class.ancestors.include?(UI::CustomShell))
         end
   

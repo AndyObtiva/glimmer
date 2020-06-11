@@ -13,7 +13,7 @@ module Glimmer
         include_package 'org.eclipse.swt.widgets'
   
         def can_interpret?(parent, keyword, *args, &block)
-          initial_condition = (keyword == 'tab_item') and widget?(parent)
+          initial_condition = (keyword == 'tab_item') and parent.respond_to?(:swt_widget)
           if initial_condition
             if parent.swt_widget.is_a?(TabFolder)
               return true

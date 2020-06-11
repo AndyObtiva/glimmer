@@ -91,7 +91,7 @@ module Glimmer
           static_expression_dsl = static_expression.class.dsl
           static_expressions[keyword] ||= {}
           static_expressions[keyword][static_expression_dsl] = static_expression
-          Glimmer.define_method(keyword) do |*args, &block|
+          Glimmer.send(:define_method, keyword) do |*args, &block|
             begin
               retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]            
               static_expression_dsl = (Glimmer::DSL::Engine.static_expressions[keyword].keys - Glimmer::DSL::Engine.disabled_dsls).first if retrieved_static_expression.nil?
@@ -115,7 +115,7 @@ module Glimmer
                   Glimmer::DSL::Engine.dsl_stack.pop
                 end
               end
-            rescue => e
+            rescue StandardError => e
 #               Glimmer::DSL::Engine.dsl_stack.pop
                 Glimmer::DSL::Engine.reset
               raise e
@@ -141,7 +141,7 @@ module Glimmer
             add_content(ui_object, expression, &block)
             dsl_stack.pop
           end
-        rescue => e
+        rescue StandardError => e
 #           dsl_stack.pop
           reset
           raise e

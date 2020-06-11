@@ -10,7 +10,7 @@ module Glimmer
         def can_interpret?(parent, keyword, *args, &block)
           Glimmer::Config.logger&.debug "keyword starts with on_: #{keyword.start_with?('on_')}"
           return false unless keyword.start_with?('on_')
-          widget_or_display_parentage = widget?(parent) || parent.is_a?(Glimmer::SWT::DisplayProxy)
+          widget_or_display_parentage = parent.respond_to?(:swt_widget) || parent.is_a?(Glimmer::SWT::DisplayProxy)
           Glimmer::Config.logger&.debug "parent is a widget or display: #{widget_or_display_parentage}"
           return false unless widget_or_display_parentage
           Glimmer::Config.logger&.debug "block exists?: #{!block.nil?}"

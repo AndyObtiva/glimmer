@@ -1,6 +1,4 @@
 require 'glimmer/error'
-require 'glimmer/swt/widget_proxy'
-require 'glimmer/ui/custom_widget'
 
 module Glimmer
   module DSL
@@ -33,11 +31,6 @@ module Glimmer
       # Only expressions that receive a content block should implement
       def add_content(parent, &block)
         # No Op by default
-      end
-
-      # Checks if parent object is a widget
-      def widget?(parent)
-        parent.is_a?(Glimmer::SWT::WidgetProxy) or parent.is_a?(Glimmer::UI::CustomWidget)
       end
 
       # Checks if object is a Symbol or a String

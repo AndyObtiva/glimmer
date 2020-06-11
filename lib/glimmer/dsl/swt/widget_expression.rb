@@ -12,7 +12,7 @@ module Glimmer
   
         def can_interpret?(parent, keyword, *args, &block)
           !EXCLUDED_KEYWORDS.include?(keyword) and
-            widget?(parent) and #TODO change to composite?(parent)
+            parent.respond_to?(:swt_widget) and #TODO change to composite?(parent)
             Glimmer::SWT::WidgetProxy.widget_exists?(keyword)
         end
   

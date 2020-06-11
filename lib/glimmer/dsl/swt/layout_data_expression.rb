@@ -13,7 +13,7 @@ module Glimmer
   
         def can_interpret?(parent, keyword, *args, &block)
           keyword == 'layout_data' and
-            widget?(parent)
+            parent.respond_to?(:swt_widget)
         end
   
         def interpret(parent, keyword, *args, &block)

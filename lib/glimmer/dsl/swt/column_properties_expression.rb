@@ -11,7 +11,7 @@ module Glimmer
         def can_interpret?(parent, keyword, *args, &block)
           keyword == 'column_properties' and
             block.nil? and
-            widget?(parent) and
+            parent.respond_to?(:swt_widget) and
             parent.swt_widget.is_a?(Table)
         end
   

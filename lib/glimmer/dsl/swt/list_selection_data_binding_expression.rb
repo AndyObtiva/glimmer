@@ -12,7 +12,7 @@ module Glimmer
         def can_interpret?(parent, keyword, *args, &block)
           keyword == 'selection' and
             block.nil? and
-            widget?(parent) and
+            parent.respond_to?(:swt_widget) and
             parent.swt_widget.is_a?(List) and
             args.size == 1 and
             args[0].is_a?(DataBinding::ModelBinding) and

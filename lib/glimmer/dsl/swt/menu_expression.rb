@@ -14,7 +14,7 @@ module Glimmer
         def can_interpret?(parent, keyword, *args, &block)
           initial_condition = (keyword == 'menu')
           if initial_condition
-            if widget?(parent)
+            if parent.respond_to?(:swt_widget)
               return true
             else
               raise Glimmer::Error, "menu may only be nested under a widget (like shell or another menu)!"

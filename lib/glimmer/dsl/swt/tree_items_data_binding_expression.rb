@@ -9,7 +9,7 @@ module Glimmer
         include_package 'org.eclipse.swt.widgets'
   
         def can_interpret?(parent, keyword, *args, &block)
-          initial_condition = ((keyword == "items") and block.nil? and widget?(parent) and parent.swt_widget.is_a?(Tree))
+          initial_condition = ((keyword == "items") and block.nil? and parent.respond_to?(:swt_widget) and parent.swt_widget.is_a?(Tree))
           return false unless initial_condition
           raise Glimmer::Error, 'Tree items args must be 2' unless args.size == 2
           raise Glimmer::Error, 'Tree items first arg must be a bind expression' unless args[0].is_a?(DataBinding::ModelBinding)
