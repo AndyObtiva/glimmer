@@ -2,15 +2,10 @@
 
 Here is a list of tasks to do (moved to CHANGELOG.md once done). 
 
-## Next
+## Next (0.9.0)
 
-### Next Revision (TBD)
-
-### Next Minor Version (TBD)
-
-### Next Major Version (TBD)
-
-N/A
+- Extracting DSLs into their own gems (glimmer-dsl-swt, glimmer-dsl-xml, glimmer-dsl-css)
+- Opal initial Hello, World! support
 
 ## Feature Suggestions
 - Glimmer Wizard: provide a standard structure for building a Glimmer wizard (multi-step/multi-screen process)
