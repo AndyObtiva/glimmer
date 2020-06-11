@@ -101,6 +101,7 @@ items <=> binding {
 - Ensure support for packaging on Windows (exe file)
 - Ensure support for packaging on Linux
 - Refactor entire codebase to get rid of Java getters/setters in favor of Ruby attributes
+- Support table column data-binding converters
 
 ## Samples
 

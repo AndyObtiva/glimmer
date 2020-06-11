@@ -5,6 +5,34 @@ module Glimmer
     class TableProxy < Glimmer::SWT::WidgetProxy
       include Glimmer
       
+      module TableEvent        
+        def table_item
+          table_item_and_column_index[:table_item]
+        end
+        
+        def column_index
+          table_item_and_column_index[:column_index]
+        end     
+        
+        private
+        
+        def table_item_and_column_index
+          @table_item_and_column_index ||= find_table_item_and_column_index
+        end
+        
+        def find_table_item_and_column_index
+          {}.tap do |result|
+            if respond_to?(:x) && respond_to?(:y)
+              result[:table_item] = widget.getItems.detect do |ti|
+                result[:column_index] = widget.getColumnCount.times.to_a.detect do |ci|
+                  ti.getBounds(ci).contains(x, y)
+                end
+              end
+            end
+          end
+        end   
+      end
+      
       attr_reader :table_editor, :table_editor_text_proxy
       attr_accessor :column_properties
       
@@ -53,7 +81,7 @@ module Glimmer
         content {
           @table_editor_text_proxy = text {
             focus true
-            text table_item.getText
+            text table_item.getText(column_index)
             action_taken = false
             cancel = lambda {
               @table_editor_text_proxy.swt_widget.dispose
@@ -66,11 +94,11 @@ module Glimmer
                 action_taken = true
                 @edit_in_progress = true
                 new_text = @table_editor_text_proxy.swt_widget.getText
-                if new_text == table_item.getText
+                if new_text == table_item.getText(column_index)
                   cancel.call
                 else
                   before_write&.call
-                  table_item.setText(new_text)
+                  table_item.setText(column_index, new_text)
                   model = table_item.getData
                   model.send("#{column_properties[column_index]}=", new_text) # makes table update itself, so must search for selected table item again
                   edited_table_item = search { |ti| ti.getData == model }.first
@@ -96,6 +124,14 @@ module Glimmer
         @table_editor.setEditor(@table_editor_text_proxy.swt_widget, table_item, column_index)
       end
       
+      def add_listener(underscored_listener_name, &block)
+        enhanced_block = lambda do |event|
+          event.extend(TableEvent)
+          block.call(event)
+        end
+        super(underscored_listener_name, &enhanced_block)
+      end
+            
       private
 
       def property_type_converters

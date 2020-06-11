@@ -376,6 +376,36 @@ module GlimmerSpec
       expect(@cancel_done).to be_nil
       expect(person1.name).to eq('Julie Fan')
       
+      expect(@table.table_editor_text_proxy).to be_nil
+      @write_done = false
+      @table.edit_table_item(
+        @table.swt_widget.getItems.first,
+        1,
+        before_write: lambda {
+          expect(@table.edit_in_progress?).to eq(true)
+        }, 
+        after_write: lambda { |edited_table_item|
+          expect(edited_table_item.getText(1)).to eq('32')          
+          @write_done = true 
+        }
+      )      
+      expect(@table.table_editor_text_proxy).to_not be_nil
+      @table.table_editor_text_proxy.swt_widget.setText('32')
+      # simulate hitting enter to trigger write action
+      event = Event.new
+      event.keyCode = Glimmer::SWT::SWTProxy[:cr]
+      event.doit = true
+      event.character = "\n"
+      event.display = @table.table_editor_text_proxy.swt_widget.getDisplay
+      event.item = @table.table_editor_text_proxy.swt_widget
+      event.widget = @table.table_editor_text_proxy.swt_widget
+      event.type = Glimmer::SWT::SWTProxy[:keydown]
+      @table.table_editor_text_proxy.swt_widget.notifyListeners(Glimmer::SWT::SWTProxy[:keydown], event)
+      expect(@write_done).to eq(true)
+      expect(@table.edit_in_progress?).to eq(false)
+      expect(@cancel_done).to be_nil
+      expect(person1.age).to eq('32')
+            
       # test that it maintains selection
       selection = @table.swt_widget.getSelection
       expect(selection.size).to eq(1)
