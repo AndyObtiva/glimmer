@@ -1,8 +1,6 @@
 require 'glimmer/error'
 require 'glimmer/dsl/engine'
 require 'glimmer/dsl/expression'
-require 'glimmer/swt/widget_proxy'
-require 'glimmer/ui/custom_widget'
 
 module Glimmer
   module DSL
