@@ -1305,7 +1305,7 @@ You may learn more about Glimmer's data-binding syntax by reading the code under
 
 #### Table
 
-The SWT Tree widget renders a multi-column data table, such as a contact listing or a sales report.
+The SWT Table widget renders a multi-column data table, such as a contact listing or a sales report.
 
 To data-bind a Table, you need the main model, the collection property, and the text display attribute for each table column.
 
