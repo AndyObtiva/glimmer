@@ -14,18 +14,24 @@ Dir[File.expand_path('../*_expression.rb', __FILE__)].each {|f| require f}
 # Every expression has a corresponding Expression subclass
 # in glimmer/dsl
 
-Glimmer::DSL::Engine.add_dynamic_expressions(
-  Glimmer::DSL::SWT,
-  %w[
-    layout
-    widget_listener
-    combo_selection_data_binding
-    list_selection_data_binding
-    tree_items_data_binding
-    table_items_data_binding
-    data_binding
-    property
-    widget
-    custom_widget
-  ]
-)
+module Glimmer
+  module DSL
+    module SWT
+      Engine.add_dynamic_expressions(
+        SWT,
+        %w[
+          layout
+          widget_listener
+          combo_selection_data_binding
+          list_selection_data_binding
+          tree_items_data_binding
+          table_items_data_binding
+          data_binding
+          property
+          widget
+          custom_widget
+        ]
+      )
+    end
+  end
+end
