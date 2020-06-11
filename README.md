@@ -70,7 +70,7 @@ Glimmer app:
 
 ![Tic Tac Toe](images/glimmer-tic-tac-toe.png)
 
-NOTE: Glimmer is in beta mode. Please help make better by adopting for small or low risk projects and providing feedback.
+NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contributing), adopting for small or low risk projects, and providing feedback.
 
 ## Table of contents
 
@@ -88,23 +88,55 @@ NOTE: Glimmer is in beta mode. Please help make better by adopting for small or 
     - [Basic Usage](#basic-usage)
     - [Advanced Usage](#advanced-usage)
     - [Scaffolding](#scaffolding)
+      - [App](#app)
+      - [Custom Shell](#custom-shell)
+      - [Custom Widget](#custom-widget)
+      - [Custom Shell Gem](#custom-shell-gem)
+      - [Custom Widget Gem](#custom-widget-gem)
   - [Girb (Glimmer irb) Command](#girb-glimmer-irb-command)
   - [Glimmer DSL Syntax](#glimmer-dsl-syntax)
     - [Widgets](#widgets)
+      - [Display](#display)
+      - [SWT Proxies](#swt-proxies)
+      - [Dialog](#dialog)
+      - [Menus](#menus)
     - [Widget Styles](#widget-styles)
+      - [Explicit SWT Style Bit](#explicit-swt-style-bit)
+      - [Negative SWT Style Bits](#negative-swt-style-bits)
+      - [Extra SWT Styles](#extra-swt-styles)
     - [Widget Properties](#widget-properties)
+      - [Colors](#colors)
+      - [Fonts](#fonts)
     - [Layouts](#layouts)
     - [Layout Data](#layout-data)
     - [Data-Binding](#data-binding)
+      - [General Examples](#general-examples)
+      - [Combo](#combo)
+      - [List](#list)
+      - [Table](#table)
+      - [Tree](#tree)
     - [Observer](#observer)
+      - [Observing Widgets](#observing-widgets)
+      - [Observing Models](#observing-models)
     - [Custom Widgets](#custom-widgets)
+      - [Simple Example](#simple-example)
+      - [Hook Example](#hook-example)
+      - [Content/Options Example](#contentoptions-example)
+      - [Gotcha](#gotcha)
     - [Custom Shells](#custom-shells)
     - [Miscellaneous](#miscellaneous)
+      - [Application Menu Items (About/Preferences)](#application-menu-items-aboutpreferences)
+      - [App Name and Version](#app-name-and-version)
+      - [Multi-DSL Support](#multi-dsl-support)
+      - [Video Widget](#video-widget)
+      - [Browser Widget](#browser-widget)
   - [Glimmer Style Guide](#glimmer-style-guide)
   - [Samples](#samples)
     - [Hello Samples](#hello-samples)
     - [Elaborate Samples](#elaborate-samples)
     - [External Samples](#external-samples)
+      - [Glimmer Calculator](#glimmer-calculator)
+      - [Gladiator](#gladiator)
   - [In Production](#in-production)
   - [SWT Reference](#swt-reference)
   - [SWT Packages](#swt-packages)
@@ -1098,7 +1130,7 @@ https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/
 
 Data-binding is done with `bind` command following widget property to bind and taking model and bindable attribute as arguments.
 
-#### General data-binding examples:
+#### General Examples
 
 `text bind(contact, :first_name)`
 
@@ -1540,7 +1572,9 @@ Glimmer supports creating custom widgets with minimal code, which automatically 
 
 Simply create a new class that includes `Glimmer::UI::CustomWidget` and put Glimmer DSL code in its `#body` block (its return value is stored in `#body_root` attribute). Glimmer will then automatically recognize this class by convention when it encounters a keyword matching the class name converted to underscored lowercase (and namespace double-colons `::` replaced with double-underscores `__`)
 
-#### Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+#### Simple Example
+
+(you may copy/paste in [`girb`](#girb-glimmer-irb-command))
 
 Definition:
 ```ruby
@@ -1566,7 +1600,9 @@ shell {
 
 As you can see, `RedLabel` became Glimmer DSL keyword: `red_label`
 
-#### Another Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+#### Hook Example
+
+(you may copy/paste in [`girb`](#girb-glimmer-irb-command))
 
 Definition:
 ```ruby
@@ -1615,7 +1651,9 @@ Additionally, custom widgets can call the following class methods:
 - `::options(*option_names)`: declares a list of options by taking an option name array (symbols/strings). This generates option attribute accessors (e.g. `options :orientation, :bg_color` generates `#orientation`, `#orientation=(v)`, `#bg_color`, and `#bg_color=(v)` attribute accessors)
 - `::option(option_name, default: nil)`: declares a single option taking option name and default value as arguments (also generates attribute accessors just like `::options`)
 
-#### Content/Options Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+#### Content/Options Example 
+
+(you may copy/paste in [`girb`](#girb-glimmer-irb-command))
 
 Definition:
 ```ruby
@@ -2061,13 +2099,13 @@ glimmer samples/elaborate/tic_tac_toe.rb # demonstrates a full MVC application
 
 ### External Samples
 
-#### [Glimmer Calculator](https://github.com/AndyObtiva/glimmer-cs-calculator)
+#### Glimmer Calculator
 
 [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/v1.0.0/glimmer-cs-calculator-screenshot.png" />](https://github.com/AndyObtiva/glimmer-cs-calculator)
 
 [Glimmer Calculator](https://github.com/AndyObtiva/glimmer-cs-calculator) is a basic calculator sample project demonstrating data-binding and TDD (test-driven-development) with Glimmer following the MVP pattern (Model-View-Presenter).
 
-#### [Gladiator](https://github.com/AndyObtiva/glimmer-cs-gladiator)
+#### Gladiator
 
 [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-gladiator/v0.1.5/images/glimmer-gladiator.png" />](https://github.com/AndyObtiva/glimmer-cs-gladiator)
 
