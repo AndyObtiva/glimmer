@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'bundler'
-require 'os'
-require_relative 'lib/glimmer/launcher'
+# require 'os'
+# require_relative 'lib/glimmer/launcher'
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -44,7 +44,7 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   # profile_data = JRuby::Profiler.profile do
   # end
 
-  spec.ruby_opts = [Glimmer::Launcher.jruby_swt_options]
+#   spec.ruby_opts = [Glimmer::Launcher.jruby_swt_options]
 end
 
 task :default => :spec

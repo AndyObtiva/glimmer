@@ -7,10 +7,10 @@ rescue Bundler::BundlerError => e
   $stderr.puts "Run `bundle install` to install missing gems"
   exit e.status_code
 end
-require_relative '../lib/glimmer/swt/packages'
-module GlimmerSpec
-  include Glimmer::SWT::Packages # makes SWT packages available to namespace containing specs
-end
+# require_relative '../lib/glimmer/swt/packages'
+# module GlimmerSpec
+#   include Glimmer::SWT::Packages # makes SWT packages available to namespace containing specs
+# end
 FIXTURES_PATH = File.expand_path('../fixtures', __FILE__)
 ROOT_PATH = File.expand_path('../..', __FILE__)
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
@@ -127,11 +127,11 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
-RSpec::Matchers.define :have_style do |style|
-  match do |widget|
-    expect(widget.getStyle & Glimmer::SWT::SWTProxy[style]).to eq(Glimmer::SWT::SWTProxy[style])
-  end
-end
+# RSpec::Matchers.define :have_style do |style|
+#   match do |widget|
+#     expect(widget.getStyle & Glimmer::SWT::SWTProxy[style]).to eq(Glimmer::SWT::SWTProxy[style])
+#   end
+# end
 begin
   ENV['APP_ENV'] = 'test'
   require "simplecov"

@@ -16,17 +16,6 @@ module Glimmer
   #TODO make it configurable to include or not include perhaps reverting to using included
   REGEX_METHODS_EXCLUDED = /^(to_|\[)/
 
-  class << self
-    def included(klass)
-      return if RUBY_ENGINE == 'opal'
-      if Config.import_swt_packages
-        klass.include(SWT::Packages)
-        klass.extend(SWT::Packages)
-        klass.extend(Glimmer)
-      end
-    end
-  end
-
   def method_missing(method_symbol, *args, &block)
     # This if statement speeds up Glimmer in girb or whenever directly including on main object
     if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
@@ -46,8 +35,6 @@ end
 $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 
 require 'glimmer/config'
-require 'glimmer/swt/packages' unless RUBY_ENGINE == 'opal'
-require 'glimmer/dsl/swt/dsl' unless RUBY_ENGINE == 'opal'
 require 'glimmer/dsl/opal/dsl' if RUBY_ENGINE == 'opal'
 require 'glimmer/dsl/xml/dsl'
 require 'glimmer/dsl/css/dsl'

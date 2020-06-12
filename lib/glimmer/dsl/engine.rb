@@ -82,7 +82,7 @@ module Glimmer
             expression_handler = ExpressionHandler.new(expression)
             expression_handler.next = last_expresion_handler if last_expresion_handler
             expression_handler
-          end
+          end                   
         end
 
         def add_static_expression(static_expression)
@@ -94,7 +94,7 @@ module Glimmer
           Glimmer.send(:define_method, keyword) do |*args, &block|
             begin
               retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]            
-              static_expression_dsl = (Glimmer::DSL::Engine.static_expressions[keyword].keys - Glimmer::DSL::Engine.disabled_dsls).first if retrieved_static_expression.nil?
+              static_expression_dsl = (Glimmer::DSL::Engine.static_expressions[keyword].keys - Glimmer::DSL::Engine.disabled_dsls).last if retrieved_static_expression.nil?
               interpretation = nil
               if retrieved_static_expression.nil? && Glimmer::DSL::Engine.dsl && (static_expression_dsl.nil? || !Glimmer::DSL::Engine.static_expressions[keyword][static_expression_dsl].is_a?(TopLevelExpression))
                 begin
@@ -139,7 +139,7 @@ module Glimmer
         # Interprets Glimmer dynamic DSL expression consisting of keyword, args, and block (e.g. shell(:no_resize) { ... })
         def interpret(keyword, *args, &block)
           keyword = keyword.to_s
-          dynamic_expression_dsl = (dynamic_expression_chains_of_responsibility.keys - disabled_dsls).first if dsl.nil?
+          dynamic_expression_dsl = (dynamic_expression_chains_of_responsibility.keys - disabled_dsls).last if dsl.nil?
           dsl_stack.push(dynamic_expression_dsl || dsl)
           expression = dynamic_expression_chains_of_responsibility[dsl].handle(parent, keyword, *args, &block)
           expression.interpret(parent, keyword, *args, &block).tap do |ui_object|            
