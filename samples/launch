@@ -1,4 +1,0 @@
-# Launches all samples
-export DIR=`echo $0 | sed "s/launch//"`
-${DIR}hello/launch &
-${DIR}elaborate/launch

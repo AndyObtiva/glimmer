@@ -1,6 +1,0 @@
-# Launches all samples
-export DIR=`echo $0 | sed "s/launch//"`
-${DIR}../../bin/glimmer \
-  "${DIR}contact_manager.rb" \
-  "${DIR}login.rb" \
-  "${DIR}tic_tac_toe.rb"

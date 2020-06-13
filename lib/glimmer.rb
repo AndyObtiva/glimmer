@@ -35,8 +35,5 @@ end
 $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 
 require 'glimmer/config'
-require 'glimmer/dsl/opal/dsl' if RUBY_ENGINE == 'opal'
-require 'glimmer/dsl/xml/dsl'
-require 'glimmer/dsl/css/dsl'
 require 'glimmer/error'
 require 'glimmer/invalid_keyword_error'
