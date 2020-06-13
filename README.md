@@ -12,7 +12,7 @@ Featured in<br />JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.d
 
 ### Hello, World!
 
-Glimmer code (from `samples/hello/hello_world.rb`):
+Glimmer code (from [`samples/hello/hello_world.rb`](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_world.rb)):
 ```ruby
 include Glimmer
 
@@ -31,11 +31,11 @@ glimmer samples/hello/hello_world.rb
 
 Glimmer app:
 
-![Hello World](images/glimmer-hello-world.png)
+![Hello World](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-swt/master/images/glimmer-hello-world.png)
 
 ### Tic Tac Toe
 
-Glimmer code (from `samples/elaborate/tic_tac_toe.rb`):
+Glimmer code (from [`samples/elaborate/tic_tac_toe.rb`](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/tic_tac_toe.rb)):
 
 ```ruby
 # ...
@@ -68,7 +68,7 @@ glimmer samples/elaborate/tic_tac_toe.rb
 
 Glimmer app:
 
-![Tic Tac Toe](images/glimmer-tic-tac-toe.png)
+![Tic Tac Toe](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-swt/master/images/glimmer-tic-tac-toe.png)
 
 NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contributing), adopting for small or low risk projects, and providing feedback.
 
