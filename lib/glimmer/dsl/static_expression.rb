@@ -1,3 +1,5 @@
+require 'facets/string/underscore'
+
 require 'glimmer/error'
 require 'glimmer/dsl/engine'
 require 'glimmer/dsl/expression'

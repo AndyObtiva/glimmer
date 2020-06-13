@@ -2,7 +2,6 @@
 # interfaces using the robust platform-independent Eclipse SWT library. Glimmer
 # comes with built-in data-binding support to greatly facilitate synchronizing
 # UI with domain models.
-require 'facets' unless RUBY_ENGINE == 'opal'
 require 'logger'
 require 'set'
 

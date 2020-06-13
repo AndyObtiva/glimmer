@@ -25,7 +25,7 @@ unless jeweler_required.nil?
     gem.description = %Q{Ruby Desktop Development GUI Library (JRuby on SWT)}
     gem.email = "andy.am@gmail.com"
     gem.authors = ["AndyMaleh"]
-    gem.executables = ['glimmer', 'girb']
+    # gem.executables = ['glimmer', 'girb']
     gem.files = Dir['README.md', 'LICENSE.txt', 'VERSION', 'bin/**/*', 'lib/**/*']
     # dependencies defined in Gemfile
   end

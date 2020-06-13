@@ -1,4 +1,5 @@
-require 'glimmer'
+require 'facets/string/camelcase'
+
 require 'glimmer/dsl/expression_handler'
 
 module Glimmer

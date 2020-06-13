@@ -107,6 +107,7 @@ items <=> binding {
 
 - Support web UIs via Opal Ruby (https://github.com/opal/opal)
 - Support porting an existing Glimmer SWT app into a web app with very little effort
+- Support promoting an app into a custom shell gem to plug into a Rails web app via opal
 
 ### glimmertalk project
 
