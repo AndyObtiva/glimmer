@@ -74,8 +74,9 @@ module Glimmer
         #
         # They are used in order following the Chain of Responsibility Design
         # Pattern when interpretting a DSL expression
-        def add_dynamic_expressions(dsl_namespace, expression_names)
-          dsl = dsl_namespace.name.split("::").last.downcase.to_sym
+        def add_dynamic_expressions(dsl_namespace, *expression_names)
+          expression_names = expression_names.flatten
+          dsl = dsl_namespace.name.split("::").last.downcase.to_sym          
           dynamic_expression_chains_of_responsibility[dsl] = expression_names.reverse.map do |expression_name|
             expression_class(dsl_namespace, expression_name).new
           end.reduce(nil) do |last_expresion_handler, expression|
@@ -95,7 +96,7 @@ module Glimmer
           Glimmer.send(:define_method, keyword) do |*args, &block|
             begin
               retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]            
-              static_expression_dsl = (Glimmer::DSL::Engine.static_expressions[keyword].keys - Glimmer::DSL::Engine.disabled_dsls).last if retrieved_static_expression.nil?
+              static_expression_dsl = (Glimmer::DSL::Engine.static_expressions[keyword].keys - Glimmer::DSL::Engine.disabled_dsls).first if retrieved_static_expression.nil?
               interpretation = nil
               if retrieved_static_expression.nil? && Glimmer::DSL::Engine.dsl && (static_expression_dsl.nil? || !Glimmer::DSL::Engine.static_expressions[keyword][static_expression_dsl].is_a?(TopLevelExpression))
                 begin
@@ -140,7 +141,7 @@ module Glimmer
         # Interprets Glimmer dynamic DSL expression consisting of keyword, args, and block (e.g. shell(:no_resize) { ... })
         def interpret(keyword, *args, &block)
           keyword = keyword.to_s
-          dynamic_expression_dsl = (dynamic_expression_chains_of_responsibility.keys - disabled_dsls).last if dsl.nil?
+          dynamic_expression_dsl = (dynamic_expression_chains_of_responsibility.keys - disabled_dsls).first if dsl.nil?
           dsl_stack.push(dynamic_expression_dsl || dsl)
           expression = dynamic_expression_chains_of_responsibility[dsl].handle(parent, keyword, *args, &block)
           expression.interpret(parent, keyword, *args, &block).tap do |ui_object|            
