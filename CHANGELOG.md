@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.9.0
+
+- Extracted Glimmer DSL for SWT into glimmer-dsl-swt gem
+- Extracted Glimmer DSL for XML into glimmer-dsl-xml gem
+- Extracted Glimmer DSL for CSS into glimmer-dsl-css gem
+- Introduced Glimmer DSL for Opal in glimmer-dsl-swt gem
+
 ## 0.8.2
 
 - `message_box` DSL keyword
