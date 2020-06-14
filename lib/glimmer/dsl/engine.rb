@@ -56,6 +56,10 @@ module Glimmer
           dsl_stack.clear
           disabled_dsls.clear
         end
+        
+        def no_dsls?
+          static_expressions.empty? && dynamic_expression_chains_of_responsibility.empty?
+        end
 
         # Dynamic expression chains of responsibility indexed by dsl
         def dynamic_expression_chains_of_responsibility
@@ -140,6 +144,10 @@ module Glimmer
 
         # Interprets Glimmer dynamic DSL expression consisting of keyword, args, and block (e.g. shell(:no_resize) { ... })
         def interpret(keyword, *args, &block)
+          if no_dsls?
+            puts "Glimmer has no DSLs configured. Add glimmer-dsl-swt gem or visit https://github.com/AndyObtiva/glimmer#multi-dsl-support for more details.\n"
+            return
+          end
           keyword = keyword.to_s
           dynamic_expression_dsl = (dynamic_expression_chains_of_responsibility.keys - disabled_dsls).first if dsl.nil?
           dsl_stack.push(dynamic_expression_dsl || dsl)

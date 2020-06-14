@@ -36,3 +36,4 @@ $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 require 'glimmer/config'
 require 'glimmer/error'
 require 'glimmer/invalid_keyword_error'
+require 'glimmer/dsl/engine'

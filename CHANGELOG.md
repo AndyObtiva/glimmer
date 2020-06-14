@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.9.1
+
+- Display error message if Glimmer DSL was invoked without any configured DSLs
+
 ## 0.9.0
 
 - Extracted Glimmer DSL for SWT into glimmer-dsl-swt gem

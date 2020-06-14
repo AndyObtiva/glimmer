@@ -75,7 +75,7 @@ Ruby is a dynamically-typed object-oriented language, which provides great produ
 
 ## Table of contents
 
-- [Glimmer - Ruby Desktop Development GUI Library](#glimmer-ruby-desktop-development-gui-library)
+- [Glimmer - Ruby Desktop Development GUI Library](#glimmer---ruby-desktop-development-gui-library)
   - [Examples](#examples)
     - [Hello, World!](#hello-world)
     - [Tic Tac Toe](#tic-tac-toe)
