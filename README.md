@@ -2391,10 +2391,6 @@ By the way, keep in mind that during normal operation, it does also indicate a f
 Exec failed with code 2 command [[/usr/bin/SetFile, -c, icnC, /var/folders/4_/g1sw__tx6mjdgyh3mky7vydc0000gp/T/fxbundler4076750801763032201/images/MathBowling/.VolumeIcon.icns] in unspecified directory
 ```
 
-## Limitations
-
-- Glimmer apps have a long startup up time and can take anywhere between 12 and 30 seconds to start depending on the app and the machine. Once started, Glimmer apps run very fast and perform very responsively since Ruby is more than fast and capable for handling desktop GUIs. In any case, one idea to address this limitation is to include a background service (daemon) that can launch Glimmer apps instantly or near instantly by keeping a JRuby runtime started and ready at all times.
-
 ## Resources
 
 * [Code Master Blog](http://andymaleh.blogspot.com/search/label/Glimmer)
