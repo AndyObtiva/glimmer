@@ -1,6 +1,7 @@
 # Glimmer - Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer.svg)](http://badge.fury.io/rb/glimmer)
-[![Travis CI](https://travis-ci.com/AndyObtiva/glimmer.svg?branch=master)](https://travis-ci.com/github/AndyObtiva/glimmer) [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Travis CI](https://travis-ci.com/AndyObtiva/glimmer.svg?branch=master)](https://travis-ci.com/github/AndyObtiva/glimmer) 
+[![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Glimmer is a native-GUI cross-platform desktop development library written in Ruby. Glimmer's main innovation is a JRuby DSL that enables productive and efficient authoring of desktop application user-interfaces while relying on the robust Eclipse SWT library. Glimmer additionally innovates by having built-in data-binding support to greatly facilitate synchronizing the GUI with domain models. As a result, that achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about GUI concerns, or alternatively drive development GUI-first, and then write clean business models test-first afterwards.
 
@@ -2414,11 +2415,9 @@ You may submit [issues](https://github.com/AndyObtiva/glimmer/issues) on [GitHub
 
 [Click here to submit an issue.](https://github.com/AndyObtiva/glimmer/issues)
 
-### IRC Channel
+### Chat
 
-If you need live help, try the [#glimmer](http://widget.mibbit.com/?settings=7514b8a196f8f1de939a351245db7aa8&server=irc.mibbit.net&channel=%23glimmer) IRC channel on [irc.mibbit.net](http://widget.mibbit.com/?settings=7514b8a196f8f1de939a351245db7aa8&server=irc.mibbit.net&channel=%23glimmer). If no one was available, you may [leave a GitHub issue](https://github.com/AndyObtiva/glimmer/issues) to schedule a meetup on IRC. 
-
-[Click here to connect to #glimmer IRC channel immediately via a web interface.](http://widget.mibbit.com/?settings=7514b8a196f8f1de939a351245db7aa8&server=irc.mibbit.net&channel=%23glimmer)
+If you need live help, try to [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
 
 ## Feature Suggestions
 
