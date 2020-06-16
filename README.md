@@ -7,6 +7,12 @@ Glimmer is a native-GUI cross-platform desktop development library written in Ru
 [<img src="https://covers.oreillystatic.com/images/9780596519650/lrg.jpg" width=105 /><br /> 
 Featured in<br />JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do)
 
+Glimmer DSL gems:
+- [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (Desktop GUI)
+- [glimmer-dsl-opal](https://github.com/AndyObtiva/glimmer-dsl-opal): Glimmer DSL for Opal (Web GUI Adapter for Desktop Apps)
+- [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
+- [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS (Cascading Style Sheets)
+
 ## Examples
 
 ### Hello, World!
@@ -199,7 +205,7 @@ Glimmer might still work on lower versions of Java, JRuby and SWT, but there are
 
 ## Setup
 
-Please follow these instructions to make the `glimmer` command available on your system.
+Please follow these instructions to make the `glimmer` command available on your system via the [`glimmer-dsl-swt`](https://github.com/AndyObtiva/glimmer-dsl-swt) gem.
 
 ### Option 1: Direct Install
 
@@ -224,7 +230,7 @@ And, then run:
 jruby -S bundle install
 ```
 
-You may learn more about other Glimmer related gems at [Multi-DSL Support](#multi-dsl-support)
+You may learn more about other Glimmer related gems ([`glimmer-dsl-opal`](https://github.com/AndyObtiva/glimmer-dsl-opal), [`glimmer-dsl-xml`](https://github.com/AndyObtiva/glimmer-dsl-xml), and [`glimmer-dsl-css`](https://github.com/AndyObtiva/glimmer-dsl-css)) at [Multi-DSL Support](#multi-dsl-support)
 
 ## Glimmer Command
 
