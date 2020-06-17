@@ -999,6 +999,9 @@ composite {
 ```
 
 Here is a more sophisticated example taken from [hello_computed.rb](samples/hello/hello_computed.rb) sample:
+
+![Hello Computed](images/glimmer-hello-computed.png)
+
 ```ruby
 shell {
   text "Hello Computed"
