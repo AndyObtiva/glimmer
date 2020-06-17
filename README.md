@@ -212,7 +212,7 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer-dsl-swt -v 0.1.1
+jgem install glimmer-dsl-swt -v 0.1.2
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -223,7 +223,7 @@ Otherwise, you may also run `jruby -S gem install ...`
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-swt', '~> 0.1.1'
+gem 'glimmer-dsl-swt', '~> 0.1.2'
 ```
 
 And, then run:

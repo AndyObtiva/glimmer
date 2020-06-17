@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.9.2
+
+- Extracted common model data-binding classes from glimmer-dsl-swt
+
 ## 0.9.1
 
 - Display error message if Glimmer DSL was invoked without any configured DSLs
