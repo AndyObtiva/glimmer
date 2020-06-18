@@ -2039,6 +2039,8 @@ You may obtain via `glimmer-cw-video` gem.
 
 #### Browser Widget
 
+![Hello Browser](images/glimmer-hello-browser.png)
+
 Glimmer supports SWT Browser widget, which can load URLs or render HTML. It can even be instrumented with JavaScript when needed (though highly discouraged in Glimmer except for rare cases when leveraging a pre-existing web codebase in a desktop app).
 
 Example loading a URL (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
