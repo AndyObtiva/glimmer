@@ -547,22 +547,22 @@ Check out the [samples](samples) directory for more examples.
 
 Example from [hello_tab.rb](samples/hello/hello_tab.rb) sample (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
-![Hello Tab 1](images/glimmer-hello-tab1.png)
+![Hello Tab English](images/glimmer-hello-tab-english.png)
 
-![Hello Tab 2](images/glimmer-hello-tab2.png)
+![Hello Tab French](images/glimmer-hello-tab-french.png)
 
 ```ruby
 shell {
-  text "SWT"
+  text "Hello, Tab!"
   tab_folder {
     tab_item {
-      text "Tab 1"
+      text "English"
       label {
         text "Hello, World!"
       }
     }
     tab_item {
-      text "Tab 2"
+      text "French"
       label {
         text "Bonjour Univers!"
       }
@@ -2441,6 +2441,10 @@ If you need live help, try to [![Join the chat at https://gitter.im/AndyObtiva/g
 These features have been suggested. You might see them in a future version of Glimmer. You are welcome to contribute more feature suggestions.
 
 [TODO.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/TODO.md)
+
+Glimmer DSL Engine specific tasks are at:
+
+[TODO.md](TODO.md)
 
 ## Change Log
 

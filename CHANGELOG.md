@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.9.3
+
+- Add loop detection support to avoid infinite loops (breaks after 10 repetitions)
+
 ## 0.9.2
 
 - Extracted common model data-binding classes from glimmer-dsl-swt

@@ -14,8 +14,32 @@ require 'set'
 module Glimmer
   #TODO make it configurable to include or not include perhaps reverting to using included
   REGEX_METHODS_EXCLUDED = /^(to_|\[)/
+  
+  # TODO add loop detection support to avoid infinite loops (perhaps breaks after 3 repetitions and provides an option to allow it if intentional)
+  class << self
+    attr_accessor :loop_last_data
+    def loop_reset!
+      @loop = 0
+    end
+    def loop
+      @loop ||= loop_reset!
+    end
+    def loop_increment!
+      @loop = loop + 1
+    end
+  end
 
   def method_missing(method_symbol, *args, &block)
+    new_loop_data = [method_symbol, args, block]
+    if new_loop_data == Glimmer.loop_last_data
+      Glimmer.loop_increment!
+      if Glimmer.loop == 3
+        raise "Glimmer looped 10 times with keyword='#{new_loop_data[0]}'! Check code for errors."
+      end
+    else
+      Glimmer.loop_reset!
+    end
+    Glimmer.loop_last_data = new_loop_data
     # This if statement speeds up Glimmer in girb or whenever directly including on main object
     if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
       raise InvalidKeywordError, "Glimmer excluded keyword: #{method_symbol}"
