@@ -78,8 +78,6 @@ Glimmer app:
 
 NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contributing), adopting for small or low risk projects, and providing feedback.
 
-Ruby is a dynamically-typed object-oriented language, which provides great productivity gains due to its powerful expressive syntax and dynamic nature. While it is proven by the Ruby on Rails framework for web development, it currently lacks a robust platform-independent framework for building desktop applications. Given that Java libraries can now be utilized in Ruby code through JRuby, Eclipse technologies, such as SWT, JFace, and RCP can help fill the gap of desktop application development with Ruby.
-
 ## Table of contents
 
 - [Glimmer - Ruby Desktop Development GUI Library](#glimmer---ruby-desktop-development-gui-library)
@@ -2440,7 +2438,7 @@ If you need live help, try to [![Join the chat at https://gitter.im/AndyObtiva/g
 
 These features have been suggested. You might see them in a future version of Glimmer. You are welcome to contribute more feature suggestions.
 
-[TODO.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/TODO.md)
+[glimmer-dsl-swt/TODO.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/TODO.md)
 
 Glimmer DSL Engine specific tasks are at:
 
