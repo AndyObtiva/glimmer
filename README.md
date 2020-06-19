@@ -2141,11 +2141,22 @@ glimmer samples/elaborate/tic_tac_toe.rb # demonstrates a full MVC application
 [Gladiator](https://github.com/AndyObtiva/glimmer-cs-gladiator) (short for Glimmer Editor) is a Glimmer sample project under on-going development.
 You may check it out to learn how to build a Glimmer Custom Shell gem.
 
+Gladiator is a good demonstration of:
+- MVP Pattern
+- Tree data-binding
+- List data-binding
+- Text selection data-binding
+- Tabs
+- Context menus
+- Custom widgets
+
 ## In Production
 
 The following production apps have been built with Glimmer:
 
 [<img alt="Math Bowling Logo" src="https://raw.githubusercontent.com/AndyObtiva/MathBowling/master/images/math-bowling-logo.png" width="40" />Math Bowling](https://github.com/AndyObtiva/MathBowling): an educational math game for elementary level kids
+
+If you have a Glimmer project you would like referenced here, please mention in a Pull Request. 
 
 ## SWT Reference
 
