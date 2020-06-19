@@ -2148,7 +2148,8 @@ Gladiator is a good demonstration of:
 - Text selection data-binding
 - Tabs
 - Context menus
-- Custom widgets
+- Custom Shell
+- Custom widget
 
 ## In Production
 
@@ -2156,7 +2157,7 @@ The following production apps have been built with Glimmer:
 
 [<img alt="Math Bowling Logo" src="https://raw.githubusercontent.com/AndyObtiva/MathBowling/master/images/math-bowling-logo.png" width="40" />Math Bowling](https://github.com/AndyObtiva/MathBowling): an educational math game for elementary level kids
 
-If you have a Glimmer project you would like referenced here, please mention in a Pull Request. 
+If you have a Glimmer app you would like referenced here, please mention in a Pull Request. 
 
 ## SWT Reference
 
