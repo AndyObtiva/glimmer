@@ -82,7 +82,7 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
 
 ## Table of contents
 
-- [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=105 /> Glimmer - Ruby Desktop Development GUI Library](#-glimmer---ruby-desktop-development-gui-library)
+- [Glimmer - Ruby Desktop Development GUI Library](#-glimmer---ruby-desktop-development-gui-library)
   - [Examples](#examples)
     - [Hello, World!](#hello-world)
     - [Tic Tac Toe](#tic-tac-toe)
