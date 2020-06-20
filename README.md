@@ -2128,9 +2128,9 @@ For more elaborate samples, check the following:
 glimmer samples/elaborate/login.rb # demonstrates basic data-binding
 ```
 
-![Tic Tac Toe](images/glimmer-login.png)
-![Tic Tac Toe](images/glimmer-login-filled-in.png)
-![Tic Tac Toe](images/glimmer-login-logged-in.png)
+![Login](images/glimmer-login.png)
+![Login Filled In](images/glimmer-login-filled-in.png)
+![Login Logged In](images/glimmer-login-logged-in.png)
 
 
 ```
@@ -2138,8 +2138,8 @@ glimmer samples/elaborate/tic_tac_toe.rb # demonstrates a full MVC application
 ```
 
 ![Tic Tac Toe](images/glimmer-tic-tac-toe.png)
-![Tic Tac Toe](images/glimmer-tic-tac-toe-in-progress.png)
-![Tic Tac Toe](images/glimmer-tic-tac-toe-game-over.png)
+![Tic Tac Toe In Progress](images/glimmer-tic-tac-toe-in-progress.png)
+![Tic Tac Toe Game Over](images/glimmer-tic-tac-toe-game-over.png)
 
 ```
 glimmer samples/elaborate/contact_manager.rb # demonstrates table data-binding
