@@ -82,7 +82,7 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
 
 ## Table of contents
 
-- [Glimmer - Ruby Desktop Development GUI Library](#glimmer---ruby-desktop-development-gui-library)
+- [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=105 /> Glimmer - Ruby Desktop Development GUI Library](#-glimmer---ruby-desktop-development-gui-library)
   - [Examples](#examples)
     - [Hello, World!](#hello-world)
     - [Tic Tac Toe](#tic-tac-toe)
@@ -128,8 +128,10 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
       - [Observing Models](#observing-models)
     - [Custom Widgets](#custom-widgets)
       - [Simple Example](#simple-example)
-      - [Hook Example](#hook-example)
+      - [Lifecycle Hook Example](#lifecycle-hook-example)
+      - [Custom Widget API](#custom-widget-api)
       - [Content/Options Example](#contentoptions-example)
+      - [Custom Widget Lifecycle Hooks](#custom-widget-lifecycle-hooks)
       - [Gotcha](#gotcha)
     - [Custom Shells](#custom-shells)
     - [Miscellaneous](#miscellaneous)
@@ -161,7 +163,7 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
   - [Resources](#resources)
   - [Help](#help)
     - [Issues](#issues)
-    - [IRC Channel](#irc-channel)
+    - [Chat](#chat)
   - [Feature Suggestions](#feature-suggestions)
   - [Change Log](#change-log)
   - [Contributing](#contributing)
