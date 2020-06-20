@@ -1615,7 +1615,7 @@ shell {
 
 As you can see, `RedLabel` became Glimmer DSL keyword: `red_label`
 
-#### Hook Example
+#### Lifecycle Hook Example
 
 (you may copy/paste in [`girb`](#girb-glimmer-irb-command))
 
@@ -1650,9 +1650,11 @@ shell {
 }.open
 ```
 
-Notice how `Red::Composite` became `red__composite` with double-underscore, which is how Glimmer Custom Widgets signify namespaces by convention. Additionally, `before_body` hook was utilized to set a `@color` variable and use inside the `body`.
+Notice how `Red::Composite` became `red__composite` with double-underscore, which is how Glimmer Custom Widgets signify namespaces by convention. Additionally, the `before_body` lifecycle hook was utilized to set a `@color` variable and use inside the `body`.
 
 Keep in mind that namespaces are not needed to be specified if the Custom Widget class has a unique name, not clashing with a basic SWT widget or another custom widget name.
+
+#### Custom Widget API
 
 Custom Widgets have the following attributes available to call from inside the `#body` method:
 - `#parent`: Glimmer object parenting custom widget
@@ -1708,7 +1710,9 @@ shell {
 
 Notice how `:no_focus` was the `swt_style` value, followed by the `options` hash `{orientation: :horizontal, bg_color: :white}`, and finally the `content` block containing the label with `'SANDWICH CONTENT'`
 
-Last but not least, these are the available hooks:
+#### Custom Widget Lifecycle Hooks
+
+Last but not least, these are the available lifecycle hooks:
 - `before_body`: takes a block that executes in the custom widget instance scope before calling `body`. Useful for initializing variables to later use in `body`
 - `after_body`: takes a block that executes in the custom widget instance scope after calling `body`. Useful for setting up observers on widgets built in `body` (set in instance variables) and linking to other shells.
 
