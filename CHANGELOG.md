@@ -2,7 +2,7 @@
 
 ## 0.9.3
 
-- Add loop detection support to avoid infinite loops (breaks after 10 repetitions)
+- Add infinite loop detection support to avoid infinite loops (breaks after 10 repetitions)
 
 ## 0.9.2
 

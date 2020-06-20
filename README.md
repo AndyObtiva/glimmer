@@ -74,7 +74,7 @@ glimmer samples/elaborate/tic_tac_toe.rb
 
 Glimmer app:
 
-![Tic Tac Toe](images/glimmer-tic-tac-toe.png)
+![Tic Tac Toe](images/glimmer-tic-tac-toe-in-progress.png)
 
 NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contributing), adopting for small or low risk projects, and providing feedback.
 
@@ -426,7 +426,7 @@ Example: [https://github.com/AndyObtiva/glimmer-cw-video](https://github.com/And
 
 ## Girb (Glimmer irb) Command
 
-With Glimmer installed, you may want to run `girb` instead of standard `irb` to have SWT preloaded and the Glimmer library required and included for quick Glimmer coding/testing.
+With `glimmer-dsl-swt` installed, you may want to run `girb` instead of standard `irb` to have SWT preloaded and the Glimmer library required and included for quick Glimmer coding/testing.
 
 ```
 girb
@@ -2092,9 +2092,9 @@ This relies on Glimmer's [Multi-DSL Support](#multi-dsl-support) for building th
 
 ## Samples
 
-Check the [samples](samples) directory for examples on how to write Glimmer applications. To run a sample, make sure to install the `glimmer` gem first and then use the `glimmer` command to run it (alternatively, you may clone the repo, follow [CONTRIBUTING.md](CONTRIBUTING.md) instructions, and run samples locally with development glimmer command: `bin/glimmer`).
+Check the [samples](samples) directory in [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt) for examples on how to write Glimmer applications. To run a sample, make sure to install the `glimmer` gem first and then use the `glimmer` command to run it (alternatively, you may clone the repo, follow [CONTRIBUTING.md](CONTRIBUTING.md) instructions, and run samples locally with development glimmer command: `bin/glimmer`).
 
-If you cloned the project and followed [CONTRIBUTING.md](CONTRIBUTING.md) instructions, you may run all samples at once via `samples/launch` command:
+If you cloned the project and followed [CONTRIBUTING.md](CONTRIBUTING.md) instructions, you may run all samples in [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt) at once via `samples/launch` command:
 
 ```
 samples/launch
@@ -2120,8 +2120,23 @@ For more elaborate samples, check the following:
 
 ```
 glimmer samples/elaborate/login.rb # demonstrates basic data-binding
-glimmer samples/elaborate/contact_manager.rb # demonstrates table data-binding
+```
+
+![Tic Tac Toe](images/glimmer-login.png)
+![Tic Tac Toe](images/glimmer-login-filled-in.png)
+![Tic Tac Toe](images/glimmer-login-logged-in.png)
+
+
+```
 glimmer samples/elaborate/tic_tac_toe.rb # demonstrates a full MVC application
+```
+
+![Tic Tac Toe](images/glimmer-tic-tac-toe.png)
+![Tic Tac Toe](images/glimmer-tic-tac-toe-in-progress.png)
+![Tic Tac Toe](images/glimmer-tic-tac-toe-game-over.png)
+
+```
+glimmer samples/elaborate/contact_manager.rb # demonstrates table data-binding
 ```
 
 ### External Samples

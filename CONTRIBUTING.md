@@ -1,5 +1,7 @@
 # Contributing
 
+Please follow [glimmer-dsl-swt/CONTRIBUTING.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CONTRIBUTING.md) too.
+
 ## Pre-requisites
 
 - MacOS
