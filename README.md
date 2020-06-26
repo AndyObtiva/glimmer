@@ -2148,10 +2148,19 @@ glimmer samples/elaborate/contact_manager.rb # demonstrates table data-binding
 ```
 
 ![Contact Manager](images/glimmer-contact-manager.png)
+Contact Manager
+
 ![Contact Manager](images/glimmer-contact-manager-find.png)
+Contact Manager - Find
+
 ![Contact Manager](images/glimmer-contact-manager-edit-started.png)
+Contact Manager - Edit Started
+
 ![Contact Manager](images/glimmer-contact-manager-edit-in-progress.png)
+Contact Manager - Edit In Progress
+
 ![Contact Manager](images/glimmer-contact-manager-edit-done.png)
+Contact Manager - Edit Done
 
 ### External Samples
 
