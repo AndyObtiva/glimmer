@@ -2126,6 +2126,8 @@ glimmer samples/hello/hello_computed.rb # demonstrates computed data-binding
 
 For more elaborate samples, check the following:
 
+#### Login
+
 ```
 glimmer samples/elaborate/login.rb # demonstrates basic data-binding
 ```
@@ -2134,6 +2136,7 @@ glimmer samples/elaborate/login.rb # demonstrates basic data-binding
 ![Login Filled In](images/glimmer-login-filled-in.png)
 ![Login Logged In](images/glimmer-login-logged-in.png)
 
+#### Tic Tac Toe
 
 ```
 glimmer samples/elaborate/tic_tac_toe.rb # demonstrates a full MVC application
@@ -2143,24 +2146,31 @@ glimmer samples/elaborate/tic_tac_toe.rb # demonstrates a full MVC application
 ![Tic Tac Toe In Progress](images/glimmer-tic-tac-toe-in-progress.png)
 ![Tic Tac Toe Game Over](images/glimmer-tic-tac-toe-game-over.png)
 
+#### Contact Manager
+
 ```
 glimmer samples/elaborate/contact_manager.rb # demonstrates table data-binding
 ```
 
-![Contact Manager](images/glimmer-contact-manager.png)
 Contact Manager
 
-![Contact Manager](images/glimmer-contact-manager-find.png)
+![Contact Manager](images/glimmer-contact-manager.png)
+
 Contact Manager - Find
 
-![Contact Manager](images/glimmer-contact-manager-edit-started.png)
+![Contact Manager](images/glimmer-contact-manager-find.png)
+
 Contact Manager - Edit Started
 
-![Contact Manager](images/glimmer-contact-manager-edit-in-progress.png)
+![Contact Manager](images/glimmer-contact-manager-edit-started.png)
+
 Contact Manager - Edit In Progress
 
-![Contact Manager](images/glimmer-contact-manager-edit-done.png)
+![Contact Manager](images/glimmer-contact-manager-edit-in-progress.png)
+
 Contact Manager - Edit Done
+
+![Contact Manager](images/glimmer-contact-manager-edit-done.png)
 
 ### External Samples
 
