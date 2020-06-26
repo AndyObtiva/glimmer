@@ -214,7 +214,7 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer-dsl-swt -v 0.1.2
+jgem install glimmer-dsl-swt -v 0.1.3
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -225,7 +225,7 @@ Otherwise, you may also run `jruby -S gem install ...`
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-swt', '~> 0.1.2'
+gem 'glimmer-dsl-swt', '~> 0.1.3'
 ```
 
 And, then run:
@@ -2146,6 +2146,12 @@ glimmer samples/elaborate/tic_tac_toe.rb # demonstrates a full MVC application
 ```
 glimmer samples/elaborate/contact_manager.rb # demonstrates table data-binding
 ```
+
+![Contact Manager](images/glimmer-contact-manager.png)
+![Contact Manager](images/glimmer-contact-manager-find.png)
+![Contact Manager](images/glimmer-contact-manager-edit-started.png)
+![Contact Manager](images/glimmer-contact-manager-edit-in-progress.png)
+![Contact Manager](images/glimmer-contact-manager-edit-done.png)
 
 ### External Samples
 

@@ -42,10 +42,13 @@ module Glimmer
     Glimmer.loop_last_data = new_loop_data
     # This if statement speeds up Glimmer in girb or whenever directly including on main object
     if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
-      raise InvalidKeywordError, "Glimmer excluded keyword: #{method_symbol}"
+      raise ExcludedKeywordError, "Glimmer excluded keyword: #{method_symbol}"
     end
     Glimmer::Config.logger&.debug "Interpreting keyword: #{method_symbol}"
     Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
+  rescue ExcludedKeywordError => e
+    # TODO add a feature to show excluded keywords optionally for debugging purposes
+    super(method_symbol, *args, &block)
   rescue InvalidKeywordError => e
     if !method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
       Glimmer::Config.logger&.error e.message
@@ -59,5 +62,6 @@ $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 
 require 'glimmer/config'
 require 'glimmer/error'
+require 'glimmer/excluded_keyword_error'
 require 'glimmer/invalid_keyword_error'
 require 'glimmer/dsl/engine'
