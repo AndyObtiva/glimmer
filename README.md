@@ -2517,3 +2517,5 @@ If you would like to contribute to Glimmer, please study up on Glimmer and [SWT]
 
 Copyright (c) 2007-2020 Andy Maleh.
 See LICENSE.txt for further details.
+
+Glimmer logo was made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
