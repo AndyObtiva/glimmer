@@ -2502,7 +2502,7 @@ Glimmer DSL Engine specific tasks are at:
 
 **Contributors Wanted!**
 
-If you would like to contribute to Glimmer, please study up on Glimmer and SWT, run all Glimmer samples, and build a small sample app. Once done, contact me on [Chat](#chat)
+If you would like to contribute to Glimmer, please study up on Glimmer and [SWT](#swt-reference), run all Glimmer [samples](#samples), and build a small sample app to add to [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt) Hello or Elaborate samples via a Pull Request. Once done, contact me on [Chat](#chat).
 
 [CONTRIBUTING.md](CONTRIBUTING.md)
 
