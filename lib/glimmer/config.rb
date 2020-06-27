@@ -1,6 +1,14 @@
 module Glimmer
   module Config
     class << self
+      LOOP_MAX_COUNT_DEFAULT = 100
+      
+      attr_writer :loop_max_count
+      
+      def loop_max_count
+        @loop_max_count ||= LOOP_MAX_COUNT_DEFAULT
+      end
+      
       # Returns Glimmer logger (standard Ruby logger)
       def logger
         # unless defined? @@logger

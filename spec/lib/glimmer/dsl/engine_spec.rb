@@ -6,7 +6,21 @@ module GlimmerSpec
   describe Glimmer::DSL::Engine do
     include Glimmer
     
-    context 'No DSLs' do
+    context 'No DSLs' do    
+      before do
+        @dynamic_expression_chains_of_responsibility = described_class.dynamic_expression_chains_of_responsibility
+        described_class.dynamic_expression_chains_of_responsibility = {}
+        @static_expressions = described_class.static_expressions
+        described_class.static_expressions = {}
+        @stdout_original = $stdout
+      end
+
+      after do
+        $stdout = @stdout_original
+        described_class.static_expressions = @static_expressions 
+        described_class.dynamic_expression_chains_of_responsibility = @dynamic_expression_chains_of_responsibility
+      end
+      
       it 'displays an error message without crashing' do        
         $stdout = StringIO.new
         shell # keyword in non-configured SWT DSL
@@ -15,12 +29,6 @@ module GlimmerSpec
     end    
     
     context 'DSLs defined' do
-      before :all do
-        require 'fixtures/glimmer/dsl/swt/dsl'
-        require 'fixtures/glimmer/dsl/xml/dsl'
-        require 'fixtures/glimmer/dsl/css/dsl'      
-      end
-      
       it 'mixes multiple DSLs (SWT and XML)' do
         @target = shell {
           browser {

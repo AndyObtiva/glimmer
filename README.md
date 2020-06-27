@@ -2267,6 +2267,14 @@ You can learn more about importing Java packages into Ruby code at this JRuby WI
 
 https://github.com/jruby/jruby/wiki/CallingJavaFromJRuby
 
+## Infinite Loop Detection
+
+Glimmer can detect if an infinite loop occurs with method_missing by ensuring it does not loop with the same keyword and args more than 100 times.
+
+The max limit can be changed via the `Glimmer::Config::loop_max_count=(count)` method.
+
+Infinite loop detection may be disabled by setting `Glimmer::Config::loop_max_count` to `-1`
+
 ## Logging
 
 Glimmer comes with a Ruby Logger accessible via `Glimmer::Config.logger`

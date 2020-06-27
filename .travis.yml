@@ -5,18 +5,16 @@ env:
 language: ruby
 rvm:
   - jruby-9.2.11.1
-jobs:
-  include:
-    - os: linux
-      dist: xenial
-      services: 
-        - xvfb
-      before_script:
-        - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-        - chmod +x ./cc-test-reporter
-        - ./cc-test-reporter before-build
-      script:
-        - bundle exec rspec
-      after_script:
-        - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-    - os: osx
+os: linux
+dist: xenial
+services: 
+  - xvfb
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+script:
+  - bundle exec rspec
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- --repo AndyObtiva/glimmer --commit $TRAVIS_COMMIT --lcov coverage/lcov/glimmer.lcov

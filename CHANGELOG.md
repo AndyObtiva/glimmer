@@ -2,7 +2,8 @@
 
 ## 0.9.3
 
-- Add infinite loop detection support to avoid infinite loops (breaks after 10 repetitions)
+- Add infinite loop detection support to avoid infinite loops (breaks after 100 repetitions)
+- Add Glimmer::Config option to specify loop max limit or disable completely
 - ExcludedKeywordError with no logging for excluded keywords such as `to_a` and `to_h`
 
 ## 0.9.2

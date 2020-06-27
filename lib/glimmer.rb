@@ -5,6 +5,10 @@
 require 'logger'
 require 'set'
 
+$LOAD_PATH.unshift(File.expand_path('..', __FILE__))
+
+require 'glimmer/config'
+
 # Glimmer provides a JRuby Desktop UI DSL + Data-Binding functionality
 #
 # A desktop UI application class must include Glimmer to gain access to Glimmer DSL
@@ -18,12 +22,16 @@ module Glimmer
   # TODO add loop detection support to avoid infinite loops (perhaps breaks after 3 repetitions and provides an option to allow it if intentional)
   class << self
     attr_accessor :loop_last_data
-    def loop_reset!
-      @loop = 0
+    
+    def loop_reset!(including_loop_last_data = false)
+      @loop_last_data = nil if including_loop_last_data
+      @loop = 1
     end
+    
     def loop
       @loop ||= loop_reset!
     end
+    
     def loop_increment!
       @loop = loop + 1
     end
@@ -33,8 +41,8 @@ module Glimmer
     new_loop_data = [method_symbol, args, block]
     if new_loop_data == Glimmer.loop_last_data
       Glimmer.loop_increment!
-      if Glimmer.loop == 3
-        raise "Glimmer looped 10 times with keyword='#{new_loop_data[0]}'! Check code for errors."
+      if Glimmer.loop == Config.loop_max_count
+        raise "Glimmer looped #{Config.loop_max_count} times with keyword '#{new_loop_data[0]}'! Check code for errors."
       end
     else
       Glimmer.loop_reset!
@@ -58,9 +66,6 @@ module Glimmer
   end
 end
 
-$LOAD_PATH.unshift(File.expand_path('..', __FILE__))
-
-require 'glimmer/config'
 require 'glimmer/error'
 require 'glimmer/excluded_keyword_error'
 require 'glimmer/invalid_keyword_error'
