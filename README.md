@@ -1819,7 +1819,7 @@ shell { |app_shell|
 
 ### Drag and Drop
 
-Glimmer offers the easiest Drag & Drop support on earth, thanks to the SWT library and to Glimmer's lightweight DSL.
+Glimmer offers the easiest Drag & Drop support on earth, thanks to SWT and Glimmer's lightweight DSL syntax.
 
 Simply add a `drag_source` under the widget you would like to drag data from and a `drop_target` under the widget you would like to drop data into, and you are set! 
 
@@ -1830,15 +1830,15 @@ class Location
   attr_accessor :country
   
   def country_options
-    %w[USA Canada Mexico]
+    %w[USA Canada Mexico Columbia UK Australia Germany Italy Spain]
   end
 end
 
 @location = Location.new
 
 shell {
-  text 'Drag and Drop'
-  list {
+  text 'Hello, Drag and Drop!'
+  list(:center) {
     selection bind(@location, :country)
     drag_source {
       transfer :text
@@ -1848,7 +1848,9 @@ shell {
       }
     }              
   }
-  label {
+  label(:center) {
+    text 'Drag a country here!'
+    font height: 20
     drop_target {
       transfer :text
       on_drag_enter { |event|
