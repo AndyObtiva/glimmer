@@ -137,6 +137,7 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
       - [Custom Widget Lifecycle Hooks](#custom-widget-lifecycle-hooks)
       - [Gotcha](#gotcha)
     - [Custom Shells](#custom-shells)
+    - [Drag and Drop](#drag-and-drop)
     - [Miscellaneous](#miscellaneous)
       - [Multi-DSL Support](#multi-dsl-support)
       - [Application Menu Items (About/Preferences)](#application-menu-items-aboutpreferences)
@@ -1812,6 +1813,51 @@ shell { |app_shell|
       app_shell.hide
       @wizard_steps[@current_step_number - 1].open
     }
+  }
+}.open
+```
+
+### Drag and Drop
+
+Glimmer offers the easiest Drag & Drop support on earth, thanks to the SWT library and to Glimmer's lightweight DSL.
+
+Simply add a `drag_source` under the widget you would like to drag data from and a `drop_target` under the widget you would like to drop data into, and you are set! 
+
+Example:
+
+```ruby
+class Location
+  attr_accessor :country
+  
+  def country_options
+    %w[USA Canada Mexico]
+  end
+end
+
+@location = Location.new
+
+shell {
+  text 'Drag and Drop'
+  list {
+    selection bind(@location, :country)
+    drag_source {
+      transfer :text
+      on_drag_set_data { |event|
+        list = event.widget.getControl
+        event.data = list.getSelection.first
+      }
+    }              
+  }
+  label {
+    drop_target {
+      transfer :text
+      on_drag_enter { |event|
+        event.detail = DND::DROP_COPY
+      }
+      on_drop { |event|
+        event.widget.getControl.setText(event.data)
+      }
+    }              
   }
 }.open
 ```
