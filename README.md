@@ -523,6 +523,10 @@ Output:
                                                                          
 ```
 
+### Packaging
+
+Glimmer packaging tasks are detailed under [Packaging & Distribution](#packaging--distribution).
+
 ## Girb (Glimmer irb) Command
 
 With `glimmer-dsl-swt` installed, you may want to run `girb` instead of standard `irb` to have SWT preloaded and the Glimmer library required and included for quick Glimmer coding/testing.
