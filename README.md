@@ -277,6 +277,9 @@ Either a single task or one or more applications may be specified.
 When a task is specified, it runs via rake. Some tasks take arguments in square brackets.
 
 Available tasks are below (you may also lookup by adding `require 'glimmer/rake_task'` in Rakefile and running rake -T):
+glimmer list:custom_shell_gems[query]                             # List Glimmer custom shell gems available at rubygems.org (query is optional)
+glimmer list:custom_widget_gems[query]                            # List Glimmer custom widget gems available at rubygems.org (query is optional)
+glimmer list:dsl_gems[query]                                      # List Glimmer DSL gems available at rubygems.org (query is optional)
 glimmer package                                                   # Package app for distribution (generating config, jar, and native files)
 glimmer package:config                                            # Generate JAR config file
 glimmer package:jar                                               # Generate JAR file
