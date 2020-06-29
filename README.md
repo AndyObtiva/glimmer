@@ -1819,11 +1819,21 @@ shell { |app_shell|
 
 ### Drag and Drop
 
-Glimmer offers the easiest Drag & Drop support on earth, thanks to SWT and Glimmer's lightweight DSL syntax.
+Glimmer offers simple Drag and Drop support, thanks to [SWT](https://www.eclipse.org/swt/) and Glimmer's lightweight [DSL syntax](#glimmer-dsl-syntax).
 
-Simply add a `drag_source` under the widget you would like to drag data from and a `drop_target` under the widget you would like to drop data into, and you are set! 
+You may learn more about SWT Drag and Drop support over here: [https://www.eclipse.org/articles/Article-SWT-DND/DND-in-SWT.html](https://www.eclipse.org/articles/Article-SWT-DND/DND-in-SWT.html)
 
-Example:
+To get started, simply follow these steps:
+- Add a `drag_source` under the widget you would like to drag data from
+- Add a `drop_target` under the widget you would like to drop data into
+- Make sure both `drag_source` and `drop_target` have a `transfer` property set (values may be: :text, :html :image, :rtf, :url, and :file, or an array of multiple values). The `transfer` property will automatically convert your option into a [Transfer](https://help.eclipse.org/2020-03/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/dnd/Transfer.html) object as per the SWT API.
+- Add a `drag_source` [DragSourceListener](https://help.eclipse.org/2020-03/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/dnd/DragSourceListener.html) event handler: `on_drag_set_data` at minimum (you may also add `on_drag_start` and `on_drag_finished` if needed)
+- Add a `drop_target` [DropTargetListener](https://help.eclipse.org/2020-03/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/dnd/DropTargetListener.html) event handler: `on_drag_enter` and `on_drop` at minimum (you may also add `on_drag_over`, `on_drag_leave`, `on_drag_operation_changed` and `on_drop_accept` if needed)
+- Set `event.data` to drag inside `on_drag_set_data`
+- Set drag operation in `event.detail` (e.g. DND::DROP_COPY) inside `on_drag_enter`
+- Read `event.data` to drop inside `on_drop`
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
 class Location
@@ -1835,6 +1845,8 @@ class Location
 end
 
 @location = Location.new
+
+include Glimmer
 
 shell {
   text 'Hello, Drag and Drop!'
@@ -2279,6 +2291,10 @@ https://wiki.eclipse.org/SWT_Widget_Style_Bits
 Here is a SWT style bit constant reference:
 
 https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
+
+Here is an SWT Drag and Drop guide:
+
+https://www.eclipse.org/articles/Article-SWT-DND/DND-in-SWT.html
 
 ## SWT Packages
 
