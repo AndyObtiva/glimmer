@@ -152,7 +152,7 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
   - [Glimmer Style Guide](#glimmer-style-guide)
   - [Samples](#samples)
     - [Hello Samples](#hello-samples)
-      - [Hello, World!](#hello-world)
+      - [Hello, World!](#hello-world-sample)
       - [Hello, Tab!](#hello-tab)
       - [Hello, Combo!](#hello-combo)
       - [Hello, List Single Selection!](#hello-list-single-selection)
@@ -163,7 +163,7 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
       - [Hello, Drag and Drop!](#hello-drag-and-drop)
     - [Elaborate Samples](#elaborate-samples)
       - [Login](#login)
-      - [Tic Tac Toe](#tic-tac-toe)
+      - [Tic Tac Toe](#tic-tac-toe-sample)
       - [Contact Manager](#contact-manager)
     - [External Samples](#external-samples)
       - [Glimmer Calculator](#glimmer-calculator)
@@ -2295,7 +2295,7 @@ samples/launch
 
 For hello-type simple samples, check the following.
 
-#### Hello, World!
+#### Hello, World! Sample
 
 Run:
 
@@ -2416,7 +2416,7 @@ glimmer samples/elaborate/login.rb # demonstrates basic data-binding
 ![Login Filled In](images/glimmer-login-filled-in.png)
 ![Login Logged In](images/glimmer-login-logged-in.png)
 
-#### Tic Tac Toe
+#### Tic Tac Toe Sample
 
 ```
 glimmer samples/elaborate/tic_tac_toe.rb # demonstrates a full MVC application
