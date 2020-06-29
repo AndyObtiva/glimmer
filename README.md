@@ -2264,17 +2264,101 @@ samples/launch
 
 ### Hello Samples
 
-For "Hello, World!" type samples, check the following:
+For hello-type simple samples, check the following.
+
+#### Hello, World!
+
+Run:
 
 ```
 glimmer samples/hello/hello_world.rb
-glimmer samples/hello/hello_browser.rb # demonstrates browser widget
-glimmer samples/hello/hello_tab.rb # demonstrates tabs
-glimmer samples/hello/hello_combo.rb # demonstrates combo data-binding
-glimmer samples/hello/hello_list_single_selection.rb # demonstrates list single-selection data-binding
-glimmer samples/hello/hello_list_multi_selection.rb # demonstrates list multi-selection data-binding
-glimmer samples/hello/hello_computed.rb # demonstrates computed data-binding
 ```
+
+![Hello World](images/glimmer-hello-world.png)
+
+#### Hello, Tab!
+
+Run:
+
+```
+glimmer samples/hello/hello_tab.rb
+```
+
+![Hello Tab English](images/glimmer-hello-tab-english.png)
+![Hello Tab French](images/glimmer-hello-tab-french.png)
+
+#### Hello, Combo!
+
+This sample demonstrates combo data-binding.
+
+Run:
+
+```
+glimmer samples/hello/hello_combo.rb
+```
+
+![Hello Combo](images/glimmer-hello-combo.png)
+![Hello Combo Expanded](images/glimmer-hello-combo-expanded.png)
+
+#### Hello, List Single Selection!
+
+This sample demonstrates list single-selection data-binding.
+
+Run:
+
+```
+glimmer samples/hello/hello_list_single_selection.rb
+```
+
+![Hello List Single Selection](images/glimmer-hello-list-single-selection.png)
+
+#### Hello, List Multi Selection!
+
+This sample demonstrates list multi-selection data-binding.
+
+Run:
+
+```
+glimmer samples/hello/hello_list_multi_selection.rb
+```
+
+![Hello List Multi Selection](images/glimmer-hello-list-multi-selection.png)
+
+#### Hello, Computed!
+
+This sample demonstrates computed data-binding.
+
+Run:
+
+```
+glimmer samples/hello/hello_computed.rb
+```
+
+![Hello Browser](images/glimmer-hello-computed.png)
+
+#### Hello, Browser!
+
+This sample demonstrates the `browser` widget.
+
+Run:
+
+```
+glimmer samples/hello/hello_browser.rb
+```
+
+![Hello Browser](images/glimmer-hello-browser.png)
+
+#### Hello, Drag and Drop!
+
+This sample demonstrates drag and drop in Glimmer.
+
+Run:
+
+```
+glimmer samples/hello/hello_drag_and_drop.rb
+```
+
+![Hello Drag and Drop](images/glimmer-hello-drag-and-drop.gif)
 
 ### Elaborate Samples
 
