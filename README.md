@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-**[Contributors Wanted!](#contributing)**
+**[Contributors Wanted! (Submit a Glimmer App Sample to Get Started](#contributing)**
 
 (The Original Glimmer Library Since 2007. Beware of Imitators!)
 
