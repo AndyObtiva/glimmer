@@ -441,7 +441,7 @@ The `glimmer` command comes with tasks for listing Glimmer related gems to make 
 
 #### Listing Custom Shell Gems
 
-The following command lists available Glimmer [Custom Shell Gems](#custom-shell-gem) created by the the Glimmer community and published on [rubygems.org](http://www.rubygems.org):
+The following command lists available Glimmer [Custom Shell Gems](#custom-shell-gem) (prefixed with "glimmer-cs-" by scaffolding convention) created by the the Glimmer community and published on [rubygems.org](http://www.rubygems.org):
 
 ```
 glimmer list:custom_shell_gems[query]                             # List Glimmer custom shell gems available at rubygems.org (query is optional)
@@ -468,7 +468,7 @@ Output:
 
 #### Listing Custom Widget Gems
 
-The following command lists available Glimmer [Custom Widget Gems](#custom-widget-gem) created by the the Glimmer community and published on [rubygems.org](http://www.rubygems.org):
+The following command lists available Glimmer [Custom Widget Gems](#custom-widget-gem) (prefixed with "glimmer-cw-" by scaffolding convention) created by the the Glimmer community and published on [rubygems.org](http://www.rubygems.org):
 
 ```
 glimmer list:custom_widget_gems[query]                            # List Glimmer custom widget gems available at rubygems.org (query is optional)
@@ -496,7 +496,7 @@ Output:
 
 #### Listing DSL Gems
 
-The following command lists available Glimmer [DSL Gems](#multi-dsl-support) created by the the Glimmer community and published on [rubygems.org](http://www.rubygems.org):
+The following command lists available Glimmer [DSL Gems](#multi-dsl-support) (prefixed with "glimmer-dsl-" by convention) created by the the Glimmer community and published on [rubygems.org](http://www.rubygems.org):
 
 ```
 glimmer list:dsl_gems[query]                                      # List Glimmer DSL gems available at rubygems.org (query is optional)
