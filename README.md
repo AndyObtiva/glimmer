@@ -437,7 +437,7 @@ Example: [https://github.com/AndyObtiva/glimmer-cw-video](https://github.com/And
 
 ### Gem Listing
 
-The `glimmer` command comes with 3 tasks for listing Glimmer related gems that makes it easy to find out Glimmer Custom Shells, Custom Widgets, and DSLs published by others in the Glimmer community on [rubygems.org](http://www.rubygems.org).
+The `glimmer` command comes with tasks for listing Glimmer related gems to make it easy to find Glimmer Custom Shells, Custom Widgets, and DSLs published by others in the Glimmer community on [rubygems.org](http://www.rubygems.org).
 
 #### Listing Custom Shell Gems
 
