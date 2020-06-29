@@ -731,26 +731,33 @@ Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 @shell.open
 ```
 
-##### `#swt_widget`
+##### `message_box`
 
-Glimmer widget objects come with an instance method `#swt_widget` that returns the actual SWT `Widget` object wrapped by the Glimmer widget object. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
+The Glimmer DSL `message_box` keyword is similar to `shell`, but renders a modal dialog with a title `text` property and main body `message` property. It may also be opened via the `#open` method.
 
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
+include Glimmer
+
 @shell = shell {
+  text 'Hello, Message Box!'
   button {
-    text "Press Me"
+    text 'Please Click To Win a Surprise'
     on_widget_selected {
-      message_box = MessageBox.new(@shell.swt_widget) # passing SWT Shell widget
-      message_box.setText("Surprise")
-      message_box.setMessage("You have won $1,000,000!")
-      message_box.open      
+      message_box(@shell) {
+        text 'Surprise'
+        message "Congratulations!\n\nYou have won $1,000,000!"
+      }.open
     }
   }
 }
 @shell.open
 ```
+
+##### `#swt_widget`
+
+Glimmer widget objects come with an instance method `#swt_widget` that returns the actual SWT `Widget` object wrapped by the Glimmer widget object. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
 
 ##### Shell widget proxy methods
 
@@ -2335,6 +2342,19 @@ glimmer samples/hello/hello_computed.rb
 ```
 
 ![Hello Browser](images/glimmer-hello-computed.png)
+
+#### Hello, Message Box!
+
+This sample demonstrates a `message_box` dialog.
+
+Run:
+
+```
+glimmer samples/hello/hello_message_box.rb
+```
+
+![Hello Message Box](images/glimmer-hello-message-box.png)
+![Hello Message Box Dialog](images/glimmer-hello-message-box-dialog.png)
 
 #### Hello, Browser!
 
