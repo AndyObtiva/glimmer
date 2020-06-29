@@ -435,24 +435,6 @@ Only official Glimmer gems created by the Glimmer project committers will have n
 
 Example: [https://github.com/AndyObtiva/glimmer-cw-video](https://github.com/AndyObtiva/glimmer-cw-video)
 
-## Girb (Glimmer irb) Command
-
-With `glimmer-dsl-swt` installed, you may want to run `girb` instead of standard `irb` to have SWT preloaded and the Glimmer library required and included for quick Glimmer coding/testing.
-
-```
-girb
-```
-
-If you cloned [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt) project locally, you may run `bin/girb` instead.
-
-```
-bin/girb
-```
-
-Watch out for hands-on examples in this README indicated by "you may copy/paste in [`girb`](#girb-glimmer-irb-command)"
-
-Keep in mind that all samples live under [https://github.com/AndyObtiva/glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt)
-
 ### Gem Listing
 
 The `glimmer` command comes with 3 tasks for listing Glimmer related gems that makes it easy to find out Glimmer Custom Shells, Custom Widgets, and DSLs published by others in the Glimmer community on [rubygems.org](http://www.rubygems.org).
@@ -540,6 +522,24 @@ Output:
   Xml    glimmer-dsl-xml    0.1.0     AndyMaleh   Glimmer DSL for XML    
                                                                          
 ```
+
+## Girb (Glimmer irb) Command
+
+With `glimmer-dsl-swt` installed, you may want to run `girb` instead of standard `irb` to have SWT preloaded and the Glimmer library required and included for quick Glimmer coding/testing.
+
+```
+girb
+```
+
+If you cloned [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt) project locally, you may run `bin/girb` instead.
+
+```
+bin/girb
+```
+
+Watch out for hands-on examples in this README indicated by "you may copy/paste in [`girb`](#girb-glimmer-irb-command)"
+
+Keep in mind that all samples live under [https://github.com/AndyObtiva/glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt)
 
 ## Glimmer DSL Syntax
 
