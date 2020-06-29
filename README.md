@@ -1653,7 +1653,7 @@ class TicTacToe
 end
 ```
 
-Observers can be a good mechanism for displaying dialog messages in Glimmer (using SWT's `MessageBox`).
+Observers can be a good mechanism for displaying dialog messages in Glimmer (using SWT's [`MessageBox`](https://help.eclipse.org/2020-06/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/widgets/MessageBox.html) class).
 
 Look at [`samples/elaborate/tictactoe/tic_tac_toe.rb`](samples/tictactoe/tic_tac_toe.rb) for more details starting with the code included below.
 
@@ -1679,10 +1679,10 @@ class TicTacToe
   end
 
   def display_game_over_message(message)
-    message_box = MessageBox.new(@shell.swt_widget)
-    message_box.setText("Game Over")
-    message_box.setMessage(message)
-    message_box.open
+    message_box(@shell) {
+      text 'Game Over'
+      message message_text
+    }.open
     @tic_tac_toe_board.reset
   end
   # ...
@@ -2133,10 +2133,10 @@ class Example
   def initialize
     display {
       on_about {
-        message_box = MessageBox.new(@shell_proxy.swt_widget)
-        message_box.setText("About")
-        message_box.setMessage("About Application")
-        message_box.open
+        message_box(@shell_proxy) {
+          text 'About'
+          message 'About Application'
+        }.open
       }
       on_preferences {
         preferences_dialog = dialog {
