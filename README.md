@@ -453,6 +453,94 @@ Watch out for hands-on examples in this README indicated by "you may copy/paste 
 
 Keep in mind that all samples live under [https://github.com/AndyObtiva/glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt)
 
+### Gem Listing
+
+The `glimmer` command comes with 3 tasks for listing Glimmer related gems that makes it easy to find out Glimmer Custom Shells, Custom Widgets, and DSLs published by others in the Glimmer community on [rubygems.org](http://www.rubygems.org).
+
+#### Listing Custom Shell Gems
+
+The following command lists available Glimmer [Custom Shell Gems](#custom-shell-gem) created by the the Glimmer community and published on [rubygems.org](http://www.rubygems.org):
+
+```
+glimmer list:custom_shell_gems[query]                             # List Glimmer custom shell gems available at rubygems.org (query is optional)
+```
+
+Example:
+
+```
+glimmer list:custom_shell_gems
+```
+
+Output:
+
+```
+
+  Glimmer Custom Shell Gems at rubygems.org:
+                                                                                                                 
+     Name               Gem            Version     Author                        Description                     
+                                                                                                                 
+  Calculator   glimmer-cs-calculator   1.0.1     Andy Maleh   Calculator - Glimmer Custom Shell                  
+  Gladiator    glimmer-cs-gladiator    0.2.0     Andy Maleh   Gladiator (Glimmer Editor) - Glimmer Custom Shell  
+                                                                                                                 
+```
+
+#### Listing Custom Widget Gems
+
+The following command lists available Glimmer [Custom Widget Gems](#custom-widget-gem) created by the the Glimmer community and published on [rubygems.org](http://www.rubygems.org):
+
+```
+glimmer list:custom_widget_gems[query]                            # List Glimmer custom widget gems available at rubygems.org (query is optional)
+```
+
+Example:
+
+Check if there is a custom video widget for Glimmer.
+
+```
+glimmer list:custom_widget_gems[video]
+```
+
+Output:
+
+```
+
+  Glimmer Custom Widget Gems matching [video] at rubygems.org:
+                                                                                   
+  Name          Gem          Version     Author              Description           
+                                                                                   
+  Video   glimmer-cw-video   0.1.1     Andy Maleh   Glimmer Custom Widget - Video  
+                                                                                   
+```
+
+#### Listing DSL Gems
+
+The following command lists available Glimmer [DSL Gems](#multi-dsl-support) created by the the Glimmer community and published on [rubygems.org](http://www.rubygems.org):
+
+```
+glimmer list:dsl_gems[query]                                      # List Glimmer DSL gems available at rubygems.org (query is optional)
+```
+
+Example:
+
+```
+glimmer list:dsl_gems
+```
+
+Output:
+
+```
+
+  Glimmer DSL Gems at rubygems.org:
+                                                                         
+  Name         Gem          Version    Author          Description       
+                                                                         
+  Css    glimmer-dsl-css    0.1.0     AndyMaleh   Glimmer DSL for CSS    
+  Opal   glimmer-dsl-opal   0.0.9     AndyMaleh   Glimmer DSL for Opal   
+  Swt    glimmer-dsl-swt    0.1.3     AndyMaleh   Glimmer DSL for SWT    
+  Xml    glimmer-dsl-xml    0.1.0     AndyMaleh   Glimmer DSL for XML    
+                                                                         
+```
+
 ## Glimmer DSL Syntax
 
 Glimmer DSL syntax consists of static keywords and dynamic keywords to build and bind user-interface objects.
