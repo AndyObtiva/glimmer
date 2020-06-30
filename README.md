@@ -1944,16 +1944,18 @@ Glimmer offers Drag and Drop support, thanks to [SWT](https://www.eclipse.org/sw
 You may learn more about SWT Drag and Drop support over here: [https://www.eclipse.org/articles/Article-SWT-DND/DND-in-SWT.html](https://www.eclipse.org/articles/Article-SWT-DND/DND-in-SWT.html)
 
 To get started, simply follow these steps:
-- Add a `drag_source` under the widget you would like to drag data from
-- Add a `drop_target` under the widget you would like to drop data into
-- Make sure both `drag_source` and `drop_target` have a `transfer` property set (values may be: :text, :html :image, :rtf, :url, and :file, or an array of multiple values). The `transfer` property will automatically convert your option into a [Transfer](https://help.eclipse.org/2020-03/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/dnd/Transfer.html) object as per the SWT API.
-- Add a `drag_source` [DragSourceListener](https://help.eclipse.org/2020-03/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/dnd/DragSourceListener.html) event handler: `on_drag_set_data` at minimum (you may also add `on_drag_start` and `on_drag_finished` if needed)
-- Add a `drop_target` [DropTargetListener](https://help.eclipse.org/2020-03/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/dnd/DropTargetListener.html) event handler: `on_drag_enter` and `on_drop` at minimum (you may also add `on_drag_over`, `on_drag_leave`, `on_drag_operation_changed` and `on_drop_accept` if needed)
+- Add a [DragSourceListener](https://help.eclipse.org/2020-03/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/dnd/DragSourceListener.html) event handler: `on_drag_set_data` at minimum (you may also add `on_drag_start` and `on_drag_finished` if needed)
+- Add a [DropTargetListener](https://help.eclipse.org/2020-03/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/dnd/DropTargetListener.html) event handler: `on_drop` at minimum (you may also add `on_drag_enter` (must set [`event.detail`](https://help.eclipse.org/2020-06/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/dnd/DropTargetEvent.html#detail) if added), `on_drag_over`, `on_drag_leave`, `on_drag_operation_changed` and `on_drop_accept` if needed)
 - Set `event.data` to drag inside `on_drag_set_data`
-- Set drag operation in `event.detail` (e.g. DND::DROP_COPY) inside `on_drag_enter`
 - Read `event.data` to drop inside `on_drop`
+- (Optional) Specify `drag_source_style` operation (may be: :drop_copy (default), :drop_link, :drop_move, :drop_none, or an array of multiple operations)
+- (Optional) Specify `drag_source_effect` (Check [DragSourceEffect](https://help.eclipse.org/2020-06/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/dnd/DragSourceEffect.html) SWT API for details)
+- (Optional) Specify `drop_target_style` operation (may be: :drop_copy (default), :drop_link, :drop_move, :drop_none, or an array of multiple operations)
+- (Optional) Specify `drop_target_effect` (Check [DropTargetEffect](https://help.eclipse.org/2020-06/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/dnd/DropTargetEffect.html) SWT API for details)
+- (Optional) Set drag operation in `event.detail` (e.g. DND::DROP_COPY) inside `on_drag_enter`
+- (Optional) Set a `transfer` property (defaults to :text). Values may be: :text (default), :html :image, :rtf, :url, and :file, or an array of multiple values. The `transfer` property will automatically convert your option into a [Transfer](https://help.eclipse.org/2020-03/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/dnd/Transfer.html) object as per the SWT API.
 
-Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+Example taken from [samples/hello/hello_drag_and_drop.rb](#hello-drag-and-drop) (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
 class Location
@@ -1972,26 +1974,17 @@ shell {
   text 'Hello, Drag and Drop!'
   list {
     selection bind(@location, :country)
-    drag_source {
-      transfer :text
-      on_drag_set_data { |event|
-        list = event.widget.getControl
-        event.data = list.getSelection.first
-      }
-    }              
+    on_drag_set_data { |event|
+      list = event.widget.getControl
+      event.data = list.getSelection.first
+    }
   }
   label(:center) {
     text 'Drag a country here!'
     font height: 20
-    drop_target {
-      transfer :text
-      on_drag_enter { |event|
-        event.detail = DND::DROP_COPY
-      }
-      on_drop { |event|
-        event.widget.getControl.setText(event.data)
-      }
-    }              
+    on_drop { |event|
+      event.widget.getControl.setText(event.data)
+    }
   }
 }.open
 ```
