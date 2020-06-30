@@ -236,7 +236,7 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer-dsl-swt -v 0.1.3
+jgem install glimmer-dsl-swt -v 0.2.0
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -247,7 +247,7 @@ Otherwise, you may also run `jruby -S gem install ...`
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-swt', '~> 0.1.3'
+gem 'glimmer-dsl-swt', '~> 0.2.0'
 ```
 
 And, then run:
@@ -536,7 +536,7 @@ Output:
                                                                          
   Css    glimmer-dsl-css    0.1.0     AndyMaleh   Glimmer DSL for CSS    
   Opal   glimmer-dsl-opal   0.0.9     AndyMaleh   Glimmer DSL for Opal   
-  Swt    glimmer-dsl-swt    0.1.3     AndyMaleh   Glimmer DSL for SWT    
+  Swt    glimmer-dsl-swt    0.2.0     AndyMaleh   Glimmer DSL for SWT    
   Xml    glimmer-dsl-xml    0.1.0     AndyMaleh   Glimmer DSL for XML    
                                                                          
 ```
