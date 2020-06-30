@@ -1130,7 +1130,7 @@ Here is a more sophisticated example taken from [hello_computed.rb](samples/hell
 
 ```ruby
 shell {
-  text "Hello Computed"
+  text 'Hello, Computed!'
   composite {
     grid_layout {
       num_columns 2
@@ -1138,44 +1138,44 @@ shell {
       horizontal_spacing 20
       vertical_spacing 10
     }
-    label {text "First &Name: "}
+    label {text 'First &Name: '}
     text {
       text bind(@contact, :first_name)
       layout_data {
-        horizontalAlignment :fill
-        grabExcessHorizontalSpace true
+        horizontal_alignment :fill
+        grab_excess_horizontal_space true
       }
     }
-    label {text "&Last Name: "}
+    label {text '&Last Name: '}
     text {
       text bind(@contact, :last_name)
       layout_data {
-        horizontalAlignment :fill
-        grabExcessHorizontalSpace true
+        horizontal_alignment :fill
+        grab_excess_horizontal_space true
       }
     }
-    label {text "&Year of Birth: "}
+    label {text '&Year of Birth: '}
     text {
       text bind(@contact, :year_of_birth)
       layout_data {
-        horizontalAlignment :fill
-        grabExcessHorizontalSpace true
+        horizontal_alignment :fill
+        grab_excess_horizontal_space true
       }
     }
-    label {text "Name: "}
+    label {text 'Name: '}
     label {
       text bind(@contact, :name, computed_by: [:first_name, :last_name])
       layout_data {
-        horizontalAlignment :fill
-        grabExcessHorizontalSpace true
+        horizontal_alignment :fill
+        grab_excess_horizontal_space true
       }
     }
-    label {text "Age: "}
+    label {text 'Age: '}
     label {
       text bind(@contact, :age, on_write: :to_i, computed_by: [:year_of_birth])
       layout_data {
-        horizontalAlignment :fill
-        grabExcessHorizontalSpace true
+        horizontal_alignment :fill
+        grab_excess_horizontal_space true
       }
     }
   }
@@ -1970,7 +1970,7 @@ include Glimmer
 
 shell {
   text 'Hello, Drag and Drop!'
-  list(:center) {
+  list {
     selection bind(@location, :country)
     drag_source {
       transfer :text
