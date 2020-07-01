@@ -261,7 +261,7 @@ You may learn more about other Glimmer related gems ([`glimmer-dsl-opal`](https:
 
 The `glimmer` command allows you to run, scaffold, package, and list Glimmer applications/gems.
 
-If you are new to Glimmer, you may read the Basic Usage section and skip the Advanced Usage section until you have gone through [Girb (Glimmer irb) Command](#girb-glimmer-irb-command), [Glimmer DSL Syntax](#glimmer-dsl-syntax), and [Samples](#samples).
+If you are new to Glimmer, you may read the Basic Usage section and skip the rest until you have gone through [Girb (Glimmer irb) Command](#girb-glimmer-irb-command), [Glimmer DSL Syntax](#glimmer-dsl-syntax), and [Samples](#samples).
 
 ### Basic Usage
 
