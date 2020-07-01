@@ -259,6 +259,10 @@ You may learn more about other Glimmer related gems ([`glimmer-dsl-opal`](https:
 
 ## Glimmer Command
 
+The `glimmer` command allows you to run, scaffold, package, and list Glimmer applications/gems.
+
+If you are new to Glimmer, you may read the Basic Usage section and skip the Advanced Usage section until you have gone through [Girb (Glimmer irb) Command](#girb-glimmer-irb-command), [Glimmer DSL Syntax](#glimmer-dsl-syntax), and [Samples](#samples).
+
 ### Basic Usage
 
 ```
@@ -567,11 +571,11 @@ Keep in mind that all samples live under [https://github.com/AndyObtiva/glimmer-
 
 Glimmer DSL syntax consists of static keywords and dynamic keywords to build and bind user-interface objects.
 
-Static keywords are pre-identified keywords in the Glimmer DSL, such as `shell`, `rgb`, and `bind`.
+Static keywords are pre-identified keywords in the Glimmer DSL, such as `shell`, `message_box`, `rgb`, and `bind`.
 
 Dynamic keywords are dynamically figured out from available SWT widgets, custom widgets, and properties. Examples are: `label`, `combo`, and `text`.
 
-The only reason to distinguish between both types of Glimmer DSL keywords is to realize that importing new Java SWT custom widget libraries and Ruby custom widgets automatically expands Glimmer's available DSL syntax via new dynamic keywords.
+The only reason to distinguish between the two types of Glimmer DSL keywords is to realize that importing new Ruby custom widgets and Java SWT custom widget libraries automatically expands Glimmer's available DSL syntax via new dynamic keywords.
 
 For example, if a project adds this custom SWT library:
 
