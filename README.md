@@ -1322,6 +1322,10 @@ Example from [samples/hello/hello_combo.rb](samples/hello_combo.rb) sample (you 
 
 #### Combo
 
+The `combo` widget provides a dropdown of options. By default, it also allows typing in a new option. To disable that behavior, you may use with the `:read_only` SWT style.
+
+When data-binding a `combo` widget, Glimmer can automatically deduce available options from data-bound model by convention: `{attribute_name}_options` method.
+
 ![Hello Combo](images/glimmer-hello-combo.png)
 
 ![Hello Combo](images/glimmer-hello-combo-expanded.png)
@@ -1363,7 +1367,7 @@ end
 HelloCombo.new.launch
 ```
 
-`combo` widget is data-bound to the country of a person. Note that it expects `person` object to have `:country` attribute and `:country_options` attribute containing all available countries.
+`combo` widget is data-bound to the country of a person. Note that it expects the `person` object to have the `:country` attribute and `:country_options` attribute containing all available countries (aka options). Glimmer reads these attributes by convention.
 
 #### List
 
