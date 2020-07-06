@@ -2808,6 +2808,10 @@ If you would like to contribute to Glimmer, please study up on Glimmer and [SWT]
 
 [Click here to view contributor commits.](https://github.com/AndyObtiva/glimmer/graphs/contributors)
 
+## Hire Me
+
+If your company would like to invest fulltime in further development of the Glimmer open-source project, [hire me](https://www.linkedin.com/in/andymaleh/).
+
 ## License
 
 Copyright (c) 2007-2020 Andy Maleh.
