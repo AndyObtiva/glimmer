@@ -109,6 +109,8 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
       - [Listing Custom Widget Gems](#listing-custom-widget-gems)
       - [Listing DSL Gems](#listing-dsl-gems)
     - [Packaging](#packaging)
+    - [Raw JRuby Command](#raw-jruby-command)
+      - [Mac Support](#mac-support)
   - [Girb (Glimmer irb) Command](#girb-glimmer-irb-command)
   - [Glimmer DSL Syntax](#glimmer-dsl-syntax)
     - [Widgets](#widgets)
@@ -150,8 +152,11 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
       - [Video Widget](#video-widget)
       - [Browser Widget](#browser-widget)
   - [Glimmer Configuration](#glimmer-configuration)
+    - [logger](#logger)
     - [import_swt_packages](#import_swt_packages)
+    - [loop_max_count](#loop_max_count)
   - [Glimmer Style Guide](#glimmer-style-guide)
+  - [SWT Reference](#swt-reference)
   - [Samples](#samples)
     - [Hello Samples](#hello-samples)
       - [Hello, World!](#hello-world-sample)
@@ -171,11 +176,6 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
       - [Glimmer Calculator](#glimmer-calculator)
       - [Gladiator](#gladiator)
   - [In Production](#in-production)
-  - [SWT Reference](#swt-reference)
-  - [Infinite Loop Detection](#infinite-loop-detection)
-  - [Logging](#logging)
-  - [Raw JRuby Command](#raw-jruby-command)
-    - [Mac Support](#mac-support)
   - [Packaging & Distribution](#packaging--distribution)
     - [Packaging Defaults](#packaging-defaults)
     - [Packaging Configuration](#packaging-configuration)
@@ -549,6 +549,31 @@ Output:
 ### Packaging
 
 Glimmer packaging tasks are detailed under [Packaging & Distribution](#packaging--distribution).
+
+### Raw JRuby Command
+
+If there is a need to run Glimmer directly via the `jruby` command, you
+may run the following:
+
+```
+jruby -J-classpath "path_to/swt.jar" -r glimmer -S application.rb
+```
+
+The `-J-classpath` option specifies the `swt.jar` file path, which can be a
+manually downloaded version of SWT, or otherwise the one included in the gem. You can lookup the one included in the gem by running `jgem which glimmer` to find the gem path and then look through the `vendor` directory.
+
+The `-r` option preloads (requires) the `glimmer` library in Ruby.
+
+The `-S` option specifies a script to run.
+
+### Mac Support
+
+Mac is well supported with the `glimmer` command. However, if there is a reason to use the raw jruby command, you need to pass an extra option (`-J-XstartOnFirstThread`) to JRuby on the Mac.
+
+Example:
+```
+jruby -J-XstartOnFirstThread -J-classpath "path_to/swt.jar" -r glimmer -S application.rb
+```
 
 ## Girb (Glimmer irb) Command
 
@@ -2276,6 +2301,38 @@ This relies on Glimmer's [Multi-DSL Support](#multi-dsl-support) for building th
 
 Glimmer configuration may be done via the `Glimmer::Config` module.
 
+### logger
+
+Glimmer supports logging via a Ruby Logger configurable with the `Glimmer::Config.logger` config option.
+It is disabled by default to ensure not affecting desktop app performance.
+It may be enabled via `Glimmer::Config.enable_logging`
+When enabled, the Glimmer logger level defaults to `:warn` (aka `Logger::WARN`)
+It may be configured to show a different level of logging via `Glimmer::Config.logger.level` just ike with any Ruby Logger.
+
+Example:
+
+```ruby
+Glimmer::Config.enable_logging
+Glimmer::Config.logger.level = Logger::DEBUG
+```
+This results in more verbose debug loggging to `STDOUT`, which is very helpful in troubleshooting Glimmer DSL syntax when needed.
+
+Example log:
+```
+D, [2017-07-21T19:23:12.587870 #35707] DEBUG -- : method: shell and args: []
+D, [2017-07-21T19:23:12.594405 #35707] DEBUG -- : ShellCommandHandler will handle command: shell with arguments []
+D, [2017-07-21T19:23:12.844775 #35707] DEBUG -- : method: composite and args: []
+D, [2017-07-21T19:23:12.845388 #35707] DEBUG -- : parent is a widget: true
+D, [2017-07-21T19:23:12.845833 #35707] DEBUG -- : on listener?: false
+D, [2017-07-21T19:23:12.864395 #35707] DEBUG -- : WidgetCommandHandler will handle command: composite with arguments []
+D, [2017-07-21T19:23:12.864893 #35707] DEBUG -- : widget styles are: []
+D, [2017-07-21T19:23:12.874296 #35707] DEBUG -- : method: list and args: [:multi]
+D, [2017-07-21T19:23:12.874969 #35707] DEBUG -- : parent is a widget: true
+D, [2017-07-21T19:23:12.875452 #35707] DEBUG -- : on listener?: false
+D, [2017-07-21T19:23:12.878434 #35707] DEBUG -- : WidgetCommandHandler will handle command: list with arguments [:multi]
+D, [2017-07-21T19:23:12.878798 #35707] DEBUG -- : widget styles are: [:multi]
+```
+
 ### import_swt_packages
 
 Glimmer automatically imports all SWT Java packages upon adding `include Glimmer`, `include Glimmer::UI::CustomWidget`, or `include Glimmer::UI::CustomShell` to a class or module. It relies on JRuby's `include_package` for lazy-importing upon first reference of a Java class.
@@ -2325,6 +2382,16 @@ You can learn more about importing Java packages into Ruby code at this JRuby WI
 
 https://github.com/jruby/jruby/wiki/CallingJavaFromJRuby
 
+### loop_max_count
+
+Glimmer has infinite loop detection support. 
+It can detect when an infinite loop is about to occur in method_missing and stops it. 
+It detects potential infinite loops when the same keyword and args repeat more than 100 times, which is unusual in a GUI app.
+
+The max limit can be changed via the `Glimmer::Config::loop_max_count=(count)` config option.
+
+Infinite loop detection may be disabled altogether if needed by setting `Glimmer::Config::loop_max_count` to `-1`
+
 ## Glimmer Style Guide
 
 - Widgets are declared with underscored lowercase versions of their SWT names minus the SWT package name.
@@ -2339,6 +2406,34 @@ https://github.com/jruby/jruby/wiki/CallingJavaFromJRuby
 - Data-binding is done via `bind` keyword, which always takes arguments wrapped in parentheses
 - Custom widget body, before_body, and after_body blocks open their blocks and close them with curly braces.
 - Custom widgets receive additional arguments to SWT style called options. These are passed as the last argument inside the parentheses, a hash of option names pointing to values.
+
+## SWT Reference
+
+https://www.eclipse.org/swt/docs.php
+
+Here is the SWT API:
+
+https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/index.html
+
+Here is a visual list of SWT widgets:
+
+https://www.eclipse.org/swt/widgets/
+
+Here is a textual list of SWT widgets:
+
+https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/guide/swt_widgets_controls.htm?cp=2_0_7_0_0
+
+Here is a list of SWT style bits as used in widget declaration:
+
+https://wiki.eclipse.org/SWT_Widget_Style_Bits
+
+Here is a SWT style bit constant reference:
+
+https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
+
+Here is an SWT Drag and Drop guide:
+
+https://www.eclipse.org/articles/Article-SWT-DND/DND-in-SWT.html
 
 ## Samples
 
@@ -2543,94 +2638,6 @@ The following production apps have been built with Glimmer:
 [<img alt="Math Bowling Logo" src="https://raw.githubusercontent.com/AndyObtiva/MathBowling/master/images/math-bowling-logo.png" width="40" />Math Bowling](https://github.com/AndyObtiva/MathBowling): an educational math game for elementary level kids
 
 If you have a Glimmer app you would like referenced here, please mention in a Pull Request. 
-
-## SWT Reference
-
-https://www.eclipse.org/swt/docs.php
-
-Here is the SWT API:
-
-https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/index.html
-
-Here is a visual list of SWT widgets:
-
-https://www.eclipse.org/swt/widgets/
-
-Here is a textual list of SWT widgets:
-
-https://help.eclipse.org/2019-12/topic/org.eclipse.platform.doc.isv/guide/swt_widgets_controls.htm?cp=2_0_7_0_0
-
-Here is a list of SWT style bits as used in widget declaration:
-
-https://wiki.eclipse.org/SWT_Widget_Style_Bits
-
-Here is a SWT style bit constant reference:
-
-https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
-
-Here is an SWT Drag and Drop guide:
-
-https://www.eclipse.org/articles/Article-SWT-DND/DND-in-SWT.html
-
-## Infinite Loop Detection
-
-Glimmer can detect if an infinite loop occurs with method_missing by ensuring it does not loop with the same keyword and args more than 100 times.
-
-The max limit can be changed via the `Glimmer::Config::loop_max_count=(count)` method.
-
-Infinite loop detection may be disabled by setting `Glimmer::Config::loop_max_count` to `-1`
-
-## Logging
-
-Glimmer comes with a Ruby Logger accessible via `Glimmer::Config.logger`
-Its level of logging defaults to `Logger::WARN`
-It may be configured to show a different level of logging as follows:
-```ruby
-Glimmer::Config.enable_logging
-Glimmer::Config.logger.level = Logger::DEBUG
-```
-This results in more verbose debugging log to `STDOUT`, which is helpful in troubleshooting Glimmer DSL syntax when needed.
-
-Example log:
-```
-D, [2017-07-21T19:23:12.587870 #35707] DEBUG -- : method: shell and args: []
-D, [2017-07-21T19:23:12.594405 #35707] DEBUG -- : ShellCommandHandler will handle command: shell with arguments []
-D, [2017-07-21T19:23:12.844775 #35707] DEBUG -- : method: composite and args: []
-D, [2017-07-21T19:23:12.845388 #35707] DEBUG -- : parent is a widget: true
-D, [2017-07-21T19:23:12.845833 #35707] DEBUG -- : on listener?: false
-D, [2017-07-21T19:23:12.864395 #35707] DEBUG -- : WidgetCommandHandler will handle command: composite with arguments []
-D, [2017-07-21T19:23:12.864893 #35707] DEBUG -- : widget styles are: []
-D, [2017-07-21T19:23:12.874296 #35707] DEBUG -- : method: list and args: [:multi]
-D, [2017-07-21T19:23:12.874969 #35707] DEBUG -- : parent is a widget: true
-D, [2017-07-21T19:23:12.875452 #35707] DEBUG -- : on listener?: false
-D, [2017-07-21T19:23:12.878434 #35707] DEBUG -- : WidgetCommandHandler will handle command: list with arguments [:multi]
-D, [2017-07-21T19:23:12.878798 #35707] DEBUG -- : widget styles are: [:multi]
-```
-
-## Raw JRuby Command
-
-If there is a need to run Glimmer directly via the `jruby` command, you
-may run the following:
-
-```
-jruby -J-classpath "path_to/swt.jar" -r glimmer -S application.rb
-```
-
-The `-J-classpath` option specifies the `swt.jar` file path, which can be a
-manually downloaded version of SWT, or otherwise the one included in the gem. You can lookup the one included in the gem by running `jgem which glimmer` to find the gem path and then look through the `vendor` directory.
-
-The `-r` option preloads (requires) the `glimmer` library in Ruby.
-
-The `-S` option specifies a script to run.
-
-### Mac Support
-
-Mac is well supported with the `glimmer` command. However, if there is a reason to use the raw jruby command, you need to pass an extra option (`-J-XstartOnFirstThread`) to JRuby on the Mac.
-
-Example:
-```
-jruby -J-XstartOnFirstThread -J-classpath "path_to/swt.jar" -r glimmer -S application.rb
-```
 
 ## Packaging & Distribution
 
