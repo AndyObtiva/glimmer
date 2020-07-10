@@ -149,6 +149,8 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
       - [App Name and Version](#app-name-and-version)
       - [Video Widget](#video-widget)
       - [Browser Widget](#browser-widget)
+  - [Glimmer Config](#glimmer-config)
+    - [import_swt_packages](#import_swt_packages)
   - [Glimmer Style Guide](#glimmer-style-guide)
   - [Samples](#samples)
     - [Hello Samples](#hello-samples)
@@ -170,7 +172,6 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
       - [Gladiator](#gladiator)
   - [In Production](#in-production)
   - [SWT Reference](#swt-reference)
-  - [SWT Packages](#swt-packages)
   - [Infinite Loop Detection](#infinite-loop-detection)
   - [Logging](#logging)
   - [Raw JRuby Command](#raw-jruby-command)
@@ -2271,6 +2272,59 @@ shell {
 
 This relies on Glimmer's [Multi-DSL Support](#multi-dsl-support) for building the HTML text using [Glimmer XML DSL](https://github.com/AndyObtiva/glimmer-dsl-xml).
 
+## Glimmer Config
+
+Glimmer configuration may be done via the `Glimmer::Config` module.
+
+### import_swt_packages
+
+Glimmer automatically imports all SWT Java packages upon adding `include Glimmer`, `include Glimmer::UI::CustomWidget`, or `include Glimmer::UI::CustomShell` to a class or module. It relies on JRuby's `include_package` for lazy-importing upon first reference of a Java class.
+
+As a result, you may call SWT Java classes from Glimmer Ruby code without mentioning Java package references explicitly.
+
+For example, `org.eclipse.swt.graphics.Color` can be referenced as just `Color`
+
+The Java packages imported come from the `Glimmer::Config.import_swt_packages`(https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/lib/ext/glimmer/config.rb) config option, which defaults to `Glimmer::Config::DEFAULT_IMPORT_SWT_PACKAGES`, importing the following Java packages:
+```
+org.eclipse.swt.*
+org.eclipse.swt.widgets.*
+org.eclipse.swt.layout.*
+org.eclipse.swt.graphics.*
+org.eclipse.swt.browser.*
+org.eclipse.swt.custom.*
+org.eclipse.swt.dnd.*
+```
+
+If you need to import additional Java packages as extra Glimmer widgets, you may add more packages to `Glimmer::Config.import_swt_packages`(https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/lib/ext/glimmer/config.rb) by using the `+=` operator (or alternatively limit to certain packages via `=` operator).
+
+Example:
+
+```ruby
+Glimmer::Config.import_swt_packages += [
+  'org.eclipse.nebula.widgets.ganttchart'
+]
+```
+
+Another alternative is to simply add a `java_import` call to your code (e.g. `java_import 'org.eclipse.nebula.widgets.ganttchart.GanttChart'`). Glimmer will automatically take advantage of it (e.g. when invoking `gantt_chart` keyword)
+
+Nonetheless, you can disable automatic Java package import if needed via this Glimmer configuration option:
+
+```ruby
+Glimmer::Config.import_swt_packages = false
+```
+
+Once disabled, to import SWT Java packages manually, you may simply:
+
+1. `include Glimmer::SWT::Packages`: lazily imports all SWT Java packages to your class, lazy-loading SWT Java class constants on first reference.
+
+2. `java_import swt_package_class_string`: immediately imports a specific Java class where `swt_package_class_string` is the Java full package reference of a Java class (e.g. `java_import 'org.eclipse.swt.SWT'`)
+
+Note: Glimmer relies on [`nested_imported_jruby_include_package`](https://github.com/AndyObtiva/nested_inherited_jruby_include_package), which automatically brings packages to nested-modules/nested-classes and sub-modules/sub-classes.
+
+You can learn more about importing Java packages into Ruby code at this JRuby WIKI page:
+
+https://github.com/jruby/jruby/wiki/CallingJavaFromJRuby
+
 ## Glimmer Style Guide
 
 - Widgets are declared with underscored lowercase versions of their SWT names minus the SWT package name.
@@ -2517,55 +2571,6 @@ https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/
 Here is an SWT Drag and Drop guide:
 
 https://www.eclipse.org/articles/Article-SWT-DND/DND-in-SWT.html
-
-## SWT Packages
-
-Glimmer automatically imports all SWT Java packages upon adding `include Glimmer`, `include Glimmer::UI::CustomWidget`, or `include Glimmer::UI::CustomShell` to a class or module. It relies on JRuby's `include_package` for lazy-importing upon first reference of a Java class.
-
-As a result, you may call SWT Java classes from Glimmer Ruby code without mentioning Java package references explicitly.
-
-For example, `org.eclipse.swt.graphics.Color` can be referenced as just `Color`
-
-The Java packages imported come from the `Glimmer::Config.import_swt_packages`(https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/lib/ext/glimmer/config.rb) config option, which defaults to `Glimmer::Config::DEFAULT_IMPORT_SWT_PACKAGES`, importing the following Java packages:
-```
-org.eclipse.swt.*
-org.eclipse.swt.widgets.*
-org.eclipse.swt.layout.*
-org.eclipse.swt.graphics.*
-org.eclipse.swt.browser.*
-org.eclipse.swt.custom.*
-org.eclipse.swt.dnd.*
-```
-
-If you need to import additional Java packages as extra Glimmer widgets, you may add more packages to `Glimmer::Config.import_swt_packages`(https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/lib/ext/glimmer/config.rb) by using the `+=` operator (or alternatively limit to certain packages via `=` operator).
-
-Example:
-
-```ruby
-Glimmer::Config.import_swt_packages += [
-  'org.eclipse.nebula.widgets.ganttchart'
-]
-```
-
-Another alternative is to simply add a `java_import` call to your code (e.g. `java_import 'org.eclipse.nebula.widgets.ganttchart.GanttChart'`). Glimmer will automatically take advantage of it (e.g. when invoking `gantt_chart` keyword)
-
-Nonetheless, you can disable automatic Java package import if needed via this Glimmer configuration option:
-
-```ruby
-Glimmer::Config.import_swt_packages = false
-```
-
-Once disabled, to import SWT Java packages manually, you may simply:
-
-1. `include Glimmer::SWT::Packages`: lazily imports all SWT Java packages to your class, lazy-loading SWT Java class constants on first reference.
-
-2. `java_import swt_package_class_string`: immediately imports a specific Java class where `swt_package_class_string` is the Java full package reference of a Java class (e.g. `java_import 'org.eclipse.swt.SWT'`)
-
-Note: Glimmer relies on [`nested_imported_jruby_include_package`](https://github.com/AndyObtiva/nested_inherited_jruby_include_package), which automatically brings packages to nested-modules/nested-classes and sub-modules/sub-classes.
-
-You can learn more about importing Java packages into Ruby code at this JRuby WIKI page:
-
-https://github.com/jruby/jruby/wiki/CallingJavaFromJRuby
 
 ## Infinite Loop Detection
 
