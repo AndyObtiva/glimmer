@@ -149,7 +149,7 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
       - [App Name and Version](#app-name-and-version)
       - [Video Widget](#video-widget)
       - [Browser Widget](#browser-widget)
-  - [Glimmer Config](#glimmer-config)
+  - [Glimmer Configuration](#glimmer-configuration)
     - [import_swt_packages](#import_swt_packages)
   - [Glimmer Style Guide](#glimmer-style-guide)
   - [Samples](#samples)
@@ -2272,7 +2272,7 @@ shell {
 
 This relies on Glimmer's [Multi-DSL Support](#multi-dsl-support) for building the HTML text using [Glimmer XML DSL](https://github.com/AndyObtiva/glimmer-dsl-xml).
 
-## Glimmer Config
+## Glimmer Configuration
 
 Glimmer configuration may be done via the `Glimmer::Config` module.
 
@@ -2284,7 +2284,7 @@ As a result, you may call SWT Java classes from Glimmer Ruby code without mentio
 
 For example, `org.eclipse.swt.graphics.Color` can be referenced as just `Color`
 
-The Java packages imported come from the `Glimmer::Config.import_swt_packages`(https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/lib/ext/glimmer/config.rb) config option, which defaults to `Glimmer::Config::DEFAULT_IMPORT_SWT_PACKAGES`, importing the following Java packages:
+The Java packages imported come from the [`Glimmer::Config.import_swt_packages`](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/lib/ext/glimmer/config.rb) config option, which defaults to `Glimmer::Config::DEFAULT_IMPORT_SWT_PACKAGES`, importing the following Java packages:
 ```
 org.eclipse.swt.*
 org.eclipse.swt.widgets.*
@@ -2295,7 +2295,7 @@ org.eclipse.swt.custom.*
 org.eclipse.swt.dnd.*
 ```
 
-If you need to import additional Java packages as extra Glimmer widgets, you may add more packages to `Glimmer::Config.import_swt_packages`(https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/lib/ext/glimmer/config.rb) by using the `+=` operator (or alternatively limit to certain packages via `=` operator).
+If you need to import additional Java packages as extra Glimmer widgets, you may add more packages to [`Glimmer::Config.import_swt_packages`](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/lib/ext/glimmer/config.rb) by using the `+=` operator (or alternatively limit to certain packages via `=` operator).
 
 Example:
 
