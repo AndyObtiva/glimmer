@@ -237,24 +237,28 @@ Please follow these instructions to make the `glimmer` command available on your
 
 Run this command to install directly:
 ```
-jgem install glimmer-dsl-swt -v 0.2.0
+jgem install glimmer-dsl-swt -v 0.2.1
 ```
 
 `jgem` is JRuby's version of `gem` command. 
 RVM allows running `gem` as an alias.
 Otherwise, you may also run `jruby -S gem install ...`
 
+Note: if you're using activerecord or activesupport, keep in mind that Glimmer unhooks ActiveSupport::Dependencies as it does not rely on it.
+
 ### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-swt', '~> 0.2.0'
+gem 'glimmer-dsl-swt', '~> 0.2.1'
 ```
 
 And, then run:
 ```
 jruby -S bundle install
 ```
+
+Note: if you're using activerecord or activesupport, keep in mind that Glimmer unhooks ActiveSupport::Dependencies as it does not rely on it.
 
 You may learn more about other Glimmer related gems ([`glimmer-dsl-opal`](https://github.com/AndyObtiva/glimmer-dsl-opal), [`glimmer-dsl-xml`](https://github.com/AndyObtiva/glimmer-dsl-xml), and [`glimmer-dsl-css`](https://github.com/AndyObtiva/glimmer-dsl-css)) at [Multi-DSL Support](#multi-dsl-support)
 
@@ -541,7 +545,7 @@ Output:
                                                                          
   Css    glimmer-dsl-css    0.1.0     AndyMaleh   Glimmer DSL for CSS    
   Opal   glimmer-dsl-opal   0.0.9     AndyMaleh   Glimmer DSL for Opal   
-  Swt    glimmer-dsl-swt    0.2.0     AndyMaleh   Glimmer DSL for SWT    
+  Swt    glimmer-dsl-swt    0.2.1     AndyMaleh   Glimmer DSL for SWT    
   Xml    glimmer-dsl-xml    0.1.0     AndyMaleh   Glimmer DSL for XML    
                                                                          
 ```
