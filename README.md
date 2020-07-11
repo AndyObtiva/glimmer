@@ -233,11 +233,11 @@ Glimmer might still work on lower versions of Java, JRuby and SWT, but there are
 
 Please follow these instructions to make the `glimmer` command available on your system via the [`glimmer-dsl-swt`](https://github.com/AndyObtiva/glimmer-dsl-swt) gem.
 
-If you intend to learn the basics of Glimmer but are not ready to build a Glimmer app yet, pick Option 1 (Direct Install).
+If you intend to learn the basics of Glimmer but are not ready to build a Glimmer app yet, pick Option 1 ([Direct Install](#option-1-direct-install)).
 
-If you intend to build a Glimmer app from scratch on the Mac, pick Option 1 (Direct Install) to leverage [Glimmer Scaffolding](https://github.com/AndyObtiva/glimmer#scaffolding) (only available on the Mac).
+If you intend to build a Glimmer app from scratch on the Mac, pick Option 1 ([Direct Install](#option-1-direct-install)) to leverage [Glimmer Scaffolding](https://github.com/AndyObtiva/glimmer#scaffolding) (only available on the Mac).
 
-Otherwise, Option 2 (Bundler) is recommended for building Glimmer apps on other platforms (Windows and Linux).
+Otherwise, Option 2 ([Bundler](#option-2-bundler)) is recommended for building Glimmer apps on other platforms (Windows and Linux).
 
 ### Option 1: Direct Install 
 (Use for [Scaffolding](https://github.com/AndyObtiva/glimmer#scaffolding) on the Mac)
