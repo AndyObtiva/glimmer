@@ -405,6 +405,10 @@ Eventually, it will launch an advanced "Hello, World!" app window having the tit
 
 ![Glimmer Scaffold App](images/glimmer-scaffolding-app.png)
 
+On the Mac, it also comes with a boilerplate Preferences dialog.
+
+![Glimmer Scaffold App Preferences](images/glimmer-scaffolding-app-preferences.png)
+
 #### Custom Shell
 
 To scaffold a Glimmer custom shell (full window view) for an existing Glimmer app, run the following command:
