@@ -233,7 +233,14 @@ Glimmer might still work on lower versions of Java, JRuby and SWT, but there are
 
 Please follow these instructions to make the `glimmer` command available on your system via the [`glimmer-dsl-swt`](https://github.com/AndyObtiva/glimmer-dsl-swt) gem.
 
-### Option 1: Direct Install
+If you intend to learn the basics of Glimmer but are not ready to build a Glimmer app yet, pick Option 1 (Direct Install).
+
+If you intend to build a Glimmer app from scratch on the Mac, pick Option 1 (Direct Install) to leverage [Glimmer Scaffolding](https://github.com/AndyObtiva/glimmer#scaffolding) (only available on the Mac).
+
+Otherwise, Option 2 (Bundler) is recommended for building Glimmer apps on other platforms (Windows and Linux).
+
+### Option 1: Direct Install 
+(Use for [Scaffolding](https://github.com/AndyObtiva/glimmer#scaffolding) on the Mac)
 
 Run this command to install directly:
 ```
@@ -244,9 +251,14 @@ jgem install glimmer-dsl-swt -v 0.2.1
 RVM allows running `gem` as an alias.
 Otherwise, you may also run `jruby -S gem install ...`
 
+If you are new to Glimmer and would like to continue learning the basics, you may continue to the [Glimmer Command](https://github.com/AndyObtiva/glimmer#glimmer-command) section.
+
+Otherwise, if you are ready to build a Glimmer app on the Mac, you can jump to the [Glimmer Scaffolding](https://github.com/AndyObtiva/glimmer#scaffolding) section next.
+
 Note: if you're using activerecord or activesupport, keep in mind that Glimmer unhooks ActiveSupport::Dependencies as it does not rely on it.
 
-### Option 2: Bundler
+### Option 2: Bundler 
+(Use for Manual App Creation)
 
 Add the following to `Gemfile`:
 ```
