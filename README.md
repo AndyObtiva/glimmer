@@ -858,7 +858,7 @@ Glimmer DSL provides support for SWT Menu and MenuItem widgets.
 
 There are 2 main types of menus in SWT:
 - Menu Bar (shows up on top)
-- Pop Up Menu (shows up when right-clicking a widget)
+- Pop Up Context Menu (shows up when right-clicking a widget)
 
 Underneath both types, there can be a 3rd menu type called Drop Down.
 
