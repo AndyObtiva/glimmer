@@ -866,7 +866,7 @@ Glimmer provides special support for Drop Down menus as it automatically instant
 
 The ampersand symbol indicates the keyboard shortcut key for the menu item (e.g. '&Help' can be triggered on Windows by hitting ALT+H)
 
-Example [Menu Bar] (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+Example of a Menu Bar (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
 shell {
@@ -906,7 +906,7 @@ shell {
 }.open
 ```
 
-Example [Pop Up Menu] (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+Example of a Pop Up Context Menu (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
 shell {
