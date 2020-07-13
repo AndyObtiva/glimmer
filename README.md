@@ -586,9 +586,11 @@ The `-r` option preloads (requires) the `glimmer` library in Ruby.
 
 The `-S` option specifies a script to run.
 
-### Mac Support
+#### Mac Support
 
-Mac is well supported with the `glimmer` command. However, if there is a reason to use the raw jruby command, you need to pass an extra option (`-J-XstartOnFirstThread`) to JRuby on the Mac.
+The Mac is well supported with the `glimmer` command. The advice below is not needed if you are using it.
+
+However, if there is a reason to use the raw `jruby` command directly instead of the `glimmer` command, you need to pass an extra option (`-J-XstartOnFirstThread`) to JRuby on the Mac (Glimmer automatically passes it for you when using the `glimmer` command).
 
 Example:
 ```
