@@ -2,6 +2,8 @@
 
 ## 0.9.4
 
+- Fix issue with observing attributes on classes directly instead of their objects
+
 ## 0.9.3
 
 - Add infinite loop detection support to avoid infinite loops (breaks after 100 repetitions)
