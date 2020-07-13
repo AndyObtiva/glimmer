@@ -56,9 +56,9 @@ module Glimmer
         method(property_writer_name)
         ensure_array_object_observer(property_name, send(property_name))
         begin
-          method("__original_#{property_writer_name}")
+          singleton_method("__original_#{property_writer_name}")
         rescue
-          old_method = self.class.instance_method(property_writer_name)
+          old_method = self.class.instance_method(property_writer_name) rescue self.method(property_writer_name)
           define_singleton_method("__original_#{property_writer_name}", old_method)
           define_singleton_method(property_writer_name) do |value|
             old_value = self.send(property_name)
@@ -69,7 +69,7 @@ module Glimmer
           end
         end
       rescue => e
-        # ignore writing if no property writer exists
+        #ignore writing if no property writer exists
         Glimmer::Config.logger&.debug "No need to observe property writer: #{property_writer_name}\n#{e.message}\n#{e.backtrace.join("\n")}"
       end
 
