@@ -871,36 +871,60 @@ The ampersand symbol indicates the keyboard shortcut key for the menu item (e.g.
 Example of a Menu Bar (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
-shell {
+shell { |shell_proxy|
+  text 'Hello, Menu Bar!'
+  grid_layout
+  label(:center) {
+    font height: 16
+    text 'Check Out The File Menu and History Menu in The Menu Bar Above!'
+  }
   menu_bar {
     menu {
-      text "&File"
+      text '&File'
       menu_item {
-        text "E&xit"
+        text 'E&xit'
       }
       menu_item(0) {
-        text "&New"
+        text '&New'
+        on_widget_selected {
+          message_box(shell_proxy) {
+            text 'New File'
+            message 'New File Contents'
+          }.open
+        }
       }
       menu(1) {
-        text "&Options"
+        text '&Options'
         menu_item(:radio) {
-          text "Option 1"
+          text 'Option 1'
         }
         menu_item(:separator)
         menu_item(:check) {
-          text "Option 3"
+          text 'Option 3'
         }
       }
     }
     menu {
-      text "&History"
+      text '&History'
       menu {
-        text "&Recent"
+        text '&Recent'
         menu_item {
-          text "File 1"
+          text 'File 1'
+          on_widget_selected {
+            message_box(shell_proxy) {
+              text 'File 1'
+              message 'File 1 Contents'
+            }.open
+          }
         }
         menu_item {
-          text "File 2"
+          text 'File 2'
+          on_widget_selected {
+            message_box(shell_proxy) {
+              text 'File 2'
+              message 'File 2 Contents'
+            }.open
+          }
         }
       }
     }
@@ -911,19 +935,34 @@ shell {
 Example of a Pop Up Context Menu (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
-shell {
+  shell { |shell_proxy|
+  text 'Hello, Pop Up Context Menu!'
+  grid_layout
   label {
-    text 'Right-Click Me'
+    font height: 16
+    text 'Right-Click To Pop Up a Context Menu'
     menu {
       menu {
         text '&History'
         menu {
-          text "&Recent"
+          text '&Recent'
           menu_item {
-            text "File 1"
+            text 'File 1'
+            on_widget_selected {
+              message_box(shell_proxy) {
+                text 'File 1'
+                message 'File 1 Contents'
+              }.open
+            }
           }
           menu_item {
-            text "File 2"
+            text 'File 2'
+            on_widget_selected {
+              message_box(shell_proxy) {
+                text 'File 2'
+                message 'File 2 Contents'
+              }.open
+            }
           }
         }
       }
@@ -2586,6 +2625,33 @@ glimmer samples/hello/hello_drag_and_drop.rb
 ```
 
 ![Hello Drag and Drop](images/glimmer-hello-drag-and-drop.gif)
+
+#### Hello, Menu Bar!
+
+This sample demonstrates menus in Glimmer.
+
+Run:
+
+```
+glimmer samples/hello/hello_menu_bar.rb
+```
+
+![Hello Menu Bar](images/glimmer-hello-menu-bar.png)
+![Hello Menu Bar File Menu](images/glimmer-hello-menu-bar-file-menu.png)
+![Hello Menu Bar History Menu](images/glimmer-hello-menu-bar-history-menu.png)
+
+#### Hello, Pop Up Context Menu!
+
+This sample demonstrates pop up context menus in Glimmer.
+
+Run:
+
+```
+glimmer samples/hello/hello_pop_up_context_menu.rb
+```
+
+![Hello Pop Up Context Menu](images/glimmer-hello-pop-up-context-menu.png)
+![Hello Pop Up Context Menu Popped Up](images/glimmer-hello-pop-up-context-menu-popped-up.png)
 
 ### Elaborate Samples
 
