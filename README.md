@@ -320,6 +320,7 @@ glimmer list:custom_shell_gems[query]                             # List Glimmer
 glimmer list:custom_widget_gems[query]                            # List Glimmer custom widget gems available at rubygems.org (query is optional)
 glimmer list:dsl_gems[query]                                      # List Glimmer DSL gems available at rubygems.org (query is optional)
 glimmer package                                                   # Package app for distribution (generating config, jar, and native files)
+glimmer package:clean                                             # Clean by removing "dist" and "packages" directories
 glimmer package:config                                            # Generate JAR config file
 glimmer package:jar                                               # Generate JAR file
 glimmer package:native                                            # Generate Native files (DMG/PKG/APP on the Mac)
