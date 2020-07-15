@@ -118,6 +118,7 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
       - [SWT Proxies](#swt-proxies)
       - [Dialog](#dialog)
       - [Menus](#menus)
+      - [ScrolledComposite](#scrolledcomposite)
     - [Widget Styles](#widget-styles)
       - [Explicit SWT Style Bit](#explicit-swt-style-bit)
       - [Negative SWT Style Bits](#negative-swt-style-bits)
@@ -133,7 +134,6 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
       - [List](#list)
       - [Table](#table)
       - [Tree](#tree)
-      - [ScrolledComposite](#scrolledcomposite)
     - [Observer](#observer)
       - [Observing Widgets](#observing-widgets)
       - [Observing Models](#observing-models)
@@ -977,6 +977,13 @@ Example of a Pop Up Context Menu (you may copy/paste in [`girb`](#girb-glimmer-i
 }.open
 ```
 
+#### ScrolledComposite
+
+Glimmer provides smart defaults for the `scrolled_composite` widget by:
+- Automatically setting the nested widget as its content (meaning use can just like a plain old `composite` to add scrolling)
+- Automatically setting the :h_scroll and :v_scroll SWT styles (can be set manually if only one of either :h_scroll or :v_scroll is desired )
+- Automatically setting the expand horizontal and expand vertical SWT properties to `true`
+
 ### Widget Styles
 
 SWT widgets receive `SWT` styles in their constructor as per this guide:
@@ -1695,13 +1702,6 @@ This finds the root node. The array is a Java array. This enables easy passing o
 
 To edit a tree, you must invoke `TreeProxy#edit_selected_tree_item` or `TreeProxy#edit_tree_item`. This automatically leverages the SWT TreeEditor custom class behind the scenes, displaying
 a text widget to the user to change the selected or passed tree item text into something else. It automatically persists the change to `items` data-bound model on ENTER/FOCUS-OUT or cancels on ESC/NO-CHANGE.
-
-#### ScrolledComposite
-
-Glimmer provides smart defaults for the `scrolled_composite` widget by:
-- Automatically setting the nested widget as its content (meaning use can just like a plain old `composite` to add scrolling)
-- Automatically setting the :h_scroll and :v_scroll SWT styles (can be set manually if only one of either :h_scroll or :v_scroll is desired )
-- Automatically setting the expand horizontal and expand vertical SWT properties to `true`
 
 ### Observer
 
