@@ -2586,20 +2586,28 @@ For hello-type simple samples, check the following.
 
 #### Hello, World! Sample
 
+Code:
+
+[samples/hello/hello_world.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_world.rb)
+
 Run:
 
 ```
-glimmer [samples/hello/hello_world.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_world.rb)
+glimmer samples/hello/hello_world.rb
 ```
 
 ![Hello World](images/glimmer-hello-world.png)
 
 #### Hello, Tab!
 
+Code:
+
+[samples/hello/hello_tab.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_tab.rb)
+
 Run:
 
 ```
-glimmer [samples/hello/hello_tab.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_tab.rb)
+glimmer samples/hello/hello_tab.rb
 ```
 
 ![Hello Tab English](images/glimmer-hello-tab-english.png)
@@ -2609,10 +2617,14 @@ glimmer [samples/hello/hello_tab.rb](https://github.com/AndyObtiva/glimmer-dsl-s
 
 This sample demonstrates combo data-binding.
 
+Code:
+
+[samples/hello/hello_combo.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_combo.rb)
+
 Run:
 
 ```
-glimmer [samples/hello/hello_combo.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_combo.rb)
+glimmer samples/hello/hello_combo.rb
 ```
 
 ![Hello Combo](images/glimmer-hello-combo.png)
@@ -2622,10 +2634,14 @@ glimmer [samples/hello/hello_combo.rb](https://github.com/AndyObtiva/glimmer-dsl
 
 This sample demonstrates list single-selection data-binding.
 
+Code:
+
+[samples/hello/hello_list_single_selection.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_list_single_selection.rb)
+
 Run:
 
 ```
-glimmer [samples/hello/hello_list_single_selection.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_list_single_selection.rb)
+glimmer samples/hello/hello_list_single_selection.rb
 ```
 
 ![Hello List Single Selection](images/glimmer-hello-list-single-selection.png)
@@ -2634,10 +2650,14 @@ glimmer [samples/hello/hello_list_single_selection.rb](https://github.com/AndyOb
 
 This sample demonstrates list multi-selection data-binding.
 
+Code:
+
+[samples/hello/hello_list_multi_selection.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_list_multi_selection.rb)
+
 Run:
 
 ```
-glimmer [samples/hello/hello_list_multi_selection.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_list_multi_selection.rb)
+glimmer samples/hello/hello_list_multi_selection.rb
 ```
 
 ![Hello List Multi Selection](images/glimmer-hello-list-multi-selection.png)
@@ -2646,10 +2666,14 @@ glimmer [samples/hello/hello_list_multi_selection.rb](https://github.com/AndyObt
 
 This sample demonstrates computed data-binding.
 
+Code:
+
+[samples/hello/hello_computed.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_computed.rb)
+
 Run:
 
 ```
-glimmer [samples/hello/hello_computed.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_computed.rb)
+glimmer samples/hello/hello_computed.rb
 ```
 
 ![Hello Browser](images/glimmer-hello-computed.png)
@@ -2658,10 +2682,14 @@ glimmer [samples/hello/hello_computed.rb](https://github.com/AndyObtiva/glimmer-
 
 This sample demonstrates a `message_box` dialog.
 
+Code:
+
+[samples/hello/hello_message_box.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_message_box.rb)
+
 Run:
 
 ```
-glimmer [samples/hello/hello_message_box.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_message_box.rb)
+glimmer samples/hello/hello_message_box.rb
 ```
 
 ![Hello Message Box](images/glimmer-hello-message-box.png)
@@ -2671,10 +2699,14 @@ glimmer [samples/hello/hello_message_box.rb](https://github.com/AndyObtiva/glimm
 
 This sample demonstrates the `browser` widget.
 
+Code:
+
+[samples/hello/hello_browser.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_browser.rb)
+
 Run:
 
 ```
-glimmer [samples/hello/hello_browser.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_browser.rb)
+glimmer samples/hello/hello_browser.rb
 ```
 
 ![Hello Browser](images/glimmer-hello-browser.png)
@@ -2683,10 +2715,14 @@ glimmer [samples/hello/hello_browser.rb](https://github.com/AndyObtiva/glimmer-d
 
 This sample demonstrates drag and drop in Glimmer.
 
+Code:
+
+[samples/hello/hello_drag_and_drop.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_drag_and_drop.rb)
+
 Run:
 
 ```
-glimmer [samples/hello/hello_drag_and_drop.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_drag_and_drop.rb)
+glimmer samples/hello/hello_drag_and_drop.rb
 ```
 
 ![Hello Drag and Drop](images/glimmer-hello-drag-and-drop.gif)
@@ -2695,10 +2731,14 @@ glimmer [samples/hello/hello_drag_and_drop.rb](https://github.com/AndyObtiva/gli
 
 This sample demonstrates menus in Glimmer.
 
+Code:
+
+[samples/hello/hello_menu_bar.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_menu_bar.rb)
+
 Run:
 
 ```
-glimmer [samples/hello/hello_menu_bar.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_menu_bar.rb)
+glimmer samples/hello/hello_menu_bar.rb
 ```
 
 ![Hello Menu Bar](images/glimmer-hello-menu-bar.png)
@@ -2709,10 +2749,14 @@ glimmer [samples/hello/hello_menu_bar.rb](https://github.com/AndyObtiva/glimmer-
 
 This sample demonstrates pop up context menus in Glimmer.
 
+Code:
+
+[samples/hello/hello_pop_up_context_menu.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_pop_up_context_menu.rb)
+
 Run:
 
 ```
-glimmer [samples/hello/hello_pop_up_context_menu.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_pop_up_context_menu.rb)
+glimmer samples/hello/hello_pop_up_context_menu.rb
 ```
 
 ![Hello Pop Up Context Menu](images/glimmer-hello-pop-up-context-menu.png)
@@ -2724,8 +2768,16 @@ For more elaborate samples, check the following:
 
 #### Login
 
+This sample demonstrates basic data-binding, password and text fields, and field enablement data-binding.
+
+Code:
+
+[samples/elaborate/login.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/login.rb)
+
+Run:
+
 ```
-glimmer [samples/elaborate/login.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/login.rb) # demonstrates basic data-binding
+glimmer samples/elaborate/login.rb
 ```
 
 ![Login](images/glimmer-login.png)
@@ -2734,8 +2786,16 @@ glimmer [samples/elaborate/login.rb](https://github.com/AndyObtiva/glimmer-dsl-s
 
 #### Tic Tac Toe Sample
 
+This sample demonstrates a full MVC application, including GUI layout, text and enablement data-binding, and test-driven development (has [specs](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/spec/samples/elaborate/tic_tac_toe/board_spec.rb)).
+
+Code:
+
+[samples/elaborate/tic_tac_toe.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/tic_tac_toe.rb)
+
+Run:
+
 ```
-glimmer [samples/elaborate/tic_tac_toe.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/tic_tac_toe.rb) # demonstrates a full MVC application
+glimmer samples/elaborate/tic_tac_toe.rb
 ```
 
 ![Tic Tac Toe](images/glimmer-tic-tac-toe.png)
@@ -2744,8 +2804,16 @@ glimmer [samples/elaborate/tic_tac_toe.rb](https://github.com/AndyObtiva/glimmer
 
 #### Contact Manager
 
+This sample demonstrates table data-binding, sorting, filtering, GUI layout, MVP pattern, and test-driven development (has [specs](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/spec/samples/elaborate/contact_manager/contact_manager_presenter_spec.rb)).
+
+Code:
+
+[samples/elaborate/contact_manager.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/contact_manager.rb)
+
+Run:
+
 ```
-glimmer [samples/elaborate/contact_manager.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/contact_manager.rb) # demonstrates table data-binding
+glimmer samples/elaborate/contact_manager.rb
 ```
 
 Contact Manager
