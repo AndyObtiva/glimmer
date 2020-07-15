@@ -1691,6 +1691,13 @@ This finds the root node. The array is a Java array. This enables easy passing o
 To edit a tree, you must invoke `TreeProxy#edit_selected_tree_item` or `TreeProxy#edit_tree_item`. This automatically leverages the SWT TreeEditor custom class behind the scenes, displaying
 a text widget to the user to change the selected or passed tree item text into something else. It automatically persists the change to `items` data-bound model on ENTER/FOCUS-OUT or cancels on ESC/NO-CHANGE.
 
+#### ScrolledComposite
+
+Glimmer provides smart defaults for the `scrolled_composite` widget by:
+- Automatically setting the nested widget as its content (meaning use can just like a plain old `composite` to add scrolling)
+- Automatically setting the :h_scroll and :v_scroll SWT styles (can be set manually if only one of either :h_scroll or :v_scroll is desired )
+- Automatically setting the expand horizontal and expand vertical SWT properties to `true`
+
 ### Observer
 
 Glimmer comes with `Observer` module, which is used internally for data-binding, but can also be used externally for custom use of the Observer Pattern. It is hidden when observing widgets, and used explicitly when observing models.
