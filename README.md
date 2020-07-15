@@ -1595,6 +1595,63 @@ This automatically leverages the SWT TableEditor custom class behind the scenes,
 passed table item text into something else. 
 It automatically persists the change to `items` data-bound model on ENTER/FOCUS-OUT or cancels on ESC/NO-CHANGE.
 
+##### Table Sorting
+
+Glimmer automatically adds sorting support to the SWT `Table` widget. 
+
+Check out the [Contact Manager](#contact-manager) sample for an example. 
+You may click on any column and it will sort by ascending order first and descending if you click again.
+
+Glimmer automatic table sorting supports `String`, `Integer`, and `Float` columns out of the box as well as any column data that is comparable.
+
+In cases where data is nil, it is automatically converted to `Float` with `to_f`, `Integer` with `to_i`, or `String` with `to_s` depending on the data-type.
+
+Should you have a special data type that could not be compared automatically, Glimmer offers the following 3 alternative options for custom sorting:
+- `sort_property`: this may be set to an alternative property to the one data-bound to the table column. For example, a table column called 'adult', which returns `true` or `false` may be sorted with `:dob` `sort_property` instead.
+- `sort_by(&block)`: this works just like Ruby `Enumerable` `sort_by`. The block receives the table column data as argument.
+- `sort(&comparator)`: this works just like Ruby `Enumerable` `sort`. The comparator block receives two objects from the table column data.
+
+Example:
+
+```ruby
+# ...
+  table {
+    table_column {
+      text 'Task'
+      width 120
+    }
+    table_column {
+      text 'Project'
+      width 120
+    }
+    table_column {
+      text 'Duration (hours)'
+      width 120
+      sort_property :duration_in_hours
+    }
+    table_column {
+      text 'Priority'
+      width 120
+      sort_by { |value| ['High', 'Medium', 'Low'].index(value) }
+    }
+    table_column {
+      text 'Start Date'
+      width 120
+      sort { |d1, d2| d1.to_date <=> d2.to_date }
+    }
+    items bind(Task, :list), column_properties(:name, :project_name, :duration, :priority, :start_date)
+    # ...
+  }
+# ...
+```
+
+Here is an explanation of the example above:
+- Task and Project table columns are data-bound to the `:name` and `:project_name` properties and sorted through them automatically
+- Task Duration table column is data-bound to the `:duration` property, but sorted via the `:duration_in_hours` property instead
+- Task Priority table column has a custom sort_by block
+- Task Start Date table column has a custom sort comparator block
+
+
 #### Tree
 
 The SWT Tree widget visualizes a tree data-structure, such as an employment or composition hierarchy.
@@ -2525,7 +2582,7 @@ For hello-type simple samples, check the following.
 Run:
 
 ```
-glimmer samples/hello/hello_world.rb
+glimmer [samples/hello/hello_world.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_world.rb)
 ```
 
 ![Hello World](images/glimmer-hello-world.png)
@@ -2535,7 +2592,7 @@ glimmer samples/hello/hello_world.rb
 Run:
 
 ```
-glimmer samples/hello/hello_tab.rb
+glimmer [samples/hello/hello_tab.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_tab.rb)
 ```
 
 ![Hello Tab English](images/glimmer-hello-tab-english.png)
@@ -2548,7 +2605,7 @@ This sample demonstrates combo data-binding.
 Run:
 
 ```
-glimmer samples/hello/hello_combo.rb
+glimmer [samples/hello/hello_combo.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_combo.rb)
 ```
 
 ![Hello Combo](images/glimmer-hello-combo.png)
@@ -2561,7 +2618,7 @@ This sample demonstrates list single-selection data-binding.
 Run:
 
 ```
-glimmer samples/hello/hello_list_single_selection.rb
+glimmer [samples/hello/hello_list_single_selection.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_list_single_selection.rb)
 ```
 
 ![Hello List Single Selection](images/glimmer-hello-list-single-selection.png)
@@ -2573,7 +2630,7 @@ This sample demonstrates list multi-selection data-binding.
 Run:
 
 ```
-glimmer samples/hello/hello_list_multi_selection.rb
+glimmer [samples/hello/hello_list_multi_selection.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_list_multi_selection.rb)
 ```
 
 ![Hello List Multi Selection](images/glimmer-hello-list-multi-selection.png)
@@ -2585,7 +2642,7 @@ This sample demonstrates computed data-binding.
 Run:
 
 ```
-glimmer samples/hello/hello_computed.rb
+glimmer [samples/hello/hello_computed.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_computed.rb)
 ```
 
 ![Hello Browser](images/glimmer-hello-computed.png)
@@ -2597,7 +2654,7 @@ This sample demonstrates a `message_box` dialog.
 Run:
 
 ```
-glimmer samples/hello/hello_message_box.rb
+glimmer [samples/hello/hello_message_box.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_message_box.rb)
 ```
 
 ![Hello Message Box](images/glimmer-hello-message-box.png)
@@ -2610,7 +2667,7 @@ This sample demonstrates the `browser` widget.
 Run:
 
 ```
-glimmer samples/hello/hello_browser.rb
+glimmer [samples/hello/hello_browser.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_browser.rb)
 ```
 
 ![Hello Browser](images/glimmer-hello-browser.png)
@@ -2622,7 +2679,7 @@ This sample demonstrates drag and drop in Glimmer.
 Run:
 
 ```
-glimmer samples/hello/hello_drag_and_drop.rb
+glimmer [samples/hello/hello_drag_and_drop.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_drag_and_drop.rb)
 ```
 
 ![Hello Drag and Drop](images/glimmer-hello-drag-and-drop.gif)
@@ -2634,7 +2691,7 @@ This sample demonstrates menus in Glimmer.
 Run:
 
 ```
-glimmer samples/hello/hello_menu_bar.rb
+glimmer [samples/hello/hello_menu_bar.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_menu_bar.rb)
 ```
 
 ![Hello Menu Bar](images/glimmer-hello-menu-bar.png)
@@ -2648,7 +2705,7 @@ This sample demonstrates pop up context menus in Glimmer.
 Run:
 
 ```
-glimmer samples/hello/hello_pop_up_context_menu.rb
+glimmer [samples/hello/hello_pop_up_context_menu.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_pop_up_context_menu.rb)
 ```
 
 ![Hello Pop Up Context Menu](images/glimmer-hello-pop-up-context-menu.png)
@@ -2661,7 +2718,7 @@ For more elaborate samples, check the following:
 #### Login
 
 ```
-glimmer samples/elaborate/login.rb # demonstrates basic data-binding
+glimmer [samples/elaborate/login.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/login.rb) # demonstrates basic data-binding
 ```
 
 ![Login](images/glimmer-login.png)
@@ -2671,7 +2728,7 @@ glimmer samples/elaborate/login.rb # demonstrates basic data-binding
 #### Tic Tac Toe Sample
 
 ```
-glimmer samples/elaborate/tic_tac_toe.rb # demonstrates a full MVC application
+glimmer [samples/elaborate/tic_tac_toe.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/tic_tac_toe.rb) # demonstrates a full MVC application
 ```
 
 ![Tic Tac Toe](images/glimmer-tic-tac-toe.png)
@@ -2681,7 +2738,7 @@ glimmer samples/elaborate/tic_tac_toe.rb # demonstrates a full MVC application
 #### Contact Manager
 
 ```
-glimmer samples/elaborate/contact_manager.rb # demonstrates table data-binding
+glimmer [samples/elaborate/contact_manager.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/contact_manager.rb) # demonstrates table data-binding
 ```
 
 Contact Manager
