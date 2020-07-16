@@ -180,6 +180,8 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
       - [Glimmer Calculator](#glimmer-calculator)
       - [Gladiator](#gladiator)
   - [In Production](#in-production)
+    - [Math Bowling](#math-bowling)
+    - [Are We There Yet?](#are-we-there-yet)
   - [Packaging & Distribution](#packaging--distribution)
     - [Packaging Defaults](#packaging-defaults)
     - [Packaging Configuration](#packaging-configuration)
@@ -2845,16 +2847,16 @@ Contact Manager - Edit Done
 
 #### Glimmer Calculator
 
-[<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/v1.0.0/glimmer-cs-calculator-screenshot.png" />](https://github.com/AndyObtiva/glimmer-cs-calculator)
+[<img alt="Glimmer Calculator Icon" src="glimmer-cs-calculator-icon.png" height=40 /> Glimmer Calculator](https://github.com/AndyObtiva/glimmer-cs-calculator) is a basic calculator sample project demonstrating data-binding and TDD (test-driven-development) with Glimmer following the MVP pattern (Model-View-Presenter).
 
-[Glimmer Calculator](https://github.com/AndyObtiva/glimmer-cs-calculator) is a basic calculator sample project demonstrating data-binding and TDD (test-driven-development) with Glimmer following the MVP pattern (Model-View-Presenter).
+[<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/v1.0.0/glimmer-cs-calculator-screenshot.png" />](https://github.com/AndyObtiva/glimmer-cs-calculator)
 
 #### Gladiator
 
-[<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-gladiator/master/images/glimmer-gladiator.png" />](https://github.com/AndyObtiva/glimmer-cs-gladiator)
-
-[Gladiator](https://github.com/AndyObtiva/glimmer-cs-gladiator) (short for Glimmer Editor) is a Glimmer sample project under on-going development.
+[<img src='https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-gladiator/master/images/glimmer-cs-gladiator-logo.svg' height=40 /> Gladiator](https://github.com/AndyObtiva/glimmer-cs-gladiator) (short for Glimmer Editor) is a Glimmer sample project under on-going development.
 You may check it out to learn how to build a Glimmer Custom Shell gem.
+
+[<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-gladiator/master/images/glimmer-gladiator.png" />](https://github.com/AndyObtiva/glimmer-cs-gladiator)
 
 Gladiator is a good demonstration of:
 - MVP Pattern
@@ -2868,9 +2870,13 @@ Gladiator is a good demonstration of:
 
 ## In Production
 
-The following production apps have been built with Glimmer:
+The following production apps have been built with Glimmer.
+
+### Math Bowling
 
 [<img alt="Math Bowling Logo" src="https://raw.githubusercontent.com/AndyObtiva/MathBowling/master/images/math-bowling-logo.png" width="40" />Math Bowling](https://github.com/AndyObtiva/MathBowling): an educational math game for elementary level kids
+
+### Are We There Yet?
 
 [<img alt="Are We There Yet Logo" src="https://raw.githubusercontent.com/AndyObtiva/are-we-there-yet/master/are-we-there-yet-logo.svg" width="40" />Are We There Yet?](https://github.com/AndyObtiva/are-we-there-yet): A tool that helps you learn when your small projects will finish
 
