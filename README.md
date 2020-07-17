@@ -1583,6 +1583,9 @@ shell {
     }
     items bind(group, :people), column_properties(:name, :age, :adult)
     selection bind(group, :selected_person)
+    on_mouse_up { |event|
+      @table.edit_table_item(event.table_item, event.column_index)
+    }    
   }
 }
 ```
@@ -1590,6 +1593,7 @@ shell {
 The code above includes two data-bindings:
 - Table `items`, which first bind to the model collection property (group.people), and then maps each column property (name, age, adult) for displaying each table item column. 
 - Table `selection`, which binds the single table item selected by the user to the attribute denoted by the `bind` keyword (or binds multiple table items selected for a table with `:multi` SWT style)
+- The `on_mouse_up` event handler invokes `@table.edit_table_item(event.table_item, event.column_index)` to start edit mode on the clicked table item cell, and then saves or cancel depending on whether the user hits ENTER or ESC once done editing (or focus-out after either making a change or not making any changes.)
 
 Additionally, Table `items` data-binding automatically stores each node model unto the SWT TableItem object via `setData` method. This enables things like searchability.
 
