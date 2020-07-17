@@ -251,7 +251,7 @@ Otherwise, Option 2 ([Bundler](#option-2-bundler)) is recommended for building G
 
 Run this command to install directly:
 ```
-jgem install glimmer-dsl-swt -v 0.2.4
+jgem install glimmer-dsl-swt -v 0.3.0
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -269,7 +269,7 @@ Note: if you're using activerecord or activesupport, keep in mind that Glimmer u
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-swt', '~> 0.2.4'
+gem 'glimmer-dsl-swt', '~> 0.3.0'
 ```
 
 And, then run:
@@ -569,7 +569,7 @@ Output:
                                                                          
   Css    glimmer-dsl-css    0.1.0     AndyMaleh   Glimmer DSL for CSS    
   Opal   glimmer-dsl-opal   0.0.9     AndyMaleh   Glimmer DSL for Opal   
-  Swt    glimmer-dsl-swt    0.2.4     AndyMaleh   Glimmer DSL for SWT    
+  Swt    glimmer-dsl-swt    0.3.0     AndyMaleh   Glimmer DSL for SWT    
   Xml    glimmer-dsl-xml    0.1.0     AndyMaleh   Glimmer DSL for XML    
                                                                          
 ```
@@ -1618,12 +1618,14 @@ You may click on any column and it will sort by ascending order first and descen
 
 Glimmer automatic table sorting supports `String`, `Integer`, and `Float` columns out of the box as well as any column data that is comparable.
 
-In cases where data is nil, it is automatically converted to `Float` with `to_f`, `Integer` with `to_i`, or `String` with `to_s` depending on the data-type.
+In cases where data is nil, depending on the data-type, it is automatically converted to `Float` with `to_f`, `Integer` with `to_i`, or `String` with `to_s`.
 
-Should you have a special data type that could not be compared automatically, Glimmer offers the following 3 alternative options for custom sorting:
-- `sort_property`: this may be set to an alternative property to the one data-bound to the table column. For example, a table column called 'adult', which returns `true` or `false` may be sorted with `:dob` `sort_property` instead.
+Should you have a special data type that could not be compared automatically, Glimmer offers the following 3 alternatives for custom sorting:
+- `sort_property`: this may be set to an alternative property to the one data-bound to the table column. For example, a table column called 'adult', which returns `true` or `false` may be sorted with `sort_property :dob` instead. This also support multi-property (aka multi-column) sorting (e.g. `sort_property :dob, :name`). 
 - `sort_by(&block)`: this works just like Ruby `Enumerable` `sort_by`. The block receives the table column data as argument.
 - `sort(&comparator)`: this works just like Ruby `Enumerable` `sort`. The comparator block receives two objects from the table column data.
+
+You may also set `additional_sort_properties` on the parent `table` widget to have secondary sorting applied. For example, if you set `additional_sort_properties :name, :project_name`, then whenever you sort by `:name`, it additionally sorts by `:project_name` afterwards, and vice versa. This only works for columns that either have no custom sort set or have a `sort_property` with one property only (but no sort or sort_by block)
 
 Example:
 
@@ -1653,6 +1655,7 @@ Example:
       width 120
       sort { |d1, d2| d1.to_date <=> d2.to_date }
     }
+    additional_sort_properties :project_name, :duration_in_hours, :name
     items bind(Task, :list), column_properties(:name, :project_name, :duration, :priority, :start_date)
     # ...
   }
@@ -1664,6 +1667,7 @@ Here is an explanation of the example above:
 - Task Duration table column is data-bound to the `:duration` property, but sorted via the `:duration_in_hours` property instead
 - Task Priority table column has a custom sort_by block
 - Task Start Date table column has a custom sort comparator block
+- Additional (secondary) sort properties are applied when sorting by Task, Project, or Duration in the order specified
 
 
 #### Tree
