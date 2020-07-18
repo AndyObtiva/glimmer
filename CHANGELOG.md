@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.9.5
+
+- Removed resetting of DSL Engine upon encountering an exception as it is not needed and sometimes causes the wrong behavior
+
 ## 0.9.4
 
 - Fix issue with observing attributes on classes directly instead of their objects
