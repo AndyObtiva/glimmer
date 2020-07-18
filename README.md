@@ -943,7 +943,7 @@ shell { |shell_proxy|
 Example of a Pop Up Context Menu (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
 ```ruby
-  shell { |shell_proxy|
+shell { |shell_proxy|
   text 'Hello, Pop Up Context Menu!'
   grid_layout
   label {
