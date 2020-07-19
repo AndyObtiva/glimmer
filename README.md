@@ -484,7 +484,10 @@ The Ruby gem name will follow the convention "glimmer-cw-customwidgetname-namesp
 
 Only official Glimmer gems created by the Glimmer project committers will have no namespace (e.g. [glimmer-cw-video](https://rubygems.org/gems/glimmer-cw-video) Ruby gem)
 
-Example: [https://github.com/AndyObtiva/glimmer-cw-video](https://github.com/AndyObtiva/glimmer-cw-video)
+Examples: 
+
+- [glimmer-cw-video](https://github.com/AndyObtiva/glimmer-cw-video): Video Widget
+- [glimmer-cw-cdatetime-nebula](https://github.com/AndyObtiva/glimmer-cw-cdatetime-nebula): Nebula CDateTime Widget
 
 ### Gem Listing
 
