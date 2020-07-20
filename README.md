@@ -251,7 +251,7 @@ Otherwise, Option 2 ([Bundler](#option-2-bundler)) is recommended for building G
 
 Run this command to install directly:
 ```
-jgem install glimmer-dsl-swt -v 0.3.1
+jgem install glimmer-dsl-swt -v 0.4.0
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -269,7 +269,7 @@ Note: if you're using activerecord or activesupport, keep in mind that Glimmer u
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-swt', '~> 0.3.1'
+gem 'glimmer-dsl-swt', '~> 0.4.0'
 ```
 
 And, then run:
@@ -572,7 +572,7 @@ Output:
                                                                          
   Css    glimmer-dsl-css    0.1.0     AndyMaleh   Glimmer DSL for CSS    
   Opal   glimmer-dsl-opal   0.0.9     AndyMaleh   Glimmer DSL for Opal   
-  Swt    glimmer-dsl-swt    0.3.1     AndyMaleh   Glimmer DSL for SWT    
+  Swt    glimmer-dsl-swt    0.4.0     AndyMaleh   Glimmer DSL for SWT    
   Xml    glimmer-dsl-xml    0.1.0     AndyMaleh   Glimmer DSL for XML    
                                                                          
 ```
@@ -764,7 +764,7 @@ automatically uses the display created earlier without having to explicitly hook
 ```ruby
 @display = display {
   cursor_location 300, 300
-  on_event_keydown {
+  on_swt_keydown {
     # ...
   }
   # ...
@@ -1724,10 +1724,10 @@ Glimmer comes with `Observer` module, which is used internally for data-binding,
 
 Glimmer supports observing widgets with two main types of events:
 1. `on_{swt-listener-method-name}`: where {swt-listener-method-name} is replaced with the lowercase underscored event method name on an SWT listener class (e.g. `on_verify_text` for `org.eclipse.swt.events.VerifyListener#verifyText`).
-2. `on_event_{swt-event-constant}`: where {swt-event-constant} is replaced with an `org.eclipse.swt.SWT` event constant (e.g. `on_event_show` for `SWT.Show` to observe when widget becomes visible)
+2. `on_swt_{swt-event-constant}`: where {swt-event-constant} is replaced with an `org.eclipse.swt.SWT` event constant (e.g. `on_swt_show` for `SWT.Show` to observe when widget becomes visible)
 
 Additionally, there are two more types of events:
-- SWT `display` supports global listeners called filters that run on any widget. They are hooked via `on_event_{swt-event-constant}`
+- SWT `display` supports global listeners called filters that run on any widget. They are hooked via `on_swt_{swt-event-constant}`
 - SWT `display` supports Mac application menu item observers (`on_about` and `on_preferences`), which you can read about under [Miscellaneous](#miscellaneous).
 
 Number 1 is more commonly used in SWT applications, so make it your starting point. Number 2 covers events not found in number 1, so look into it if you don't find an SWT listener you need in number 1.
@@ -1778,15 +1778,15 @@ https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/
 
 Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
-`SWT.Show` - hooks a listener for showing a widget (using `on_event_show` in Glimmer)
-`SWT.Hide` - hooks a listener for hiding a widget (using `on_event_hide` in Glimmer)
+`SWT.Show` - hooks a listener for showing a widget (using `on_swt_show` in Glimmer)
+`SWT.Hide` - hooks a listener for hiding a widget (using `on_swt_hide` in Glimmer)
 
 ```ruby
 shell {
   @button1 = button {
     text "Show 2nd Button"
     visible true
-    on_event_show {
+    on_swt_show {
       @button2.swt_widget.setVisible(false)
     }
     on_widget_selected {
@@ -1796,7 +1796,7 @@ shell {
   @button2 = button {
     text "Show 1st Button"
     visible false
-    on_event_show {
+    on_swt_show {
       @button1.swt_widget.setVisible(false)
     }
     on_widget_selected {
@@ -1806,7 +1806,7 @@ shell {
 }.open
 ```
 
-**Gotcha:** SWT.Resize event needs to be hooked using **`on_event_Resize`** because `org.eclipse.swt.SWT` has 2 constants for resize: `RESIZE` and `Resize`, so it cannot infer the right one automatically from the underscored version `on_event_resize`
+**Gotcha:** SWT.Resize event needs to be hooked using **`on_swt_Resize`** because `org.eclipse.swt.SWT` has 2 constants for resize: `RESIZE` and `Resize`, so it cannot infer the right one automatically from the underscored version `on_swt_resize`
 
 ##### Alternative Syntax
 
@@ -2100,7 +2100,7 @@ shell { |app_shell|
   @current_step_number = 1
   @wizard_steps = 5.times.map { |n|
     wizard_step(number: n+1, step_count: 5) {
-      on_event_hide {
+      on_swt_hide {
         if @current_step_number < 5
           @current_step_number += 1
           app_shell.hide
@@ -3069,6 +3069,8 @@ Glimmer DSL Engine specific tasks are at:
 [TODO.md](TODO.md)
 
 ## Change Log
+
+[glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
 [CHANGELOG.md](CHANGELOG.md)
 
