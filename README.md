@@ -1772,7 +1772,7 @@ Note that every Tic Tac Toe grid cell has its `text` and `enabled` properties da
 
 Next however, each of these Tic Tac Toe grid cells, which are clickable buttons, have an `on_widget_selected` observer, which once triggered, marks the cell on the `TicTacToe::Board` to make a move.
 
-**Regarding number 2**, you can figure out all available events by looking at the `org.eclipse.swt.SWT` API:
+**Regarding number 2**, you can figure out all available events by looking at the [`org.eclipse.swt.SWT`](https://help.eclipse.org/2020-06/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html) API:
 
 https://help.eclipse.org/2019-12/nftopic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html
 
@@ -1806,7 +1806,7 @@ shell {
 }.open
 ```
 
-**Gotcha:** SWT.Resize event needs to be hooked using **`on_swt_Resize`** because `org.eclipse.swt.SWT` has 2 constants for resize: `RESIZE` and `Resize`, so it cannot infer the right one automatically from the underscored version `on_swt_resize`
+**Gotcha:** SWT.Resize event needs to be hooked using **`on_swt_Resize`** because [`org.eclipse.swt.SWT`](https://help.eclipse.org/2020-06/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/SWT.html) has 2 constants for resize: `RESIZE` and `Resize`, so it cannot infer the right one automatically from the underscored version `on_swt_resize`
 
 ##### Alternative Syntax
 
