@@ -9,8 +9,7 @@ Related TODO files:
 
 ### 0.10.0
 
-- Configure 'logging' to generate log files on Windows/Linux/Mac and syslog where available
-- Switch all log calls to async log calls to avoid impacting performance with logging
+- Update all logger calls to be lazy blocks
 
 ### Other
 

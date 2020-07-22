@@ -5,7 +5,8 @@ Related Change Logs:
 
 ## 0.10.0
 
-- Add 'logging' ruby gem
+- Remove Glimmer::Config.enable_logging method
+- Refactor Glimmer config logger and reset level to error
 
 ## 0.9.5
 

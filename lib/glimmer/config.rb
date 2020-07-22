@@ -11,18 +11,23 @@ module Glimmer
       
       # Returns Glimmer logger (standard Ruby logger)
       def logger
-        @@logger if defined? @@logger
+        reset_logger! unless defined? @@logger
+        @@logger
+      end
+      
+      def logger=(custom_logger)
+        @@logger = custom_logger
       end
   
-      def enable_logging
-#       , async: true
-        @@logger = Logging.logger(STDOUT).tap {|logger| logger.level = :warn}
+      def reset_logger!
+        self.logger = Logger.new(STDOUT).tap do |logger| 
+          logger.level = Logger::ERROR
+        end
       end
     end
   end
 end
 
 if ENV['GLIMMER_LOGGER_LEVEL']
-  Glimmer::Config.enable_logging
   Glimmer::Config.logger.level = ENV['GLIMMER_LOGGER_LEVEL'].downcase
 end

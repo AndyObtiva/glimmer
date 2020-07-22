@@ -2,7 +2,6 @@ source 'http://rubygems.org'
 
 # 3rd party gems (flexible versions to support other user gems that may share dependencies)
 gem 'facets', '>= 3.1.0', '< 4.0.0', require: false
-gem 'logging', '>= 2.3.0', '< 3.0.0'
 
 group :development do
   gem "rspec-mocks", "~> 3.5.0"

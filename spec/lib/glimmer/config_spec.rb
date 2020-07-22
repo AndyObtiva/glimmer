@@ -4,6 +4,32 @@ module GlimmerSpec
   describe Glimmer::Config do
     include Glimmer
     
+    describe '::logger' do
+      after do
+        described_class.reset_logger!
+      end
+      
+      it 'returns a default logger instance' do
+        logger = described_class.logger
+        
+        expect(logger).to be_a(::Logger)
+        expect(logger.level).to eq(Logger::ERROR)
+        expect(logger.formatter).to be_nil
+      end
+      
+      it 'accepts a custom logger' do
+        custom_logger = ::Logger.new(STDOUT)
+        custom_logger.level = :warn
+        custom_formatter = Logger::Formatter.new
+        custom_logger.formatter = custom_formatter
+        logger = described_class.logger = custom_logger
+        
+        expect(logger).to eq(custom_logger)
+        expect(logger.level).to eq(Logger::WARN)
+        expect(logger.formatter).to eq(custom_formatter)
+      end
+    end
+    
     describe '::loop_max_count' do
       after do
         Glimmer.loop_reset!(true)
