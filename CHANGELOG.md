@@ -7,6 +7,7 @@ Related Change Logs:
 
 - Remove Glimmer::Config.enable_logging method
 - Refactor Glimmer config logger and reset level to error
+- Update all logger calls to lazy blocks
 
 ## 0.9.5
 

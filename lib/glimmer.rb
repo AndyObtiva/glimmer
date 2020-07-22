@@ -52,16 +52,16 @@ module Glimmer
     if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
       raise ExcludedKeywordError, "Glimmer excluded keyword: #{method_symbol}"
     end
-    Glimmer::Config.logger&.debug "Interpreting keyword: #{method_symbol}"
+    Glimmer::Config.logger.debug {"Interpreting keyword: #{method_symbol}"}
     Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
   rescue ExcludedKeywordError => e
     # TODO add a feature to show excluded keywords optionally for debugging purposes
     super(method_symbol, *args, &block)
   rescue InvalidKeywordError => e
     if !method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
-      Glimmer::Config.logger&.error e.message
+      Glimmer::Config.logger.error {e.message}
     end
-    Glimmer::Config.logger&.debug "#{e.message}\n#{e.backtrace.join("\n")}"
+    Glimmer::Config.logger.debug {"#{e.message}\n#{e.backtrace.join("\n")}"}
     super(method_symbol, *args, &block)
   end
 end

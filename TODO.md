@@ -9,8 +9,6 @@ Related TODO files:
 
 ### 0.10.0
 
-- Update all logger calls to be lazy blocks
-
 ### Other
 
 - Consider creating a configuration DSL

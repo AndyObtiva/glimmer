@@ -96,7 +96,7 @@ module Glimmer
           dynamic_expression_chains_of_responsibility[dsl] = expression_names.reverse.map do |expression_name|
             expression_class(dsl_namespace, expression_name).new
           end.reduce(nil) do |last_expresion_handler, expression|
-            Glimmer::Config.logger&.debug "Adding dynamic expression: #{expression.class.name}"
+            Glimmer::Config.logger.debug {"Adding dynamic expression: #{expression.class.name}"}
             expression_handler = ExpressionHandler.new(expression)
             expression_handler.next = last_expresion_handler if last_expresion_handler
             expression_handler
@@ -104,7 +104,7 @@ module Glimmer
         end
 
         def add_static_expression(static_expression)
-          Glimmer::Config.logger&.debug "Adding static expression: #{static_expression.class.name}"
+          Glimmer::Config.logger.debug {"Adding static expression: #{static_expression.class.name}"}
           keyword = static_expression.class.keyword
           static_expression_dsl = static_expression.class.dsl
           static_expressions[keyword] ||= {}
@@ -132,7 +132,7 @@ module Glimmer
                 if !static_expression.can_interpret?(Glimmer::DSL::Engine.parent, keyword, *args, &block)
                   raise Error, "Invalid use of Glimmer keyword #{keyword} with args #{args} under parent #{Glimmer::DSL::Engine.parent}"
                 else
-                  Glimmer::Config.logger&.debug "#{static_expression.class.name} will handle expression keyword #{keyword}"
+                  Glimmer::Config.logger.debug {"#{static_expression.class.name} will handle expression keyword #{keyword}"}
                   static_expression.interpret(Glimmer::DSL::Engine.parent, keyword, *args, &block).tap do |ui_object|
                     Glimmer::DSL::Engine.add_content(ui_object, static_expression, &block) unless block.nil?
                     Glimmer::DSL::Engine.dsl_stack.pop

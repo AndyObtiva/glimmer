@@ -2456,7 +2456,7 @@ Glimmer supports logging via a standard `STDOUT` Ruby `Logger` configured in the
 It is set to level Logger::ERROR by default. 
 Log level may be adjusted via `Glimmer::Config.logger.level` just like any other Ruby Logger.
 It may be replaced with a custom logger via `Glimmer::Config.logger = custom_logger`
-All logging is done lazily (e.g. `logger.log(level) {message}`) to avoid affecting app performance with logging when below the logging level threshold.
+All logging is done lazily via blocks (e.g. `logger.debug {message}`) to avoid affecting app performance with logging when below the configured logging level threshold.
 
 Example:
 
