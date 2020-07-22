@@ -2452,17 +2452,16 @@ Glimmer configuration may be done via the `Glimmer::Config` module.
 
 ### logger
 
-Glimmer supports logging via a Ruby Logger configurable with the `Glimmer::Config.logger` config option.
-It is disabled by default to ensure not affecting desktop app performance.
-It may be enabled via `Glimmer::Config.enable_logging`
-When enabled, the Glimmer logger level defaults to `:warn` (aka `Logger::WARN`)
-It may be configured to show a different level of logging via `Glimmer::Config.logger.level` just ike with any Ruby Logger.
+Glimmer supports logging via a standard `STDOUT` Ruby `Logger` configured in the `Glimmer::Config.logger` config option.
+It is set to level Logger::ERROR by default. 
+Log level may be adjusted via `Glimmer::Config.logger.level` just like any other Ruby Logger.
+It may be replaced with a custom logger via `Glimmer::Config.logger = custom_logger`
+All logging is done lazily (e.g. `logger.log(level) {message}`) to avoid affecting app performance with logging when below the logging level threshold.
 
 Example:
 
 ```ruby
-Glimmer::Config.enable_logging
-Glimmer::Config.logger.level = Logger::DEBUG
+Glimmer::Config.logger.level = :debug
 ```
 This results in more verbose debug loggging to `STDOUT`, which is very helpful in troubleshooting Glimmer DSL syntax when needed.
 
