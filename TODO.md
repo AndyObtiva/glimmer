@@ -7,8 +7,6 @@ Related TODO files:
 
 ## Tasks
 
-### 0.10.0
-
-### Other
+### Version TBD
 
 - Consider creating a configuration DSL
