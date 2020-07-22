@@ -2400,7 +2400,7 @@ Also, you may invoke `Display.setAppVersion('1.0.0')` if needed for OS app versi
 
 #### Video Widget
 
-![Video Widget](images/glimmer-video-widget.png)
+[![Video Widget](images/glimmer-video-widget.png)](https://github.com/AndyObtiva/glimmer-cw-video)
 
 Glimmer supports a [video custom widget](https://github.com/AndyObtiva/glimmer-cw-video) not in SWT. 
 
