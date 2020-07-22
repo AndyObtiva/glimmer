@@ -48,7 +48,7 @@ pkg
 .project
 
 #Bundler:
-Gemfile.lock
+# Gemfile.lock
 
 # Gladiator (Glimmer Editor)
 .gladiator
