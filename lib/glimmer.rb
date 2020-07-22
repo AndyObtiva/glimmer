@@ -2,7 +2,7 @@
 # interfaces using the robust platform-independent Eclipse SWT library. Glimmer
 # comes with built-in data-binding support to greatly facilitate synchronizing
 # UI with domain models.
-require 'logger'
+require 'logging'
 require 'set'
 
 $LOAD_PATH.unshift(File.expand_path('..', __FILE__))

@@ -11,14 +11,12 @@ module Glimmer
       
       # Returns Glimmer logger (standard Ruby logger)
       def logger
-        # unless defined? @@logger
-        #   @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}
-        # end
         @@logger if defined? @@logger
       end
   
       def enable_logging
-        @@logger = Logger.new(STDOUT).tap {|logger| logger.level = Logger::WARN}
+#       , async: true
+        @@logger = Logging.logger(STDOUT).tap {|logger| logger.level = :warn}
       end
     end
   end
