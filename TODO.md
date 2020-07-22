@@ -2,6 +2,9 @@
 
 Here is a list of tasks to do (moved to CHANGELOG.md once done). 
 
+Related TODO files:
+- [glimmer-dsl-swt/TODO.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/TODO.md)
+
 ## Tasks
 
 - Consider creating a configuration DSL
