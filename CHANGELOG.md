@@ -1,5 +1,8 @@
 # Change Log
 
+Related Change Logs:
+- [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
+
 ## 0.9.5
 
 - Removed resetting of DSL Engine upon encountering an exception as it is not needed and sometimes causes the wrong behavior
