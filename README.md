@@ -225,7 +225,7 @@ https://www.eclipse.org/swt/faq.php
 
 - SWT 4.15 (comes included in Glimmer gem)
 - JRuby 9.2.12.0 (supporting Ruby 2.5.x syntax) (find at [https://www.jruby.org/download](https://www.jruby.org/download))
-- JDK 8 - 10 (find at [https://www.oracle.com/java/technologies/javase-downloads.html](https://www.oracle.com/java/technologies/javase-downloads.html))
+- JDK 8 (find at [https://www.oracle.com/java/technologies/javase-downloads.html](https://www.oracle.com/java/technologies/javase-downloads.html))
 - (Optional) RVM is needed for [Scaffolding](#scaffolding) only (find at [https://rvm.io/](https://rvm.io/))
 
 On **Mac** and **Linux**, an easy way to obtain JRuby is through [RVM](http://rvm.io) by running:
