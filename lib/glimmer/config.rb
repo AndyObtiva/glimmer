@@ -10,6 +10,10 @@ module Glimmer
         @excluded_keyword_checkers ||= reset_excluded_keyword_checkers!
       end
       
+      def excluded_keyword_checkers=(checkers)
+        @excluded_keyword_checkers = checkers
+      end
+      
       def reset_excluded_keyword_checkers!
         @excluded_keyword_checkers = [
           lambda { |method_symbol, *args| method_symbol.to_s.match(REGEX_METHODS_EXCLUDED) }

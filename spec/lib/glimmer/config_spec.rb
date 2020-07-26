@@ -17,11 +17,21 @@ module GlimmerSpec
               send(name)
             }
           end
+          
+          class << self
+            include Glimmer
+            
+            def replace            
+              html {
+                to_xml # normally excluded by Glimmer, but not in the spec below
+              }
+            end
+          end
         end
       end
   
       after :all do
-        Object.send(:remove_const, Person) if Object.const_defined?(Person)
+        Object.send(:remove_const, :Person) if Object.const_defined?(:Person)
       end
           
       after do
@@ -35,6 +45,16 @@ module GlimmerSpec
         end
         
         expect { Person.new('Sean') }.to raise_error(NoMethodError)
+      end
+      
+      it 'replaces excluded keyword checker' do        
+        person = nil
+        described_class.excluded_keyword_checkers = [ 
+          lambda do |method_symbol, *args|
+            method_symbol.to_s == self.name
+          end
+        ]
+        expect { Person.replace }.to_not raise_error(NoMethodError)
       end
     end
     

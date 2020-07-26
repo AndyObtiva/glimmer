@@ -54,6 +54,7 @@ module Glimmer
     # TODO add a feature to show excluded keywords optionally for debugging purposes
     super(method_symbol, *args, &block)
   rescue InvalidKeywordError => e
+    Glimmer::Config.logger.error {"Encountered an invalid keyword at this object: #{self}"}
     Glimmer::Config.logger.error {e.full_message}
     super(method_symbol, *args, &block)
   end
