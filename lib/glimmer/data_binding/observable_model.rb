@@ -47,7 +47,9 @@ module Glimmer
       end
 
       def notify_observers(property_name)
-        property_observer_list(property_name).each {|observer| observer.call(send(property_name))}
+        property_observer_list(property_name).to_a.each do |observer|
+          observer.call(send(property_name))
+        end
       end
       #TODO upon updating values, make sure dependent observers are cleared (not added as dependents here)
 

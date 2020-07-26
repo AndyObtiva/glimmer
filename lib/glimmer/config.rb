@@ -2,8 +2,19 @@ module Glimmer
   module Config
     class << self
       LOOP_MAX_COUNT_DEFAULT = 100
+      REGEX_METHODS_EXCLUDED = /^(to_|\[)/
       
       attr_writer :loop_max_count
+      
+      def excluded_keyword_checkers
+        @excluded_keyword_checkers ||= reset_excluded_keyword_checkers!
+      end
+      
+      def reset_excluded_keyword_checkers!
+        @excluded_keyword_checkers = [
+          lambda { |method_symbol, *args| method_symbol.to_s.match(REGEX_METHODS_EXCLUDED) }
+        ]
+      end
       
       def loop_max_count
         @loop_max_count ||= LOOP_MAX_COUNT_DEFAULT

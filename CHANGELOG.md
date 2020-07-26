@@ -3,6 +3,12 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+## 0.10.1
+
+- excluded_keyword_checkers option for filtering certain keywords from Glimmer DSL processing 
+- Updates to logging levels to be more appropriate
+- Fixed an issue to avoid crashing when calling observer.unregister/unobserve on a non-observable
+
 ## 0.10.0
 
 - Remove Glimmer::Config.enable_logging method

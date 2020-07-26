@@ -75,6 +75,7 @@ module Glimmer
       alias observe register
 
       def unregister(observable, property = nil)
+        return unless observable.is_a?(Observable)
         # TODO optimize performance in the future via indexing and/or making a registration official object/class
         observable.remove_observer(*[self, property].compact)
         registration = registration_for(observable, property)
@@ -90,16 +91,12 @@ module Glimmer
         thedependents = dependents_for(registration).select do |thedependent|
           thedependent.observable == dependent_observable
         end
-        thedependents.each do |thedependent|
-          thedependent.unregister
-        end
+        thedependents.each(&:unregister)
       end
 
       # cleans up all registrations in observables
       def unregister_all_observables
-        registrations.each do |registration|
-          registration.unregister
-        end
+        registrations.each(&:unregister)
       end
       alias unobserve_all_observables unregister_all_observables
 

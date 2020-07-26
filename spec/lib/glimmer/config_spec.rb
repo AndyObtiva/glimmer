@@ -4,6 +4,40 @@ module GlimmerSpec
   describe Glimmer::Config do
     include Glimmer
     
+    describe '::excluded_keyword_checkers' do
+      before :all do
+        class Person
+          include Glimmer
+          
+          attr_reader :name, :result
+          
+          def initialize(name)
+            @name = name
+            @result = html {
+              send(name)
+            }
+          end
+        end
+      end
+  
+      after :all do
+        Object.send(:remove_const, Person) if Object.const_defined?(Person)
+      end
+          
+      after do
+        described_class.reset_excluded_keyword_checkers!
+      end
+      
+      it 'adds an excluded keyword checker' do        
+        person = nil
+        described_class.excluded_keyword_checkers << lambda do |method_symbol, *args|
+          method_symbol.to_s == self.name
+        end
+        
+        expect { Person.new('Sean') }.to raise_error(NoMethodError)
+      end
+    end
+    
     describe '::logger' do
       after do
         described_class.reset_logger!

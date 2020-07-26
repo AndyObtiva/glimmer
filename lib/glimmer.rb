@@ -17,7 +17,6 @@ require 'glimmer/config'
 # Glimmer DSL dynamic keywords (e.g. label, combo, etc...) are available via method_missing
 module Glimmer
   #TODO make it configurable to include or not include perhaps reverting to using included
-  REGEX_METHODS_EXCLUDED = /^(to_|\[)/
   
   # TODO add loop detection support to avoid infinite loops (perhaps breaks after 3 repetitions and provides an option to allow it if intentional)
   class << self
@@ -41,27 +40,21 @@ module Glimmer
     new_loop_data = [method_symbol, args, block]
     if new_loop_data == Glimmer.loop_last_data
       Glimmer.loop_increment!
-      if Glimmer.loop == Config.loop_max_count
-        raise "Glimmer looped #{Config.loop_max_count} times with keyword '#{new_loop_data[0]}'! Check code for errors."
-      end
+      raise "Glimmer looped #{Config.loop_max_count} times with keyword '#{new_loop_data[0]}'! Check code for errors." if Glimmer.loop == Config.loop_max_count
     else
       Glimmer.loop_reset!
     end
     Glimmer.loop_last_data = new_loop_data
     # This if statement speeds up Glimmer in girb or whenever directly including on main object
-    if method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
-      raise ExcludedKeywordError, "Glimmer excluded keyword: #{method_symbol}"
-    end
-    Glimmer::Config.logger.debug {"Interpreting keyword: #{method_symbol}"}
+    is_excluded = Config.excluded_keyword_checkers.reduce(false) {|result, checker| result || instance_exec(method_symbol, *args, &checker) }
+    raise ExcludedKeywordError, "Glimmer excluded keyword: #{method_symbol}" if is_excluded
+    Glimmer::Config.logger.info {"Interpreting keyword: #{method_symbol}"}
     Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
   rescue ExcludedKeywordError => e
     # TODO add a feature to show excluded keywords optionally for debugging purposes
     super(method_symbol, *args, &block)
   rescue InvalidKeywordError => e
-    if !method_symbol.to_s.match(REGEX_METHODS_EXCLUDED)
-      Glimmer::Config.logger.error {e.message}
-    end
-    Glimmer::Config.logger.debug {"#{e.message}\n#{e.backtrace.join("\n")}"}
+    Glimmer::Config.logger.error {e.full_message}
     super(method_symbol, *args, &block)
   end
 end
