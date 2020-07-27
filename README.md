@@ -49,13 +49,7 @@ Glimmer app:
 Glimmer code (from [samples/elaborate/tic_tac_toe.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/tic_tac_toe.rb)):
 
 ```ruby
-require_relative "tic_tac_toe/board"
-
-class TicTacToe
-  include Glimmer
-
-  def initialize
-    @tic_tac_toe_board = Board.new
+# ...
     @shell = shell {
       text "Tic-Tac-Toe"
       composite {
@@ -74,34 +68,7 @@ class TicTacToe
         }
       }
     }
-    observe(@tic_tac_toe_board, :game_status) { |game_status|
-      display_win_message if game_status == Board::WIN
-      display_draw_message if game_status == Board::DRAW
-    }
-  end
-
-  def display_win_message
-    display_game_over_message("Player #{@tic_tac_toe_board.winning_sign} has won!")
-  end
-
-  def display_draw_message
-    display_game_over_message("Draw!")
-  end
-
-  def display_game_over_message(message_text)
-    message_box(@shell) {
-      text 'Game Over'
-      message message_text
-    }.open
-    @tic_tac_toe_board.reset
-  end
-
-  def open
-    @shell.open
-  end
-end
-
-TicTacToe.new.open
+# ...
 ```
 
 Run:
