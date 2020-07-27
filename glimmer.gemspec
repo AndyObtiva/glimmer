@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["AndyMaleh".freeze]
-  s.date = "2020-07-26"
+  s.date = "2020-07-27"
   s.description = "Ruby Desktop Development GUI Library (JRuby on SWT)".freeze
   s.email = "andy.am@gmail.com".freeze
   s.extra_rdoc_files = [
