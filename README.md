@@ -96,21 +96,21 @@ Glimmer code (from [samples/elaborate/contact_manager.rb](https://github.com/And
           text {
             text bind(@contact_manager_presenter, :first_name)
             on_key_pressed {|key_event|
-              @contact_manager_presenter.find if key_event.keyCode == Glimmer::SWT::SWTProxy[:cr]
+              @contact_manager_presenter.find if key_event.keyCode == swt(:cr)
             }
           }
           label {text "&Last Name: "}
           text {
             text bind(@contact_manager_presenter, :last_name)
             on_key_pressed {|key_event|
-              @contact_manager_presenter.find if key_event.keyCode == Glimmer::SWT::SWTProxy[:cr]
+              @contact_manager_presenter.find if key_event.keyCode == swt(:cr)
             }
           }
           label {text "&Email: "}
           text {
             text bind(@contact_manager_presenter, :email)
             on_key_pressed {|key_event|
-              @contact_manager_presenter.find if key_event.keyCode == Glimmer::SWT::SWTProxy[:cr]
+              @contact_manager_presenter.find if key_event.keyCode == swt(:cr)
             }
           }
           composite {
