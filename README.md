@@ -23,7 +23,7 @@ Glimmer DSL gems:
 
 ### Hello, World!
 
-Glimmer code (from `samples/hello/hello_world.rb`):
+Glimmer code (from [samples/hello/hello_world.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_world.rb)):
 ```ruby
 include Glimmer
 
@@ -86,17 +86,7 @@ Glimmer app:
 Glimmer code (from [samples/elaborate/contact_manager.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/contact_manager.rb)):
 
 ```ruby
-require_relative "contact_manager/contact_manager_presenter"
-
-class ContactManager
-  include Glimmer
-
-  def initialize
-    @contact_manager_presenter = ContactManagerPresenter.new
-    @contact_manager_presenter.list
-  end
-
-  def launch
+# ...
     shell {
       text "Contact Manager"
       composite {
@@ -168,10 +158,7 @@ class ContactManager
         }
       }
     }.open
-  end
-end
-
-ContactManager.new.launch
+# ...
 ```
 
 Run:
