@@ -2630,6 +2630,29 @@ The max limit can be changed via the `Glimmer::Config::loop_max_count=(count)` c
 
 Infinite loop detection may be disabled altogether if needed by setting `Glimmer::Config::loop_max_count` to `-1`
 
+### excluded_keyword_checkers
+
+Glimmer permits consumers to exclude keywords from DSL processing by its engine via the `excluded_keyword_checkers` config option.
+
+To do so, add a proc to it that returns a boolean indicating if a keyword is excluded or not.
+
+Note that this proc runs within the context of the Glimmer object (as in the object mixing in the Glimmer module), so checker can can pretend to run there with its `self` object assumption.
+
+Example of keywords excluded by [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt):
+
+```ruby
+Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
+  method = method_symbol.to_s
+  result = false
+  result ||= method.start_with?('on_swt_') && is_a?(Glimmer::UI::CustomWidget) && respond_to?(method)
+  result ||= method == 'dispose' && is_a?(Glimmer::UI::CustomWidget) && respond_to?(method)
+  result ||= ['drag_source_proxy', 'drop_target_proxy'].include?(method) && is_a?(Glimmer::UI::CustomWidget)
+  result ||= method == 'post_initialize_child'
+  result ||= method.end_with?('=')
+  result ||= ['finish_edit!', 'search', 'all_tree_items', 'depth_first_search'].include?(method) && is_a?(Glimmer::UI::CustomWidget) && body_root.respond_to?(method)
+end
+```
+
 ## Glimmer Style Guide
 
 - Widgets are declared with underscored lowercase versions of their SWT names minus the SWT package name.
