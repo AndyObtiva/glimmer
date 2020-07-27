@@ -46,29 +46,62 @@ Glimmer app:
 
 ### Tic Tac Toe
 
-Glimmer code (from `samples/elaborate/tic_tac_toe.rb`):
+Glimmer code (from [samples/elaborate/tic_tac_toe.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/tic_tac_toe.rb)):
 
 ```ruby
-# ...
-shell {
-  text "Tic-Tac-Toe"
-  composite {
-    grid_layout 3, true
-    (1..3).each { |row|
-      (1..3).each { |column|
-        button {
-          layout_data :fill, :fill, true, true
-          text        bind(@tic_tac_toe_board[row, column], :sign)
-          enabled     bind(@tic_tac_toe_board[row, column], :empty)
-          on_widget_selected {
-            @tic_tac_toe_board.mark(row, column)
+require_relative "tic_tac_toe/board"
+
+class TicTacToe
+  include Glimmer
+
+  def initialize
+    @tic_tac_toe_board = Board.new
+    @shell = shell {
+      text "Tic-Tac-Toe"
+      composite {
+        grid_layout 3, true
+        (1..3).each { |row|
+          (1..3).each { |column|
+            button {
+              layout_data :fill, :fill, true, true
+              text        bind(@tic_tac_toe_board[row, column], :sign)
+              enabled     bind(@tic_tac_toe_board[row, column], :empty)
+              on_widget_selected {
+                @tic_tac_toe_board.mark(row, column)
+              }
+            }
           }
         }
       }
     }
-  }
-}
-# ...
+    observe(@tic_tac_toe_board, :game_status) { |game_status|
+      display_win_message if game_status == Board::WIN
+      display_draw_message if game_status == Board::DRAW
+    }
+  end
+
+  def display_win_message
+    display_game_over_message("Player #{@tic_tac_toe_board.winning_sign} has won!")
+  end
+
+  def display_draw_message
+    display_game_over_message("Draw!")
+  end
+
+  def display_game_over_message(message_text)
+    message_box(@shell) {
+      text 'Game Over'
+      message message_text
+    }.open
+    @tic_tac_toe_board.reset
+  end
+
+  def open
+    @shell.open
+  end
+end
+
+TicTacToe.new.open
 ```
 
 Run:
@@ -80,6 +113,109 @@ glimmer samples/elaborate/tic_tac_toe.rb
 Glimmer app:
 
 ![Tic Tac Toe](images/glimmer-tic-tac-toe-in-progress.png)
+
+### Contact Manager
+
+Glimmer code (from [samples/elaborate/contact_manager.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/contact_manager.rb)):
+
+```ruby
+require_relative "contact_manager/contact_manager_presenter"
+
+class ContactManager
+  include Glimmer
+
+  def initialize
+    @contact_manager_presenter = ContactManagerPresenter.new
+    @contact_manager_presenter.list
+  end
+
+  def launch
+    shell {
+      text "Contact Manager"
+      composite {
+        composite {
+          grid_layout 2, false
+          label {text "First &Name: "}
+          text {
+            text bind(@contact_manager_presenter, :first_name)
+            on_key_pressed {|key_event|
+              @contact_manager_presenter.find if key_event.keyCode == Glimmer::SWT::SWTProxy[:cr]
+            }
+          }
+          label {text "&Last Name: "}
+          text {
+            text bind(@contact_manager_presenter, :last_name)
+            on_key_pressed {|key_event|
+              @contact_manager_presenter.find if key_event.keyCode == Glimmer::SWT::SWTProxy[:cr]
+            }
+          }
+          label {text "&Email: "}
+          text {
+            text bind(@contact_manager_presenter, :email)
+            on_key_pressed {|key_event|
+              @contact_manager_presenter.find if key_event.keyCode == Glimmer::SWT::SWTProxy[:cr]
+            }
+          }
+          composite {
+            grid_layout 2, false
+            button {
+              text "&Find"
+              on_widget_selected {
+                @contact_manager_presenter.find
+              }
+            }
+            button {
+              text "&List All"
+              on_widget_selected {
+                @contact_manager_presenter.list
+              }
+            }
+          }
+        }
+
+        table(:multi) { |table_proxy|
+          layout_data {
+            horizontal_alignment :fill
+            vertical_alignment :fill
+            grab_excess_horizontal_space true
+            grab_excess_vertical_space true
+            height_hint 200
+          }
+          table_column {
+            text "First Name"
+            width 80
+          }
+          table_column {
+            text "Last Name"
+            width 80
+          }
+          table_column {
+            text "Email"
+            width 200
+          }
+          items bind(@contact_manager_presenter, :results),
+          column_properties(:first_name, :last_name, :email)
+          on_mouse_up { |event|
+            table_proxy.edit_table_item(event.table_item, event.column_index)
+          }
+        }
+      }
+    }.open
+  end
+end
+
+ContactManager.new.launch
+```
+
+Run:
+
+```
+glimmer samples/elaborate/contact_manager.rb
+```
+
+Glimmer App:
+
+![Contact Manager](images/glimmer-contact-manager.png)
 
 NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contributing), adopting for small or low risk projects, and providing feedback.
 
@@ -175,7 +311,7 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
     - [Elaborate Samples](#elaborate-samples)
       - [Login](#login)
       - [Tic Tac Toe Sample](#tic-tac-toe-sample)
-      - [Contact Manager](#contact-manager)
+      - [Contact Manager](#contact-manager-sample)
     - [External Samples](#external-samples)
       - [Glimmer Calculator](#glimmer-calculator)
       - [Gladiator](#gladiator)
@@ -2819,7 +2955,7 @@ glimmer samples/elaborate/tic_tac_toe.rb
 ![Tic Tac Toe In Progress](images/glimmer-tic-tac-toe-in-progress.png)
 ![Tic Tac Toe Game Over](images/glimmer-tic-tac-toe-game-over.png)
 
-#### Contact Manager
+#### Contact Manager Sample
 
 This sample demonstrates table data-binding, sorting, filtering, GUI layout, MVP pattern, and test-driven development (has [specs](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/spec/samples/elaborate/contact_manager/contact_manager_presenter_spec.rb)).
 
