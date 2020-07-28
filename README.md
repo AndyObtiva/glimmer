@@ -1021,6 +1021,10 @@ shell {
 }
 ```
 
+###### Shell Icon Tip for Packaging on Windows
+
+When setting shell icon for a [packaged](#packaging--distribution) app, which has a JAR file at its core, you can reference the `ico` file that ships with the app by going one level up (e.g. `'../AppName.ico'`)
+
 #### Dialog
 
 Dialog is a variation on Shell. It is basically a shell that is modal (blocks what's behind it) and belongs to another shell. It only has a close button.
