@@ -347,7 +347,7 @@ Otherwise, Option 2 ([Bundler](#option-2-bundler)) is recommended for building G
 
 Run this command to install directly:
 ```
-jgem install glimmer-dsl-swt -v 0.5.2
+jgem install glimmer-dsl-swt -v 0.5.3
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -365,7 +365,7 @@ Note: if you're using activerecord or activesupport, keep in mind that Glimmer u
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-swt', '~> 0.5.2'
+gem 'glimmer-dsl-swt', '~> 0.5.3'
 ```
 
 And, then run:
@@ -643,7 +643,7 @@ Output:
      Name               Gem            Version     Author                        Description                     
                                                                                                                  
   Calculator   glimmer-cs-calculator   1.0.1     Andy Maleh   Calculator - Glimmer Custom Shell                  
-  Gladiator    glimmer-cs-gladiator    0.2.0     Andy Maleh   Gladiator (Glimmer Editor) - Glimmer Custom Shell  
+  Gladiator    glimmer-cs-gladiator    0.2.3     Andy Maleh   Gladiator (Glimmer Editor) - Glimmer Custom Shell  
                                                                                                                  
 ```
 
@@ -677,7 +677,7 @@ Output:
                                                                                    
   Name          Gem          Version     Author              Description           
                                                                                    
-  Video   glimmer-cw-video   0.1.1     Andy Maleh   Glimmer Custom Widget - Video  
+  Video   glimmer-cw-video   0.1.3     Andy Maleh   Glimmer Custom Widget - Video  
                                                                                    
 ```
 
@@ -703,10 +703,10 @@ Output:
                                                                          
   Name         Gem          Version    Author          Description       
                                                                          
-  Css    glimmer-dsl-css    0.1.0     AndyMaleh   Glimmer DSL for CSS    
-  Opal   glimmer-dsl-opal   0.0.9     AndyMaleh   Glimmer DSL for Opal   
-  Swt    glimmer-dsl-swt    0.5.2     AndyMaleh   Glimmer DSL for SWT    
-  Xml    glimmer-dsl-xml    0.1.0     AndyMaleh   Glimmer DSL for XML    
+  Css    glimmer-dsl-css    0.2.0     AndyMaleh   Glimmer DSL for CSS    
+  Opal   glimmer-dsl-opal   0.1.0     AndyMaleh   Glimmer DSL for Opal   
+  Swt    glimmer-dsl-swt    0.5.3     AndyMaleh   Glimmer DSL for SWT    
+  Xml    glimmer-dsl-xml    0.2.0     AndyMaleh   Glimmer DSL for XML    
                                                                          
 ```
 
@@ -1006,6 +1006,20 @@ Shell widget proxy has extra methods specific to SWT Shell:
 - `#visible=`: Setting to true opens/shows shell. Setting to false hides the shell.
 - `#pack`: Packs contained widgets using SWT's `Shell#pack` method
 - `#pack_same_size`: Packs contained widgets without changing shell's size when widget sizes change
+
+##### Shell Icon
+
+To set the shell icon, simply set the `image` property under the `shell` widget. This shows up in the operating system toolbar and app-switcher (e.g. CMD+TAB) (and application window top-left corner in Windows)
+
+Example:
+
+```ruby
+shell {
+  # ...
+  image 'path/to/image.png'
+  # ...
+}
+```
 
 #### Dialog
 
