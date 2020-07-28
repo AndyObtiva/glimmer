@@ -8,7 +8,7 @@
 
 (The Original Glimmer Library Since 2007. Beware of Imitators!)
 
-[**Glimmer**](https://rubygems.org/gems/glimmer) is a native-GUI cross-platform desktop development library written in [JRuby](https://www.jruby.org/), a highly portable faster version of [Ruby](https://www.ruby-lang.org/en/). [**Glimmer**](https://rubygems.org/gems/glimmer)'s main innovation is a declarative [Ruby DSL](#glimmer-dsl-syntax) that enables productive and efficient authoring of desktop application user-interfaces while relying on the robust [Eclipse SWT library](https://www.eclipse.org/swt/). [**Glimmer**](https://rubygems.org/gems/glimmer) additionally innovates by having built-in [data-binding](#data-binding) support, which greatly facilitates synchronizing the GUI with domain models. This achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about GUI concerns or alternatively drive development GUI-first and then write clean business models test-first afterwards. To get started quickly, [Glimmer](https://rubygems.org/gems/glimmer) offers [scaffolding](#scaffolding) options for [Apps](#in-production), [Gems](#custom-shell-gem), and [Custom Widgets](#custom-widgets). Last but not least, [Glimmer](https://rubygems.org/gems/glimmer) includes native-executable [packaging](#packaging--distribution) support, sorely lacking in competing libraries, thus enabling delivery of desktop apps written in [Ruby](https://www.ruby-lang.org/en/) as truly native DMG/PKG/APP files on the [Mac](https://www.apple.com/ca/macos) + [App Store](https://developer.apple.com/macos/distribution/) and MSI/EXE files on [Windows](https://www.microsoft.com/en-ca/windows). Given that [JRuby](https://www.jruby.org/) runs on the [JVM](https://java.com/en/download/faq/whatis_java.xml) (Java Virtual Machine), unlike competing libraries like TK, it does not require recompilation of [Ruby](https://www.ruby-lang.org/en/) to use native GUI libraries on every platform. [Glimmer](https://rubygems.org/gems/glimmer) runs native GUI out of the box on every platform thanks to the [JVM](https://java.com/en/download/faq/whatis_java.xml) and [Eclipse SWT library](https://www.eclipse.org/swt/).
+[**Glimmer**](https://rubygems.org/gems/glimmer) is a native-GUI cross-platform desktop development library written in [JRuby](https://www.jruby.org/), a highly portable faster version of [Ruby](https://www.ruby-lang.org/en/). [Glimmer](https://rubygems.org/gems/glimmer)'s main innovation is a declarative [Ruby DSL](#glimmer-dsl-syntax) that enables productive and efficient authoring of desktop application user-interfaces while relying on the robust [Eclipse SWT library](https://www.eclipse.org/swt/). [Glimmer](https://rubygems.org/gems/glimmer) additionally innovates by having built-in [data-binding](#data-binding) support, which greatly facilitates synchronizing the GUI with domain models. This achieves true decoupling of object oriented components, enabling developers to solve business problems without worrying about GUI concerns or alternatively drive development GUI-first and then write clean business models test-first afterwards. To get started quickly, [Glimmer](https://rubygems.org/gems/glimmer) offers [scaffolding](#scaffolding) options for [Apps](#in-production), [Gems](#custom-shell-gem), and [Custom Widgets](#custom-widgets). Last but not least, [Glimmer](https://rubygems.org/gems/glimmer) includes native-executable [packaging](#packaging--distribution) support, sorely lacking in competing libraries, thus enabling delivery of desktop apps written in [Ruby](https://www.ruby-lang.org/en/) as truly native DMG/PKG/APP files on the [Mac](https://www.apple.com/ca/macos) + [App Store](https://developer.apple.com/macos/distribution/) and MSI/EXE files on [Windows](https://www.microsoft.com/en-ca/windows). Given that [JRuby](https://www.jruby.org/) runs on the [JVM](https://java.com/en/download/faq/whatis_java.xml) (Java Virtual Machine), unlike competing libraries like TK, it does not require recompilation of [Ruby](https://www.ruby-lang.org/en/) to use native GUI libraries on every platform. [Glimmer](https://rubygems.org/gems/glimmer) runs native GUI out of the box on every platform thanks to the [JVM](https://java.com/en/download/faq/whatis_java.xml) and [Eclipse SWT library](https://www.eclipse.org/swt/).
 
 [<img src="https://covers.oreillystatic.com/images/9780596519650/lrg.jpg" width=105 /><br /> 
 Featured in<br />JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do)
@@ -314,17 +314,23 @@ https://www.eclipse.org/swt/faq.php
 ## Pre-requisites
 
 - SWT 4.15 (comes included in Glimmer gem)
-- JRuby 9.2.12.0 (supporting Ruby 2.5.x syntax) (find at [https://www.jruby.org/download](https://www.jruby.org/download))
+- JRuby 9.2.12.0 (supporting Ruby 2.5.x syntax) (get via [RVM](http://rvm.io) or find at [https://www.jruby.org/download](https://www.jruby.org/download))
 - JDK 8 (find at [https://www.oracle.com/java/technologies/javase-downloads.html](https://www.oracle.com/java/technologies/javase-downloads.html))
 - (Optional) RVM is needed for [Scaffolding](#scaffolding) only (find at [https://rvm.io/](https://rvm.io/))
 
-On **Mac** and **Linux**, an easy way to obtain JRuby is through [RVM](http://rvm.io) by running:
+To obtain JRuby through [RVM](http://rvm.io), you may run:
 
 ```bash
 rvm install jruby-9.2.12.0
 ```
 
 Glimmer might still work on lower versions of Java, JRuby and SWT, but there are no guarantees, so it is best to stick to the pre-requisites outlined above.
+
+### Windows JRuby
+
+On Windows, there are 2 [Glimmer](https://rubygems.org/gems/glimmer) needs that are handled differently by [JRuby](https://www.jruby.org):
+- **Running**: it is recommended to install [JRuby](https://www.jruby.org) via the Windows installer found at [https://www.jruby.org/download](https://www.jruby.org/download). It is then used from the Windows standard Command Prompt or Powershell to run [Glimmer](https://rubygems.org/gems/glimmer) apps.
+- **Scaffolding**: to do [Glimmer](https://rubygems.org/gems/glimmer) [Scaffolding](#scaffolding), you need to use [JRuby](https://www.jruby.org) from [RVM](http://rvm.io). To do so, please open the Windows Ubuntu (Windows Subsystem for Linux) Terminal and install [RVM](http://rvm.io) and [JRuby](https://www.jruby.org). You may run [Glimmer](https://rubygems.org/gems/glimmer) [Scaffolding](#scaffolding) commands there afterwards.
 
 ## Setup
 
@@ -341,7 +347,7 @@ Otherwise, Option 2 ([Bundler](#option-2-bundler)) is recommended for building G
 
 Run this command to install directly:
 ```
-jgem install glimmer-dsl-swt -v 0.4.1
+jgem install glimmer-dsl-swt -v 0.5.2
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -359,7 +365,7 @@ Note: if you're using activerecord or activesupport, keep in mind that Glimmer u
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-swt', '~> 0.4.1'
+gem 'glimmer-dsl-swt', '~> 0.5.2'
 ```
 
 And, then run:
@@ -413,19 +419,19 @@ Either a single task or one or more applications may be specified.
 When a task is specified, it runs via rake. Some tasks take arguments in square brackets.
 
 Available tasks are below (you may also lookup by adding `require 'glimmer/rake_task'` in Rakefile and running rake -T):
-glimmer list:custom_shell_gems[query]                             # List Glimmer custom shell gems available at rubygems.org (query is optional)
-glimmer list:custom_widget_gems[query]                            # List Glimmer custom widget gems available at rubygems.org (query is optional)
-glimmer list:dsl_gems[query]                                      # List Glimmer DSL gems available at rubygems.org (query is optional)
-glimmer package                                                   # Package app for distribution (generating config, jar, and native files)
-glimmer package:clean                                             # Clean by removing "dist" and "packages" directories
-glimmer package:config                                            # Generate JAR config file
-glimmer package:jar                                               # Generate JAR file
-glimmer package:native                                            # Generate Native files (DMG/PKG/APP on the Mac)
-glimmer scaffold[app_name]                                        # Scaffold a Glimmer application directory structure to begin building a new app
-glimmer scaffold:custom_shell[custom_shell_name,namespace]        # Scaffold a Glimmer::UI::CustomShell subclass (represents a full window view) under app/views (namespace is optional)
-glimmer scaffold:custom_shell_gem[custom_shell_name,namespace]    # Scaffold a Glimmer::UI::CustomShell subclass (represents a full window view) under its own Ruby gem + app project (namespace is required)
-glimmer scaffold:custom_widget[custom_widget_name,namespace]      # Scaffold a Glimmer::UI::CustomWidget subclass (represents a part of a view) under app/views (namespace is optional)
-glimmer scaffold:custom_widget_gem[custom_widget_name,namespace]  # Scaffold a Glimmer::UI::CustomWidget subclass (represents a part of a view) under its own Ruby gem project (namespace is required)
+glimmer list:gems:customshell[query]               # List Glimmer custom shell gems available at rubygems.org (query is optional) [alt: list:gems:cs]
+glimmer list:gems:customwidget[query]              # List Glimmer custom widget gems available at rubygems.org (query is optional) [alt: list:gems:cw]
+glimmer list:gems:dsl[query]                       # List Glimmer DSL gems available at rubygems.org (query is optional)
+glimmer package                                    # Package app for distribution (generating config, jar, and native files)
+glimmer package:clean                              # Clean by removing "dist" and "packages" directories
+glimmer package:config                             # Generate JAR config file
+glimmer package:jar                                # Generate JAR file
+glimmer package:native                             # Generate Native files (DMG/PKG/APP on the Mac, EXE on Windows, RPM/DEB on Linux)
+glimmer scaffold[app_name]                         # Scaffold Glimmer application directory structure to build a new app
+glimmer scaffold:customshell[name,namespace]       # Scaffold Glimmer::UI::CustomShell subclass (full window view) under app/views (namespace is optional) [alt: scaffold:cs]
+glimmer scaffold:customwidget[name,namespace]      # Scaffold Glimmer::UI::CustomWidget subclass (part of a view) under app/views (namespace is optional) [alt: scaffold:cw]
+glimmer scaffold:gem:customshell[name,namespace]   # Scaffold Glimmer::UI::CustomShell subclass (full window view) under its own Ruby gem + app project (namespace is required) [alt: scaffold:gem:cs]
+glimmer scaffold:gem:customwidget[name,namespace]  # Scaffold Glimmer::UI::CustomWidget subclass (part of a view) under its own Ruby gem project (namespace is required) [alt: scaffold:gem:cw]
 
 When applications are specified, they are run using JRuby, 
 automatically preloading the glimmer Ruby gem and SWT jar dependency.
@@ -475,7 +481,7 @@ letting Glimmer scaffolding take care of initial app file structure concerns, su
 - Icon
 - Bin file for starting application
 
-NOTE: Scaffolding requires RVM and currently supports Mac packaging only at the moment. 
+NOTE: Scaffolding requires RVM and supports Mac and Windows packaging at the moment. 
 
 #### App
 
@@ -524,7 +530,13 @@ On the Mac, it also comes with a boilerplate Preferences dialog.
 To scaffold a Glimmer custom shell (full window view) for an existing Glimmer app, run the following command:
 
 ```
-glimmer scaffold:custom_shell[custom_shell_name]
+glimmer scaffold:customshell[name]
+```
+
+Or the following alternative abbreviation:
+
+```
+glimmer scaffold:cs[name]
 ```
 
 #### Custom Widget
@@ -532,7 +544,13 @@ glimmer scaffold:custom_shell[custom_shell_name]
 To scaffold a Glimmer custom widget (part of a view) for an existing Glimmer app, run the following command:
 
 ```
-glimmer scaffold:custom_widget[custom_widget_name]
+glimmer scaffold:customwidget[name]
+```
+
+Or the following alternative abbreviation:
+
+```
+glimmer scaffold:cw[name]
 ```
 
 #### Custom Shell Gem
@@ -546,7 +564,13 @@ Of course, you can just build a Ruby gem and disregard native executable packagi
 To scaffold a Glimmer custom shell gem (full window view distributed as a Ruby gem), run the following command:
 
 ```
-glimmer scaffold:custom_shell_gem[custom_shell_name, namespace]
+glimmer scaffold:gem:customshell[name,namespace]
+```
+
+Or the following alternative abbreviation:
+
+```
+glimmer scaffold:gem:cs[name,namespace]
 ```
 
 It is important to specify a namespace to avoid having your gem clash with existing gems.
@@ -565,8 +589,15 @@ Examples:
 To scaffold a Glimmer custom widget gem (part of a view distributed as a Ruby gem), run the following command:
 
 ```
-glimmer scaffold:custom_widget_gem[custom_widget_name, namespace]
+glimmer scaffold:gem:customwidget[name,namespace]
 ```
+
+Or the following alternative abbreviation:
+
+```
+glimmer scaffold:gem:cw[name,namespace]
+```
+
 
 It is important to specify a namespace to avoid having your gem clash with existing gems.
 
@@ -588,13 +619,19 @@ The `glimmer` command comes with tasks for listing Glimmer related gems to make 
 The following command lists available Glimmer [Custom Shell Gems](#custom-shell-gem) (prefixed with "glimmer-cs-" by scaffolding convention) created by the the Glimmer community and published on [rubygems.org](http://www.rubygems.org):
 
 ```
-glimmer list:custom_shell_gems[query]                             # List Glimmer custom shell gems available at rubygems.org (query is optional)
+glimmer list:gems:customshell[query]
+```
+
+Or the following alternative abbreviation:
+
+```
+glimmer list:gems:cs[query]
 ```
 
 Example:
 
 ```
-glimmer list:custom_shell_gems
+glimmer list:gems:cs
 ```
 
 Output:
@@ -615,7 +652,13 @@ Output:
 The following command lists available Glimmer [Custom Widget Gems](#custom-widget-gem) (prefixed with "glimmer-cw-" by scaffolding convention) created by the the Glimmer community and published on [rubygems.org](http://www.rubygems.org):
 
 ```
-glimmer list:custom_widget_gems[query]                            # List Glimmer custom widget gems available at rubygems.org (query is optional)
+glimmer list:gems:customwidget[query]
+```
+
+Or the following alternative abbreviation:
+
+```
+glimmer list:gems:cw[query]
 ```
 
 Example:
@@ -623,7 +666,7 @@ Example:
 Check if there is a custom video widget for Glimmer.
 
 ```
-glimmer list:custom_widget_gems[video]
+glimmer list:gems:cw[video]
 ```
 
 Output:
@@ -643,13 +686,13 @@ Output:
 The following command lists available Glimmer [DSL Gems](#multi-dsl-support) (prefixed with "glimmer-dsl-" by convention) created by the the Glimmer community and published on [rubygems.org](http://www.rubygems.org):
 
 ```
-glimmer list:dsl_gems[query]                                      # List Glimmer DSL gems available at rubygems.org (query is optional)
+glimmer list:gems:dsl[query]
 ```
 
 Example:
 
 ```
-glimmer list:dsl_gems
+glimmer list:gems:dsl
 ```
 
 Output:
@@ -662,7 +705,7 @@ Output:
                                                                          
   Css    glimmer-dsl-css    0.1.0     AndyMaleh   Glimmer DSL for CSS    
   Opal   glimmer-dsl-opal   0.0.9     AndyMaleh   Glimmer DSL for Opal   
-  Swt    glimmer-dsl-swt    0.4.1     AndyMaleh   Glimmer DSL for SWT    
+  Swt    glimmer-dsl-swt    0.5.2     AndyMaleh   Glimmer DSL for SWT    
   Xml    glimmer-dsl-xml    0.1.0     AndyMaleh   Glimmer DSL for XML    
                                                                          
 ```
@@ -930,6 +973,21 @@ include Glimmer
 @shell.open
 ```
 
+![Hello Message Box Dialog](images/glimmer-hello-message-box-dialog.png)
+
+It is also possible to use `message_box` even before instantiating the first `shell` ([Glimmer](https://rubygems.org/gems/glimmer) builds a throwaway `shell` parent automatically for it):
+
+Example (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+include Glimmer
+
+message_box {
+  text 'Greeting'
+  message "Hello, World!"
+}.open
+```
+
 ##### `#swt_widget`
 
 Glimmer widget objects come with an instance method `#swt_widget` that returns the actual SWT `Widget` object wrapped by the Glimmer widget object. It is useful in cases you'd like to do some custom SWT programming outside of Glimmer.
@@ -1124,7 +1182,7 @@ text(:center, :border) { # Multiple SWT styles separated by comma
 Glimmer ships with SWT style **smart defaults** so you wouldn't have to set them yourself most of the time (albeit you can always override them):
 
 - `text(:border)`
-- `table(:border)`
+- `table(:border, :virtual, :full_selection)`
 - `tree(:border, :virtual, :v_scroll, :h_scroll)`
 - `spinner(:border)`
 - `list(:border, :v_scroll)`
@@ -3009,12 +3067,20 @@ If you have a Glimmer app you would like referenced here, please mention in a Pu
 
 Glimmer apps may be packaged and distributed on the Mac, Windows, and Linux via these tools:
 - Warbler (https://github.com/jruby/warbler): Enables bundling a Glimmer app into a JAR file
-- javapackager (https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html): Enables packaging a JAR file as a DMG file on Mac, EXE on Windows, and multiple Linux supported formats on Linux.
+- javapackager (https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html): Enables packaging a JAR file as a DMG/PKG/APP file on Mac, MSI/EXE on Windows, and DEB/RPM on Linux.
 
-Glimmer simplifies the process of Mac packaging via the `glimmer package` command. It works out of the box for any application generated by [Glimmer Scaffolding](#scaffolding):
+Glimmer simplifies the process of Mac and Windows packaging via the `glimmer package` command:
 
 ```
 glimmer package
+```
+
+It works out of the box for any application generated by [Glimmer Scaffolding](#scaffolding). 
+
+Otherwise, if you are using Glimmer manually, to make the `glimmer package` command available, you must add the following line to your application `Rakefile`:
+
+```ruby
+require 'glimmer/rake_task'
 ```
 
 This will automatically generate a JAR file under `./dist` directory using Warbler, which is then used to automatically generate a DMG file (and pkg/app) under `./packages/bundles` using `javapackager`. 
