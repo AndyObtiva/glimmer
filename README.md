@@ -338,9 +338,9 @@ Please follow these instructions to make the `glimmer` command available on your
 
 If you intend to learn the basics of Glimmer but are not ready to build a Glimmer app yet, pick Option 1 ([Direct Install](#option-1-direct-install)).
 
-If you intend to build a Glimmer app from scratch on the Mac, pick Option 1 ([Direct Install](#option-1-direct-install)) to leverage [Glimmer Scaffolding](#scaffolding) (only available on the Mac).
+If you intend to build a Glimmer app from scratch with [scaffolding](#scaffolding), pick Option 1 ([Direct Install](#option-1-direct-install)) as well.
 
-Otherwise, Option 2 ([Bundler](#option-2-bundler)) is recommended for building Glimmer apps on other platforms (Windows and Linux).
+Otherwise, Option 2 ([Bundler](#option-2-bundler)) can be used in rare cases where you want to build an app without [scaffolding](#scaffolding).
 
 ### Option 1: Direct Install 
 (Use for [Scaffolding](#scaffolding) on the Mac)
