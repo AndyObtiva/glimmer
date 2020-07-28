@@ -2600,11 +2600,9 @@ Glimmer configuration may be done via the `Glimmer::Config` module.
 
 ### logger
 
-Glimmer supports logging via a standard `STDOUT` Ruby `Logger` configured in the `Glimmer::Config.logger` config option.
+The Glimmer DSL engine supports logging via a standard `STDOUT` Ruby `Logger` configured in the `Glimmer::Config.logger` config option.
 It is set to level Logger::ERROR by default. 
 Log level may be adjusted via `Glimmer::Config.logger.level` just like any other Ruby Logger.
-It may be replaced with a custom logger via `Glimmer::Config.logger = custom_logger`
-All logging is done lazily via blocks (e.g. `logger.debug {message}`) to avoid affecting app performance with logging when below the configured logging level threshold.
 
 Example:
 
@@ -2627,6 +2625,56 @@ D, [2017-07-21T19:23:12.874969 #35707] DEBUG -- : parent is a widget: true
 D, [2017-07-21T19:23:12.875452 #35707] DEBUG -- : on listener?: false
 D, [2017-07-21T19:23:12.878434 #35707] DEBUG -- : WidgetCommandHandler will handle command: list with arguments [:multi]
 D, [2017-07-21T19:23:12.878798 #35707] DEBUG -- : widget styles are: [:multi]
+```
+
+The `logger` instance may be replaced with a custom logger via `Glimmer::Config.logger = custom_logger`
+
+To reset `logger` to the default instance, you may call `Glimmer::Config.reset_logger!`
+
+All logging is done lazily via blocks (e.g. `logger.debug {message}`) to avoid affecting app performance with logging when below the configured logging level threshold.
+
+[Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) enhances Glimmer default logging support via the Ruby [`logging`](https://github.com/TwP/logging) gem.
+The [`logging`](https://github.com/TwP/logging) gem enables buffered asynchronous logging in a separate thread, thus not affecting app performance.
+
+Other config options related to the [`logging`](https://github.com/TwP/logging) gem are mentioned below.
+
+#### logging_devices
+
+This is an array of these possible values: `:stdout` (default), `:stderr`, `:file`, `:syslog` (default), `:stringio`
+
+It defaults to `[:stdout, :syslog]`
+
+When `:file` is included, Glimmer creates a 'log' directory directly below the Glimmer app local directory. 
+It may also be customized further via the `logging_device_file_options` option.
+This is useful on Windows as an alternative to `syslog`, which is not available on Windows by default.
+
+#### logging_device_file_options
+
+This is a hash of [`logging`](https://github.com/TwP/logging) gem options for the `:file` logging device. 
+
+Default: `{size: 1_000_000, age: 'daily', roll_by: 'number'}`
+
+That ensures splitting log files at the 1MB size and daily, rolling them by unique number.
+
+#### logging_appender_options
+
+Appender options is a hash passed as options to every appender (logging device) used in the [`logging`](https://github.com/TwP/logging) gem.
+
+Default: `{async: true, auto_flushing: 500, write_size: 500, flush_period: 60, immediate_at: [:error, :fatal], layout: logging_layout}`
+
+That ensures asynchronous buffered logging that is flushed every 500 messages and 60 seconds, or immediately at error and fatal log levels
+
+#### logging_layout
+
+This is a [`logging`](https://github.com/TwP/logging) gem layout that formats the logging output.
+
+Default: 
+
+```
+Logging.layouts.pattern(
+  pattern: '[%d] %-5l %c: %m\n',
+  date_pattern: '%Y-%m-%d %H:%M:%S'
+)
 ```
 
 ### import_swt_packages
