@@ -2633,8 +2633,7 @@ To reset `logger` to the default instance, you may call `Glimmer::Config.reset_l
 
 All logging is done lazily via blocks (e.g. `logger.debug {message}`) to avoid affecting app performance with logging when below the configured logging level threshold.
 
-[Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) enhances Glimmer default logging support via the Ruby [`logging`](https://github.com/TwP/logging) gem.
-The [`logging`](https://github.com/TwP/logging) gem enables buffered asynchronous logging in a separate thread, thus not affecting app performance.
+[Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) enhances Glimmer default logging support via the Ruby [`logging`](https://github.com/TwP/logging) gem, enabling buffered asynchronous logging in a separate thread, thus completely unhindering normal desktop app performance.
 
 Other config options related to the [`logging`](https://github.com/TwP/logging) gem are mentioned below.
 
