@@ -556,7 +556,7 @@ glimmer scaffold:cw[name]
 #### Custom Shell Gem
 
 Custom shell gems are self-contained Glimmer apps as well as reusable custom shells. 
-They have everything scaffolded Glimmer apps come with in addition to gem content like a Jeweler Rakefile that can build gemspec and release gems. 
+They have everything scaffolded Glimmer apps come with in addition to gem content like a [jeweler](https://github.com/technicalpickles/jeweler) Rakefile that can build gemspec and release gems. 
 Unlike scaffolded Glimmer apps, custom shell gem content lives under the `lib` directory (not `app`).
 They can be packaged as both a native executable (e.g. Mac DMG/PKG/APP) and a Ruby gem.
 Of course, you can just build a Ruby gem and disregard native executable packaging if you do not need it.
