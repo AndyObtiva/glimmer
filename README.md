@@ -347,7 +347,7 @@ Otherwise, Option 2 ([Bundler](#option-2-bundler)) can be followed in rare cases
 
 Run this command to install directly:
 ```
-jgem install glimmer-dsl-swt -v 0.5.3
+jgem install glimmer-dsl-swt -v 0.5.6
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -365,7 +365,7 @@ Note: if you're using activerecord or activesupport, keep in mind that Glimmer u
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-swt', '~> 0.5.3'
+gem 'glimmer-dsl-swt', '~> 0.5.6'
 ```
 
 And, then run:
@@ -705,7 +705,7 @@ Output:
                                                                          
   Css    glimmer-dsl-css    0.2.0     AndyMaleh   Glimmer DSL for CSS    
   Opal   glimmer-dsl-opal   0.1.0     AndyMaleh   Glimmer DSL for Opal   
-  Swt    glimmer-dsl-swt    0.5.3     AndyMaleh   Glimmer DSL for SWT    
+  Swt    glimmer-dsl-swt    0.5.6     AndyMaleh   Glimmer DSL for SWT    
   Xml    glimmer-dsl-xml    0.2.0     AndyMaleh   Glimmer DSL for XML    
                                                                          
 ```
@@ -1918,7 +1918,8 @@ Let's revisit the Tic Tac Toe example shown near the beginning of the page:
 ```ruby
 shell {
   text "Tic-Tac-Toe"
-  composite {
+  minimum_size 150, 178
+  composite {  
     grid_layout 3, true
     (1..3).each { |row|
       (1..3).each { |column|
@@ -3044,6 +3045,8 @@ glimmer samples/elaborate/login.rb
 This sample demonstrates a full MVC application, including GUI layout, text and enablement data-binding, and test-driven development (has [specs](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/spec/samples/elaborate/tic_tac_toe/board_spec.rb)).
 
 Code:
+
+(Please note that on some Linux instances where the display x-axis is set to double-scale, you need to set the `shell` `minimum_size` to `300, 178` instead of `150, 178`)
 
 [samples/elaborate/tic_tac_toe.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/tic_tac_toe.rb)
 
