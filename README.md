@@ -789,7 +789,7 @@ This screenshot taken from the link above should give a glimpse of how SWT widge
 
 ![SWT Widgets](images/glimmer-swt-widgets.png)
 
-In Glimmer DSL, widgets are declared with lowercase underscored names mirroring their SWT names minus the package name:
+In Glimmer DSL, widgets are declared with lowercase underscored names mirroring their SWT names minus the package name. For example, here are some Glimmer widgets and their SWT counterparts:
 
 - `shell` instantiates `org.eclipse.swt.widgets.Shell`
 - `text` instantiates `org.eclipse.swt.widgets.Text`
@@ -887,6 +887,8 @@ shell {
   }
 }.open
 ```
+
+If you are new to Glimmer, you have learned enough to start running some [samples](#samples). Go ahead and run all Glimmer [samples](#samples), and come back to read the rest in any order you like since this material is more organized like a reference.
 
 #### Display
 
