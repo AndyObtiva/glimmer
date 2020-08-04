@@ -314,14 +314,14 @@ https://www.eclipse.org/swt/faq.php
 ## Pre-requisites
 
 - SWT 4.15 (comes included in Glimmer gem)
-- JRuby 9.2.12.0 (supporting Ruby 2.5.x syntax) (get via [RVM](http://rvm.io) or find at [https://www.jruby.org/download](https://www.jruby.org/download))
+- JRuby 9.2.13.0 (supporting Ruby 2.5.x syntax) (get via [RVM](http://rvm.io) or find at [https://www.jruby.org/download](https://www.jruby.org/download))
 - JDK 8 (find at [https://www.oracle.com/java/technologies/javase-downloads.html](https://www.oracle.com/java/technologies/javase-downloads.html))
 - (Optional) RVM is needed for [Scaffolding](#scaffolding) only (find at [https://rvm.io/](https://rvm.io/))
 
 To obtain JRuby through [RVM](http://rvm.io), you may run:
 
 ```bash
-rvm install jruby-9.2.12.0
+rvm install jruby-9.2.13.0
 ```
 
 Glimmer might still work on lower versions of Java, JRuby and SWT, but there are no guarantees, so it is best to stick to the pre-requisites outlined above.
@@ -347,7 +347,7 @@ Otherwise, Option 2 ([Bundler](#option-2-bundler)) can be followed in rare cases
 
 Run this command to install directly:
 ```
-jgem install glimmer-dsl-swt -v 0.5.6
+jgem install glimmer-dsl-swt -v 0.6.0
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -365,7 +365,7 @@ Note: if you're using activerecord or activesupport, keep in mind that Glimmer u
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-swt', '~> 0.5.6'
+gem 'glimmer-dsl-swt', '~> 0.6.0'
 ```
 
 And, then run:
@@ -705,7 +705,7 @@ Output:
                                                                          
   Css    glimmer-dsl-css    0.2.0     AndyMaleh   Glimmer DSL for CSS    
   Opal   glimmer-dsl-opal   0.1.0     AndyMaleh   Glimmer DSL for Opal   
-  Swt    glimmer-dsl-swt    0.5.6     AndyMaleh   Glimmer DSL for SWT    
+  Swt    glimmer-dsl-swt    0.6.0     AndyMaleh   Glimmer DSL for SWT    
   Xml    glimmer-dsl-xml    0.2.0     AndyMaleh   Glimmer DSL for XML    
                                                                          
 ```
