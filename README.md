@@ -313,7 +313,7 @@ https://www.eclipse.org/swt/faq.php
 
 ## Pre-requisites
 
-- SWT 4.15 (comes included in Glimmer gem)
+- SWT 4.16 (comes included in Glimmer gem)
 - JRuby 9.2.13.0 (supporting Ruby 2.5.x syntax) (get via [RVM](http://rvm.io) or find at [https://www.jruby.org/download](https://www.jruby.org/download))
 - JDK 8 (find at [https://www.oracle.com/java/technologies/javase-downloads.html](https://www.oracle.com/java/technologies/javase-downloads.html))
 - (Optional) RVM is needed for [Scaffolding](#scaffolding) only (find at [https://rvm.io/](https://rvm.io/))
@@ -1280,7 +1280,7 @@ button {
 
 In the above example, the `text` widget `enabled` property was data-bound to `#empty` method on `@tic_tac_toe_board.box(row, column)` (learn more about data-binding below)
 
-#### Colors
+#### Color
 
 Colors make up a subset of widget properties. SWT accepts color objects created with RGB (Red Green Blue) or RGBA (Red Green Blue Alpha). Glimmer supports constructing color objects using the `rgb` and `rgba` DSL keywords.
 
@@ -1329,7 +1329,7 @@ Example:
 color(:black).swt_color # returns SWT Color object
 ```
 
-#### Fonts
+#### Font
 
 Fonts are represented in Glimmer as a hash of name, height, and style keys.
 
@@ -1358,7 +1358,34 @@ label {
 # ...
 ```
 
-### Layouts
+You may simply use the standalone `font` keyword without nesting in a parent if there is a need to build a Font object to use in manual SWT programming outside of widget font property setting.
+
+Example:
+
+```ruby
+@font = font(name: 'Arial', height: 36, style: :normal)
+```
+
+### Cursor
+
+SWT widget `cursor` property represents the mouse cursor you see on the screen when you hover over that widget.
+
+The `Display` class provides a way to obtain standard system cursors matching of the SWT style constants starting with prefix `CURSOR_` (e.g. `SWT::CURSOR_HELP` shows a question mark mouse cursor)
+
+Glimmer provides an easier way to obtain and set `cursor` property on a widget by simply mentioning the SWT style constant as an abbreviated symbol excluding the "CURSOR_" suffix.
+
+Example:
+
+```ruby
+shell {
+  minimum_size 128, 128                        
+  cursor :appstarting
+}
+```
+
+This sets the shell `cursor` to that of `SWT::CURSOR_APPSTARTING`
+
+### Layout
 
 Glimmer lays widgets out visually using SWT layouts, which can only be set on composite widget and subclasses.
 
