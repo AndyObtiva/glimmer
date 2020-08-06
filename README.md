@@ -518,7 +518,7 @@ It also comes with a boilerplate Preferences dialog.
 
 ![Glimmer Scaffold App Preferences](images/glimmer-scaffolding-app-preferences.png)
 
-Here is a Windows scaffolded app:
+Here is a Windows scaffolded app called Greeter:
 
 ![Glimmer Scaffold App Windows](images/glimmer-scaffolding-app-windows.png)
 
