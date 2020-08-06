@@ -340,7 +340,7 @@ Otherwise, Option 2 ([Bundler](#option-2-bundler)) can be followed in rare cases
 
 Run this command to install directly:
 ```
-jgem install glimmer-dsl-swt -v 0.6.0
+jgem install glimmer-dsl-swt -v 0.6.1
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -358,7 +358,7 @@ Note: if you're using activerecord or activesupport, keep in mind that Glimmer u
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-swt', '~> 0.6.0'
+gem 'glimmer-dsl-swt', '~> 0.6.1'
 ```
 
 And, then run:
@@ -466,7 +466,7 @@ getting you to a running and delivered state of an advanced "Hello, World!" Glim
 This should greatly facilitate building a new Glimmer app by helping you be productive and focus on app details while 
 letting Glimmer scaffolding take care of initial app file structure concerns, such as adding:
 - Main application class that includes Glimmer
-- Main application view that houses main window content, about dialog, and preferences dialog
+- Main application view that houses main window content, menu, about dialog, and preferences dialog
 - View and Model directories
 - Rakefile including Glimmer tasks
 - Version
@@ -702,7 +702,7 @@ Output:
                                                                          
   Css    glimmer-dsl-css    0.2.0     AndyMaleh   Glimmer DSL for CSS    
   Opal   glimmer-dsl-opal   0.1.0     AndyMaleh   Glimmer DSL for Opal   
-  Swt    glimmer-dsl-swt    0.6.0     AndyMaleh   Glimmer DSL for SWT    
+  Swt    glimmer-dsl-swt    0.6.1     AndyMaleh   Glimmer DSL for SWT    
   Xml    glimmer-dsl-xml    0.2.0     AndyMaleh   Glimmer DSL for XML    
                                                                          
 ```
