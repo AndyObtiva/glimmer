@@ -517,13 +517,17 @@ Created CarMaker/bin/car_maker
 ...
 ```
 
-Eventually, it will launch an advanced "Hello, World!" app window having the title of your application and a Mac icon.
+Eventually, it will launch an advanced "Hello, World!" app window having the title of your application.
 
 ![Glimmer Scaffold App](images/glimmer-scaffolding-app.png)
 
-On the Mac, it also comes with a boilerplate Preferences dialog.
+It also comes with a boilerplate Preferences dialog.
 
 ![Glimmer Scaffold App Preferences](images/glimmer-scaffolding-app-preferences.png)
+
+Here is a Windows app:
+
+![Glimmer Scaffold App Windows](images/glimmer-scaffolding-app-windows.png)
 
 #### Custom Shell
 
