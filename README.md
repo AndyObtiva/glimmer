@@ -782,7 +782,7 @@ https://www.eclipse.org/swt/widgets/
 
 This screenshot taken from the link above should give a glimpse of how SWT widgets look and feel:
 
-![SWT Widgets](images/glimmer-swt-widgets.png)
+[![SWT Widgets](images/glimmer-swt-widgets.png)](https://www.eclipse.org/swt/widgets/)
 
 In Glimmer DSL, widgets are declared with lowercase underscored names mirroring their SWT names minus the package name. For example, here are some Glimmer widgets and their SWT counterparts:
 
