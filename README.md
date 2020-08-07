@@ -272,6 +272,7 @@ Glimmer App:
   - [In Production](#in-production)
     - [Math Bowling](#math-bowling)
     - [Are We There Yet?](#are-we-there-yet)
+    - [Garderie Rainbow Daily Agenda](#garderie-rainbow-daily-agenda)
   - [Packaging & Distribution](#packaging--distribution)
     - [Packaging Defaults](#packaging-defaults)
     - [Packaging Configuration](#packaging-configuration)
@@ -3147,6 +3148,8 @@ Gladiator is a good demonstration of:
 
 The following production apps have been built with Glimmer.
 
+If you have a Glimmer app you would like referenced here, please mention in a Pull Request. 
+
 ### Math Bowling
 
 [<img alt="Math Bowling Logo" src="https://raw.githubusercontent.com/AndyObtiva/MathBowling/master/images/math-bowling-logo.png" width="40" />Math Bowling](https://github.com/AndyObtiva/MathBowling): an educational math game for elementary level kids
@@ -3155,7 +3158,9 @@ The following production apps have been built with Glimmer.
 
 [<img alt="Are We There Yet Logo" src="https://raw.githubusercontent.com/AndyObtiva/are-we-there-yet/master/are-we-there-yet-logo.svg" width="40" />Are We There Yet?](https://github.com/AndyObtiva/are-we-there-yet): A tool that helps you learn when your small projects will finish
 
-If you have a Glimmer app you would like referenced here, please mention in a Pull Request. 
+### Garderie Rainbow Daily Agenda
+
+[<img alt="Garderie Rainbow Daily Agenda Logo" src="https://github.com/AndyObtiva/garderie_rainbow_daily_agenda/raw/master/images/garderie_rainbow_daily_agenda_logo.png" width="40" />Garderie Rainbow Daily Agenda](https://github.com/AndyObtiva/garderie_rainbow_daily_agenda): A child nursery daily agenda reporting desktop app
 
 ## Packaging & Distribution
 
