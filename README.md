@@ -280,6 +280,7 @@ Glimmer App:
     - [Mac Application Distribution](#mac-application-distribution)
     - [Self Signed Certificate](#self-signed-certificate)
     - [Gotchas](#gotchas)
+  - [App Updates](#app-updates)    
   - [Resources](#resources)
   - [Help](#help)
     - [Issues](#issues)
@@ -3313,6 +3314,10 @@ By the way, keep in mind that during normal operation, it does also indicate a f
 ```
 Exec failed with code 2 command [[/usr/bin/SetFile, -c, icnC, /var/folders/4_/g1sw__tx6mjdgyh3mky7vydc0000gp/T/fxbundler4076750801763032201/images/MathBowling/.VolumeIcon.icns] in unspecified directory
 ```
+
+## App Updates
+
+Glimmer already supports automatic (and manual) app updates via the Mac App Store for Mac apps. Simply run the `glimmer package` command with the Mac App Store keys configured as per [Mac Application Distribution](mac-application-distribution) instructions and you get automatic (and manual) app update support courtesy of the Mac App Store.
 
 ## Resources
 
