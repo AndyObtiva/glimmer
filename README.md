@@ -202,7 +202,7 @@ Glimmer App:
     - [Raw JRuby Command](#raw-jruby-command)
       - [Mac Support](#mac-support)
   - [Girb (Glimmer irb) Command](#girb-glimmer-irb-command)
-  - [Glimmer DSL Syntax](#glimmer-dsl-syntax)
+  - [Glimmer GUI DSL Syntax](#glimmer-gui-dsl-syntax)
     - [Widgets](#widgets)
       - [Display](#display)
       - [SWT Proxies](#swt-proxies)
@@ -376,7 +376,7 @@ You may learn more about other Glimmer related gems ([`glimmer-dsl-opal`](https:
 
 The `glimmer` command allows you to run, scaffold, package, and list Glimmer applications/gems.
 
-If you are new to Glimmer, you may read the Basic Usage section and skip the rest until you have gone through [Girb (Glimmer irb) Command](#girb-glimmer-irb-command), [Glimmer DSL Syntax](#glimmer-dsl-syntax), and [Samples](#samples).
+If you are new to Glimmer, you may read the Basic Usage section and skip the rest until you have gone through [Girb (Glimmer irb) Command](#girb-glimmer-irb-command), [Glimmer GUI DSL Syntax](#glimmer-gui-dsl-syntax), and [Samples](#samples).
 
 ### Basic Usage
 
@@ -758,11 +758,11 @@ Watch out for hands-on examples in this README indicated by "you may copy/paste 
 
 Keep in mind that all samples live under [https://github.com/AndyObtiva/glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt)
 
-## Glimmer DSL Syntax
+## Glimmer GUI DSL Syntax
 
-Glimmer mainly consists of a GUI DSL that has visual syntax making it easy to visualize the nesting of widgets in the GUI hierarchy tree.
+Glimmer is mainly a GUI DSL with a lightweight visual syntax that makes it easy to visualize the nesting of widgets in the GUI hierarchy tree.
 
-The DSL intentionally avoids overly verbose syntax, requiring as little declarative code as possible to describe what GUI to render, how to style it, and what properties to data-bind to the Models.
+The GUI DSL intentionally avoids overly verbose syntax, requiring as little declarative code as possible to describe what GUI to render, how to style it, and what properties to data-bind to the Models.
 
 As such, it breaks off from Ruby's convention of using `do end` for multi-line blocks, opting instead for the lightweight and visual `{ }` curly brace blocks everywhere inside the GUI DSL. More details about Glimmer's syntax conventions may be found in the [Glimmer Style Guide](#glimmer-style-guide)
 
