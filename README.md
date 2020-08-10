@@ -760,11 +760,22 @@ Keep in mind that all samples live under [https://github.com/AndyObtiva/glimmer-
 
 ## Glimmer DSL Syntax
 
-Glimmer DSL syntax consists of static keywords and dynamic keywords to build and bind user-interface objects.
+Glimmer mainly consists of a GUI DSL that has visual syntax making it easy to visualize the nesting of widgets in the GUI hierarchy tree.
 
-Static keywords are pre-identified keywords in the Glimmer DSL, such as `shell`, `message_box`, `async_exec`, and `bind`.
+The DSL intentionally avoids overly verbose syntax, requiring as little declarative code as possible to describe what GUI to render, how to style it, and what properties to data-bind to the Models.
 
-Dynamic keywords are dynamically figured out from available SWT widgets, custom widgets, and properties. Examples are: `label`, `combo`, and `list`.
+As such, it breaks off from Ruby's convention of using `do end` for multi-line blocks, opting instead for the lightweight and visual `{ }` curly brace blocks everywhere inside the GUI DSL. More details about Glimmer's syntax conventions may be found in the [Glimmer Style Guide](#glimmer-style-guide)
+
+Glimmer DSL syntax consists mainly of:
+- keywords (e.g. `table` for a table widget)
+- style/args (e.g. :multi as in `table(:multi)` for a multi-line selection table widget)
+- content (e.g. `{ table_column { text 'Name'} }` as in `table(:multi) { table_column { text 'name'} }` for a multi-line selection table widget with a table column having header text property `'Name'` as content)
+
+Glimmer keywords may be static or dynamic.
+
+Static keywords are pre-identified keywords in the Glimmer DSL, such as `shell`, `display`, `message_box`, `async_exec`, `sync_exec`, and `bind`.
+
+Dynamic keywords are dynamically figured out from currently imported (aka required/loaded) SWT widgets, custom widgets, and widget properties. Examples are: `label`, `combo`, and `list` for widgets and `enabled`, `text`, and `selection` for properties.
 
 The only reason to distinguish between the two types of Glimmer DSL keywords is to realize that importing new Glimmer [custom widgets](#custom-widgets) and Java SWT custom widget libraries automatically expands Glimmer's DSL vocabulary via new dynamic keywords.
 
@@ -802,8 +813,8 @@ In Glimmer DSL, widgets are declared with lowercase underscored names mirroring 
 - `list` instantiates `org.eclipse.swt.widgets.List`
 
 Every **widget** is sufficiently declared by name, but may optionally be accompanied with:
-- SWT **style** ***argument*** wrapped by parenthesis according to [Glimmer Style Guide](#glimmer-style-guide) (see [next section](#widget-styles) for details).
-- Ruby block containing **properties** (widget attributes) and **content** (nested widgets)
+- SWT **style**/***arguments*** wrapped by parenthesis according to [Glimmer Style Guide](#glimmer-style-guide) (see [next section](#widget-styles) for details).
+- Ruby block containing **content**, which may be **properties** (e.g. `enabled false`) or nested **widgets** (e.g. `table_column` nested inside `table`)
 
 For example, if we were to revisit `samples/hello/hello_world.rb` above (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
 
