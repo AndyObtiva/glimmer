@@ -524,6 +524,11 @@ Here is a Windows scaffolded app called Greeter:
 
 ![Glimmer Scaffold App Windows](images/glimmer-scaffolding-app-windows.png)
 
+Here is the Windows version of the boilerplate Preferences dialog.
+
+![Glimmer Scaffold App Windows Preferences](images/glimmer-scaffolding-app-windows-preferences.png)
+
+
 #### Custom Shell
 
 To scaffold a Glimmer custom shell (full window view) for an existing Glimmer app, run the following command:
