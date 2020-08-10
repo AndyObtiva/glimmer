@@ -7,6 +7,10 @@ Related TODO files:
 
 ## Tasks
 
+### 0.10.2
+
+- Add delete_at and delete_if to methods observed in ObservableArray
+
 ### Version TBD
 
 - Consider creating a configuration DSL

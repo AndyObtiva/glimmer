@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+## 0.10.2
+
+- Added observer notification support for all Array mutation methods in ObservableArray
+
 ## 0.10.1
 
 - excluded_keyword_checkers option for filtering certain keywords from Glimmer DSL processing 
