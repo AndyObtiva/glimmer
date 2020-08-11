@@ -417,11 +417,12 @@ Available tasks are below (you may also lookup by adding `require 'glimmer/rake_
 glimmer list:gems:customshell[query]               # List Glimmer custom shell gems available at rubygems.org (query is optional) [alt: list:gems:cs]
 glimmer list:gems:customwidget[query]              # List Glimmer custom widget gems available at rubygems.org (query is optional) [alt: list:gems:cw]
 glimmer list:gems:dsl[query]                       # List Glimmer DSL gems available at rubygems.org (query is optional)
-glimmer package                                    # Package app for distribution (generating config, jar, and native files)
+glimmer package[type]                              # Package app for distribution (generating config, jar, and native files) (type is optional)
 glimmer package:clean                              # Clean by removing "dist" and "packages" directories
 glimmer package:config                             # Generate JAR config file
 glimmer package:jar                                # Generate JAR file
-glimmer package:native                             # Generate Native files (DMG/PKG/APP on the Mac, EXE/MSI/IMAGE on Windows, RPM/DEB on Linux)
+glimmer package:lock_jars                          # Lock JARs
+glimmer package:native[type]                       # Generate Native files (DMG/PKG/APP on the Mac, MSI/EXE/IMAGE on Windows, RPM/DEB on Linux) (type is optional)
 glimmer scaffold[app_name]                         # Scaffold Glimmer application directory structure to build a new app
 glimmer scaffold:customshell[name,namespace]       # Scaffold Glimmer::UI::CustomShell subclass (full window view) under app/views (namespace is optional) [alt: scaffold:cs]
 glimmer scaffold:customwidget[name,namespace]      # Scaffold Glimmer::UI::CustomWidget subclass (part of a view) under app/views (namespace is optional) [alt: scaffold:cw]
@@ -3205,6 +3206,14 @@ DMG file name will match the humanized local directory name + dash + application
 
 The `glimmer package` command will automatically set "mac.CFBundleIdentifier" to ="org.#{project_name}.application.#{project_name}". 
 You may override by configuring as an extra argument for javapackger (e.g. Glimmer::Package.javapackager_extra_args = " -Bmac.CFBundleIdentifier=org.andymaleh.application.MathBowling")
+
+You may choose to generate a specific type of packaging by passing the `[type]` option:
+
+```
+glimmer package[msi]
+```
+
+That generates a MSI file only on Windows, thus saving time if you chose MSI over EXE.
 
 ### Packaging Defaults
 
