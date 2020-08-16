@@ -317,7 +317,7 @@ https://www.eclipse.org/swt/faq.php
 
 - SWT 4.16 (comes included in Glimmer gem)
 - JRuby 9.2.13.0 (supporting Ruby 2.5.x syntax) (get via [RVM](http://rvm.io) on Mac and Linux or find at [https://www.jruby.org/download](https://www.jruby.org/download) for Windows)
-- JDK 8 (find at [https://www.oracle.com/java/technologies/javase-downloads.html](https://www.oracle.com/java/technologies/javase-downloads.html))
+- JDK 8 (find at https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
 
 To obtain JRuby through [RVM](http://rvm.io), you may run:
 
