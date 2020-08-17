@@ -3213,7 +3213,7 @@ You may choose to generate a specific type of packaging by passing the `[type]` 
 glimmer package[msi]
 ```
 
-That generates a MSI file only on Windows, thus saving time if you chose MSI over EXE.
+That generates an MSI file on Windows (could specify exe or image as alternatives on Windows).
 
 ### Packaging Defaults
 
@@ -3274,6 +3274,14 @@ JAVAPACKAGER_EXTRA_ARGS='-Bmac.CFBundleName="Math Bowling Game"' glimmer package
 ```
 
 That overrides the default application display name.
+
+### Windows Application Packaging
+
+Windows offers two options for setup packaging: 
+- `msi` (recommended): simpler packaging option. Requires [WiX Toolset](https://wixtoolset.org/) and [.NET Framework](https://dotnet.microsoft.com/download/dotnet-framework). Simply run `glimmer package[msi]` (or `glimmer package:native[msi]` if it's not your first time) and it will tell you what you need to install including which version of .NET Framework it needs.
+- `exe`: more advanced packaging option. Requires [Inno Setup](https://jrsoftware.org/isinfo.php). Simply run `glimmer package[exe]` (or `glimmer package:native[exe]` if it's not your first time) and it will tell you what you need to install.
+
+If you just want to test out packaging into a native Windows app that is not packaged for Windows setup, just pass `image` to generate a native Windows app only.
 
 ### Mac Application Distribution
 
