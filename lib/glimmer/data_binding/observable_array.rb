@@ -8,25 +8,50 @@ module Glimmer
     module ObservableArray
       include Observable
 
-      def add_observer(observer, element_properties=nil)
-        return observer if has_observer?(observer) && element_properties.nil?
+      def add_observer(observer, *element_properties)
+        element_properties = element_properties.flatten.compact.uniq
+        return observer if has_observer?(observer) && has_observer_element_properties(observer, element_properties)
         property_observer_list << observer
-        [element_properties].flatten.compact.each do |property|
-          each do |element|
-            observer.observe(element, property)
-          end
-        end
+        observer_element_properties[observer] = element_properties_for(observer) + Set.new(element_properties)
+        each { |element| add_element_observer(element, observer) }
         observer
+      end
+      
+      def add_element_observers(element)
+        property_observer_list.each do |observer|
+          add_element_observer(element, observer)
+        end
+      end
+
+      def add_element_observer(element, observer)
+        element_properties_for(observer).each do |property|
+          observer.observe(element, property)
+        end      
       end
 
       def remove_observer(observer, element_properties=nil)
+        element_properties = element_properties.flatten.compact.uniq
         property_observer_list.delete(observer)
-        [element_properties].flatten.compact.each do |property|
-          each do |element|
-            observer.unobserve(element, property)
-          end
+        if element_properties.empty?
+          observer_element_properties.delete(observer)
+        else
+          observer_element_properties[observer] = element_properties_for(observer) - Set.new(element_properties)
+          observer_element_properties.delete(observer) if element_properties_for(observer).empty?
         end
+        each { |element| remove_element_observer(element, observer) }
         observer
+      end
+
+      def remove_element_observers(element)
+        property_observer_list.each do |observer|
+          remove_element_observer(element, observer)
+        end      
+      end
+
+      def remove_element_observer(element, observer)
+        element_properties_for(observer).each do |property|
+          observer.unobserve(element, property)
+        end      
       end
 
       def has_observer?(observer)
@@ -37,12 +62,21 @@ module Glimmer
         @property_observer_list ||= Set.new
       end
 
+      def observer_element_properties
+        @observer_element_properties ||= {}
+      end
+
+      def element_properties_for(observer)
+        observer_element_properties[observer] ||= Set.new
+      end
+
       def notify_observers
         property_observer_list.to_a.each(&:call)
       end
       
       def <<(element)
         super(element).tap do
+          add_element_observers(element)        
           notify_observers
         end
       end
