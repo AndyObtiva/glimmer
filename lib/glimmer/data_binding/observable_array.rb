@@ -159,8 +159,12 @@ module Glimmer
         if block_given?
           each do |old_value|
             unregister_dependent_observers(old_value)
+            remove_element_observers(old_value)
           end
           super(&block).tap do
+            each do |element|
+              add_element_observers(element)
+            end
             notify_observers
           end
         else

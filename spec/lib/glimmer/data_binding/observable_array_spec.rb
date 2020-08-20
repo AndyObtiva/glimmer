@@ -360,7 +360,7 @@ module Glimmer
           array.reverse!
         end    
                 
-        xit 'notifies observers when Array#collect! is called' do
+        it 'notifies observers when Array#collect! is called' do
           @fired = false
           observer = Observer.proc {
             @fired = true
@@ -377,7 +377,30 @@ module Glimmer
           expect(@fired).to eq(false)
           
           @fired = false
-          old_element.project_name = 'Garage Improvement'
+          old_element.priority = 'Medium'
+          expect(@fired).to eq(false)          
+          
+          new_element = array.first
+          
+          @fired = false
+          new_element.name = 'Garage Improvement'
+          expect(@fired).to eq(true)
+        end    
+                
+        it 'notifies observers when Array#map! is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+          
+          old_element = array.first
+          array.map!(&:project)
+          
+          @fired = false
+          old_element.name = 'Paint Car'
           expect(@fired).to eq(false)
           
           @fired = false
@@ -389,18 +412,6 @@ module Glimmer
           @fired = false
           new_element.name = 'Garage Improvement'
           expect(@fired).to eq(true)
-        end    
-                
-        xit 'notifies observers when Array#collect! is called' do
-          @fired = false
-          observer = Observer.proc {
-            @fired = true
-          }
-          array = [project_task1]
-          array.singleton_class.include(ObservableArray)
-          array.add_observer(observer, [:name, :priority])
-
-          array.reverse!
         end    
                 
       end      
