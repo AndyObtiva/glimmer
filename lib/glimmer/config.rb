@@ -15,9 +15,7 @@ module Glimmer
       end
       
       def reset_excluded_keyword_checkers!
-        @excluded_keyword_checkers = [
-          lambda { |method_symbol, *args| method_symbol.to_s.match(REGEX_METHODS_EXCLUDED) }
-        ]
+        @excluded_keyword_checkers = [ lambda { |method_symbol, *args| method_symbol.to_s.match(REGEX_METHODS_EXCLUDED) } ]
       end
       
       def loop_max_count
