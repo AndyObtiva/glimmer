@@ -1,6 +1,9 @@
 require 'set'
+require 'array_include_methods'
 
 require 'glimmer/data_binding/observable'
+
+using ArrayIncludeMethods
 
 module Glimmer
   module DataBinding
@@ -10,7 +13,7 @@ module Glimmer
 
       def add_observer(observer, *element_properties)
         element_properties = element_properties.flatten.compact.uniq
-        return observer if has_observer?(observer) && has_observer_element_properties(observer, element_properties)
+        return observer if has_observer?(observer) && has_observer_element_properties?(observer, element_properties)
         property_observer_list << observer
         observer_element_properties[observer] = element_properties_for(observer) + Set.new(element_properties)
         each { |element| add_element_observer(element, observer) }
@@ -62,6 +65,10 @@ module Glimmer
 
       def has_observer?(observer)
         property_observer_list.include?(observer)
+      end
+      
+      def has_observer_element_properties?(observer, element_properties)
+        element_properties_for(observer).to_a.include_all?(element_properties)
       end
 
       def property_observer_list
@@ -174,7 +181,7 @@ module Glimmer
       alias map! collect!
 
       def compact!
-        super(&block).tap do
+        super.tap do
           notify_observers
         end
       end
@@ -182,8 +189,12 @@ module Glimmer
       def flatten!(level=nil)
         each do |old_value|
           unregister_dependent_observers(old_value)
+          remove_element_observers(old_value)
         end
-        (level.nil? ? super : super(level)).tap do
+        (level.nil? ? super() : super(level)).tap do
+          each do |element|
+            add_element_observers(element)
+          end
           notify_observers
         end
       end
@@ -194,7 +205,7 @@ module Glimmer
         end
       end
 
-      def select!(&block)
+      def select!(&block) #TODO test
         if block_given?
           old_array = Array.new(self)
           super(&block).tap do |new_array|
@@ -209,12 +220,12 @@ module Glimmer
       end
 
       def shuffle!(hash = nil)
-        (hash.nil? ? super : super(random: hash[:random])).tap do
+        (hash.nil? ? super() : super(random: hash[:random])).tap do
           notify_observers
         end
       end
 
-      def slice!(arg1, arg2=nil)
+      def slice!(arg1, arg2=nil) #TODO test
         old_array = Array.new(self)
         (arg2.nil? ? super(arg1) : super(arg1, arg2)).tap do |new_array|
           (old_array - new_array).each do |old_value|
@@ -225,24 +236,24 @@ module Glimmer
       end
 
       def sort!(&block)
-        (block.nil? ? super : super(&block)).tap do
+        (block.nil? ? super() : super(&block)).tap do
           notify_observers
         end
       end
 
       def sort_by!(&block)
-        (block.nil? ? super : super(&block)).tap do
+        (block.nil? ? super() : super(&block)).tap do
           notify_observers
         end
       end
 
-      def uniq!(&block)
-        (block.nil? ? super : super(&block)).tap do
+      def uniq!(&block) #TODO test
+        (block.nil? ? super() : super(&block)).tap do
           notify_observers
         end
       end
 
-      def reject!(&block)
+      def reject!(&block) #TODO test
         if block_given?
           old_array = Array.new(self)
           super(&block).tap do |new_array|

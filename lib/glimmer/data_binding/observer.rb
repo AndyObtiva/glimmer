@@ -59,6 +59,7 @@ module Glimmer
       # registers observer in an observable on a property (optional)
       # observer maintains registration list to unregister later
       def register(observable, property = nil)
+        return if observable.nil?
         unless observable.is_a?(Observable)
           # TODO refactor code to be more smart/polymorphic/automated and honor open/closed principle
           if observable.is_a?(Array)

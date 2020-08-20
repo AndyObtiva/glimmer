@@ -4,6 +4,7 @@
 # UI with domain models.
 require 'logger'
 require 'set'
+require 'array_include_methods'
 
 $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 

@@ -358,6 +358,7 @@ module Glimmer
           array.add_observer(observer, [:name, :priority])
 
           array.reverse!
+          expect(@fired).to eq(true)
         end    
                 
         it 'notifies observers when Array#collect! is called' do
@@ -371,6 +372,7 @@ module Glimmer
           
           old_element = array.first
           array.collect!(&:project)
+          expect(@fired).to eq(true)
           
           @fired = false
           old_element.name = 'Paint Car'
@@ -398,6 +400,7 @@ module Glimmer
           
           old_element = array.first
           array.map!(&:project)
+          expect(@fired).to eq(true)
           
           @fired = false
           old_element.name = 'Paint Car'
@@ -411,6 +414,133 @@ module Glimmer
           
           @fired = false
           new_element.name = 'Garage Improvement'
+          expect(@fired).to eq(true)
+        end    
+                
+        it 'notifies observers when Array#compact! is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1, nil]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+
+          array.compact!
+          expect(@fired).to eq(true)
+        end  
+        
+        it 'notifies observers when Array#flatten! is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          } # TODO extract to let variable
+          inner_array = [project_task1]
+          array = [inner_array]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+          
+          array << nil
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          element = inner_array.first
+          array.flatten!
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          element.name = 'Paint Car'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          element.priority = 'Medium'
+          expect(@fired).to eq(true)          
+        end
+       
+        it 'notifies observers when Array#flatten!(level) is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          } # TODO extract to let variable
+          inner_array = [project_task1]
+          array = [[inner_array]]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+          
+          array << nil
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          element = inner_array.first
+          array.flatten!(1)
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          element.name = 'Paint Car'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          element.priority = 'Medium'
+          expect(@fired).to eq(true)          
+        end
+       
+        it 'notifies observers when Array#rotate! is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+
+          array.rotate!
+          expect(@fired).to eq(true)
+        end    
+                
+        it 'notifies observers when Array#shuffle! is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+
+          array.shuffle!
+          expect(@fired).to eq(true)
+        end    
+                
+        it 'notifies observers when Array#sort! is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+
+          array.sort! {|a, b| a <=> b}
+          expect(@fired).to eq(true)
+        end    
+                
+        it 'notifies observers when Array#sort_by! is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+
+          array.sort_by! {|e| e.priority}
           expect(@fired).to eq(true)
         end    
                 
