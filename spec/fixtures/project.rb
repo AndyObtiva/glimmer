@@ -1,0 +1,1 @@
+Project = Struct.new(:name)
