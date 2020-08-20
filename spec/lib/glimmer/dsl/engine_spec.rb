@@ -31,6 +31,8 @@ module GlimmerSpec
     context 'DSLs defined' do
       it 'mixes multiple DSLs (SWT and XML)' do
         @target = shell {
+          expect {body}.to raise_error # ensure swt_dynamic_expression cannot handle this here
+        
           browser {
             text html {
               body {
@@ -58,7 +60,7 @@ module GlimmerSpec
       it 'disables SWT and XML DSLs to build a CSS style sheet containing SWT and XML keywords' do
         Glimmer::DSL::Engine.disable_dsl(:swt)
         Glimmer::DSL::Engine.disable_dsl(:xml)
-   
+           
         @target = css {
           shell {
             background :red
