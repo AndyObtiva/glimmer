@@ -14,3 +14,4 @@ Related TODO files:
 ### Version TBD
 
 - Consider creating a configuration DSL
+- Rename Observable (and subclass) methods to observe/unobserve

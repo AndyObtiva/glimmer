@@ -64,7 +64,59 @@ module Glimmer
           expect(@fired).to eq(false)
         end
       end  
-    
+
+      describe '#remove_observer' do
+        it 'removes observer without element properties' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = []
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer)
+          array.remove_observer(observer)
+          array << 'element'
+          expect(@fired).to eq(false)
+        end
+        
+        it 'removes observer with element properties' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [ProjectTask.new('Design Decorations', 'Home Improvement', 'High')]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :project_name])
+          array.remove_observer(observer, [:project_name])
+
+          @fired = false
+          array.first.name = 'Build Decorations'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.first.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          array.first.priority = 'Medium'
+          expect(@fired).to eq(false)
+          
+          array << ProjectTask.new('Paint Wall', 'Home Improvement', 'High')
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.last.name = 'Paint Car'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.last.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          array.last.priority = 'Medium'
+          expect(@fired).to eq(false)
+        end        
+      end    
     end
   end
 end

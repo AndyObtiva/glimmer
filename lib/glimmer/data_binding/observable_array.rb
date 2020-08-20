@@ -29,16 +29,22 @@ module Glimmer
         end      
       end
 
-      def remove_observer(observer, element_properties=nil)
+      def remove_observer(observer, *element_properties)
         element_properties = element_properties.flatten.compact.uniq
-        property_observer_list.delete(observer)
-        if element_properties.empty?
-          observer_element_properties.delete(observer)
-        else
+        if !element_properties.empty?
+          old_element_properties = element_properties_for(observer)
           observer_element_properties[observer] = element_properties_for(observer) - Set.new(element_properties)
-          observer_element_properties.delete(observer) if element_properties_for(observer).empty?
+          each do |element|
+            element_properties.each do |property|
+              observer.unobserve(element, property)
+            end
+          end
         end
-        each { |element| remove_element_observer(element, observer) }
+        if element_properties_for(observer).empty?
+          property_observer_list.delete(observer)
+          observer_element_properties.delete(observer)
+          each { |element| remove_element_observer(element, observer) }
+        end        
         observer
       end
 
