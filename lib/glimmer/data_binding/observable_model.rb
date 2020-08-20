@@ -34,7 +34,7 @@ module Glimmer
       end
 
       def has_observer_for_any_property?(observer)
-        property_observer_hash.values.map(&:to_a).sum.include?(observer)
+        property_observer_hash.values.map(&:to_a).reduce(:+).include?(observer)
       end
 
       def property_observer_hash
