@@ -5,7 +5,7 @@ Related Change Logs:
 
 ## 0.10.2
 
-- Added observer notification support for all Array mutation methods in ObservableArray (e.g. `delete_if`, `collect!`, etc...)
+- Added observer notification support for all Array mutation methods in ObservableArray (e.g. `delete_if`, `select!`, `uniq!`, `collect!`, etc...)
 
 ## 0.10.1
 
