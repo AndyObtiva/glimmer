@@ -10,7 +10,7 @@ module Glimmer
       end
       
       after :all do
-        Object.send(:remove_const, :ObservableTask) if Object.const_defined?(:Task)
+        Object.send(:remove_const, :ProjectTask) if Object.const_defined?(:ProjectTask)
       end
     
       describe '#add_observer' do
@@ -32,7 +32,7 @@ module Glimmer
           observer = Observer.proc {
             @fired = true
           }
-          array = [ProjectTask.new('Design Decorations', 'Home Improvement', 'High')]
+          array = [::ProjectTask.new('Design Decorations', 'Home Improvement', 'High')]
           array.singleton_class.include(ObservableArray)
           array.add_observer(observer, [:name, :project_name])
 
@@ -48,7 +48,7 @@ module Glimmer
           array.first.priority = 'Medium'
           expect(@fired).to eq(false)
           
-          array << ProjectTask.new('Paint Wall', 'Home Improvement', 'High')
+          array << ::ProjectTask.new('Paint Wall', 'Home Improvement', 'High')
           expect(@fired).to eq(true)
           
           @fired = false
@@ -84,7 +84,7 @@ module Glimmer
           observer = Observer.proc {
             @fired = true
           }
-          array = [ProjectTask.new('Design Decorations', 'Home Improvement', 'High')]
+          array = [::ProjectTask.new('Design Decorations', 'Home Improvement', 'High')]
           array.singleton_class.include(ObservableArray)
           array.add_observer(observer, [:name, :project_name])
           array.remove_observer(observer, [:project_name])
@@ -101,7 +101,7 @@ module Glimmer
           array.first.priority = 'Medium'
           expect(@fired).to eq(false)
           
-          array << ProjectTask.new('Paint Wall', 'Home Improvement', 'High')
+          array << ::ProjectTask.new('Paint Wall', 'Home Improvement', 'High')
           expect(@fired).to eq(true)
           
           @fired = false
@@ -116,7 +116,118 @@ module Glimmer
           array.last.priority = 'Medium'
           expect(@fired).to eq(false)
         end        
-      end    
+      
+      end
+      
+      describe 'array mutation method' do
+        it 'notifies observers when Array#<< is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [::ProjectTask.new('Design Decorations', 'Home Improvement', 'High')]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :project_name])
+
+          array << ::ProjectTask.new('Paint Wall', 'Home Improvement', 'High')
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.last.name = 'Paint Car'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.last.project_name = 'Garage Improvement'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.last.priority = 'Medium'
+          expect(@fired).to eq(false)        
+        end  
+        
+        it 'notifies observers when Array#push is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [::ProjectTask.new('Design Decorations', 'Home Improvement', 'High')]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :project_name])
+
+          array.push(::ProjectTask.new('Paint Wall', 'Home Improvement', 'High'))
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.last.name = 'Paint Car'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.last.project_name = 'Garage Improvement'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.last.priority = 'Medium'
+          expect(@fired).to eq(false)        
+        end    
+        
+        it 'notifies observers when Array#[]= is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [::ProjectTask.new('Design Decorations', 'Home Improvement', 'High')]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :project_name])
+
+          old_element = array[0]
+          array[0] = ::ProjectTask.new('Design Garage', 'Home Improvement', 'Medium')
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          old_element.name = 'Paint Car'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.priority = 'Medium'
+          expect(@fired).to eq(false)        
+          
+          @fired = false
+          array.last.name = 'Paint Car'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.last.project_name = 'Garage Improvement'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.last.priority = 'Medium'
+          expect(@fired).to eq(false)        
+
+          @fired = false
+          array[1] = ::ProjectTask.new('Paint Wall', 'Home Improvement', 'High')
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.last.name = 'Paint Car'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.last.project_name = 'Garage Improvement'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.last.priority = 'Medium'
+          expect(@fired).to eq(false)        
+        end    
+        
+      end      
+      
     end
+    
   end
+  
 end

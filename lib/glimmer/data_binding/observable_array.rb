@@ -80,16 +80,21 @@ module Glimmer
         property_observer_list.to_a.each(&:call)
       end
       
+      # TODO pop
+      
       def <<(element)
         super(element).tap do
           add_element_observers(element)        
           notify_observers
         end
       end
+      alias push <<
       
       def []=(index, value)
         old_value = self[index]
         unregister_dependent_observers(old_value)
+        remove_element_observers(old_value)
+        add_element_observers(value)    
         super(index, value).tap do
           notify_observers
         end
