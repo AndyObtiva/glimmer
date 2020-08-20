@@ -224,6 +224,133 @@ module Glimmer
           expect(@fired).to eq(false)        
         end    
         
+        it 'notifies observers when Array#pop is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [::ProjectTask.new('Design Decorations', 'Home Improvement', 'High')]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :project_name])
+
+          old_element = array.pop
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          old_element.name = 'Paint Car'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.priority = 'Medium'
+          expect(@fired).to eq(false)          
+        end    
+        
+        it 'notifies observers when Array#delete is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [::ProjectTask.new('Design Decorations', 'Home Improvement', 'High')]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :project_name])
+
+          old_element = array.delete(array.first)
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          old_element.name = 'Paint Car'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.priority = 'Medium'
+          expect(@fired).to eq(false)          
+        end    
+        
+        it 'notifies observers when Array#delete_at is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [::ProjectTask.new('Design Decorations', 'Home Improvement', 'High')]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :project_name])
+
+          old_element = array.delete_at(0)
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          old_element.name = 'Paint Car'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.priority = 'Medium'
+          expect(@fired).to eq(false)          
+        end    
+        
+        it 'notifies observers when Array#delete_if is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [::ProjectTask.new('Design Decorations', 'Home Improvement', 'High')]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :project_name])
+
+          old_element = array.first
+          array.delete_if {|e| e.name.start_with?('Design')}
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          old_element.name = 'Paint Car'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.priority = 'Medium'
+          expect(@fired).to eq(false)          
+        end    
+        
+        it 'notifies observers when Array#clear is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [::ProjectTask.new('Design Decorations', 'Home Improvement', 'High')]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :project_name])
+
+          old_element = array.first
+          array.clear
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          old_element.name = 'Paint Car'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.priority = 'Medium'
+          expect(@fired).to eq(false)          
+        end    
+        
       end      
       
     end

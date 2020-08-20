@@ -80,8 +80,6 @@ module Glimmer
         property_observer_list.to_a.each(&:call)
       end
       
-      # TODO pop
-      
       def <<(element)
         super(element).tap do
           add_element_observers(element)        
@@ -100,8 +98,18 @@ module Glimmer
         end
       end
       
+      def pop
+        popped_element = last
+        unregister_dependent_observers(popped_element)
+        remove_element_observers(popped_element)
+        super.tap do
+          notify_observers
+        end
+      end
+      
       def delete(element)
         unregister_dependent_observers(element)
+        remove_element_observers(element)
         super(element).tap do
           notify_observers
         end
@@ -110,6 +118,7 @@ module Glimmer
       def delete_at(index)
         old_value = self[index]
         unregister_dependent_observers(old_value)
+        remove_element_observers(old_value)
         super(index).tap do
           notify_observers
         end
@@ -119,7 +128,10 @@ module Glimmer
         if block_given?
           old_array = Array.new(self)
           super(&block).tap do |new_array|
-            (old_array - new_array).each {|element| unregister_dependent_observers(element)}
+            (old_array - new_array).each do |element| 
+              unregister_dependent_observers(element)
+              remove_element_observers(element)
+            end
             notify_observers
           end
         else
@@ -130,6 +142,7 @@ module Glimmer
       def clear
         each do |old_value|
           unregister_dependent_observers(old_value)
+          remove_element_observers(old_value)
         end
         super.tap do
           notify_observers
