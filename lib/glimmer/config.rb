@@ -25,7 +25,7 @@ module Glimmer
       end
       
       # Returns Glimmer logger (standard Ruby logger)
-      def logger
+      def logger      
         reset_logger! unless defined? @@logger
         @@logger
       end
@@ -36,13 +36,9 @@ module Glimmer
   
       def reset_logger!
         self.logger = Logger.new(STDOUT).tap do |logger| 
-          logger.level = Logger::ERROR
+          logger.level = ENV['GLIMMER_LOGGER_LEVEL'] ? ENV['GLIMMER_LOGGER_LEVEL'].downcase : Logger::ERROR
         end
       end
     end
   end
-end
-
-if ENV['GLIMMER_LOGGER_LEVEL']
-  Glimmer::Config.logger.level = ENV['GLIMMER_LOGGER_LEVEL'].downcase
 end

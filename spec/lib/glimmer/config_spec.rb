@@ -60,6 +60,7 @@ module GlimmerSpec
     
     describe '::logger' do
       after do
+        ENV['GLIMMER_LOGGER_LEVEL'] = nil
         described_class.reset_logger!
       end
       
@@ -68,6 +69,16 @@ module GlimmerSpec
         
         expect(logger).to be_a(::Logger)
         expect(logger.level).to eq(Logger::ERROR)
+        expect(logger.formatter).to be_nil
+      end
+      
+      it 'returns a default logger instance with level DEBUG set via env var' do      
+        ENV['GLIMMER_LOGGER_LEVEL'] = 'debug'
+        Glimmer::Config.reset_logger!        
+        logger = described_class.logger
+        
+        expect(logger).to be_a(::Logger)
+        expect(logger.level).to eq(Logger::DEBUG)
         expect(logger.formatter).to be_nil
       end
       

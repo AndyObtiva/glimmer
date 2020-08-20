@@ -31,7 +31,7 @@ module GlimmerSpec
     context 'DSLs defined' do
       it 'mixes multiple DSLs (SWT and XML)' do
         @target = shell {
-          expect {body}.to raise_error # ensure swt_dynamic_expression cannot handle this here
+          expect {body}.to raise_error(NameError) # ensure swt_dynamic_expression cannot handle this here
         
           browser {
             text html {
