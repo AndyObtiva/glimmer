@@ -205,12 +205,13 @@ module Glimmer
         end
       end
 
-      def select!(&block) #TODO test
+      def select!(&block)
         if block_given?
           old_array = Array.new(self)
-          super(&block).tap do |new_array|
-            (old_array - new_array).each do |old_value|
+          super(&block).tap do
+            (old_array - self).each do |old_value|
               unregister_dependent_observers(old_value)
+              remove_element_observers(old_value)
             end
             notify_observers
           end
@@ -225,11 +226,12 @@ module Glimmer
         end
       end
 
-      def slice!(arg1, arg2=nil) #TODO test
+      def slice!(arg1, arg2=nil)
         old_array = Array.new(self)
-        (arg2.nil? ? super(arg1) : super(arg1, arg2)).tap do |new_array|
-          (old_array - new_array).each do |old_value|
+        (arg2.nil? ? super(arg1) : super(arg1, arg2)).tap do
+          (old_array - self).each do |old_value|
             unregister_dependent_observers(old_value)
+            remove_element_observers(old_value)
           end
           notify_observers
         end
@@ -247,18 +249,26 @@ module Glimmer
         end
       end
 
-      def uniq!(&block) #TODO test
+      def uniq!(&block)
+        each do |old_value|
+          unregister_dependent_observers(old_value)
+          remove_element_observers(old_value)
+        end
         (block.nil? ? super() : super(&block)).tap do
+          each do |element|
+            add_element_observers(element)
+          end
           notify_observers
         end
       end
 
-      def reject!(&block) #TODO test
+      def reject!(&block)
         if block_given?
           old_array = Array.new(self)
-          super(&block).tap do |new_array|
-            (old_array - new_array).each do |old_value|
+          super(&block).tap do
+            (old_array - self).each do |old_value|
               unregister_dependent_observers(old_value)
+              remove_element_observers(old_value)
             end
             notify_observers
           end

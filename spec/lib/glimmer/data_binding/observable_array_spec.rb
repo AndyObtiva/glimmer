@@ -503,6 +503,32 @@ module Glimmer
 
           array.rotate!
           expect(@fired).to eq(true)
+        end
+        
+        it 'notifies observers when Array#select! is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+
+          old_element = array.first
+          array.select! {|pt| pt.name == 'Some Name'}
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          old_element.name = 'Paint Car'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.priority = 'Medium'
+          expect(@fired).to eq(false)          
         end    
                 
         it 'notifies observers when Array#shuffle! is called' do
@@ -517,7 +543,85 @@ module Glimmer
           array.shuffle!
           expect(@fired).to eq(true)
         end    
-                
+        
+        it 'notifies observers when Array#slice!(index) is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+
+          old_element = array.first
+          array.slice!(0)
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          old_element.name = 'Paint Car'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.priority = 'Medium'
+          expect(@fired).to eq(false)          
+        end    
+          
+        it 'notifies observers when Array#slice!(start, length) is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+
+          old_element = array.first
+          array.slice!(0, 1)
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          old_element.name = 'Paint Car'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.priority = 'Medium'
+          expect(@fired).to eq(false)          
+        end    
+          
+        it 'notifies observers when Array#slice!(range) is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+
+          old_element = array.first
+          array.slice!(0..1)
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          old_element.name = 'Paint Car'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.priority = 'Medium'
+          expect(@fired).to eq(false)          
+        end    
+          
         it 'notifies observers when Array#sort! is called' do
           @fired = false
           observer = Observer.proc {
@@ -543,7 +647,73 @@ module Glimmer
           array.sort_by! {|e| e.priority}
           expect(@fired).to eq(true)
         end    
-                
+
+        it 'notifies observers when Array#uniq! is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1, project_task1.clone]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+
+          old_element = array.last
+          array.uniq!
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          old_element.name = 'Paint Car'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.priority = 'Medium'
+          expect(@fired).to eq(false)          
+
+          element = array.first
+                              
+          @fired = false
+          element.name = 'Paint Car'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          element.priority = 'Medium'
+          expect(@fired).to eq(true)          
+        end    
+                                          
+        it 'notifies observers when Array#reject! is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+
+          old_element = array.first
+          array.reject! {|pt| pt.name == 'Design Decorations'}
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          old_element.name = 'Paint Car'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.priority = 'Medium'
+          expect(@fired).to eq(false)        
+        end    
+                                          
       end      
       
     end
