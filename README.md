@@ -270,6 +270,7 @@ Glimmer App:
     - [External Samples](#external-samples)
       - [Glimmer Calculator](#glimmer-calculator)
       - [Gladiator](#gladiator)
+      - [Timer](#glimmer-timer)
   - [In Production](#in-production)
     - [Math Bowling](#math-bowling)
     - [Are We There Yet?](#are-we-there-yet)
@@ -648,8 +649,9 @@ Output:
                                                                                                                  
      Name               Gem            Version     Author                        Description                     
                                                                                                                  
-  Calculator   glimmer-cs-calculator   1.0.1     Andy Maleh   Calculator - Glimmer Custom Shell                  
-  Gladiator    glimmer-cs-gladiator    0.2.3     Andy Maleh   Gladiator (Glimmer Editor) - Glimmer Custom Shell  
+  Calculator   glimmer-cs-calculator   1.0.2     Andy Maleh   Calculator - Glimmer Custom Shell                   
+  Gladiator    glimmer-cs-gladiator    0.2.4     Andy Maleh   Gladiator (Glimmer Editor) - Glimmer Custom Shell   
+  Timer        glimmer-cs-timer        1.0.0     Andy Maleh   Timer - Glimmer Custom Shell               
                                                                                                                  
 ```
 
@@ -3142,7 +3144,7 @@ Contact Manager - Edit Done
 
 #### Glimmer Calculator
 
-[<img alt="Glimmer Calculator Icon" src="https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/master/glimmer-cs-calculator-icon.png" height=40 /> Glimmer Calculator](https://github.com/AndyObtiva/glimmer-cs-calculator) is a basic calculator sample project demonstrating data-binding and TDD (test-driven-development) with Glimmer following the MVP pattern (Model-View-Presenter).
+[<img alt="Glimmer Calculator Icon" src="https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/master/glimmer-cs-calculator-icon.png" height=40 /> Glimmer Calculator](https://github.com/AndyObtiva/glimmer-cs-calculator) is a basic calculator sample app demonstrating data-binding and TDD (test-driven-development) with Glimmer following the MVP pattern (Model-View-Presenter).
 
 [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/master/glimmer-cs-calculator-screenshot.png" />](https://github.com/AndyObtiva/glimmer-cs-calculator)
 
@@ -3162,6 +3164,12 @@ Gladiator is a good demonstration of:
 - Context menus
 - Custom Shell
 - Custom widget
+
+#### Timer
+
+[<img alt="Glimmer Timer Icon" src="https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-timer/master/images/glimmer-timer-logo.png" height=40 /> Timer](https://github.com/AndyObtiva/glimmer-cs-timer) is a sample app demonstrating data-binding and multi-threading in a desktop application.
+
+[<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-timer/master/glimmer-timer-screenshot.png" />](https://github.com/AndyObtiva/glimmer-cs-timer)
 
 ## In Production
 
