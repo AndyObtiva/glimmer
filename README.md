@@ -270,7 +270,7 @@ Glimmer App:
     - [External Samples](#external-samples)
       - [Glimmer Calculator](#glimmer-calculator)
       - [Gladiator](#gladiator)
-      - [Timer](#glimmer-timer)
+      - [Timer](#timer)
   - [In Production](#in-production)
     - [Math Bowling](#math-bowling)
     - [Are We There Yet?](#are-we-there-yet)
