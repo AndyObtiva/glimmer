@@ -3191,7 +3191,7 @@ If you have a Glimmer app you would like referenced here, please mention in a Pu
 
 ## Packaging & Distribution
 
-Glimmer simplifies the process of Mac and Windows packaging via the `glimmer package` command, which leverages [Warbler](https://github.com/jruby/warbler) and [javapackager](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html) behind the scenes:
+Glimmer simplifies the process of packaging and distribution on Mac and Windows via the `glimmer package` command (which mainly uses [Warbler](https://github.com/jruby/warbler) and [javapackager](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html) behind the scenes):
 
 ```
 glimmer package
@@ -3205,13 +3205,16 @@ Note: if you are using Glimmer manually, to make the `glimmer package` command a
 require 'glimmer/rake_task'
 ```
 
-Glimmer does the packaging and distribution via these tools:
-- Warbler (https://github.com/jruby/warbler): Enables bundling a Glimmer app into a JAR file
-- javapackager (https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html): Enables packaging a JAR file as a DMG/PKG/APP file on Mac, MSI/EXE/APP on Windows, and DEB/RPM/APP on Linux (Glimmer does not officially support Linux with `glimmer package` command yet, but it generates the JAR file successfully, and you could use `javapackager` manually afterwards if needed).
+The Glimmer packaging process done in the `glimmer package` command consists of the following steps:
+1. Generate gemspec via Jeweler (`rake gemspec:generate`): Having a gemspec is required by the `jar-dependencies` JRuby gem, used by JRuby libraries to declare JAR dependencies.
+1. Lock JAR versions (`glimmer package:lock_jars`): This locks versions of JAR dependencies leveraged by the `jar-dependencies` JRuby gem, downloading them into the `./vendor` directory so they would get inside the top-level Glimmer app/gem JAR file.
+1. Generate [Warbler](https://github.com/jruby/warbler) config (`rake package:config`): Generates initial Warbler config file (under `./config/warble.rb`) to use for generating JAR file.
+1. Generate JAR file using [Warbler](https://github.com/jruby/warbler) (`glimmer:package:jar`): Enables bundling a Glimmer app into a JAR file under the `./dist` directory
+1. javapackager (https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html): Enables packaging a JAR file as a DMG/PKG/APP file on Mac, MSI/EXE/APP on Windows, and DEB/RPM/APP on Linux (Glimmer does not officially support Linux with the `glimmer package` command yet, but it generates the JAR file successfully, and you could use `javapackager` manually afterwards if needed).
 
-This will automatically generate a JAR file under `./dist` directory using Warbler, which is then used to automatically generate a DMG file (and pkg/app) under `./packages/bundles` using `javapackager`. 
-JAR file name will match your application local directory name (e.g. `MathBowling.jar` for `~/code/MathBowling`)
-DMG file name will match the humanized local directory name + dash + application version (e.g. `Math Bowling-1.0.dmg` for `~/code/MathBowling` with version 1.0 or unspecified)
+Those steps automatically ensure generating a JAR file under the `./dist` directory using [Warbler](https://github.com/jruby/warbler), which is then used to automatically generate a DMG/MSI file (and other executables) under the `./packages/bundles` directory using `javapackager`. 
+The JAR file name will match your application local directory name (e.g. `MathBowling.jar` for `~/code/MathBowling`)
+The DMG file name will match the humanized local directory name + dash + application version (e.g. `Math Bowling-1.0.dmg` for `~/code/MathBowling` with version 1.0 or unspecified)
 
 The `glimmer package` command will automatically set "mac.CFBundleIdentifier" to ="org.#{project_name}.application.#{project_name}". 
 You may override by configuring as an extra argument for javapackger (e.g. Glimmer::Package.javapackager_extra_args = " -Bmac.CFBundleIdentifier=org.andymaleh.application.MathBowling")
