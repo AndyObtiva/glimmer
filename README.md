@@ -344,11 +344,16 @@ Otherwise, Option 2 ([Bundler](#option-2-bundler)) can be followed in rare cases
 
 Run this command to install directly:
 ```
+jgem install glimmer-dsl-swt
+```
+
+Or this command if you want a specific version:
+```
 jgem install glimmer-dsl-swt -v 0.6.2
 ```
 
 `jgem` is JRuby's version of `gem` command. 
-RVM allows running `gem` as an alias.
+RVM allows running `gem install` directly as an alias.
 Otherwise, you may also run `jruby -S gem install ...`
 
 If you are new to Glimmer and would like to continue learning the basics, you may continue to the [Glimmer Command](https://github.com/AndyObtiva/glimmer#glimmer-command) section.
