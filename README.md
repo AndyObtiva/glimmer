@@ -344,7 +344,7 @@ Otherwise, Option 2 ([Bundler](#option-2-bundler)) can be followed in rare cases
 
 Run this command to install directly:
 ```
-jgem install glimmer-dsl-swt -v 0.6.1
+jgem install glimmer-dsl-swt -v 0.6.2
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -362,7 +362,7 @@ Note: if you're using activerecord or activesupport, keep in mind that Glimmer u
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-swt', '~> 0.6.1'
+gem 'glimmer-dsl-swt', '~> 0.6.2'
 ```
 
 And, then run:
@@ -713,7 +713,7 @@ Output:
                                                                          
   Css    glimmer-dsl-css    0.2.0     AndyMaleh   Glimmer DSL for CSS    
   Opal   glimmer-dsl-opal   0.1.0     AndyMaleh   Glimmer DSL for Opal   
-  Swt    glimmer-dsl-swt    0.6.1     AndyMaleh   Glimmer DSL for SWT    
+  Swt    glimmer-dsl-swt    0.6.2     AndyMaleh   Glimmer DSL for SWT    
   Xml    glimmer-dsl-xml    0.2.0     AndyMaleh   Glimmer DSL for XML    
                                                                          
 ```
