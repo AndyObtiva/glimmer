@@ -283,6 +283,7 @@ Glimmer App:
     - [Self Signed Certificate](#self-signed-certificate)
     - [Gotchas](#gotchas)
   - [App Updates](#app-updates)    
+  - [Glimmer Process](#glimmer-process)
   - [Resources](#resources)
   - [Help](#help)
     - [Issues](#issues)
@@ -3369,6 +3370,13 @@ Exec failed with code 2 command [[/usr/bin/SetFile, -c, icnC, /var/folders/4_/g1
 ## App Updates
 
 Glimmer already supports automatic (and manual) app updates via the Mac App Store for Mac apps. Simply run the `glimmer package` command with the Mac App Store keys configured as per [Mac Application Distribution](mac-application-distribution) instructions and you get automatic (and manual) app update support courtesy of the Mac App Store.
+
+## Glimmer Process
+
+[Glimmer Process](https://andymaleh.blogspot.com/2020/08/glimmer-process-beyond-agile.html) is the lightweight software development process used for building Glimmer libraries and Glimmer apps, which goes beyond Agile, rendering all Agile processes obsolete. [Glimmer Process](https://andymaleh.blogspot.com/2020/08/glimmer-process-beyond-agile.html) is simply made up of 7 guidelines to pick and choose as necessary until software development needs are satisfied. Not all guidelines need to be incorporated into every project, but it is still important to think through every one of them before ruling any out. Guidelines can be followed in any order. 
+
+Read More:
+https://andymaleh.blogspot.com/2020/08/glimmer-process-beyond-agile.html
 
 ## Resources
 
