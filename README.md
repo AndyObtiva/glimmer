@@ -476,14 +476,14 @@ getting you to a running and delivered state of an advanced "Hello, World!" Glim
 
 This should greatly facilitate building a new Glimmer app by helping you be productive and focus on app details while 
 letting Glimmer scaffolding take care of initial app file structure concerns, such as adding:
-- Main application class that includes Glimmer
+- Main application class that includes Glimmer (`app/{app_name}.rb`)
 - Main application view that houses main window content, menu, about dialog, and preferences dialog
-- View and Model directories
-- Rakefile including Glimmer tasks
-- Version
-- License
-- Icon
-- Bin file for starting application
+- View and Model directories (`app/views` and `app/models`)
+- Rakefile including Glimmer tasks (`Rakefile`)
+- Version (`VERSION`)
+- License (`LICENSE.txt`)
+- Icon (under `package/{platform}/{App Name}.{icon_extension}` for `macosx` .icns, `windows` .ico, and `linux` .png)
+- Bin file for starting application (`bin/{app_name}.rb`)
 
 NOTE: Scaffolding supports Mac and Windows packaging at the moment. 
 
@@ -502,22 +502,40 @@ This will generate an advanced "Hello, World!" app, package it as a Mac native f
 Suppose you run:
 
 ```
-glimmer scaffold[CarMaker]
+glimmer scaffold[greeter]
 ```
 
 You should see output like the following:
 
 ```
-Created CarMaker/.ruby-version
-Created CarMaker/.ruby-gemset
-Created CarMaker/VERSION
-Created CarMaker/LICENSE.txt
-Created CarMaker/Gemfile
-Created CarMaker/Rakefile
-Created CarMaker/app/car_maker.rb
-Created CarMaker/app/views/car_maker/app_view.rb
-Created CarMaker/package/macosx/Car Maker.icns
-Created CarMaker/bin/car_maker
+$ glimmer scaffold[greeter]
+	create	.gitignore
+	create	Rakefile
+	create	Gemfile
+	create	LICENSE.txt
+	create	README.rdoc
+	create	.document
+	create	lib
+	create	lib/greeter.rb
+	create	spec
+	create	spec/spec_helper.rb
+	create	spec/greeter_spec.rb
+	create	.rspec
+Jeweler has prepared your gem in ./greeter
+Created greeter/.gitignore
+Created greeter/.ruby-version
+Created greeter/.ruby-gemset
+Created greeter/VERSION
+Created greeter/LICENSE.txt
+Created greeter/Gemfile
+Created greeter/Rakefile
+Created greeter/app/greeter.rb
+Created greeter/app/views/greeter/app_view.rb
+Created greeter/package/windows/Greeter.ico
+Created greeter/package/macosx/Greeter.icns
+Created greeter/package/linux/Greeter.png
+Created greeter/bin/greeter
+Created greeter/spec/spec_helper.rb
 ...
 ```
 
