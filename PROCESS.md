@@ -11,4 +11,6 @@
 - Automated Tests: Cover sensitive parts of the code with automated tests at the appropriate level of testing needed. Run tests in a continuous integration server.
 - Refactoring: Simplify code, eliminate code duplication, improve code organization, extract reusable components, and extract reusable libraries at every opportunity possible.
 
+--
+
 Copyright (c) 2020 Andy Maleh
