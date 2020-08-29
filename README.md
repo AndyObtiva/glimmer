@@ -282,7 +282,8 @@ Glimmer App:
     - [Mac Application Distribution](#mac-application-distribution)
     - [Self Signed Certificate](#self-signed-certificate)
     - [Gotchas](#gotchas)
-  - [App Updates](#app-updates)    
+  - [App Updates](#app-updates)
+  - [Glimmer Supporting Libraries](#glimmer-supporting-libraries)
   - [Glimmer Process](#glimmer-process)
   - [Resources](#resources)
   - [Help](#help)
@@ -3388,6 +3389,18 @@ Exec failed with code 2 command [[/usr/bin/SetFile, -c, icnC, /var/folders/4_/g1
 ## App Updates
 
 Glimmer already supports automatic (and manual) app updates via the Mac App Store for Mac apps. Simply run the `glimmer package` command with the Mac App Store keys configured as per [Mac Application Distribution](mac-application-distribution) instructions and you get automatic (and manual) app update support courtesy of the Mac App Store.
+
+## Glimmer Supporting Libraries
+
+Here is a list of notable 3rd party gems used by Glimmer:
+- [jeweler](https://github.com/technicalpickles/jeweler): generates app gems during Glimmer Scaffolding
+- [logging](https://github.com/TwP/logging): provides extra logging capabilities not available in Ruby logger such as buffered asynchronous logging (to avoid affecting app performance) and support for multiple appenders such as stdout, syslog, and log files (the last one is needed on Windows where syslog is not supported)
+- [nested_inherited_jruby_include_package](https://github.com/AndyObtiva/nested_inherited_jruby_include_package): makes included SWT/Java packages available to all classes/modules that mix in Glimmer module without having to manually reimport
+- [os](https://github.com/rdp/os): provides OS detection capabilities (e.g. `OS.mac?` or `OS.windows?`) to write cross-platform code inexpensively
+- [puts_debuggerer](https://github.com/AndyObtiva/puts_debuggerer): helps in troubleshooting when adding `require 'pd'` and using the `pd` command instead of `puts` or `p` (also `#pd_inspect` or `#pdi` instead of `#inspect`)
+- [super_module](https://github.com/AndyObtiva/super_module): used to cleanly write the Glimmer::UI:CustomWidget and Glimmer::GUI::CustomShell modules
+- [text-table](https://github.com/aptinio/text-table): renders textual data in a textual table for the command-line interface of Glimmer
+- [warbler](https://github.com/jruby/warbler): converts a Glimmer app into a Java JAR file during packaging
 
 ## Glimmer Process
 
