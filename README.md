@@ -3404,10 +3404,10 @@ Here is a list of notable 3rd party gems used by Glimmer:
 
 ## Glimmer Process
 
-[Glimmer Process](https://andymaleh.blogspot.com/2020/08/glimmer-process-beyond-agile.html) is the lightweight software development process used for building Glimmer libraries and Glimmer apps, which goes beyond Agile, rendering all Agile processes obsolete. [Glimmer Process](https://andymaleh.blogspot.com/2020/08/glimmer-process-beyond-agile.html) is simply made up of 7 guidelines to pick and choose as necessary until software development needs are satisfied. Not all guidelines need to be incorporated into every project, but it is still important to think through every one of them before ruling any out. Guidelines can be followed in any order. 
+[Glimmer Process](PROCESS.md) is the lightweight software development process used for building Glimmer libraries and Glimmer apps, which goes beyond Agile, rendering all Agile processes obsolete. [Glimmer Process](PROCESS.md) is simply made up of 7 guidelines to pick and choose as necessary until software development needs are satisfied. 
 
-Read More:
-https://andymaleh.blogspot.com/2020/08/glimmer-process-beyond-agile.html
+GPG (Glimmer Process Guidelines):
+[PROCESS.md](PROCESS.md)
 
 ## Resources
 
