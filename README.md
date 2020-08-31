@@ -1427,7 +1427,7 @@ shell {
 
 This sets the shell `cursor` to that of `SWT::CURSOR_APPSTARTING`
 
-### Layout
+### Layouts
 
 Glimmer lays widgets out visually using SWT layouts, which can only be set on composite widget and subclasses.
 
