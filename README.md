@@ -3398,6 +3398,7 @@ Here is a list of notable 3rd party gems used by Glimmer:
 - [nested_inherited_jruby_include_package](https://github.com/AndyObtiva/nested_inherited_jruby_include_package): makes included SWT/Java packages available to all classes/modules that mix in Glimmer module without having to manually reimport
 - [os](https://github.com/rdp/os): provides OS detection capabilities (e.g. `OS.mac?` or `OS.windows?`) to write cross-platform code inexpensively
 - [puts_debuggerer](https://github.com/AndyObtiva/puts_debuggerer): helps in troubleshooting when adding `require 'pd'` and using the `pd` command instead of `puts` or `p` (also `#pd_inspect` or `#pdi` instead of `#inspect`)
+- [rake](https://github.com/ruby/rake): used to implement and execute `glimmer` commands
 - [super_module](https://github.com/AndyObtiva/super_module): used to cleanly write the Glimmer::UI:CustomWidget and Glimmer::GUI::CustomShell modules
 - [text-table](https://github.com/aptinio/text-table): renders textual data in a textual table for the command-line interface of Glimmer
 - [warbler](https://github.com/jruby/warbler): converts a Glimmer app into a Java JAR file during packaging
