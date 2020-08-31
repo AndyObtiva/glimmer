@@ -204,6 +204,7 @@ Glimmer App:
       - [Mac Support](#mac-support)
   - [Girb (Glimmer irb) Command](#girb-glimmer-irb-command)
   - [Glimmer GUI DSL Syntax](#glimmer-gui-dsl-syntax)
+    - [DSL Auto-Expansion](#dsl-auto-expansion)
     - [Widgets](#widgets)
       - [Display](#display)
       - [SWT Proxies](#swt-proxies)
@@ -805,13 +806,15 @@ Glimmer DSL syntax consists mainly of:
 - style/args (e.g. :multi as in `table(:multi)` for a multi-line selection table widget)
 - content (e.g. `{ table_column { text 'Name'} }` as in `table(:multi) { table_column { text 'name'} }` for a multi-line selection table widget with a table column having header text property `'Name'` as content)
 
-Glimmer keywords may be static or dynamic.
+### DSL Auto-Expansion
+
+Glimmer supports a new and radical Ruby DSL concept called DSL Auto-Expansion. It is explained by first mentioning the two types of Glimmer GUI DSL keywords: static and dynamic.
 
 Static keywords are pre-identified keywords in the Glimmer DSL, such as `shell`, `display`, `message_box`, `async_exec`, `sync_exec`, and `bind`.
 
 Dynamic keywords are dynamically figured out from currently imported (aka required/loaded) SWT widgets, custom widgets, and widget properties. Examples are: `label`, `combo`, and `list` for widgets and `enabled`, `text`, and `selection` for properties.
 
-The only reason to distinguish between the two types of Glimmer DSL keywords is to realize that importing new Glimmer [custom widgets](#custom-widgets) and Java SWT custom widget libraries automatically expands Glimmer's DSL vocabulary via new dynamic keywords.
+The only reason to distinguish between the two types of Glimmer DSL keywords is to realize that importing new Glimmer [custom widgets](#custom-widgets) and Java SWT custom widget libraries automatically expands Glimmer's DSL vocabulary via new dynamic keywords. 
 
 For example, if a project adds this custom Java SWT library:
 
