@@ -320,7 +320,7 @@ https://www.eclipse.org/swt/faq.php
 
 ## Pre-requisites
 
-- JDK 8 (find at https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
+- JDK 8u241 (1.8.0_241) (find at https://www.oracle.com/java/technologies/javase/javase8u211-later-archive-downloads.html)
 - JRuby 9.2.13.0 (supporting Ruby 2.5.x syntax) (get via [RVM](http://rvm.io) on Mac and Linux or find at [https://www.jruby.org/download](https://www.jruby.org/download) for Windows)
 - SWT 4.16 (already included in the [glimmer-dsl-swt](https://rubygems.org/gems/glimmer-dsl-swt) gem)
 
