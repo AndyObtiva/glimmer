@@ -795,7 +795,55 @@ Keep in mind that all samples live under [https://github.com/AndyObtiva/glimmer-
 
 ## Glimmer GUI DSL Syntax
 
-Glimmer is mainly a GUI DSL with a lightweight visual syntax that makes it easy to visualize the nesting of widgets in the GUI hierarchy tree.
+Glimmer's core is a GUI DSL with a lightweight visual syntax that makes it easy to visualize the nesting of widgets in the GUI hierarchy tree.
+
+It is available through mixing in the `Glimmer` module, which makes Glimmer GUI DSL keywords available to both the instance scope and class scope:
+
+```ruby
+include Glimmer
+```
+
+For example, here is the basic "Hello, World!" sample code (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+include Glimmer
+
+shell {
+  text "Glimmer"
+  label {
+    text "Hello, World!"
+  }
+}.open
+```
+
+The `include Glimmer` declaration on top mixed the `Glimmer` module into the Ruby global main object making the Glimmer GUI DSL available at the top-level global scope.
+
+While this works well enough for mini-samples, it is better to isolate Glimmer in a class or module during production application development to create a clean separation between view code (GUI) and model code (business domain). Here is the "Hello, World!" sample re-written in a class to illustrate how mixing in the `Glimmer` module (via `include Glimmer`) makes the Glimmer GUI DSL available in both the instance scope and class scope. That is clearly demonstrated by pre-initializing a color constant in the class scope and building the GUI in the `#open` instance method (you may copy/paste in [`girb`](#girb-glimmer-irb-command)):
+
+```ruby
+class HelloWorld
+  include Glimmer # makes the GUI DSL available in both the class scope and instance scope
+  
+  COLOR_FOREGROUND_DEFAULT = rgb(255, 0, 0) # rgb is a GUI DSL keyword used in the class scope
+  
+  def open
+    # the following are GUI DSL keywords (shell, text, and label) used in the instance scope
+    shell {
+      text "Glimmer"
+      label {
+        text "Hello, World!"
+        foreground COLOR_FOREGROUND_DEFAULT
+      }
+    }.open
+  end
+end
+
+HelloWorld.new.open
+```
+
+This renders "Hello, World!" with a red foreground color:
+
+![Hello World Red Foreground Color](images/glimmer-hello-world-red-foreground-color.png)
 
 The GUI DSL intentionally avoids overly verbose syntax, requiring as little declarative code as possible to describe what GUI to render, how to style it, and what properties to data-bind to the Models.
 
@@ -3396,13 +3444,13 @@ Glimmer already supports automatic (and manual) app updates via the Mac App Stor
 ## Glimmer Supporting Libraries
 
 Here is a list of notable 3rd party gems used by Glimmer:
-- [jeweler](https://github.com/technicalpickles/jeweler): generates app gems during Glimmer Scaffolding
-- [logging](https://github.com/TwP/logging): provides extra logging capabilities not available in Ruby logger such as buffered asynchronous logging (to avoid affecting app performance) and support for multiple appenders such as stdout, syslog, and log files (the last one is needed on Windows where syslog is not supported)
-- [nested_inherited_jruby_include_package](https://github.com/AndyObtiva/nested_inherited_jruby_include_package): makes included SWT/Java packages available to all classes/modules that mix in Glimmer module without having to manually reimport
+- [jeweler](https://github.com/technicalpickles/jeweler): generates app gems during [Glimmer Scaffolding](#scaffolding)
+- [logging](https://github.com/TwP/logging): provides extra logging capabilities not available in Ruby Logger such as multi-threaded buffered asynchronous logging (to avoid affecting app performance) and support for multiple appenders such as stdout, syslog, and log files (the last one is needed on Windows where syslog is not supported)
+- [nested_inherited_jruby_include_package](https://github.com/AndyObtiva/nested_inherited_jruby_include_package): makes included [SWT](https://www.eclipse.org/swt/)/[Java](https://www.java.com/en/) packages available to all classes/modules that mix in the Glimmer module without having to manually reimport
 - [os](https://github.com/rdp/os): provides OS detection capabilities (e.g. `OS.mac?` or `OS.windows?`) to write cross-platform code inexpensively
 - [puts_debuggerer](https://github.com/AndyObtiva/puts_debuggerer): helps in troubleshooting when adding `require 'pd'` and using the `pd` command instead of `puts` or `p` (also `#pd_inspect` or `#pdi` instead of `#inspect`)
 - [rake](https://github.com/ruby/rake): used to implement and execute `glimmer` commands
-- [super_module](https://github.com/AndyObtiva/super_module): used to cleanly write the Glimmer::UI:CustomWidget and Glimmer::GUI::CustomShell modules
+- [super_module](https://github.com/AndyObtiva/super_module): used to cleanly write the Glimmer::UI:CustomWidget and Glimmer::UI::CustomShell modules
 - [text-table](https://github.com/aptinio/text-table): renders textual data in a textual table for the command-line interface of Glimmer
 - [warbler](https://github.com/jruby/warbler): converts a Glimmer app into a Java JAR file during packaging
 
