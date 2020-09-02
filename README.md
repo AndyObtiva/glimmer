@@ -352,7 +352,7 @@ jgem install glimmer-dsl-swt
 
 Or this command if you want a specific version:
 ```
-jgem install glimmer-dsl-swt -v 0.6.3
+jgem install glimmer-dsl-swt -v 0.6.4
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -370,7 +370,7 @@ Note: if you're using activerecord or activesupport, keep in mind that Glimmer u
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-swt', '~> 0.6.3'
+gem 'glimmer-dsl-swt', '~> 0.6.4'
 ```
 
 And, then run:
@@ -415,6 +415,8 @@ bin/glimmer samples/hello/hello_world.rb
 Below are the full usage instructions that come up when running `glimmer` without args.
 
 ```
+Glimmer (Ruby Desktop Development GUI Library) - JRuby Gem: glimmer-dsl-swt v0.6.4
+      
 Usage: glimmer [--quiet] [--debug] [--log-level=VALUE] [[ENV_VAR=VALUE]...] [[-jruby-option]...] (application.rb or task[task_args]) [[application2.rb]...]
 
 Runs Glimmer applications/tasks.
@@ -423,7 +425,7 @@ Either a single task or one or more applications may be specified.
 
 When a task is specified, it runs via rake. Some tasks take arguments in square brackets.
 
-Available tasks are below (you may also lookup by adding `require 'glimmer/rake_task'` in Rakefile and running rake -T):
+Available tasks are below (if you do not see any, please add `require 'glimmer/rake_task'` to Rakefile and rerun or run rake -T):
 glimmer list:gems:customshell[query]               # List Glimmer custom shell gems available at rubygems.org (query is optional) [alt: list:gems:cs]
 glimmer list:gems:customwidget[query]              # List Glimmer custom widget gems available at rubygems.org (query is optional) [alt: list:gems:cw]
 glimmer list:gems:dsl[query]                       # List Glimmer DSL gems available at rubygems.org (query is optional)
@@ -432,7 +434,10 @@ glimmer package:clean                              # Clean by removing "dist" an
 glimmer package:config                             # Generate JAR config file
 glimmer package:jar                                # Generate JAR file
 glimmer package:lock_jars                          # Lock JARs
-glimmer package:native[type]                       # Generate Native files (DMG/PKG/APP on the Mac, MSI/EXE/IMAGE on Windows, RPM/DEB on Linux) (type is optional)
+glimmer package:native[type]                       # Generate Native files
+glimmer sample:code[name]                          # Outputs code for a Glimmer internal sample [included in gem] (name is required)
+glimmer sample:list[query]                         # Lists Glimmer internal samples [included in gem]. Filters by query if specified (query is optional)
+glimmer sample:run[name]                           # Runs a Glimmer internal sample [included in gem]. If no name is supplied, it runs all samples
 glimmer scaffold[app_name]                         # Scaffold Glimmer application directory structure to build a new app
 glimmer scaffold:customshell[name,namespace]       # Scaffold Glimmer::UI::CustomShell subclass (full window view) under app/views (namespace is optional) [alt: scaffold:cs]
 glimmer scaffold:customwidget[name,namespace]      # Scaffold Glimmer::UI::CustomWidget subclass (part of a view) under app/views (namespace is optional) [alt: scaffold:cw]
@@ -468,10 +473,337 @@ glimmer samples/hello/hello_world.rb samples/hello_tab.rb
 
 Launches samples/hello/hello_world.rb and samples/hello_tab.rb at the same time, each in a separate JRuby thread.
 
+### Sample List/Run/Code
+
+#### Sample List
+
+You can list available Glimmer samples by running:
+
+```
+glimmer sample:list
+```
+
+This should output the following (providing the name of each sample, description, and command to run the sample and view its code):
+
+```
+$ glimmer sample:list
+
+  Glimmer Hello Samples (run all via: glimmer sample:run:hello):
+                                                                                                               
+             Name                       Description                                 Run                        
+                                                                                                               
+  hello_browser                 Hello Browser                 glimmer sample:run[hello_browser]                
+  hello_combo                   Hello Combo                   glimmer sample:run[hello_combo]                  
+  hello_computed                Hello Computed                glimmer sample:run[hello_computed]               
+  hello_drag_and_drop           Hello Drag And Drop           glimmer sample:run[hello_drag_and_drop]          
+  hello_list_multi_selection    Hello List Multi Selection    glimmer sample:run[hello_list_multi_selection]   
+  hello_list_single_selection   Hello List Single Selection   glimmer sample:run[hello_list_single_selection]  
+  hello_menu_bar                Hello Menu Bar                glimmer sample:run[hello_menu_bar]               
+  hello_message_box             Hello Message Box             glimmer sample:run[hello_message_box]            
+  hello_pop_up_context_menu     Hello Pop Up Context Menu     glimmer sample:run[hello_pop_up_context_menu]    
+  hello_tab                     Hello Tab                     glimmer sample:run[hello_tab]                    
+  hello_world                   Hello World                   glimmer sample:run[hello_world]                  
+                                                                                                               
+
+  Glimmer Elaborate Samples (run all via: glimmer sample:run:elaborate):
+                                                                           
+       Name           Description                     Run                  
+                                                                           
+  contact_manager   Contact Manager   glimmer sample:run[contact_manager]  
+  login             Login             glimmer sample:run[login]            
+  tic_tac_toe       Tic Tac Toe       glimmer sample:run[tic_tac_toe]                                                   
+```
+
+#### Sample Run
+
+A sample may be run via `glimmer sample:run[name]`. This also outputs the sample code so that you could take a look at it and compare to the GUI that launches. 
+
+If the sample name is left empty (e.g. `glimmer sample:run`), then all samples are run.
+
+Example:
+
+```
+glimmer sample:run[hello_tab]
+```
+
+This will run the hello_tab sample and output its code:
+
+```
+$ glimmer sample:run[hello_tab] 
+
+# /Users/User/.rvm/gems/jruby-9.2.13.0@glimmerapp/gems/glimmer-dsl-swt-0.6.4/samples/hello/hello_tab.rb
+
+class HelloTab
+  include Glimmer
+  def launch
+    shell {
+      text "Hello, Tab!"
+      tab_folder {
+        tab_item {
+          text "English"
+          label {
+            text "Hello, World!"
+          }
+        }
+        tab_item {
+          text "French"
+          label {
+            text "Bonjour, Univers!"
+          }
+        }
+      }
+    }.open
+  end
+end
+
+HelloTab.new.launch
+
+# # #
+```
+
+![Hello Tab English](images/glimmer-hello-tab-english.png)
+
+#### Sample Code
+
+You may output any sample code via this command: `glimmer sample:code[name]`
+
+This is very similar to the sample run command, except the name is required.
+
+It will not only output the main sample file, but any required supporting files as well.
+
+Example:
+
+```
+$ glimmer sample:code[tic_tac_toe] 
+
+# /Users/User/.rvm/gems/jruby-9.2.13.0@glimmerapp/gems/glimmer-dsl-swt-0.6.4/samples/elaborate/tic_tac_toe.rb
+
+require_relative "tic_tac_toe/board"
+
+class TicTacToe
+  include Glimmer
+
+  def initialize
+    @tic_tac_toe_board = Board.new
+    @shell = shell {
+      text "Tic-Tac-Toe"
+      minimum_size 150, 178
+      composite {
+        grid_layout 3, true
+        (1..3).each { |row|
+          (1..3).each { |column|
+            button {
+              layout_data :fill, :fill, true, true
+              text        bind(@tic_tac_toe_board[row, column], :sign)
+              enabled     bind(@tic_tac_toe_board[row, column], :empty)
+              font        style: :bold, height: 20
+              on_widget_selected {
+                @tic_tac_toe_board.mark(row, column)
+              }
+            }
+          }
+        }
+      }
+    }
+    observe(@tic_tac_toe_board, :game_status) { |game_status|
+      display_win_message if game_status == Board::WIN
+      display_draw_message if game_status == Board::DRAW
+    }
+  end
+
+  def display_win_message
+    display_game_over_message("Player #{@tic_tac_toe_board.winning_sign} has won!")
+  end
+
+  def display_draw_message
+    display_game_over_message("Draw!")
+  end
+
+  def display_game_over_message(message_text)
+    message_box(@shell) {
+      text 'Game Over'
+      message message_text
+    }.open
+    @tic_tac_toe_board.reset
+  end
+
+  def open
+    @shell.open
+  end
+end
+
+TicTacToe.new.open
+
+# # #
+
+
+# /Users/User/.rvm/gems/jruby-9.2.13.0@glimmerapp/gems/glimmer-dsl-swt-0.6.4/samples/elaborate/tic_tac_toe/cell.rb
+
+class TicTacToe
+  class Cell
+    EMPTY = ""
+    attr_accessor :sign, :empty
+  
+    def initialize
+      reset
+    end
+  
+    def mark(sign)
+      self.sign = sign
+    end
+  
+    def reset
+      self.sign = EMPTY
+    end
+  
+    def sign=(sign_symbol)
+      @sign = sign_symbol
+      self.empty = sign == EMPTY
+    end
+  
+    def marked
+      !empty
+    end
+  end
+end
+
+# # #
+
+
+# /Users/User/.rvm/gems/jruby-9.2.13.0@glimmerapp/gems/glimmer-dsl-swt-0.6.4/samples/elaborate/tic_tac_toe/board.rb
+
+require_relative 'cell'
+
+class TicTacToe
+  class Board
+    DRAW = :draw
+    IN_PROGRESS = :in_progress
+    WIN = :win
+    attr :winning_sign
+    attr_accessor :game_status
+  
+    def initialize
+      @sign_state_machine = {nil => "X", "X" => "O", "O" => "X"}
+      build_grid
+      @winning_sign = Cell::EMPTY
+      @game_status = IN_PROGRESS
+    end
+  
+    #row and column numbers are 1-based
+    def mark(row, column)
+      self[row, column].mark(current_sign)
+      game_over? #updates winning sign
+    end
+  
+    def current_sign
+      @current_sign = @sign_state_machine[@current_sign]
+    end
+  
+    def [](row, column)
+      @grid[row-1][column-1]
+    end
+  
+    def game_over?
+       win? or draw?
+    end
+  
+    def win?
+      win = (row_win? or column_win? or diagonal_win?)
+      self.game_status=WIN if win
+      win
+    end
+  
+    def reset
+      (1..3).each do |row|
+        (1..3).each do |column|
+          self[row, column].reset
+        end
+      end
+      @winning_sign = Cell::EMPTY
+      @current_sign = nil
+      self.game_status=IN_PROGRESS
+    end
+  
+    private
+  
+    def build_grid
+      @grid = []
+      3.times do |row_index| #0-based
+        @grid << []
+        3.times { @grid[row_index] << Cell.new }
+      end
+    end
+  
+    def row_win?
+      (1..3).each do |row|
+        if row_has_same_sign(row)
+          @winning_sign = self[row, 1].sign
+          return true
+        end
+      end
+      false
+    end
+  
+    def column_win?
+      (1..3).each do |column|
+        if column_has_same_sign(column)
+          @winning_sign = self[1, column].sign
+          return true
+        end
+      end
+      false
+    end
+  
+    #needs refactoring if we ever decide to make the board size dynamic
+    def diagonal_win?
+      if (self[1, 1].sign == self[2, 2].sign) and (self[2, 2].sign == self[3, 3].sign) and self[1, 1].marked
+        @winning_sign = self[1, 1].sign
+        return true
+      end
+      if (self[3, 1].sign == self[2, 2].sign) and (self[2, 2].sign == self[1, 3].sign) and self[3, 1].marked
+        @winning_sign = self[3, 1].sign
+        return true
+      end
+      false
+    end
+  
+    def draw?
+      @board_full = true
+      3.times do |x|
+        3.times do |y|
+          @board_full = false if self[x, y].empty
+        end
+      end
+      self.game_status = DRAW if @board_full
+      @board_full
+    end
+  
+    def row_has_same_sign(number)
+      row_sign = self[number, 1].sign
+      [2, 3].each do |column|
+        return false unless row_sign == (self[number, column].sign)
+      end
+      true if self[number, 1].marked
+    end
+  
+    def column_has_same_sign(number)
+      column_sign = self[1, number].sign
+      [2, 3].each do |row|
+        return false unless column_sign == (self[row, number].sign)
+      end
+      true if self[1, number].marked
+    end
+  
+  end
+end
+
+# # #
+```
+
 ### Scaffolding
 
 Glimmer borrows from Rails the idea of Scaffolding, that is generating a structure for your app files that
-helps you get started just like true building scaffolding helps construction workers, civil engineers, and architects.
+helps you get started just like true buildinThis g scaffolding helps construction workers, civil engineers, and architects.
 
 Glimmer scaffolding goes beyond just scaffolding the app files that Rails does. It also packages it and launches it, 
 getting you to a running and delivered state of an advanced "Hello, World!" Glimmer application right off the bat.
@@ -739,7 +1071,7 @@ Output:
                                                                          
   Css    glimmer-dsl-css    0.2.0     AndyMaleh   Glimmer DSL for CSS    
   Opal   glimmer-dsl-opal   0.1.0     AndyMaleh   Glimmer DSL for Opal   
-  Swt    glimmer-dsl-swt    0.6.3     AndyMaleh   Glimmer DSL for SWT    
+  Swt    glimmer-dsl-swt    0.6.4     AndyMaleh   Glimmer DSL for SWT    
   Xml    glimmer-dsl-xml    0.2.0     AndyMaleh   Glimmer DSL for XML    
                                                                          
 ```
