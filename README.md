@@ -873,7 +873,7 @@ Created greeter/spec/spec_helper.rb
 ...
 ```
 
-Eventually, it will launch an advanced "Hello, World!" app window having the title of your application.
+Eventually, it will launch an advanced "Hello, World!" app window having the title of your application ("Greeter").
 
 ![Glimmer Scaffold App](images/glimmer-scaffolding-app.png)
 
@@ -881,14 +881,19 @@ It also comes with a boilerplate Preferences dialog.
 
 ![Glimmer Scaffold App Preferences](images/glimmer-scaffolding-app-preferences.png)
 
-Here is a Windows scaffolded app called Greeter:
+Here is the Windows version of the scaffolded "Greeter" app:
 
 ![Glimmer Scaffold App Windows](images/glimmer-scaffolding-app-windows.png)
 
-Here is the Windows version of the boilerplate Preferences dialog.
+And, here is the Windows version of the boilerplate Preferences dialog.
 
 ![Glimmer Scaffold App Windows Preferences](images/glimmer-scaffolding-app-windows-preferences.png)
 
+In order to run the app after making changes, you must run the `glimmer` command and pass it the generated script under the `bin` directory as an argument:
+
+```
+glimmer bin/greeter
+```
 
 #### Custom Shell
 
@@ -943,6 +948,10 @@ It is important to specify a namespace to avoid having your gem clash with exist
 The Ruby gem name will follow the convention "glimmer-cs-customwidgetname-namespace" (the 'cs' is for Custom Shell).
 
 Only official Glimmer gems created by the Glimmer project committers will have no namespace (e.g. [glimmer-cs-gladiator](https://rubygems.org/gems/glimmer-cs-gladiator) Ruby gem)
+
+Since custom shell gems are both an app and a gem, they provide two ways to run:
+- Run the `glimmer` command and pass it the generated script under the `bin` directory that matches the gem name (e.g. run `glimmer bin/glimmer-cs-calculator`)
+- Run the executable binary file that ships with the gem directly (without `glimmer`). It intentionally has a shorter name for convenience since it is meant to be used on the command line (not in a package), so you can leave out the `glimmer-cs-` prefix (e.g. run `bin/calculator` directly)
 
 Examples: 
 
