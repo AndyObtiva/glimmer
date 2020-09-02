@@ -82,6 +82,26 @@ module GlimmerSpec
         expect(logger.formatter).to be_nil
       end
       
+      it 'returns a default logger instance with level DEBUG if set via env var with extra space' do      
+        ENV['GLIMMER_LOGGER_LEVEL'] = 'debug ' # has an extra space
+        Glimmer::Config.reset_logger!        
+        logger = described_class.logger
+        
+        expect(logger).to be_a(::Logger)
+        expect(logger.level).to eq(Logger::DEBUG)
+        expect(logger.formatter).to be_nil
+      end
+      
+      it 'returns a default logger instance with level ERROR if an invalid value is set via env var' do      
+        ENV['GLIMMER_LOGGER_LEVEL'] = '$invalid^'
+        Glimmer::Config.reset_logger!        
+        logger = described_class.logger
+        
+        expect(logger).to be_a(::Logger)
+        expect(logger.level).to eq(Logger::ERROR)
+        expect(logger.formatter).to be_nil
+      end
+      
       it 'accepts a custom logger' do
         custom_logger = ::Logger.new(STDOUT)
         custom_logger.level = :warn

@@ -9,7 +9,7 @@ gem 'facets', '>= 3.1.0', '< 4.0.0', require: false
 group :development do
   gem "rspec-mocks", "~> 3.5.0"
   gem "rspec", "~> 3.5.0"
-  gem "puts_debuggerer", "~> 0.8.1", require: false
+  gem "puts_debuggerer", "~> 0.10.0", require: false
   gem 'rake', '>= 10.1.0', '< 14.0.0'
   gem 'jeweler', '>= 2.3.9', '< 3.0.0'
   gem 'rdoc', '>= 6.2.1', '< 7.0.0'  
