@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+## 0.10.4
+
+- Added the [rake-tui](https://github.com/AndyObtiva/rake-tui) gem as a productivity tool for arrow key navigation/text-filtering/quick-triggering of rake tasks
+
 ## 0.10.3
 
 - Made Glimmer::Config module more resilient to invalid logger level values set via GLIMMER_LOGGER_LEVEL env var
