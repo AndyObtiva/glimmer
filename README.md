@@ -386,6 +386,16 @@ You may learn more about other Glimmer related gems ([`glimmer-dsl-opal`](https:
 
 The `glimmer` command allows you to run, scaffold, package, and list Glimmer applications/gems.
 
+You can bring up usage instructions by running the `glimmer` command without arguments:
+
+```
+glimmer
+```
+
+On Mac and Linux, it additionally brings up a TUI (Text-based User Interface) for interactive navigation and execution of Glimmer tasks (courtesy of [rake-tui](https://github.com/AndyObtiva/rake-tui). 
+
+On Windows, it simply lists the available Glimmer tasks at the end (courtsey of [rake](https://github.com/ruby/rake)).
+
 If you are new to Glimmer, you may read the Basic Usage section and skip the rest until you have gone through [Girb (Glimmer irb) Command](#girb-glimmer-irb-command), [Glimmer GUI DSL Syntax](#glimmer-gui-dsl-syntax), and [Samples](#samples).
 
 ### Basic Usage
