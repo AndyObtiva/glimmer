@@ -352,7 +352,7 @@ jgem install glimmer-dsl-swt
 
 Or this command if you want a specific version:
 ```
-jgem install glimmer-dsl-swt -v 0.6.4
+jgem install glimmer-dsl-swt -v 0.6.5
 ```
 
 `jgem` is JRuby's version of `gem` command. 
@@ -370,7 +370,7 @@ Note: if you're using activerecord or activesupport, keep in mind that Glimmer u
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-swt', '~> 0.6.4'
+gem 'glimmer-dsl-swt', '~> 0.6.5'
 ```
 
 And, then run:
@@ -415,48 +415,44 @@ bin/glimmer samples/hello/hello_world.rb
 Below are the full usage instructions that come up when running `glimmer` without args.
 
 ```
-Glimmer (Ruby Desktop Development GUI Library) - JRuby Gem: glimmer-dsl-swt v0.6.4
+Glimmer (Ruby Desktop Development GUI Library) - JRuby Gem: glimmer-dsl-swt v0.6.5
       
 Usage: glimmer [--quiet] [--debug] [--log-level=VALUE] [[ENV_VAR=VALUE]...] [[-jruby-option]...] (application.rb or task[task_args]) [[application2.rb]...]
 
-Runs Glimmer applications/tasks.
-
-Either a single task or one or more applications may be specified.
-
-When a task is specified, it runs via rake. Some tasks take arguments in square brackets.
-
-Available tasks are below (if you do not see any, please add `require 'glimmer/rake_task'` to Rakefile and rerun or run rake -T):
-glimmer list:gems:customshell[query]               # List Glimmer custom shell gems available at rubygems.org (query is optional) [alt: list:gems:cs]
-glimmer list:gems:customwidget[query]              # List Glimmer custom widget gems available at rubygems.org (query is optional) [alt: list:gems:cw]
-glimmer list:gems:dsl[query]                       # List Glimmer DSL gems available at rubygems.org (query is optional)
-glimmer package[type]                              # Package app for distribution (generating config, jar, and native files) (type is optional)
-glimmer package:clean                              # Clean by removing "dist" and "packages" directories
-glimmer package:config                             # Generate JAR config file
-glimmer package:jar                                # Generate JAR file
-glimmer package:lock_jars                          # Lock JARs
-glimmer package:native[type]                       # Generate Native files
-glimmer sample:code[name]                          # Outputs code for a Glimmer internal sample [included in gem] (name is required)
-glimmer sample:list[query]                         # Lists Glimmer internal samples [included in gem]. Filters by query if specified (query is optional)
-glimmer sample:run[name]                           # Runs a Glimmer internal sample [included in gem]. If no name is supplied, it runs all samples
-glimmer scaffold[app_name]                         # Scaffold Glimmer application directory structure to build a new app
-glimmer scaffold:customshell[name,namespace]       # Scaffold Glimmer::UI::CustomShell subclass (full window view) under app/views (namespace is optional) [alt: scaffold:cs]
-glimmer scaffold:customwidget[name,namespace]      # Scaffold Glimmer::UI::CustomWidget subclass (part of a view) under app/views (namespace is optional) [alt: scaffold:cw]
-glimmer scaffold:gem:customshell[name,namespace]   # Scaffold Glimmer::UI::CustomShell subclass (full window view) under its own Ruby gem + app project (namespace is required) [alt: scaffold:gem:cs]
-glimmer scaffold:gem:customwidget[name,namespace]  # Scaffold Glimmer::UI::CustomWidget subclass (part of a view) under its own Ruby gem project (namespace is required) [alt: scaffold:gem:cw]
+Runs Glimmer applications and tasks.    
 
 When applications are specified, they are run using JRuby, 
 automatically preloading the glimmer Ruby gem and SWT jar dependency.
 
-Optionally, extra Glimmer options, JRuby options and environment variables may be passed in.
+Optionally, extra Glimmer options, JRuby options, and/or environment variables may be passed in.
 
 Glimmer options:
 - "--quiet"           : Does not announce file path of Glimmer application being launched
 - "--debug"           : Displays extra debugging information, passes "--debug" to JRuby, and enables debug logging
 - "--log-level=VALUE" : Sets Glimmer's Ruby logger level ("ERROR" / "WARN" / "INFO" / "DEBUG"; default is none)
 
-Example: glimmer samples/hello_world.rb
+Tasks are run via rake. Some tasks take arguments in square brackets.
 
-This runs the Glimmer application samples/hello_world.rb
+Available tasks are below (if you do not see any, please add `require 'glimmer/rake_task'` to Rakefile and rerun or run rake -T):
+
+Select a Glimmer task to run: (Press ↑/↓ arrow to move, Enter to select and letters to filter)
+‣ glimmer list:gems:customshell[query]                       # List Glimmer custom shell gems available at rubygems.org (query is optional) [alt: list:gems:cs]
+  glimmer list:gems:customwidget[query]                      # List Glimmer custom widget gems available at rubygems.org (query is optional) [alt: list:gems:cw]
+  glimmer list:gems:dsl[query]                               # List Glimmer DSL gems available at rubygems.org (query is optional)
+  glimmer package[type]                                      # Package app for distribution (generating config, jar, and native files) (type is optional)
+  glimmer package:clean                                      # Clean by removing "dist" and "packages" directories
+  glimmer package:config                                     # Generate JAR config file
+  glimmer package:jar                                        # Generate JAR file
+  glimmer package:lock_jars                                  # Lock JARs
+  glimmer package:native[type]                               # Generate Native files
+  glimmer sample:code[name]                                  # Outputs code for a Glimmer internal sample [included in gem] (name is required)
+  glimmer sample:list[query]                                 # Lists Glimmer internal samples [included in gem]. Filters by query if specified (query is optional)
+  glimmer sample:run[name]                                   # Runs a Glimmer internal sample [included in gem]. If no name is supplied, it runs all samples
+  glimmer scaffold[app_name]                                 # Scaffold Glimmer application directory structure to build a new app
+  glimmer scaffold:customshell[name,namespace]               # Scaffold Glimmer::UI::CustomShell subclass (full window view) under app/views (namespace is optional) [alt: scaffold:cs]
+  glimmer scaffold:customwidget[name,namespace]              # Scaffold Glimmer::UI::CustomWidget subclass (part of a view) under app/views (namespace is optional) [alt: scaffold:cw]
+  glimmer scaffold:gem:customshell[name,namespace]           # Scaffold Glimmer::UI::CustomShell subclass (full window view) under its own Ruby gem + app project (namespace is required) [alt: scaffold:ge...
+  glimmer scaffold:gem:customwidget[name,namespace]          # Scaffold Glimmer::UI::CustomWidget subclass (part of a view) under its own Ruby gem project (namespace is required) [alt: scaffold:gem:cw]
 ```
 
 Example (Glimmer/JRuby option specified):
@@ -531,7 +527,7 @@ This will run the hello_tab sample and output its code:
 ```
 $ glimmer sample:run[hello_tab] 
 
-# /Users/User/.rvm/gems/jruby-9.2.13.0@glimmerapp/gems/glimmer-dsl-swt-0.6.4/samples/hello/hello_tab.rb
+# /Users/User/.rvm/gems/jruby-9.2.13.0@glimmerapp/gems/glimmer-dsl-swt-0.6.5/samples/hello/hello_tab.rb
 
 class HelloTab
   include Glimmer
@@ -576,7 +572,7 @@ Example:
 ```
 $ glimmer sample:code[tic_tac_toe] 
 
-# /Users/User/.rvm/gems/jruby-9.2.13.0@glimmerapp/gems/glimmer-dsl-swt-0.6.4/samples/elaborate/tic_tac_toe.rb
+# /Users/User/.rvm/gems/jruby-9.2.13.0@glimmerapp/gems/glimmer-dsl-swt-0.6.5/samples/elaborate/tic_tac_toe.rb
 
 require_relative "tic_tac_toe/board"
 
@@ -637,7 +633,7 @@ TicTacToe.new.open
 # # #
 
 
-# /Users/User/.rvm/gems/jruby-9.2.13.0@glimmerapp/gems/glimmer-dsl-swt-0.6.4/samples/elaborate/tic_tac_toe/cell.rb
+# /Users/User/.rvm/gems/jruby-9.2.13.0@glimmerapp/gems/glimmer-dsl-swt-0.6.5/samples/elaborate/tic_tac_toe/cell.rb
 
 class TicTacToe
   class Cell
@@ -670,7 +666,7 @@ end
 # # #
 
 
-# /Users/User/.rvm/gems/jruby-9.2.13.0@glimmerapp/gems/glimmer-dsl-swt-0.6.4/samples/elaborate/tic_tac_toe/board.rb
+# /Users/User/.rvm/gems/jruby-9.2.13.0@glimmerapp/gems/glimmer-dsl-swt-0.6.5/samples/elaborate/tic_tac_toe/board.rb
 
 require_relative 'cell'
 
@@ -1080,7 +1076,7 @@ Output:
                                                                          
   Css    glimmer-dsl-css    0.2.0     AndyMaleh   Glimmer DSL for CSS    
   Opal   glimmer-dsl-opal   0.1.0     AndyMaleh   Glimmer DSL for Opal   
-  Swt    glimmer-dsl-swt    0.6.4     AndyMaleh   Glimmer DSL for SWT    
+  Swt    glimmer-dsl-swt    0.6.5     AndyMaleh   Glimmer DSL for SWT    
   Xml    glimmer-dsl-xml    0.2.0     AndyMaleh   Glimmer DSL for XML    
                                                                          
 ```
