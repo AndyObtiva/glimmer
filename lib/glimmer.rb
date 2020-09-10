@@ -48,12 +48,12 @@ module Glimmer
     Glimmer.loop_last_data = new_loop_data
     # This if statement speeds up Glimmer in girb or whenever directly including on main object
     is_excluded = Config.excluded_keyword_checkers.reduce(false) {|result, checker| result || instance_exec(method_symbol, *args, &checker) }
-    raise ExcludedKeywordError, "Glimmer excluded keyword: #{method_symbol}" if is_excluded
+    if is_excluded
+      Glimmer::Config.logger.debug "Glimmer excluded keyword: #{method_symbol}" if Glimmer::Config.log_excluded_keywords?
+      super(method_symbol, *args, &block)
+    end
     Glimmer::Config.logger.info {"Interpreting keyword: #{method_symbol}"}
     Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
-  rescue ExcludedKeywordError => e
-    # TODO add a feature to show excluded keywords optionally for debugging purposes
-    super(method_symbol, *args, &block)
   rescue InvalidKeywordError => e
     Glimmer::Config.logger.error {"Encountered an invalid keyword at this object: #{self}"}
     Glimmer::Config.logger.error {e.full_message}

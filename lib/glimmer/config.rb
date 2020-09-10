@@ -5,6 +5,8 @@ module Glimmer
       REGEX_METHODS_EXCLUDED = /^(to_|\[)/
       
       attr_writer :loop_max_count
+      attr_accessor :log_excluded_keywords
+      alias log_excluded_keywords? log_excluded_keywords
       
       def excluded_keyword_checkers
         @excluded_keyword_checkers ||= reset_excluded_keyword_checkers!

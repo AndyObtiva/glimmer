@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+## 0.10.4
+
+- Support Glimmer::Config.log_excluded_keywords option for whether or not to log keywords that are excluded by Glimmer::Config.excluded_keyword_checkers
+
 ## 0.10.3
 
 - Made Glimmer::Config module more resilient to invalid logger level values set via GLIMMER_LOGGER_LEVEL env var

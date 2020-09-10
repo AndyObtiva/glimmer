@@ -3248,6 +3248,10 @@ Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
 end
 ```
 
+### log_excluded_keywords
+
+This just tells Glimmer whether to log excluded keywords or not (at the debug level). It is off by default.
+
 ## Glimmer Style Guide
 
 - Widgets are declared with underscored lowercase versions of their SWT names minus the SWT package name.
