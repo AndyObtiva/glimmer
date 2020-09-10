@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["AndyMaleh".freeze]
-  s.date = "2020-09-06"
+  s.date = "2020-09-10"
   s.description = "Ruby Desktop Development GUI Library (JRuby on SWT)".freeze
   s.email = "andy.am@gmail.com".freeze
   s.extra_rdoc_files = [
@@ -50,7 +50,6 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<array_include_methods>.freeze, [">= 1.0.2", "< 2.0.0"])
       s.add_runtime_dependency(%q<facets>.freeze, [">= 3.1.0", "< 4.0.0"])
-      s.add_runtime_dependency(%q<rake-tui>.freeze, [">= 0"])
       s.add_development_dependency(%q<rspec-mocks>.freeze, ["~> 3.5.0"])
       s.add_development_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
       s.add_development_dependency(%q<puts_debuggerer>.freeze, ["~> 0.10.0"])
@@ -63,7 +62,6 @@ Gem::Specification.new do |s|
     else
       s.add_dependency(%q<array_include_methods>.freeze, [">= 1.0.2", "< 2.0.0"])
       s.add_dependency(%q<facets>.freeze, [">= 3.1.0", "< 4.0.0"])
-      s.add_dependency(%q<rake-tui>.freeze, [">= 0"])
       s.add_dependency(%q<rspec-mocks>.freeze, ["~> 3.5.0"])
       s.add_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
       s.add_dependency(%q<puts_debuggerer>.freeze, ["~> 0.10.0"])
@@ -77,7 +75,6 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<array_include_methods>.freeze, [">= 1.0.2", "< 2.0.0"])
     s.add_dependency(%q<facets>.freeze, [">= 3.1.0", "< 4.0.0"])
-    s.add_dependency(%q<rake-tui>.freeze, [">= 0"])
     s.add_dependency(%q<rspec-mocks>.freeze, ["~> 3.5.0"])
     s.add_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
     s.add_dependency(%q<puts_debuggerer>.freeze, ["~> 0.10.0"])
