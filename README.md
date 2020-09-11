@@ -17,7 +17,8 @@ NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contri
 Featured in<br />JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do)
 
 Glimmer DSL gems:
-- [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (Desktop GUI)
+- [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop GUI)
+- [glimmer-dsl-tk](https://github.com/AndyObtiva/glimmer-dsl-tk): Glimmer DSL for Tk (Ruby Desktop GUI)
 - [glimmer-dsl-opal](https://github.com/AndyObtiva/glimmer-dsl-opal): Glimmer DSL for Opal (Web GUI Adapter for Desktop Apps)
 - [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
 - [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS
@@ -1084,11 +1085,11 @@ Output:
                                                                          
   Name         Gem          Version    Author          Description       
                                                                          
-  Css    glimmer-dsl-css    0.2.0     AndyMaleh   Glimmer DSL for CSS    
-  Opal   glimmer-dsl-opal   0.1.0     AndyMaleh   Glimmer DSL for Opal   
-  Swt    glimmer-dsl-swt    0.6.5     AndyMaleh   Glimmer DSL for SWT    
-  Xml    glimmer-dsl-xml    0.2.0     AndyMaleh   Glimmer DSL for XML    
-                                                                         
+  Css    glimmer-dsl-css    0.2.0     AndyMaleh    Glimmer DSL for CSS    
+  Opal   glimmer-dsl-opal   0.1.0     AndyMaleh    Glimmer DSL for Opal   
+  Swt    glimmer-dsl-swt    0.6.5     AndyMaleh    Glimmer DSL for SWT    
+  Tk     glimmer-dsl-tk     0.0.1     andy_maleh   Glimmer DSL for Tk     
+  Xml    glimmer-dsl-xml    0.2.0     AndyMaleh    Glimmer DSL for XML                                                                         
 ```
 
 ### Packaging
