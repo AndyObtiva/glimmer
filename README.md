@@ -43,7 +43,7 @@ shell {
 
 Run:
 ```
-glimmer samples/hello/hello_world.rb
+glimmer sample:run[hello_world]
 ```
 
 Glimmer app:
@@ -80,7 +80,7 @@ Glimmer code (from [samples/elaborate/tic_tac_toe.rb](https://github.com/AndyObt
 Run:
 
 ```
-glimmer samples/elaborate/tic_tac_toe.rb
+glimmer sample:run[tic_tac_toe]
 ```
 
 Glimmer app:
@@ -205,7 +205,7 @@ Glimmer code (from [samples/elaborate/contact_manager.rb](https://github.com/And
 Run:
 
 ```
-glimmer samples/elaborate/contact_manager.rb
+glimmer sample:run[contact_manager]
 ```
 
 Glimmer App:
@@ -304,6 +304,7 @@ Glimmer App:
       - [Hello, Pop Up Context Menu!](#hello-pop-up-context-menu)
     - [Elaborate Samples](#elaborate-samples)
       - [Login](#login)
+      - [User Profile](#user-profile)
       - [Tic Tac Toe Sample](#tic-tac-toe-sample)
       - [Contact Manager](#contact-manager-sample)
     - [External Samples](#external-samples)
@@ -447,7 +448,7 @@ the glimmer ruby gem and SWT jar dependency.
 
 Example:
 ```
-glimmer samples/hello/hello_world.rb
+glimmer sample:run[hello_world]
 ```
 This runs the Glimmer "Hello, World!" sample.
 
@@ -455,7 +456,7 @@ If you cloned this project locally, you may run `bin/glimmer` instead.
 
 Example:
 ```
-bin/glimmer samples/hello/hello_world.rb
+bin/glimmer sample:run[hello_world]
 ```
 
 ### Advanced Usage
@@ -512,7 +513,7 @@ Runs Glimmer application with JRuby debug option to enable JRuby debugging.
 
 Example (Multiple apps):
 ```
-glimmer samples/hello/hello_world.rb samples/hello_tab.rb
+glimmer samples/hello/hello_world.rb samples/hello/hello_tab.rb
 ```
 
 Launches samples/hello/hello_world.rb and samples/hello_tab.rb at the same time, each in a separate JRuby thread.
@@ -556,6 +557,7 @@ $ glimmer sample:list
   contact_manager   Contact Manager   glimmer sample:run[contact_manager]  
   login             Login             glimmer sample:run[login]            
   tic_tac_toe       Tic Tac Toe       glimmer sample:run[tic_tac_toe]                                                   
+  user_profile      User Profile      glimmer sample:run[user_profile]                                                   
 ```
 
 #### Sample Run
@@ -3360,7 +3362,7 @@ Code:
 Run:
 
 ```
-glimmer samples/hello/hello_world.rb
+glimmer sample:run[hello_world]
 ```
 
 ![Hello World](images/glimmer-hello-world.png)
@@ -3374,7 +3376,7 @@ Code:
 Run:
 
 ```
-glimmer samples/hello/hello_tab.rb
+glimmer sample:run[hello_tab]
 ```
 
 ![Hello Tab English](images/glimmer-hello-tab-english.png)
@@ -3391,7 +3393,7 @@ Code:
 Run:
 
 ```
-glimmer samples/hello/hello_combo.rb
+glimmer sample:run[hello_combo]
 ```
 
 ![Hello Combo](images/glimmer-hello-combo.png)
@@ -3408,7 +3410,7 @@ Code:
 Run:
 
 ```
-glimmer samples/hello/hello_list_single_selection.rb
+glimmer sample:run[hello_list_single_selection]
 ```
 
 ![Hello List Single Selection](images/glimmer-hello-list-single-selection.png)
@@ -3424,7 +3426,7 @@ Code:
 Run:
 
 ```
-glimmer samples/hello/hello_list_multi_selection.rb
+glimmer sample:run[hello_list_multi_selection]
 ```
 
 ![Hello List Multi Selection](images/glimmer-hello-list-multi-selection.png)
@@ -3440,7 +3442,7 @@ Code:
 Run:
 
 ```
-glimmer samples/hello/hello_computed.rb
+glimmer sample:run[hello_computed]
 ```
 
 ![Hello Browser](images/glimmer-hello-computed.png)
@@ -3456,7 +3458,7 @@ Code:
 Run:
 
 ```
-glimmer samples/hello/hello_message_box.rb
+glimmer sample:run[hello_message_box]
 ```
 
 ![Hello Message Box](images/glimmer-hello-message-box.png)
@@ -3473,7 +3475,7 @@ Code:
 Run:
 
 ```
-glimmer samples/hello/hello_browser.rb
+glimmer sample:run[hello_browser]
 ```
 
 ![Hello Browser](images/glimmer-hello-browser.png)
@@ -3489,7 +3491,7 @@ Code:
 Run:
 
 ```
-glimmer samples/hello/hello_drag_and_drop.rb
+glimmer sample:run[hello_drag_and_drop]
 ```
 
 ![Hello Drag and Drop](images/glimmer-hello-drag-and-drop.gif)
@@ -3505,7 +3507,7 @@ Code:
 Run:
 
 ```
-glimmer samples/hello/hello_menu_bar.rb
+glimmer sample:run[hello_menu_bar]
 ```
 
 ![Hello Menu Bar](images/glimmer-hello-menu-bar.png)
@@ -3523,7 +3525,7 @@ Code:
 Run:
 
 ```
-glimmer samples/hello/hello_pop_up_context_menu.rb
+glimmer sample:run[hello_pop_up_context_menu]
 ```
 
 ![Hello Pop Up Context Menu](images/glimmer-hello-pop-up-context-menu.png)
@@ -3532,6 +3534,24 @@ glimmer samples/hello/hello_pop_up_context_menu.rb
 ### Elaborate Samples
 
 For more elaborate samples, check the following:
+
+#### User Profile
+
+This sample was used in the [DZone Article about Glimmer](https://dzone.com/articles/an-introduction-glimmer), demonstrating Glimmer widgets in general.
+
+Please note that the code has changed since that article was written (the GUI DSL has been improved/simplified), so use the code sample mentioned here instead as the correct version.
+
+Code:
+
+[samples/elaborate/user_profile.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/user_profile.rb)
+
+Run:
+
+```
+glimmer sample:run[user_profile]
+```
+
+![User Profile](images/glimmer-user-profile.png)
 
 #### Login
 
@@ -3544,7 +3564,7 @@ Code:
 Run:
 
 ```
-glimmer samples/elaborate/login.rb
+glimmer sample:run[login]
 ```
 
 ![Login](images/glimmer-login.png)
@@ -3564,7 +3584,7 @@ Code:
 Run:
 
 ```
-glimmer samples/elaborate/tic_tac_toe.rb
+glimmer sample:run[tic_tac_toe]
 ```
 
 ![Tic Tac Toe](images/glimmer-tic-tac-toe.png)
@@ -3582,7 +3602,7 @@ Code:
 Run:
 
 ```
-glimmer samples/elaborate/contact_manager.rb
+glimmer sample:run[contact_manager]
 ```
 
 Contact Manager
