@@ -11,9 +11,9 @@
 
 [**Glimmer**](https://rubygems.org/gems/glimmer) is a native-GUI cross-platform desktop development library written in [JRuby](https://www.jruby.org/), an OS-threaded faster version of [Ruby](https://www.ruby-lang.org/en/). [Glimmer](https://rubygems.org/gems/glimmer)'s main innovation is a declarative [Ruby DSL](#glimmer-dsl-syntax) that enables productive and efficient authoring of desktop application user-interfaces while relying on the robust [Eclipse SWT library](https://www.eclipse.org/swt/). [Glimmer](https://rubygems.org/gems/glimmer) additionally innovates by having built-in [data-binding](#data-binding) support, which greatly facilitates synchronizing the GUI with domain models, thus achieving true decoupling of object oriented components and enabling developers to solve business problems (test-first) without worrying about GUI concerns. To get started quickly, [Glimmer](https://rubygems.org/gems/glimmer) offers [scaffolding](#scaffolding) options for [Apps](#in-production), [Gems](#custom-shell-gem), and [Custom Widgets](#custom-widgets). [Glimmer](https://rubygems.org/gems/glimmer) also includes native-executable [packaging](#packaging--distribution) support, sorely lacking in other libraries, thus enabling the delivery of desktop apps written in [Ruby](https://www.ruby-lang.org/en/) as truly native DMG/PKG/APP files on the [Mac](https://www.apple.com/ca/macos) + [App Store](https://developer.apple.com/macos/distribution/) and MSI/EXE files on [Windows](https://www.microsoft.com/en-ca/windows).
 
-[Glimmer receives two updates every month](https://rubygems.org/gems/glimmer-dsl-swt/versions). You can trust [Glimmer](https://rubygems.org/gems/glimmer) with your Ruby desktop GUI development needs.
+[Glimmer receives two updates per month](https://rubygems.org/gems/glimmer-dsl-swt/versions). You can trust [Glimmer](https://rubygems.org/gems/glimmer) with your Ruby desktop GUI development needs.
 
-NOTE: Glimmer is in beta mode. Please help make better by [contributing](#contributing), adopting for small or low risk projects, and providing feedback. The more feedback and issues you report the better.
+NOTE: Glimmer is in beta mode. Please make better by providing feedback and [contributing](#contributing) when possible. The more feedback and issues you report the better.
 
 [<img src="https://covers.oreillystatic.com/images/9780596519650/lrg.jpg" width=105 /><br /> 
 Featured in<br />JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do)
@@ -212,12 +212,24 @@ Glimmer App:
 
 ![Contact Manager](images/glimmer-contact-manager.png)
 
+### Desktop Apps Built with Glimmer
+
+[<img alt="Are We There Yet Logo" src="https://raw.githubusercontent.com/AndyObtiva/are-we-there-yet/master/are-we-there-yet-logo.svg" width="40" />Are We There Yet?](https://github.com/AndyObtiva/are-we-there-yet) - Small Project Tracking App
+
+![Are We There Yet? App Screenshot](https://raw.githubusercontent.com/AndyObtiva/are-we-there-yet/master/are-we-there-yet-screenshot-windows.png)
+
+[<img alt="Math Bowling Logo" src="https://raw.githubusercontent.com/AndyObtiva/MathBowling/master/images/math-bowling-logo.png" width="40" />Math Bowling](https://github.com/AndyObtiva/MathBowling) - Elementary Level Math Game Featuring Bowling Rules
+
+![Math Bowling App Screenshot](https://raw.githubusercontent.com/AndyObtiva/MathBowling/master/Math-Bowling-Screenshot.png)
+
 ## Table of contents
 
 - [Glimmer (Ruby Desktop Development GUI Library)](#-glimmer-ruby-desktop-development-gui-library)
   - [Examples](#examples)
     - [Hello, World!](#hello-world)
     - [Tic Tac Toe](#tic-tac-toe)
+    - [Contact Manager](#contact-manager)
+  - [Table of contents](#table-of-contents)
   - [Background](#background)
   - [Platform Support](#platform-support)
   - [Pre-requisites](#pre-requisites)
@@ -227,6 +239,10 @@ Glimmer App:
   - [Glimmer Command](#glimmer-command)
     - [Basic Usage](#basic-usage)
     - [Advanced Usage](#advanced-usage)
+    - [Sample List/Run/Code](#sample-listruncode)
+      - [Sample List](#sample-list)
+      - [Sample Run](#sample-run)
+      - [Sample Code](#sample-code)
     - [Scaffolding](#scaffolding)
       - [App](#app)
       - [Custom Shell](#custom-shell)
@@ -254,8 +270,9 @@ Glimmer App:
       - [Negative SWT Style Bits](#negative-swt-style-bits)
       - [Extra SWT Styles](#extra-swt-styles)
     - [Widget Properties](#widget-properties)
-      - [Colors](#colors)
-      - [Fonts](#fonts)
+      - [Color](#color)
+      - [Font](#font)
+    - [Cursor](#cursor)
     - [Layouts](#layouts)
     - [Layout Data](#layout-data)
     - [Data-Binding](#data-binding)
@@ -285,8 +302,14 @@ Glimmer App:
       - [Browser Widget](#browser-widget)
   - [Glimmer Configuration](#glimmer-configuration)
     - [logger](#logger)
+      - [logging_devices](#loggingdevices)
+      - [logging_device_file_options](#loggingdevicefileoptions)
+      - [logging_appender_options](#loggingappenderoptions)
+      - [logging_layout](#logginglayout)
     - [import_swt_packages](#importswtpackages)
     - [loop_max_count](#loopmaxcount)
+    - [excluded_keyword_checkers](#excludedkeywordcheckers)
+    - [log_excluded_keywords](#logexcludedkeywords)
   - [Glimmer Style Guide](#glimmer-style-guide)
   - [SWT Reference](#swt-reference)
   - [Samples](#samples)
@@ -303,10 +326,10 @@ Glimmer App:
       - [Hello, Menu Bar!](#hello-menu-bar)
       - [Hello, Pop Up Context Menu!](#hello-pop-up-context-menu)
     - [Elaborate Samples](#elaborate-samples)
-      - [Login](#login)
       - [User Profile](#user-profile)
+      - [Login](#login)
       - [Tic Tac Toe Sample](#tic-tac-toe-sample)
-      - [Contact Manager](#contact-manager-sample)
+      - [Contact Manager Sample](#contact-manager-sample)
     - [External Samples](#external-samples)
       - [Glimmer Calculator](#glimmer-calculator)
       - [Gladiator](#gladiator)
@@ -319,6 +342,8 @@ Glimmer App:
     - [Packaging Defaults](#packaging-defaults)
     - [Packaging Configuration](#packaging-configuration)
     - [javapackager Extra Arguments](#javapackager-extra-arguments)
+    - [Verbose Mode](#verbose-mode)
+    - [Windows Application Packaging](#windows-application-packaging)
     - [Mac Application Distribution](#mac-application-distribution)
     - [Self Signed Certificate](#self-signed-certificate)
     - [Gotchas](#gotchas)
