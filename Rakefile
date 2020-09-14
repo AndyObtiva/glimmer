@@ -22,7 +22,7 @@ unless jeweler_required.nil?
     gem.homepage = "http://github.com/AndyObtiva/glimmer"
     gem.license = "MIT"
     gem.summary = %Q{Ruby Desktop Development GUI Library}
-    gem.description = %Q{Ruby Desktop Development GUI Library (JRuby on SWT)}
+    gem.description = %Q{Ruby Desktop Development GUI Library}
     gem.email = "andy.am@gmail.com"
     gem.authors = ["AndyMaleh"]
     # gem.executables = ['glimmer', 'girb'] # moved to glimmer-dsl-swt for now
