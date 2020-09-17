@@ -21,12 +21,12 @@ unless jeweler_required.nil?
     gem.name = "glimmer"
     gem.homepage = "http://github.com/AndyObtiva/glimmer"
     gem.license = "MIT"
-    gem.summary = %Q{Ruby Desktop Development GUI Library}
-    gem.description = %Q{Ruby Desktop Development GUI Library}
+    gem.summary = %Q{Glimmer Ruby DSL Engine}
+    gem.description = %Q{Glimmer is a Ruby DSL engine with support for the Glimmer DSL for SWT (JRuby Desktop Development GUI Library), the Glimmer DSL for Tk (Ruby Desktop Development GUI Library), the Glimmer DSL for Opal (Web GUI Adapter for Desktop Apps), the Glimmer DSL for XML (& HTML), and the Glimmer DSL for CSS.}
     gem.email = "andy.am@gmail.com"
     gem.authors = ["AndyMaleh"]
     # gem.executables = ['glimmer', 'girb'] # moved to glimmer-dsl-swt for now
-    gem.files = Dir['README.md', 'LICENSE.txt', 'VERSION', 'bin/**/*', 'lib/**/*']
+    gem.files = Dir['README.md', 'LICENSE.txt', 'VERSION', 'PROCESS.md', 'CONTRIBUTING.md', 'CHANGELOG.md','lib/**/*']
     # dependencies defined in Gemfile
   end
   Jeweler::RubygemsDotOrgTasks.new

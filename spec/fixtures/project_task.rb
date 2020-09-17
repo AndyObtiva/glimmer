@@ -12,7 +12,7 @@ class ProjectTask < Struct.new(:name, :project, :priority)
   end
   
   def ==(other)
-    name == other.name && project == other.project && priority == other.priority
+    other.respond_to?(:name) && name == other.name && project == other.project && priority == other.priority
   end
   alias eql? ==
 end

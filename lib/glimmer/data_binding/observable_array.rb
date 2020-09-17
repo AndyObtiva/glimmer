@@ -1,13 +1,32 @@
-require 'set'
-require 'array_include_methods'
+# Copyright (c) 2007-2020 Andy Maleh
+# 
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+# 
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'set'
 require 'glimmer/data_binding/observable'
+require 'array_include_methods'
 
 using ArrayIncludeMethods
 
 module Glimmer
   module DataBinding
-    # TODO prefix utility methods with double-underscore
     module ObservableArray
       include Observable
 
@@ -37,11 +56,7 @@ module Glimmer
         if !element_properties.empty?
           old_element_properties = element_properties_for(observer)
           observer_element_properties[observer] = element_properties_for(observer) - Set.new(element_properties)
-          each do |element|
-            element_properties.each do |property|
-              observer.unobserve(element, property)
-            end
-          end
+          each { |element| element_properties.each { |property| observer.unobserve(element, property) } }
         end
         if element_properties_for(observer).empty?
           property_observer_list.delete(observer)
@@ -169,9 +184,7 @@ module Glimmer
             remove_element_observers(old_value)
           end
           super(&block).tap do
-            each do |element|
-              add_element_observers(element)
-            end
+            each { |element| add_element_observers(element) }
             notify_observers
           end
         else
@@ -181,9 +194,7 @@ module Glimmer
       alias map! collect!
 
       def compact!
-        super.tap do
-          notify_observers
-        end
+        super.tap { notify_observers }
       end
 
       def flatten!(level=nil)
@@ -192,17 +203,13 @@ module Glimmer
           remove_element_observers(old_value)
         end
         (level.nil? ? super() : super(level)).tap do
-          each do |element|
-            add_element_observers(element)
-          end
+          each { |element| add_element_observers(element) }
           notify_observers
         end
       end
 
       def rotate!(count=1)
-        super(count).tap do
-          notify_observers
-        end
+        super(count).tap { notify_observers }
       end
 
       def select!(&block)
@@ -221,9 +228,7 @@ module Glimmer
       end
 
       def shuffle!(hash = nil)
-        (hash.nil? ? super() : super(random: hash[:random])).tap do
-          notify_observers
-        end
+        (hash.nil? ? super() : super(random: hash[:random])).tap { notify_observers }
       end
 
       def slice!(arg1, arg2=nil)
@@ -238,15 +243,11 @@ module Glimmer
       end
 
       def sort!(&block)
-        (block.nil? ? super() : super(&block)).tap do
-          notify_observers
-        end
+        (block.nil? ? super() : super(&block)).tap { notify_observers }
       end
 
       def sort_by!(&block)
-        (block.nil? ? super() : super(&block)).tap do
-          notify_observers
-        end
+        (block.nil? ? super() : super(&block)).tap { notify_observers }
       end
 
       def uniq!(&block)
@@ -255,15 +256,15 @@ module Glimmer
           remove_element_observers(old_value)
         end
         (block.nil? ? super() : super(&block)).tap do
-          each do |element|
-            add_element_observers(element)
-          end
+          each { |element| add_element_observers(element) }
           notify_observers
         end
       end
 
       def reject!(&block)
-        if block_given?
+        if block.nil?
+          super
+        else
           old_array = Array.new(self)
           super(&block).tap do
             (old_array - self).each do |old_value|
@@ -272,17 +273,12 @@ module Glimmer
             end
             notify_observers
           end
-        else
-          super
         end
       end
       
       def unregister_dependent_observers(old_value)
-        # TODO look into optimizing this
         return unless old_value.is_a?(ObservableModel) || old_value.is_a?(ObservableArray)
-        property_observer_list.each do |observer|
-          observer.unregister_dependents_with_observable(observer.registration_for(self), old_value)
-        end
+        property_observer_list.each { |observer| observer.unregister_dependents_with_observable(observer.registration_for(self), old_value) }
       end
     end
   end

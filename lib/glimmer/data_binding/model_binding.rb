@@ -1,3 +1,24 @@
+# Copyright (c) 2007-2020 Andy Maleh
+# 
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+# 
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 require 'glimmer/data_binding/observable'
 require 'glimmer/data_binding/observer'
 
@@ -7,7 +28,7 @@ module Glimmer
       include Observable
       include Observer
 
-      attr_reader :binding_options
+      attr_reader :binding_options, :property_name_expression
 
       def initialize(base_model, property_name_expression, binding_options = nil)
         @base_model = base_model
@@ -60,19 +81,10 @@ module Glimmer
       end
 
       def apply_converter(converter, value)
-        if converter.nil?
-          value
-        elsif converter.is_a?(String) || converter.is_a?(Symbol)
-          if value.respond_to?(converter)
-            value.send(converter)
-          else
-            raise Glimmer::Error, "Unsupported bind converter: #{converter.inspect}"
-          end
-        elsif converter.respond_to?(:call, value)
-          converter.call(value)
-        else
-          raise Glimmer::Error, "Unsupported bind converter: #{converter.inspect}"
-        end
+        return value if converter.nil?          
+        return value.send(converter) if (converter.is_a?(String) || converter.is_a?(Symbol)) && value.respond_to?(converter)          
+        return converter.call(value) if converter.respond_to?(:call, value)          
+        raise Glimmer::Error, "Unsupported bind converter: #{converter.inspect}"
       end
 
       # All nested property names
@@ -97,10 +109,6 @@ module Glimmer
 
       def nested_property?
         property_name_expression.match(/[.\[]/)
-      end
-
-      def property_name_expression
-        @property_name_expression
       end
 
       def computed?
@@ -179,17 +187,19 @@ module Glimmer
           model, property_name = zip
           nested_property_observer = nested_property_observers[property_name]
           previous_index = i - 1
-          parent_model = previous_index.negative? ? self : nested_models[previous_index]
-          parent_property_name = previous_index.negative? ? nil : nested_property_names[previous_index]
-          parent_observer = previous_index.negative? ? observer : nested_property_observers[parent_property_name]
+          if previous_index.negative?
+            parent_model = self
+            parent_property_name = nil
+            parent_observer = observer
+          else
+            parent_model = nested_models[previous_index]
+            parent_property_name = nested_property_names[previous_index]
+            parent_observer = nested_property_observers[parent_property_name]
+          end
           parent_property_name = nil if parent_property_name.to_s.start_with?('[')
           unless model.nil?
-            if property_indexed?(property_name)
-              # TODO figure out a way to deal with this more uniformly
-              observer_registration = nested_property_observer.observe(model)
-            else
-              observer_registration = nested_property_observer.observe(model, property_name)
-            end
+            # TODO figure out a way to deal with this more uniformly
+            observer_registration = property_indexed?(property_name) ? nested_property_observer.observe(model) : nested_property_observer.observe(model, property_name)
             parent_registration = parent_observer.registration_for(parent_model, parent_property_name)
             parent_observer.add_dependent(parent_registration => observer_registration)
           end

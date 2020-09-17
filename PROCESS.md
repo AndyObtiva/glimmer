@@ -1,6 +1,6 @@
 # Glimmer Process (Beyond Agile)
 
-**Glimmer Process** is the lightweight software development process used for building [Glimmer libraries](https://github.com/AndyObtiva/glimmer) and [Glimmer apps](https://github.com/AndyObtiva/glimmer#in-production), which goes beyond Agile, rendering all Agile processes obsolete. **Glimmer Process** is simply made up of 7 guidelines to pick and choose as necessary until software development needs are satisfied. Not all guidelines need to be incorporated into every project, but it is still important to think through every one of them before ruling any out. Guidelines can be followed in any order. 
+**Glimmer Process** is the lightweight software development process used for building [Glimmer](https://github.com/AndyObtiva/glimmer) libraries and [Glimmer](https://github.com/AndyObtiva/glimmer) apps, which goes beyond Agile, rendering all Agile processes obsolete. **Glimmer Process** is simply made up of 7 guidelines to pick and choose as necessary until software development needs are satisfied. Not all guidelines need to be incorporated into every project, but it is still important to think through every one of them before ruling any out. Guidelines can be followed in any order. 
 
 ## GPG (Glimmer Process Guidelines):
 - **Requirements Gathering**: Spend no more than a few hours writing the initial requirements you know from the business owner, gathering missing requirements, and planning to elicit more requirements from users, customers, and stakeholders. Requirements are not set in stone, but serve as a good starting point in understanding what a project is about. After initial release, only document small tasks going forward.
@@ -14,3 +14,22 @@
 --
 
 Copyright (c) 2020 Andy Maleh
+ 
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+ 
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+ 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

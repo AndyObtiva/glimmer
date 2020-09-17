@@ -1,3 +1,25 @@
+# Copyright (c) 2007-2020 Andy Maleh
+# 
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+# 
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+require 'forwardable'
 require 'facets/string/camelcase'
 
 require 'glimmer/dsl/expression_handler'
@@ -12,20 +34,42 @@ module Glimmer
     # with ordered expression array specified via `.expressions=` method.
     class Engine
       MESSAGE_NO_DSLS = "Glimmer has no DSLs configured. Add glimmer-dsl-swt gem or visit https://github.com/AndyObtiva/glimmer#multi-dsl-support for more details.\n"
+      STATIC_EXPRESSION_METHOD_FACTORY = lambda do |keyword|
+        lambda do |*args, &block|
+          if Glimmer::DSL::Engine.no_dsls?
+            puts Glimmer::DSL::Engine::MESSAGE_NO_DSLS
+          else
+            retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
+            static_expression_dsl = (Glimmer::DSL::Engine.static_expressions[keyword].keys - Glimmer::DSL::Engine.disabled_dsls).first if retrieved_static_expression.nil?
+            interpretation = nil
+            if retrieved_static_expression.nil? && Glimmer::DSL::Engine.dsl && (static_expression_dsl.nil? || !Glimmer::DSL::Engine.static_expressions[keyword][static_expression_dsl].is_a?(TopLevelExpression))
+              begin
+                interpretation = Glimmer::DSL::Engine.interpret(keyword, *args, &block)
+              rescue => e
+                raise e if static_expression_dsl.nil? || !Glimmer::DSL::Engine.static_expressions[keyword][static_expression_dsl].is_a?(TopLevelExpression)
+              end
+            end
+            if interpretation
+              interpretation
+            else              
+              raise Glimmer::Error, "Unsupported keyword: #{keyword}" unless static_expression_dsl || retrieved_static_expression
+              Glimmer::DSL::Engine.dsl_stack.push(static_expression_dsl || Glimmer::DSL::Engine.dsl)
+              static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
+              if !static_expression.can_interpret?(Glimmer::DSL::Engine.parent, keyword, *args, &block)
+                raise Error, "Invalid use of Glimmer keyword #{keyword} with args #{args} under parent #{Glimmer::DSL::Engine.parent}"
+              else
+                Glimmer::Config.logger.info {"#{static_expression.class.name} will handle expression keyword #{keyword}"}
+                Glimmer::DSL::Engine.interpret_expression(static_expression, keyword, *args, &block)
+              end
+            end
+          end              
+        end      
+      end
       
       class << self
-        def dsl=(dsl_name)
-          dsl_name = dsl_name&.to_sym
-          if dsl_name
-            dsl_stack.push(dsl_name)
-          else
-            dsl_stack.clear
-          end
-        end
+        extend Forwardable
         
-        def dsl
-          dsl_stack.last
-        end
+        def_delegator :dsl_stack, :last, :dsl
 
         def dsls
           static_expressions.values.map(&:keys).flatten.uniq
@@ -74,14 +118,10 @@ module Glimmer
         end        
 
         # Sets dynamic expression chains of responsibility. Useful for internal testing
-        def dynamic_expression_chains_of_responsibility=(chains)
-          @dynamic_expression_chains_of_responsibility = chains
-        end
+        attr_writer :dynamic_expression_chains_of_responsibility
 
         # Sets static expressions. Useful for internal testing
-        def static_expressions=(expressions)
-          @static_expressions = expressions
-        end
+        attr_writer :static_expressions
 
         # Sets an ordered array of DSL expressions to support
         #
@@ -109,38 +149,7 @@ module Glimmer
           static_expression_dsl = static_expression.class.dsl
           static_expressions[keyword] ||= {}
           static_expressions[keyword][static_expression_dsl] = static_expression
-          Glimmer.send(:define_method, keyword) do |*args, &block|
-            if Glimmer::DSL::Engine.no_dsls?
-              puts Glimmer::DSL::Engine::MESSAGE_NO_DSLS
-            else
-              retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
-              static_expression_dsl = (Glimmer::DSL::Engine.static_expressions[keyword].keys - Glimmer::DSL::Engine.disabled_dsls).first if retrieved_static_expression.nil?
-              interpretation = nil
-              if retrieved_static_expression.nil? && Glimmer::DSL::Engine.dsl && (static_expression_dsl.nil? || !Glimmer::DSL::Engine.static_expressions[keyword][static_expression_dsl].is_a?(TopLevelExpression))
-                begin
-                  interpretation = Glimmer::DSL::Engine.interpret(keyword, *args, &block)
-                rescue => e
-                  raise e if static_expression_dsl.nil? || !Glimmer::DSL::Engine.static_expressions[keyword][static_expression_dsl].is_a?(TopLevelExpression)
-                end
-              end
-              if interpretation
-                interpretation
-              else              
-                raise Glimmer::Error, "Unsupported keyword: #{keyword}" unless static_expression_dsl || retrieved_static_expression
-                Glimmer::DSL::Engine.dsl_stack.push(static_expression_dsl || Glimmer::DSL::Engine.dsl)
-                static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
-                if !static_expression.can_interpret?(Glimmer::DSL::Engine.parent, keyword, *args, &block)
-                  raise Error, "Invalid use of Glimmer keyword #{keyword} with args #{args} under parent #{Glimmer::DSL::Engine.parent}"
-                else
-                  Glimmer::Config.logger.info {"#{static_expression.class.name} will handle expression keyword #{keyword}"}
-                  static_expression.interpret(Glimmer::DSL::Engine.parent, keyword, *args, &block).tap do |ui_object|
-                    Glimmer::DSL::Engine.add_content(ui_object, static_expression, &block) unless block.nil?
-                    Glimmer::DSL::Engine.dsl_stack.pop
-                  end
-                end
-              end
-            end              
-          end
+          Glimmer.send(:define_method, keyword, &STATIC_EXPRESSION_METHOD_FACTORY.call(keyword))
         end
 
         def expression_class(dsl_namespace, expression_name)
@@ -152,16 +161,17 @@ module Glimmer
         end
 
         # Interprets Glimmer dynamic DSL expression consisting of keyword, args, and block (e.g. shell(:no_resize) { ... })
-        def interpret(keyword, *args, &block)
-          if no_dsls?
-            puts MESSAGE_NO_DSLS
-            return
-          end
+        def interpret(keyword, *args, &block)          
+          return puts(MESSAGE_NO_DSLS) if no_dsls?
           keyword = keyword.to_s
           dynamic_expression_dsl = (dynamic_expression_chains_of_responsibility.keys - disabled_dsls).first if dsl.nil?
           dsl_stack.push(dynamic_expression_dsl || dsl)
           expression = dynamic_expression_chains_of_responsibility[dsl].handle(parent, keyword, *args, &block)
-          expression.interpret(parent, keyword, *args, &block).tap do |ui_object|            
+          interpret_expression(expression, keyword, *args, &block)
+        end
+        
+        def interpret_expression(expression, keyword, *args, &block)
+          expression.interpret(parent, keyword, *args, &block).tap do |ui_object|
             add_content(ui_object, expression, &block)
             dsl_stack.pop
           end
@@ -189,9 +199,7 @@ module Glimmer
         #
         # Parents are maintained in a stack while evaluating Glimmer DSL
         # to ensure properly ordered interpretation of DSL syntax
-        def parent
-          parent_stack.last
-        end
+        def_delegator :parent_stack, :last, :parent
 
         def parent_stack
           parent_stacks[dsl] ||= []

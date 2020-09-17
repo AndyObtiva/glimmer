@@ -10,5 +10,8 @@ Related TODO files:
 ### Version TBD
 
 - Consider creating a configuration DSL
+
+## Refactorings
+
 - Rename Observable methods (including subclasses) to observe/unobserve
-- Prefix ObservableModel utility methods with double-underscore
+- Prefix ObservableModel/ObservableArray utility methods with double-underscore

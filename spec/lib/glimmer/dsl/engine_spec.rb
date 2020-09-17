@@ -45,6 +45,16 @@ module GlimmerSpec
         expect(@target.to_s).to eq('SWT shell { SWT Dynamic browser(XML html { XML Dynamic body { XML Dynamic input({:type=>"text", :value=>"Hello, World!"}) } }) }')
       end
    
+      it 'raises error for static non-top-level keyword used at the top-level' do
+        expect {text}.to raise_error
+      end
+      
+      it 'raises error for a static keyword that cannot interpret args (e.g. text does not accept numeric)' do
+        @target = shell {
+          expect {text(123)}.to raise_error          
+        }
+      end
+      
       it 'disables SWT DSL to build an XML document containing SWT keywords' do
         Glimmer::DSL::Engine.disable_dsl(:swt)
    
