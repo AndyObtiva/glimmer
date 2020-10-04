@@ -64,6 +64,7 @@ Gem::Specification.new do |s|
     s.add_development_dependency(%q<coveralls>.freeze, ["= 0.8.23"])
     s.add_development_dependency(%q<simplecov>.freeze, ["~> 0.16.1"])
     s.add_development_dependency(%q<simplecov-lcov>.freeze, ["~> 0.7.0"])
+    s.add_development_dependency(%q<rake-tui>.freeze, [">= 0"])
   else
     s.add_dependency(%q<array_include_methods>.freeze, [">= 1.0.3", "< 2.0.0"])
     s.add_dependency(%q<facets>.freeze, [">= 3.1.0", "< 4.0.0"])
@@ -76,6 +77,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<coveralls>.freeze, ["= 0.8.23"])
     s.add_dependency(%q<simplecov>.freeze, ["~> 0.16.1"])
     s.add_dependency(%q<simplecov-lcov>.freeze, ["~> 0.7.0"])
+    s.add_dependency(%q<rake-tui>.freeze, [">= 0"])
   end
 end
 
