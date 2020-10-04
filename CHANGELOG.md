@@ -6,6 +6,7 @@ Related Change Logs:
 ## 1.0.1
 
 - Fixed issue with excluded keywords getting caught up by the infinite-loop-detection check
+- Upgraded to array_include_method v1.0.3
 
 ## 1.0.0
 
