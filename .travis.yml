@@ -4,6 +4,7 @@ env:
     - JRUBY_OPTS="--debug"
 language: ruby
 rvm:
+  - ruby-2.7.2
   - ruby-2.5.3
   - jruby-9.2.13.0
 os: linux
