@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 style="position: relative; top: 20px;" />](https://rubygems.org/gems/glimmer) Glimmer 1.0.0 - DSL Framework
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 style="position: relative; top: 20px;" />](https://rubygems.org/gems/glimmer) Glimmer 1.0.1 - DSL Framework
 [![Gem Version](https://badge.fury.io/rb/glimmer.svg)](http://badge.fury.io/rb/glimmer)
 [![Travis CI](https://travis-ci.com/AndyObtiva/glimmer.svg?branch=master)](https://travis-ci.com/github/AndyObtiva/glimmer) 
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master)
@@ -29,7 +29,7 @@ Featured in<br />JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.d
 
 ## Table of contents
 
-- [Glimmer 1.0.0](#-glimmer-100)
+- [Glimmer 1.0.1](#-glimmer-101)
   - [Glimmer DSL for SWT (JRuby Desktop Development GUI Library)](#glimmer-dsl-for-swt-jruby-desktop-development-gui-library)
     - [Glimmer DSL for SWT Samples](#glimmer-dsl-for-swt-samples)
       - [Hello, World!](#hello-world)
@@ -731,6 +731,8 @@ body{font-size:1.1em;background:white}body > h1{background-color:red;font-size:2
 ```
 
 ## Multi-DSL Support
+
+Glimmer official DSL gems always start with `glimmer-dsl-`. That said, other libraries may use the Glimmer DSL engine too not for building GUI apps (e.g. `bundler-download`)
 
 Glimmer allows mixing DSLs, which comes in handy when doing things like using a desktop Browser widget with HTML and CSS.
 

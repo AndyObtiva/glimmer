@@ -1,7 +1,13 @@
 require 'spec_helper'
 
-module GlimmerSpec
+module GlimmerSpec    
   describe Glimmer::Config do
+    module ToHashOwner
+      def method_missing(method, *args, &block)
+        # No Op. Useful in testing that Glimmer does not do infinite-loop-detection on Glimmer excluded keywords like to_hash
+      end
+    end
+    include ToHashOwner
     include Glimmer
     
     describe '::excluded_keyword_checkers' do
@@ -128,6 +134,16 @@ module GlimmerSpec
             }
           }
         end.to raise_error("Glimmer looped #{described_class.loop_max_count} times with keyword 'input'! Check code for errors.")
+      end
+      
+      it 'does not raise an error if default loop max count is reached on an excluded keyword' do
+        expect do
+          html {
+            described_class.loop_max_count.times { |i|
+              to_hash
+            }
+          }
+        end.to_not raise_error
       end
       
       it 'does not raise an error if default loop max count is not reached' do

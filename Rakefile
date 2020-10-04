@@ -26,7 +26,7 @@ unless jeweler_required.nil?
     gem.email = "andy.am@gmail.com"
     gem.authors = ["AndyMaleh"]
     # gem.executables = ['glimmer', 'girb'] # moved to glimmer-dsl-swt for now
-    gem.files = Dir['README.md', 'LICENSE.txt', 'VERSION', 'PROCESS.md', 'CONTRIBUTING.md', 'CHANGELOG.md','lib/**/*']
+    gem.files = Dir['README.md', 'LICENSE.txt', 'VERSION', 'PROCESS.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'glimmer.gemspec', 'lib/**/*']
     # dependencies defined in Gemfile
   end
   Jeweler::RubygemsDotOrgTasks.new

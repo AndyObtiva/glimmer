@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+## 1.0.1
+
+- Fixed issue with excluded keywords getting caught up by the infinite-loop-detection check
+
 ## 1.0.0
 
 - Code/Documentation preparation for version 1.0.0

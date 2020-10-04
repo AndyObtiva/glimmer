@@ -7,7 +7,7 @@ Follow instructions in [CONTRIBUTING.md](CONTRIBUTING.md) before you implement a
 Related TODO files:
 - [glimmer-dsl-swt/TODO.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/TODO.md)
 
-## Tasks
+## Next
 
 ### Version TBD
 

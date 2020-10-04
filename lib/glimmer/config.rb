@@ -23,7 +23,7 @@ module Glimmer
   module Config
     class << self
       LOOP_MAX_COUNT_DEFAULT = 100
-      REGEX_METHODS_EXCLUDED = /^(to_|\[)/
+      REGEX_METHODS_EXCLUDED = /^(to_|\[|load_iseq)/
       
       attr_writer :loop_max_count
       attr_accessor :log_excluded_keywords

@@ -55,22 +55,23 @@ module Glimmer
   end
 
   def method_missing(method_symbol, *args, &block)
-    new_loop_data = [method_symbol, args, block]
-    if new_loop_data == Glimmer.loop_last_data
-      Glimmer.loop_increment!
-      raise "Glimmer looped #{Config.loop_max_count} times with keyword '#{new_loop_data[0]}'! Check code for errors." if Glimmer.loop == Config.loop_max_count
-    else
-      Glimmer.loop_reset!
-    end
-    Glimmer.loop_last_data = new_loop_data
     # This if statement speeds up Glimmer in girb or whenever directly including on main object
     is_excluded = Config.excluded_keyword_checkers.reduce(false) {|result, checker| result || instance_exec(method_symbol, *args, &checker) }
     if is_excluded
       Glimmer::Config.logger.debug "Glimmer excluded keyword: #{method_symbol}" if Glimmer::Config.log_excluded_keywords?
       super(method_symbol, *args, &block)
+    else
+      new_loop_data = [method_symbol, args, block]
+      if new_loop_data == Glimmer.loop_last_data
+        Glimmer.loop_increment!
+        raise "Glimmer looped #{Config.loop_max_count} times with keyword '#{new_loop_data[0]}'! Check code for errors." if Glimmer.loop == Config.loop_max_count
+      else
+        Glimmer.loop_reset!
+      end
+      Glimmer.loop_last_data = new_loop_data
+      Glimmer::Config.logger.info {"Interpreting keyword: #{method_symbol}"}
+      Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)    
     end
-    Glimmer::Config.logger.info {"Interpreting keyword: #{method_symbol}"}
-    Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
   rescue InvalidKeywordError => e
     Glimmer::Config.logger.error {"Encountered an invalid keyword at this object: #{self}"}
     Glimmer::Config.logger.error {e.full_message}
