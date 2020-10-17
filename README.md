@@ -9,11 +9,11 @@
 
 (The Original Glimmer Library Since 2007. Beware of Imitators!)
 
-[**Glimmer**](https://rubygems.org/gems/glimmer) started out as [GUI Library](https://github.com/AndyObtiva/glimmer-dsl-swt) and grew into a full-fledged [DSL Framework](#multi-dsl-support). Glimmer's namesake is referring to the Glimmer of Ruby in Graphical User Interfaces (contrary to popular myth perpetrated by [Charles Nutter](http://blog.headius.com/2007/11/tab-sweep.html), Glimmer has nothing to do with the ill-fated Whitney Houston movie, which does not in fact share the same name)
-
 [**Glimmer**](https://rubygems.org/gems/glimmer) is a DSL Framework that consists of:
 - DSL Engine: enables building DSLs for desktop GUI, XML/HTML documents, CSS styling, and webification of desktop apps.
 - Data-Binding/Observer/Observable Library: enables synchronizing GUI with Model Attributes bidirectionally.
+
+[**Glimmer**](https://rubygems.org/gems/glimmer) started out as [GUI Library](https://github.com/AndyObtiva/glimmer-dsl-swt) and grew into a full-fledged [DSL Framework](#multi-dsl-support). Glimmer's namesake is referring to the Glimmer of Ruby in Graphical User Interfaces (contrary to popular myth perpetrated by [Charles Nutter](http://blog.headius.com/2007/11/tab-sweep.html), Glimmer has nothing to do with the ill-fated Whitney Houston movie, which does not in fact share the same name)
 
 [**Glimmer**](https://rubygems.org/gems/glimmer) supports the following DSLs: 
 - [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop Development GUI Library)
