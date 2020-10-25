@@ -9,6 +9,10 @@ Related TODO files:
 
 ## Next
 
+- Fix issue with 'handle' keyword cascading to last expression handler incorrectly
+- Extract data-binding/observe keywords from glimmer-dsl-swt back into glimmer as a built in default DSL. That way, they can be shared/reused with glimmer-dsl-opal and glimmer-dsl-tk
+- Extract glimmer rake tasks that are common from glimmer-dsl-swt into glimmer such as list:gems:dsl
+
 ### Version TBD
 
 - Consider creating a configuration DSL

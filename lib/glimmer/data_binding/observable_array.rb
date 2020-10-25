@@ -109,6 +109,7 @@ module Glimmer
         end
       end
       alias push <<
+      alias append <<
       
       def []=(index, value)
         old_value = self[index]
@@ -260,6 +261,14 @@ module Glimmer
           notify_observers
         end
       end
+
+      def unshift(element)
+        super(element).tap do
+          add_element_observers(element)        
+          notify_observers
+        end
+      end
+      alias prepend unshift
 
       def reject!(&block)
         if block.nil?

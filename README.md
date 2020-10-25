@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 style="position: relative; top: 20px;" />](https://rubygems.org/gems/glimmer) Glimmer 1.0.1 - DSL Framework
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 style="position: relative; top: 20px;" />](https://rubygems.org/gems/glimmer) Glimmer 1.0.2 - DSL Framework
 [![Gem Version](https://badge.fury.io/rb/glimmer.svg)](http://badge.fury.io/rb/glimmer)
 [![Travis CI](https://travis-ci.com/AndyObtiva/glimmer.svg?branch=master)](https://travis-ci.com/github/AndyObtiva/glimmer) 
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master)
@@ -29,7 +29,7 @@ Featured in<br />JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.d
 
 ## Table of contents
 
-- [Glimmer 1.0.1](#-glimmer-101)
+- [Glimmer 1.0.2](#-glimmer-102)
   - [Glimmer DSL for SWT (JRuby Desktop Development GUI Library)](#glimmer-dsl-for-swt-jruby-desktop-development-gui-library)
     - [Glimmer DSL for SWT Samples](#glimmer-dsl-for-swt-samples)
       - [Hello, World!](#hello-world)
@@ -753,6 +753,7 @@ Here is a list of notable 3rd party gems used by Glimmer and Glimmer DSLs:
 - [puts_debuggerer](https://github.com/AndyObtiva/puts_debuggerer): helps in troubleshooting when adding `require 'pd'` and using the `pd` command instead of `puts` or `p` (also `#pd_inspect` or `#pdi` instead of `#inspect`)
 - [rake](https://github.com/ruby/rake): used to implement and execute `glimmer` commands
 - [rake-tui](https://github.com/AndyObtiva/rake-tui): Rake Text-based User Interface. Allows navigating rake tasks with arrow keys and filtering task list by typing to quickly find an run a rake task.
+- [rouge](https://github.com/rouge-ruby/rouge): Ruby syntax highlighter used in the `code_text` [Glimmer DSL for SWT custom widget](https://github.com/AndyObtiva/glimmer-dsl-swt#custom-widgets) leveraged by the [Glimmer Meta-Sample](https://github.com/AndyObtiva/glimmer-dsl-swt#samples)
 - [super_module](https://github.com/AndyObtiva/super_module): used to cleanly write the Glimmer::UI:CustomWidget and Glimmer::UI::CustomShell modules
 - [text-table](https://github.com/aptinio/text-table): renders textual data in a textual table for the command-line interface of Glimmer
 - [warbler](https://github.com/jruby/warbler): converts a Glimmer app into a Java JAR file during packaging

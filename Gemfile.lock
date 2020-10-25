@@ -97,7 +97,7 @@ GEM
     thor (1.0.1)
     thread_safe (0.3.6)
     thread_safe (0.3.6-java)
-    tins (1.25.0)
+    tins (1.26.0)
       sync
     tty-color (0.5.2)
     tty-cursor (0.7.1)

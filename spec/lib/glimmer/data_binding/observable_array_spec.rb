@@ -142,6 +142,31 @@ module Glimmer
           expect(@fired).to eq(true)        
         end  
         
+        it 'notifies observers when Array#append is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+
+          array.append(project_task2)
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.last.name = 'Paint Car'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.last.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          array.last.priority = 'Medium'
+          expect(@fired).to eq(true)
+        end    
+        
         it 'notifies observers when Array#push is called' do
           @fired = false
           observer = Observer.proc {
@@ -646,7 +671,7 @@ module Glimmer
 
           array.sort_by! {|e| e.priority}
           expect(@fired).to eq(true)
-        end    
+        end
 
         it 'notifies observers when Array#uniq! is called' do
           @fired = false
@@ -686,7 +711,57 @@ module Glimmer
           @fired = false
           element.priority = 'Medium'
           expect(@fired).to eq(true)          
-        end    
+        end
+        
+        it 'notifies observers when Array#unshift is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+
+          array.unshift(project_task2)
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.first.name = 'Paint Car'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.first.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          array.first.priority = 'Medium'
+          expect(@fired).to eq(true)
+        end        
+                                          
+        it 'notifies observers when Array#prepend is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+
+          array.prepend(project_task2)
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.first.name = 'Paint Car'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.first.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          array.first.priority = 'Medium'
+          expect(@fired).to eq(true)
+        end        
                                           
         it 'notifies observers when Array#reject! is called' do
           @fired = false
