@@ -86,7 +86,7 @@ shell {
 
 Run:
 ```
-glimmer sample:run[hello_world]
+glimmer samples # Select Hello, World!
 ```
 
 Glimmer app:
@@ -132,7 +132,7 @@ Glimmer code (from [samples/elaborate/tic_tac_toe.rb](https://github.com/AndyObt
 Run:
 
 ```
-glimmer sample:run[tic_tac_toe]
+glimmer samples # Select Tic Tac Toe
 ```
 
 Glimmer app:
@@ -257,7 +257,7 @@ Glimmer code (from [samples/elaborate/contact_manager.rb](https://github.com/And
 Run:
 
 ```
-glimmer sample:run[contact_manager]
+glimmer samples # Select Contact Manager
 ```
 
 Glimmer App:
