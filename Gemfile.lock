@@ -2,7 +2,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     addressable (2.4.0)
-    array_include_methods (1.0.3)
+    array_include_methods (1.0.4)
     awesome_print (1.8.0)
     builder (3.2.4)
     coveralls (0.8.23)
@@ -99,7 +99,7 @@ GEM
     thread_safe (0.3.6-java)
     tins (1.26.0)
       sync
-    tty-color (0.5.2)
+    tty-color (0.6.0)
     tty-cursor (0.7.1)
     tty-prompt (0.22.0)
       pastel (~> 0.8)
@@ -116,7 +116,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  array_include_methods (>= 1.0.3, < 2.0.0)
+  array_include_methods (>= 1.0.4, < 2.0.0)
   coveralls (= 0.8.23)
   facets (>= 3.1.0, < 4.0.0)
   jeweler (>= 2.0.0, < 3.0.0)

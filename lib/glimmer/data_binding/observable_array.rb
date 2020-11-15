@@ -1,5 +1,5 @@
 # Copyright (c) 2007-2020 Andy Maleh
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
 # "Software"), to deal in the Software without restriction, including
@@ -7,10 +7,10 @@
 # distribute, sublicense, and/or sell copies of the Software, and to
 # permit persons to whom the Software is furnished to do so, subject to
 # the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be
 # included in all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 # EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -48,7 +48,7 @@ module Glimmer
       def add_element_observer(element, observer)
         element_properties_for(observer).each do |property|
           observer.observe(element, property)
-        end      
+        end
       end
 
       def remove_observer(observer, *element_properties)
@@ -62,20 +62,20 @@ module Glimmer
           property_observer_list.delete(observer)
           observer_element_properties.delete(observer)
           each { |element| remove_element_observer(element, observer) }
-        end        
+        end
         observer
       end
 
       def remove_element_observers(element)
         property_observer_list.each do |observer|
           remove_element_observer(element, observer)
-        end      
+        end
       end
 
       def remove_element_observer(element, observer)
         element_properties_for(observer).each do |property|
           observer.unobserve(element, property)
-        end      
+        end
       end
 
       def has_observer?(observer)
@@ -104,7 +104,7 @@ module Glimmer
       
       def <<(element)
         super(element).tap do
-          add_element_observers(element)        
+          add_element_observers(element)
           notify_observers
         end
       end
@@ -115,7 +115,7 @@ module Glimmer
         old_value = self[index]
         unregister_dependent_observers(old_value)
         remove_element_observers(old_value)
-        add_element_observers(value)    
+        add_element_observers(value)
         super(index, value).tap do
           notify_observers
         end
@@ -151,7 +151,7 @@ module Glimmer
         if block_given?
           old_array = Array.new(self)
           super(&block).tap do |new_array|
-            (old_array - new_array).each do |element| 
+            (old_array - new_array).each do |element|
               unregister_dependent_observers(element)
               remove_element_observers(element)
             end
@@ -264,7 +264,7 @@ module Glimmer
 
       def unshift(element)
         super(element).tap do
-          add_element_observers(element)        
+          add_element_observers(element)
           notify_observers
         end
       end

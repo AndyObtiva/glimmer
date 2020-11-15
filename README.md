@@ -1,6 +1,6 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 style="position: relative; top: 20px;" />](https://rubygems.org/gems/glimmer) Glimmer 1.0.2 - DSL Framework
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 style="position: relative; top: 20px;" />](https://rubygems.org/gems/glimmer) Glimmer 1.0.3 - DSL Framework
 [![Gem Version](https://badge.fury.io/rb/glimmer.svg)](http://badge.fury.io/rb/glimmer)
-[![Travis CI](https://travis-ci.com/AndyObtiva/glimmer.svg?branch=master)](https://travis-ci.com/github/AndyObtiva/glimmer) 
+[![Travis CI](https://travis-ci.com/AndyObtiva/glimmer.svg?branch=master)](https://travis-ci.com/github/AndyObtiva/glimmer)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/38fbc278022862794414/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer/maintainability)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -15,7 +15,7 @@
 
 [**Glimmer**](https://rubygems.org/gems/glimmer) started out as [GUI Library](https://github.com/AndyObtiva/glimmer-dsl-swt) and grew into a full-fledged [DSL Framework](#multi-dsl-support). Glimmer's namesake is referring to the Glimmer of Ruby in Graphical User Interfaces (contrary to popular myth perpetrated by [Charles Nutter](http://blog.headius.com/2007/11/tab-sweep.html), Glimmer has nothing to do with the ill-fated Whitney Houston movie, which does not in fact share the same name)
 
-[**Glimmer**](https://rubygems.org/gems/glimmer) supports the following DSLs: 
+[**Glimmer**](https://rubygems.org/gems/glimmer) supports the following DSLs:
 - [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop Development GUI Library)
 - [glimmer-dsl-tk](https://github.com/AndyObtiva/glimmer-dsl-tk): Glimmer DSL for Tk (Ruby Desktop Development GUI Library)
 - [glimmer-dsl-opal](https://github.com/AndyObtiva/glimmer-dsl-opal): Glimmer DSL for Opal (Web GUI Adapter for Desktop Apps)
@@ -24,12 +24,12 @@
 
 [Glimmer and/or Glimmer DSLs receive two updates per month](https://rubygems.org/gems/glimmer-dsl-swt/versions). You can trust [Glimmer](https://rubygems.org/gems/glimmer) with your Ruby development needs.
 
-[<img src="https://covers.oreillystatic.com/images/9780596519650/lrg.jpg" width=105 /><br /> 
+[<img src="https://covers.oreillystatic.com/images/9780596519650/lrg.jpg" width=105 /><br />
 Featured in<br />JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do)
 
 ## Table of contents
 
-- [Glimmer 1.0.2](#-glimmer-102)
+- [Glimmer 1.0.3](#-glimmer-103)
   - [Glimmer DSL for SWT (JRuby Desktop Development GUI Library)](#glimmer-dsl-for-swt-jruby-desktop-development-gui-library)
     - [Glimmer DSL for SWT Samples](#glimmer-dsl-for-swt-samples)
       - [Hello, World!](#hello-world)
@@ -44,8 +44,7 @@ Featured in<br />JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.d
   - [Glimmer DSL for Opal (Web GUI Adapter for Desktop Apps)](#glimmer-dsl-for-opal-web-gui-adapter-for-desktop-apps)
     - [Glimmer DSL for Opal Samples](#glimmer-dsl-for-opal-samples)
       - [Hello, Computed!](#hello-computed)
-      - [Hello, List Single Selection!](#hello-list-single-selection)
-      - [Hello, List Multi Selection!](#hello-list-multi-selection)
+      - [Glimmer Calculator](#glimmer-calculator)
   - [Glimmer DSL for XML (& HTML)](#glimmer-dsl-for-xml--html)
     - [XML DSL](#xml-dsl)
   - [Glimmer DSL for CSS](#glimmer-dsl-for-css)
@@ -86,7 +85,7 @@ shell {
 
 Run:
 ```
-glimmer samples # Select Hello, World!
+glimmer sample:run[hello_world]
 ```
 
 Glimmer app:
@@ -132,7 +131,7 @@ Glimmer code (from [samples/elaborate/tic_tac_toe.rb](https://github.com/AndyObt
 Run:
 
 ```
-glimmer samples # Select Tic Tac Toe
+glimmer sample:run[tic_tac_toe]
 ```
 
 Glimmer app:
@@ -257,7 +256,7 @@ Glimmer code (from [samples/elaborate/contact_manager.rb](https://github.com/And
 Run:
 
 ```
-glimmer samples # Select Contact Manager
+glimmer sample:run[contact_manager]
 ```
 
 Glimmer App:
@@ -324,7 +323,7 @@ Glimmer code (from [samples/hello/hello_tab.rb](https://github.com/AndyObtiva/gl
 ```ruby
 include Glimmer
 
-root {      
+root {
   title 'Hello, Tab!'
    
   notebook {
@@ -364,7 +363,7 @@ root {
   title 'Hello, Combo!'
   
   combobox { |proxy|
-    state 'readonly'       
+    state 'readonly'
     text bind(person, :country)
   }
   
@@ -391,7 +390,7 @@ Glimmer app:
 
 ## Glimmer DSL for Opal (Web GUI Adapter for Desktop Apps)
 
-[Glimmer DSL for Opal](https://github.com/AndyObtiva/glimmer-dsl-opal) is an experimental proof-of-concept web GUI adapter for [Glimmer](https://github.com/AndyObtiva/glimmer) desktop apps (i.e. apps built with [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt)). It webifies them via [Rails](https://rubyonrails.org/), allowing Ruby desktop apps to run on the web via [Opal Ruby](https://opalrb.com/) without changing a line of code. Apps may then be custom-styled for the web with standard CSS. 
+[Glimmer DSL for Opal](https://github.com/AndyObtiva/glimmer-dsl-opal) is an experimental proof-of-concept web GUI adapter for [Glimmer](https://github.com/AndyObtiva/glimmer) desktop apps (i.e. apps built with [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt)). It webifies them via [Rails](https://rubyonrails.org/), allowing Ruby desktop apps to run on the web via [Opal Ruby](https://opalrb.com/) without changing a line of code. Apps may then be custom-styled for the web with standard CSS.
 
 Glimmer DSL for Opal webifier successfully reuses the entire [Glimmer](https://github.com/AndyObtiva/glimmer) core DSL engine in [Opal Ruby](https://opalrb.com/) inside a web browser, and as such inherits the full range of powerful Glimmer desktop [data-binding](https://github.com/AndyObtiva/glimmer#data-binding) capabilities for the web.
 
@@ -516,56 +515,63 @@ You should see "Hello, Computed!"
 
 ![Glimmer DSL for Opal Hello Computed](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-opal/master/images/glimmer-dsl-opal-hello-computed.png)
 
-#### Hello, List Single Selection!
+#### Glimmer Calculator
+
+Add the [glimmer-cs-calculator](https://github.com/AndyObtiva/glimmer-cs-calculator) gem to `Gemfile` (without requiring):
+
+```
+gem 'glimmer-cs-calculator', require: false
+```
 
 Add the following require statement to `app/assets/javascripts/application.rb`
 
-
 ```ruby
-require 'samples/hello/hello_list_single_selection'
+require 'glimmer-cs-calculator/launch'
 ```
 
-Or add the Glimmer code directly if you prefer to play around with it:
+Sample GUI code (relies on custom widgets `command_button`, `operation_button`, and `number_button`):
 
 ```ruby
-class Person 
-  attr_accessor :country, :country_options
-
-  def initialize
-    self.country_options=["", "Canada", "US", "Mexico"]
-    self.country = "Canada"
-  end
-
-  def reset_country
-    self.country = "Canada"
-  end
-end
-
-class HelloListSingleSelection
-  include Glimmer
-  def launch
-    person = Person.new
-    shell {
-      composite {
-        list {
-          selection bind(person, :country)
-        }
-        button {
-          text "Reset"
-          on_widget_selected do
-            person.reset_country
-          end
-        }
-      }
-    }.open
-  end
-end
-
-HelloListSingleSelection.new.launch
+shell {
+  minimum_size (OS.mac? ? 320 : (OS.windows? ? 390 : 520)), 240
+  image File.join(APP_ROOT, 'package', 'windows', "Glimmer Calculator.ico") if OS.windows?
+  text "Glimmer - Calculator"
+  grid_layout 4, true
+  # Setting styled_text to multi in order for alignment options to activate
+  styled_text(:multi, :wrap, :border) {
+    text bind(@presenter, :result)
+    alignment swt(:right)
+    right_margin 5
+    font height: 40
+    layout_data(:fill, :fill, true, true) {
+      horizontal_span 4
+    }
+    editable false
+    caret nil
+  }
+  command_button('AC')
+  operation_button('÷')
+  operation_button('×')
+  operation_button('−')
+  (7..9).each { |number|
+    number_button(number)
+  }
+  operation_button('+', font: @button_font_big, vertical_span: 2)
+  (4..6).each { |number|
+    number_button(number)
+  }
+  (1..3).each { |number|
+    number_button(number)
+  }
+  command_button('=', font: @button_font_big, vertical_span: 2)
+  number_button(0, horizontal_span: 2)
+  operation_button('.')
+}
 ```
-Glimmer app on the desktop (using [`glimmer-dsl-swt`](https://github.com/AndyObtiva/glimmer-dsl-swt) gem):
 
-![Glimmer DSL for SWT Hello List Single Selection](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-list-single-selection.png)
+Glimmer app on the desktop (using the [`glimmer-dsl-swt`](https://github.com/AndyObtiva/glimmer-dsl-swt) gem):
+
+![Glimmer Calculator Linux](https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/master/glimmer-cs-calculator-screenshot-linux.png)
 
 Glimmer app on the web (using `glimmer-dsl-opal` gem):
 
@@ -575,83 +581,19 @@ rails s
 ```
 
 Visit `http://localhost:3000`
+(or visit: http://glimmer-cs-calculator-server.herokuapp.com)
 
-You should see "Hello, List Single Selection!"
+You should see "Glimmer Calculator"
 
-![Glimmer DSL for Opal Hello List Single Selection](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-opal/master/images/glimmer-dsl-opal-hello-list-single-selection.png)
+![Glimmer Calculator Opal](https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/master/glimmer-cs-calculator-screenshot-opal.png)
 
-#### Hello, List Multi Selection!
+Here is an Apple Calculator CSS themed version (with [CSS only](https://github.com/AndyObtiva/glimmer-cs-calculator/blob/master/server/glimmer-cs-calculator-server/app/assets/stylesheets/welcomes_apple.scss), no app code changes):
 
-Add the following require statement to `app/assets/javascripts/application.rb`
+Visit http://glimmer-cs-calculator-server.herokuapp.com/welcomes/apple
 
-```ruby
-require 'samples/hello/hello_list_multi_selection'
-```
+You should see "Apple Calculator Theme"
 
-Or add the Glimmer code directly if you prefer to play around with it:
-
-```ruby
-class Person
-  attr_accessor :provinces, :provinces_options
-
-  def initialize
-    self.provinces_options=[
-      "",
-      "Quebec",
-      "Ontario",
-      "Manitoba",
-      "Saskatchewan",
-      "Alberta",
-      "British Columbia",
-      "Nova Skotia",
-      "Newfoundland"
-    ]
-    self.provinces = ["Quebec", "Manitoba", "Alberta"]
-  end
-
-  def reset_provinces
-    self.provinces = ["Quebec", "Manitoba", "Alberta"]
-  end
-end
-
-class HelloListMultiSelection
-  include Glimmer
-  def launch
-    person = Person.new
-    shell {
-      composite {
-        list(:multi) {
-          selection bind(person, :provinces)
-        }
-        button {
-          text "Reset"
-          on_widget_selected do
-            person.reset_provinces
-          end
-        }
-      }
-    }.open
-  end
-end
-
-HelloListMultiSelection.new.launch
-```
-Glimmer app on the desktop (using [`glimmer-dsl-swt`](https://github.com/AndyObtiva/glimmer-dsl-swt) gem):
-
-![Glimmer DSL for SWT Hello List Multi Selection](https://github.com/AndyObtiva/glimmer/raw/master/images/glimmer-hello-list-multi-selection.png)
-
-Glimmer app on the web (using `glimmer-dsl-opal` gem):
-
-Start the Rails server:
-```
-rails s
-```
-
-Visit `http://localhost:3000`
-
-You should see "Hello, List Multi Selection!"
-
-![Glimmer DSL for Opal Hello List Multi Selection](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-opal/master/images/glimmer-dsl-opal-hello-list-multi-selection.png)
+![Glimmer Calculator Opal Apple Calculator Theme](https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/master/glimmer-cs-calculator-screenshot-opal-apple.png)
 
 ## Glimmer DSL for XML (& HTML)
 
@@ -760,7 +702,7 @@ Here is a list of notable 3rd party gems used by Glimmer and Glimmer DSLs:
 
 ## Glimmer Process
 
-[Glimmer Process](PROCESS.md) is the lightweight software development process used for building Glimmer libraries and Glimmer apps, which goes beyond Agile, rendering all Agile processes obsolete. [Glimmer Process](PROCESS.md) is simply made up of 7 guidelines to pick and choose as necessary until software development needs are satisfied. 
+[Glimmer Process](PROCESS.md) is the lightweight software development process used for building Glimmer libraries and Glimmer apps, which goes beyond Agile, rendering all Agile processes obsolete. [Glimmer Process](PROCESS.md) is simply made up of 7 guidelines to pick and choose as necessary until software development needs are satisfied.
 
 Learn more by reading the [GPG](PROCESS.md) (Glimmer Process Guidelines)
 
@@ -783,7 +725,7 @@ You may submit [issues](https://github.com/AndyObtiva/glimmer/issues) on [GitHub
 
 ### Chat
 
-If you need live help, try to [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
+If you need live help, try to [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Feature Suggestions
 
@@ -831,7 +773,7 @@ If your company would like to invest fulltime in further development of the Glim
 
 [MIT](LICENSE.txt)
 
-Copyright (c) 2007-2020 - Andy Maleh. 
+Copyright (c) 2007-2020 - Andy Maleh.
 
 --
 

@@ -1,5 +1,5 @@
 # Copyright (c) 2007-2020 Andy Maleh
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
 # "Software"), to deal in the Software without restriction, including
@@ -7,10 +7,10 @@
 # distribute, sublicense, and/or sell copies of the Software, and to
 # permit persons to whom the Software is furnished to do so, subject to
 # the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be
 # included in all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 # EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -81,9 +81,9 @@ module Glimmer
       end
 
       def apply_converter(converter, value)
-        return value if converter.nil?          
-        return value.send(converter) if (converter.is_a?(String) || converter.is_a?(Symbol)) && value.respond_to?(converter)          
-        return converter.call(value) if converter.respond_to?(:call, value)          
+        return value if converter.nil?
+        return value.send(converter) if (converter.is_a?(String) || converter.is_a?(Symbol)) && value.respond_to?(converter)
+        return converter.call(value) if converter.respond_to?(:call, value)
         raise Glimmer::Error, "Unsupported bind converter: #{converter.inspect}"
       end
 
@@ -213,7 +213,7 @@ module Glimmer
       end
 
       def evaluate_property
-        value = nil        
+        value = nil
         value = invoke_property_reader(model, property_name) unless model.nil?
         convert_on_read(value)
       end

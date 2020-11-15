@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+## 1.0.3
+
+- Upgraded array_include_methods gem to v1.0.4
+
 ## 1.0.2
 
 - Support ObservableArray notifications on `unshift`, `prepend`, and `append`
@@ -30,7 +34,7 @@ Related Change Logs:
 
 ## 0.10.1
 
-- excluded_keyword_checkers option for filtering certain keywords from Glimmer DSL processing 
+- excluded_keyword_checkers option for filtering certain keywords from Glimmer DSL processing
 - Updates to logging levels to be more appropriate
 - Fixed an issue to avoid crashing when calling observer.unregister/unobserve on a non-observable
 
@@ -92,7 +96,7 @@ Related Change Logs:
 - Fix verbiage for summary/description in scaffolding custom shell gems (change custom widget reference to custom shell)
 - Scaffolding builds a proper binary for custom shell gems and includes it in executables in Rakefile
 - Scaffolding adds about/preferences menu actions to apps/custom-shell-gems
-- Make custom widget/shell options writable 
+- Make custom widget/shell options writable
 - Support "dialog" Glimmer DSL keyword
 
 ## 0.7.7
@@ -142,7 +146,7 @@ Related Change Logs:
 - Fix freezing issue upon logging observables and raising observable errors by overriding inspect on Observable to avoid printing nested tree of observers
 - Added validation for shell widget parentage (accepting a shell or nil) in shell expression
 - Support bidirectional data-binding of menu item selection (e.g. radio menu item)
-- Make shell auto-activate on show with 0.25 delay 
+- Make shell auto-activate on show with 0.25 delay
 
 ## 0.7.0
 
