@@ -15,6 +15,7 @@ Related TODO files:
 
 ### Version TBD
 
+- Add in-model support for specifying computed observer dependencies to avoid specifying it in the bind statement. 
 - Consider creating a configuration DSL
 
 ## Refactorings
