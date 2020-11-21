@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 style="position: relative; top: 20px;" />](https://rubygems.org/gems/glimmer) Glimmer 1.0.3 - DSL Framework
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 style="position: relative; top: 20px;" />](https://rubygems.org/gems/glimmer) Glimmer 1.0.4 - DSL Framework
 [![Gem Version](https://badge.fury.io/rb/glimmer.svg)](http://badge.fury.io/rb/glimmer)
 [![Travis CI](https://travis-ci.com/AndyObtiva/glimmer.svg?branch=master)](https://travis-ci.com/github/AndyObtiva/glimmer)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master)
@@ -29,7 +29,7 @@ Featured in<br />JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.d
 
 ## Table of contents
 
-- [Glimmer 1.0.3](#-glimmer-103)
+- [Glimmer 1.0.4](#-glimmer-104)
   - [Glimmer DSL for SWT (JRuby Desktop Development GUI Library)](#glimmer-dsl-for-swt-jruby-desktop-development-gui-library)
     - [Glimmer DSL for SWT Samples](#glimmer-dsl-for-swt-samples)
       - [Hello, World!](#hello-world)

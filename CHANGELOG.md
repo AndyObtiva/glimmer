@@ -3,6 +3,11 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+## 1.0.4
+
+- Ensure that `ObservableModel#remove_observer` clears observer registrations from `Observer` (just like `Observer#unobserve`)
+- `ObservableModel#remove_observers` and `ObservableModel#remove_all_observers` methods
+
 ## 1.0.3
 
 - Upgraded array_include_methods gem to v1.0.4

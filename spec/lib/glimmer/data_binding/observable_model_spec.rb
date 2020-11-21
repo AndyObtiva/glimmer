@@ -51,6 +51,30 @@ describe Glimmer::DataBinding::ObservableModel do
       expect(@observer_called).to be_nil
     end
     
+    it 'removes observers for a property' do
+      task = Task.new
+      observer = Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_called = new_value
+      end
+      observer.observe(task, :name)
+      task.remove_observers(:name)
+      task.name = 'Sean'
+      expect(@observer_called).to be_nil
+    end
+    
+    it 'removes all observers for all properties' do
+      task = Task.new
+      observer = Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_called = new_value
+      end
+      observer.observe(task, :name)
+      observer.observe(task, :subtasks)
+      task.remove_all_observers
+      task.name = 'Sean'
+      task.subtasks = ['subtask1', 'subtask2']
+      expect(@observer_called).to be_nil
+    end
+    
     it 'checks if object has observer for any property' do
       task = Task.new
       @observer_called = nil
@@ -71,6 +95,6 @@ describe Glimmer::DataBinding::ObservableModel do
       end.observe(Task, :name_filter)
       Task.name_filter = 'Se'
       expect(@observer_called).to eq('Se')
-    end  
+    end
   end
 end

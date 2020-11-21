@@ -1,5 +1,5 @@
+#
 # Copyright (c) 2007-2020 Andy Maleh
-# 
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
 # "Software"), to deal in the Software without restriction, including
@@ -7,10 +7,10 @@
 # distribute, sublicense, and/or sell copies of the Software, and to
 # permit persons to whom the Software is furnished to do so, subject to
 # the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be
 # included in all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 # EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -99,13 +99,14 @@ module Glimmer
       def unregister(observable, property = nil)
         return unless observable.is_a?(Observable)
         # TODO optimize performance in the future via indexing and/or making a registration official object/class
-        observable.remove_observer(*[self, property].compact)
         registration = registration_for(observable, property)
         dependents_for(registration).each do |dependent|
           dependent.unregister
           remove_dependent(registration => dependent)
         end
-        registrations.delete(registration)
+        registrations.delete(registration).tap do |registration|
+          observable.remove_observer(*[self, property].compact)
+        end
       end
       alias unobserve unregister
 

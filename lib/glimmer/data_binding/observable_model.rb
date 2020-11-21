@@ -1,3 +1,4 @@
+
 # Copyright (c) 2007-2020 Andy Maleh
 #
 # Permission is hereby granted, free of charge, to any person obtaining
@@ -57,7 +58,26 @@ module Glimmer
       end
 
       def remove_observer(observer, property_name)
-        property_observer_list(property_name).delete(observer)
+        if has_observer?(observer, property_name)
+          property_observer_list(property_name).delete(observer)
+          observer.unobserve(self, property_name)
+        end
+      end
+
+      def remove_observers(property_name)
+        property_observer_hash[property_name.to_sym].each do |observer|
+          remove_observer(observer, property_name)
+        end
+        property_observer_hash.delete(property_name.to_sym)
+      end
+
+      def remove_all_observers
+        all_observers = property_observer_hash.clone
+        property_observer_hash.keys.each do |property_name|
+          remove_observers(property_name)
+        end
+        property_observer_hash.clear
+        all_observers
       end
 
       def has_observer?(observer, property_name)
