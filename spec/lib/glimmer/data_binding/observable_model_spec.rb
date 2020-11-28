@@ -4,6 +4,11 @@ require 'glimmer/data_binding/observable_model'
 
 describe Glimmer::DataBinding::ObservableModel do
   before :all do
+    module TaskModule
+      class << self
+        attr_accessor :name_filter
+      end
+    end
     class Task
       attr_accessor :name, :subtasks
       
@@ -15,6 +20,7 @@ describe Glimmer::DataBinding::ObservableModel do
   
   after :all do
     Object.send(:remove_const, :Task) if Object.const_defined?(:Task)
+    Object.send(:remove_const, :TaskModule) if Object.const_defined?(:TaskModule)
   end
   
   context 'object (instance)' do
@@ -94,6 +100,16 @@ describe Glimmer::DataBinding::ObservableModel do
         @observer_called = new_value
       end.observe(Task, :name_filter)
       Task.name_filter = 'Se'
+      expect(@observer_called).to eq('Se')
+    end
+  end
+  
+  context 'module' do
+    it 'adds observer' do
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_called = new_value
+      end.observe(TaskModule, :name_filter)
+      TaskModule.name_filter = 'Se'
       expect(@observer_called).to eq('Se')
     end
   end

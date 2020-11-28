@@ -1,4 +1,3 @@
-
 # Copyright (c) 2007-2020 Andy Maleh
 #
 # Permission is hereby granted, free of charge, to any person obtaining
@@ -106,7 +105,7 @@ module Glimmer
         method(property_writer_name)
         ensure_array_object_observer(property_name, send(property_name))
         begin
-          singleton_method("__original_#{property_writer_name}")
+          method("__original_#{property_writer_name}")
         rescue
           define_singleton_method("__original_#{property_writer_name}", property_writer_method(property_writer_name))
           define_singleton_method(property_writer_name, &PROPERTY_WRITER_FACTORY.call(property_name))

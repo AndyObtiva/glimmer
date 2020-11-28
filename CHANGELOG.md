@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+## 1.0.5
+
+- Fix issue in Opal regarding auto-definition of observable methods in a Class/Module directly (as opposed to a class instance)
+
 ## 1.0.4
 
 - Ensure that `ObservableModel#remove_observer` clears observer registrations from `Observer` (just like `Observer#unobserve`)

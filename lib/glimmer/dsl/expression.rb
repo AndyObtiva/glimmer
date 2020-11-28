@@ -1,5 +1,5 @@
 # Copyright (c) 2007-2020 Andy Maleh
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
 # "Software"), to deal in the Software without restriction, including
@@ -7,10 +7,10 @@
 # distribute, sublicense, and/or sell copies of the Software, and to
 # permit persons to whom the Software is furnished to do so, subject to
 # the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be
 # included in all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 # EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -29,7 +29,7 @@ module Glimmer
     #
     # Expressions subclasses follow the convention of using `and` and `or`
     # english versino of Ruby's boolean operations. This allows easy DSL-like
-    # readability of the rules, and easy tagging with pd when troubleshooting.
+    # readability of the rules, and easy printout with puts_debuggerer when troubleshooting.
     class Expression
       class << self
         def dsl
