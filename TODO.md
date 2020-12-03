@@ -9,6 +9,7 @@ Related TODO files:
 
 ## Next
 
+- Document Observer/Observable/Data-Binding API
 - Extract data-binding/observe keywords from glimmer-dsl-swt back into glimmer as a built in default DSL. That way, they can be shared/reused with glimmer-dsl-opal and glimmer-dsl-tk
 - Extract glimmer-dsl-databinding out of glimmer as an observer/data-binding DSL library and reuse across other DSLs (SWT, Opal, and Tk)
 - Move glimmer projects underneath glimmer organization
@@ -54,3 +55,9 @@ Related TODO files:
 - Prefix ObservableModel/ObservableArray utility methods with double-underscore
 - Observer: refactor code to be more smart/polymorphic/automated and honor open/closed principle
 - Observer: Consier memoizing Observer#registration_for
+
+## DSLs
+
+- glimmer-dsl-databinding
+- glimmer-dsl-jsound
+- glimmer-dsl-wasm

@@ -242,7 +242,7 @@ module Glimmer
       end
 
       def invoke_property_writer(object, property_expression, value)
-        return if @binding_options[:read_only]
+        raise "Cannot invoke `#{property_expression}` because ModelBinding#binding_options[:read_only]=true" if @binding_options[:read_only]
         value = convert_on_write(value)
         if property_indexed?(property_expression)
           property_method = '[]='

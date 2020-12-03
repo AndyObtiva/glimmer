@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+## 1.0.6
+
+- Update ModelBinding to raise an error if called to make a change while configurd as binding_options[:read_only]=true
+
 ## 1.0.5
 
 - Fix issue in Opal regarding auto-definition of observable methods in a Class/Module directly (as opposed to a class instance)

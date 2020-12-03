@@ -51,6 +51,7 @@ module Glimmer
           observer.unobserve(observable, property)
         end
         alias unobserve unregister
+        alias deregister unregister
       end
 
       class << self
