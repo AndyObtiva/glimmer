@@ -3,6 +3,11 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+## 1.0.7
+
+- Refactor generated `__original_{method_name}` methods in `ObservableModel` to have double-underscore after the word "original" as `__original__{method_name}` to improve clarity that the method is generated via meta-programming of a pre-existing method
+- Fix issue regarding testing array object observer on a nil object
+
 ## 1.0.6
 
 - Update ModelBinding to raise an error if called to make a change while configurd as binding_options[:read_only]=true

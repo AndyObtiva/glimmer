@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2020 Andy Maleh
+# Copyright (c) 2007-2021 Andy Maleh
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -43,7 +43,7 @@ module Glimmer
         lambda do |value|
           old_value = self.send(property_name)
           unregister_dependent_observers(property_name, old_value)
-          self.send("__original_#{property_writer_name}", value)
+          self.send("__original__#{property_writer_name}", value)
           notify_observers(property_name)
           ensure_array_object_observer(property_name, value, old_value)
         end
@@ -105,9 +105,9 @@ module Glimmer
         method(property_writer_name)
         ensure_array_object_observer(property_name, send(property_name))
         begin
-          method("__original_#{property_writer_name}")
+          method("__original__#{property_writer_name}")
         rescue
-          define_singleton_method("__original_#{property_writer_name}", property_writer_method(property_writer_name))
+          define_singleton_method("__original__#{property_writer_name}", property_writer_method(property_writer_name))
           define_singleton_method(property_writer_name, &PROPERTY_WRITER_FACTORY.call(property_name))
         end
       rescue => e
@@ -126,7 +126,7 @@ module Glimmer
       end
 
       def ensure_array_object_observer(property_name, object, old_object = nil)
-        return unless object.is_a?(Array)
+        return unless object&.is_a?(Array)
         array_object_observer = array_object_observer_for(property_name)
         array_observer_registration = array_object_observer.observe(object)
         property_observer_list(property_name).each do |observer|

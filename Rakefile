@@ -22,7 +22,7 @@ unless jeweler_required.nil?
     gem.homepage = "http://github.com/AndyObtiva/glimmer"
     gem.license = "MIT"
     gem.summary = %Q{Glimmer Ruby DSL Engine}
-    gem.description = %Q{Glimmer is a Ruby DSL Framework consisting of a DSL Engine and Observable/Observer/Data-Binding Library. Used in the Glimmer DSL for SWT (JRuby Desktop Development GUI Framework), the Glimmer DSL for Tk (Ruby Desktop Development GUI Library), the Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps), the Glimmer DSL for XML (& HTML), and the Glimmer DSL for CSS.}
+    gem.description = %Q{Glimmer is a Ruby DSL Framework consisting of a DSL Engine and an Observable/Observer/Data-Binding Library. Used in the Glimmer DSL for SWT (JRuby Desktop Development GUI Framework), the Glimmer DSL for Tk (Ruby Desktop Development GUI Library), the Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps), the Glimmer DSL for XML (& HTML), and the Glimmer DSL for CSS.}
     gem.email = "andy.am@gmail.com"
     gem.authors = ["AndyMaleh"]
     # gem.executables = ['glimmer', 'girb'] # moved to glimmer-dsl-swt for now
@@ -61,3 +61,11 @@ namespace :build do
 end
 
 Rake::Task["build"].enhance [:no_puts_debuggerer, :spec]
+
+require 'coveralls/rake/task'
+Coveralls::RakeTask.new
+task :spec_with_coveralls => [:spec] do
+  ENV['TRAVIS'] = 'true'
+  ENV['CI'] = 'true' if ENV['CI'].nil?
+  Rake::Task['coveralls:push'].invoke
+end

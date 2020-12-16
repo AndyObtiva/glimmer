@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2020 Andy Maleh
+# Copyright (c) 2007-2021 Andy Maleh
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -165,6 +165,7 @@ module Glimmer
           return puts(MESSAGE_NO_DSLS) if no_dsls?
           keyword = keyword.to_s
           dynamic_expression_dsl = (dynamic_expression_chains_of_responsibility.keys - disabled_dsls).first if dsl.nil?
+          # TODO consider pushing this code into interpret_expresion to provide hooks that work around it regardless of static vs dynamic
           dsl_stack.push(dynamic_expression_dsl || dsl)
           expression = dynamic_expression_chains_of_responsibility[dsl].handle(parent, keyword, *args, &block)
           interpret_expression(expression, keyword, *args, &block)

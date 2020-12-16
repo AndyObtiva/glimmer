@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2020 Andy Maleh
+# Copyright (c) 2007-2021 Andy Maleh
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -209,7 +209,7 @@ module Glimmer
       def call(value)
         return if model.nil?
         converted_value = value
-        invoke_property_writer(model, "#{property_name}=", converted_value) unless evaluate_property == converted_value
+        invoke_property_writer(model, "#{property_name}=", converted_value) unless converted_value == evaluate_property
       end
 
       def evaluate_property

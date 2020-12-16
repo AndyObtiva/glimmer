@@ -1,6 +1,6 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 style="position: relative; top: 20px;" />](https://rubygems.org/gems/glimmer) Glimmer 1.0.6 - DSL Framework
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 style="position: relative; top: 20px;" />](https://rubygems.org/gems/glimmer) Glimmer 1.0.7 - DSL Framework
 [![Gem Version](https://badge.fury.io/rb/glimmer.svg)](http://badge.fury.io/rb/glimmer)
-[![Travis CI](https://travis-ci.com/AndyObtiva/glimmer.svg?branch=master)](https://travis-ci.com/github/AndyObtiva/glimmer)
+[![rspec](https://github.com/AndyObtiva/glimmer/workflows/rspec/badge.svg)](https://github.com/AndyObtiva/glimmer/actions?query=workflow%3Arspec)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/38fbc278022862794414/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer/maintainability)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -9,44 +9,45 @@
 
 **(The Original Glimmer Library Since 2007. Beware of Imitators!)**
 
-[**Glimmer**](https://rubygems.org/gems/glimmer) started out as [GUI Library](https://github.com/AndyObtiva/glimmer-dsl-swt) and grew into a full-fledged [DSL Framework](#multi-dsl-support). Glimmer's namesake is referring to the Glimmer of Ruby in Graphical User Interfaces (contrary to popular myth perpetrated by [Charles Nutter](http://blog.headius.com/2007/11/tab-sweep.html), Glimmer has nothing to do with the ill-fated Whitney Houston movie, which does not in fact share the same name)
+[**Glimmer**](https://rubygems.org/gems/glimmer) started out as a [GUI Library](https://github.com/AndyObtiva/glimmer-dsl-swt) and grew into a full-fledged [DSL Framework](#dsl-engine) with support for multiple GUI DSLs. Glimmer's namesake is referring to the Glimmer of Ruby in Graphical User Interfaces (contrary to popular myth perpetrated by [Charles Nutter](http://blog.headius.com/2007/11/tab-sweep.html), Glimmer has nothing to do with the ill-fated Whitney Houston movie, which does not in fact share the same name)
 
 [<img src="https://covers.oreillystatic.com/images/9780596519650/lrg.jpg" width=105 /><br />
-Featured in<br />JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do)
+Featured in JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do) and [Chalmers/Gothenburg University Software Engineering Master's Lecture Material](http://www.cse.chalmers.se/~bergert/slides/guest_lecture_DSLs.pdf)
 
-[**Glimmer**](https://rubygems.org/gems/glimmer) is a DSL Framework that consists of two things:
-- [DSL Engine](#dsl-engine): enables building DSLs for desktop GUI, web GUI, XML/HTML documents, and CSS styling.
-- [Data-Binding Support](#data-binding-support): enables synchronizing GUI with Model Attributes bidirectionally.
+[**Glimmer**](https://rubygems.org/gems/glimmer) is a DSL (Domain-Specific Language) Framework that consists of two things:
+- [DSL Engine](#dsl-engine): enables building internal DSLs embedded in Ruby (e.g. for GUI, XML, or CSS).
+- [Data-Binding Library](#data-binding-library): enables synchronizing GUI with Model Attributes bidirectionally.
 
 [**Glimmer**](https://rubygems.org/gems/glimmer) is ***the cream of the crop*** when it comes to building DSLs in Ruby:
 - Supports building the tersest most concise domain specific language syntax in Ruby.
-- No extra unnecessary block variables when not needed
-- Maximum readability and maintainability
+- Maximum readability and maintainability.
+- No extra unnecessary block variables when not needed.
 - DSL Blocks are true Ruby closures that can conveniently leverage variables from the outside and utilize standard Ruby code in and around. Just code in Ruby as usual and be happy! No surprising restrictions or strange uses of `instance_exec`/`eval`.
 - DSL syntax is limited to classes that mixin the `Glimmer` module, so the rest of the code is fully safe from namespace pollution.
-- Multiple DSLs may be mixed together safely to achieve maximum expressability, composability, and productivity
-- DSLs are fully configurable, so you may activate and deactivate DSLs as per your current needs only
+- Multiple DSLs may be [mixed](#multi-dsl-support) together safely to achieve maximum expressability, composability, and productivity.
+- DSLs are fully configurable, so you may activate and deactivate DSLs as per your current needs only.
 
 [**Glimmer**](https://rubygems.org/gems/glimmer) supports the following DSLs:
 - [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)
-- [glimmer-dsl-tk](https://github.com/AndyObtiva/glimmer-dsl-tk): Glimmer DSL for Tk (Ruby Desktop Development GUI Library)
 - [glimmer-dsl-opal](https://github.com/AndyObtiva/glimmer-dsl-opal): Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)
 - [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
 - [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS
+- [glimmer-dsl-tk](https://github.com/AndyObtiva/glimmer-dsl-tk): Glimmer DSL for Tk (Ruby Desktop Development GUI Library)
 
 [Glimmer and/or Glimmer DSLs receive two updates per month](https://rubygems.org/gems/glimmer-dsl-swt/versions). You can trust [Glimmer](https://rubygems.org/gems/glimmer) with your Ruby development needs.
 
-## Table of contents
+## Table of Contents
 
-- [Glimmer 1.0.6](#-glimmer-106---dsl-framework)
-  - [Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)](#glimmer-dsl-for-swt-jruby-desktop-development-gui-framework)
-  - [Glimmer DSL for Tk (Ruby Desktop Development GUI Library)](#glimmer-dsl-for-tk-ruby-desktop-development-gui-library)
-  - [Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)](#glimmer-dsl-for-opal-pure-ruby-web-gui-and-auto-webifier-of-desktop-apps)
-  - [Glimmer DSL for XML (& HTML)](#glimmer-dsl-for-xml--html)
-  - [Glimmer DSL for CSS](#glimmer-dsl-for-css)
+- [Glimmer 1.0.7](#-glimmer-107---dsl-framework)
+  - [Official DSLs](#official-dsls)
+    - [Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)](#glimmer-dsl-for-swt-jruby-desktop-development-gui-framework)
+    - [Glimmer DSL for Tk (Ruby Desktop Development GUI Library)](#glimmer-dsl-for-tk-ruby-desktop-development-gui-library)
+    - [Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)](#glimmer-dsl-for-opal-pure-ruby-web-gui-and-auto-webifier-of-desktop-apps)
+    - [Glimmer DSL for XML (& HTML)](#glimmer-dsl-for-xml--html)
+    - [Glimmer DSL for CSS](#glimmer-dsl-for-css)
   - [DSL Engine](#dsl-engine)
-  - [Data-Binding Support](#data-binding-support)
-  - [Glimmer Supporting Libraries](#glimmer-supporting-libraries)
+    - [Multi-DSL Support](#multi-dsl-support)
+  - [Data-Binding Library](#data-binding-library)
   - [Glimmer Process](#glimmer-process)
   - [Resources](#resources)
   - [Help](#help)
@@ -58,16 +59,22 @@ Featured in<br />JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.d
   - [Contributors](#contributors)
   - [Hire Me](#hire-me)
   - [License](#license)
-  
-## Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)
 
-[Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) is a native-GUI cross-platform desktop development library written in [JRuby](https://www.jruby.org/), an OS-threaded faster version of [Ruby](https://www.ruby-lang.org/en/). [Glimmer](https://rubygems.org/gems/glimmer)'s main innovation is a declarative [Ruby DSL](https://github.com/AndyObtiva/glimmer-dsl-swt#glimmer-dsl-syntax) that enables productive and efficient authoring of desktop application user-interfaces while relying on the robust [Eclipse SWT library](https://www.eclipse.org/swt/). [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) additionally innovates by having built-in [data-binding](https://github.com/AndyObtiva/glimmer-dsl-swt#data-binding) support, which greatly facilitates synchronizing the GUI with domain models, thus achieving true decoupling of object oriented components and enabling developers to solve business problems (test-first) without worrying about GUI concerns. To get started quickly, [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) offers [scaffolding](https://github.com/AndyObtiva/glimmer-dsl-swt#scaffolding) options for [Apps](https://github.com/AndyObtiva/glimmer-dsl-swt#in-production), [Gems](https://github.com/AndyObtiva/glimmer-dsl-swt#custom-shell-gem), and [Custom Widgets](https://github.com/AndyObtiva/glimmer-dsl-swt#custom-widgets). [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) also includes native-executable [packaging](https://github.com/AndyObtiva/glimmer-dsl-swt#packaging--distribution) support, sorely lacking in other libraries, thus enabling the delivery of desktop apps written in [Ruby](https://www.ruby-lang.org/en/) as truly native DMG/PKG/APP files on the [Mac](https://www.apple.com/ca/macos) + [App Store](https://developer.apple.com/macos/distribution/) and MSI/EXE files on [Windows](https://www.microsoft.com/en-ca/windows).
+## Official DSLs
+
+Here, we showcase official Glimmer DSLs; that is [gems starting with the `glimmer-dsl-` prefix](https://rubygems.org/search?query=glimmer-dsl-).
+
+(you can skip ahead if you prefer to learn more about the Glimmer [DSL Engine](#dsl-engine) or [Data-Binding Library](#data-binding-library) first)
+
+### Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)
+
+[Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) is a native-GUI cross-platform desktop development library written in [JRuby](https://www.jruby.org/), an OS-threaded faster version of [Ruby](https://www.ruby-lang.org/en/). [Glimmer](https://rubygems.org/gems/glimmer)'s main innovation is a declarative [Ruby DSL](https://github.com/AndyObtiva/glimmer-dsl-swt#glimmer-dsl-syntax) that enables productive and efficient authoring of desktop application user-interfaces while relying on the robust [Eclipse SWT library](https://www.eclipse.org/swt/). [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) additionally innovates by having built-in [data-binding](https://github.com/AndyObtiva/glimmer-dsl-swt#data-binding) support, which greatly facilitates synchronizing the GUI with domain models, thus achieving true decoupling of object oriented components and enabling developers to solve business problems (test-first) without worrying about GUI concerns, or alternatively drive development GUI-first, and then write clean business models (test-first) afterwards. To get started quickly, [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) offers [scaffolding](https://github.com/AndyObtiva/glimmer-dsl-swt#scaffolding) options for [Apps](https://github.com/AndyObtiva/glimmer-dsl-swt#in-production), [Gems](https://github.com/AndyObtiva/glimmer-dsl-swt#custom-shell-gem), and [Custom Widgets](https://github.com/AndyObtiva/glimmer-dsl-swt#custom-widgets). [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) also includes native-executable [packaging](https://github.com/AndyObtiva/glimmer-dsl-swt#packaging--distribution) support, sorely lacking in other libraries, thus enabling the delivery of desktop apps written in [Ruby](https://www.ruby-lang.org/en/) as truly native DMG/PKG/APP files on the [Mac](https://www.apple.com/ca/macos) + [App Store](https://developer.apple.com/macos/distribution/) and MSI/EXE files on [Windows](https://www.microsoft.com/en-ca/windows).
 
 To get started, visit the [Glimmer DSL for SWT project page](https://github.com/AndyObtiva/glimmer-dsl-swt#pre-requisites) for instructions on installing the [glimmer-dsl-swt gem](https://rubygems.org/gems/glimmer-dsl-swt).
 
-### Glimmer DSL for SWT Samples
+#### Glimmer DSL for SWT Samples
 
-#### Hello, World!
+##### Hello, World!
 
 Glimmer GUI code (from [samples/hello/hello_world.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_world.rb)):
 ```ruby
@@ -85,7 +92,7 @@ Glimmer app:
 
 ![Hello World](images/glimmer-hello-world.png)
 
-#### Tic Tac Toe
+##### Tic Tac Toe
 
 Glimmer GUI code (from [samples/elaborate/tic_tac_toe.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/tic_tac_toe.rb)):
 
@@ -118,7 +125,7 @@ Glimmer app:
 
 ![Tic Tac Toe](images/glimmer-tic-tac-toe-in-progress.png)
 
-#### Contact Manager
+##### Contact Manager
 
 Glimmer GUI code (from [samples/elaborate/contact_manager.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/contact_manager.rb)):
 
@@ -237,17 +244,17 @@ Glimmer App:
 
 ![Contact Manager](images/glimmer-contact-manager.png)
 
-### Production Desktop Apps Built with Glimmer DSL for SWT
+#### Production Desktop Apps Built with Glimmer DSL for SWT
 
 [<img alt="Are We There Yet Logo" src="https://raw.githubusercontent.com/AndyObtiva/are-we-there-yet/master/are-we-there-yet-logo.svg" width="40" />Are We There Yet?](https://github.com/AndyObtiva/are-we-there-yet) - Small Project Tracking App
 
-![Are We There Yet? App Screenshot](https://raw.githubusercontent.com/AndyObtiva/are-we-there-yet/master/are-we-there-yet-screenshot-windows.png)
+[![Are We There Yet? App Screenshot](https://raw.githubusercontent.com/AndyObtiva/are-we-there-yet/master/are-we-there-yet-screenshot-windows.png)](https://github.com/AndyObtiva/are-we-there-yet)
 
 [<img alt="Math Bowling Logo" src="https://raw.githubusercontent.com/AndyObtiva/MathBowling/master/images/math-bowling-logo.png" width="40" />Math Bowling](https://github.com/AndyObtiva/MathBowling) - Elementary Level Math Game Featuring Bowling Rules
 
-![Math Bowling App Screenshot](https://raw.githubusercontent.com/AndyObtiva/MathBowling/master/Math-Bowling-Screenshot.png)
+[![Math Bowling App Screenshot](https://raw.githubusercontent.com/AndyObtiva/MathBowling/master/Math-Bowling-Screenshot.png)](https://github.com/AndyObtiva/MathBowling)
 
-## Glimmer DSL for Tk (Ruby Desktop Development GUI Library)
+### Glimmer DSL for Tk (Ruby Desktop Development GUI Library)
 
 [Tcl/Tk](https://www.tcl.tk/) has evolved into a practical desktop GUI toolkit due to gaining truely native looking widgets on Mac, Windows, and Linux in [Tk version 8.5](https://www.tcl.tk/software/tcltk/8.5.html#:~:text=Highlights%20of%20Tk%208.5&text=Font%20rendering%3A%20Now%20uses%20anti,and%20window%20layout%2C%20and%20more.).
 
@@ -266,9 +273,9 @@ The trade-off is that while [SWT](https://www.eclipse.org/swt/) provides a pleth
 
 To get started, visit the [Glimmer DSL for Tk project page](https://github.com/AndyObtiva/glimmer-dsl-tk#pre-requisites) for instructions on installing the [glimmer-dsl-tk gem](https://rubygems.org/gems/glimmer-dsl-tk).
 
-### Glimmer DSL for Tk Samples
+#### Glimmer DSL for Tk Samples
 
-#### Hello, World!
+##### Hello, World!
 
 Glimmer code (from [samples/hello/hello_world.rb](https://github.com/AndyObtiva/glimmer-dsl-tk/blob/master/samples/hello/hello_world.rb)):
 
@@ -292,7 +299,7 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello world](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-world.png)
 
-#### Hello, Tab!
+##### Hello, Tab!
 
 Glimmer code (from [samples/hello/hello_tab.rb](https://github.com/AndyObtiva/glimmer-dsl-tk/blob/master/samples/hello/hello_tab.rb)):
 
@@ -329,7 +336,7 @@ Glimmer app:
 ![glimmer dsl tk screenshot sample hello tab English](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-tab-english.png)
 ![glimmer dsl tk screenshot sample hello tab French](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-tab-french.png)
 
-#### Hello, Combo!
+##### Hello, Combo!
 
 Glimmer code (from [samples/hello/hello_combo.rb](https://github.com/AndyObtiva/glimmer-dsl-tk/blob/master/samples/hello/hello_combo.rb)):
 
@@ -364,7 +371,7 @@ Glimmer app:
 ![glimmer dsl tk screenshot sample hello combo](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-combo.png)
 ![glimmer dsl tk screenshot sample hello combo dropdown](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-combo-dropdown.png)
 
-## Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)
+### Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)
 
 [Glimmer DSL for Opal](https://github.com/AndyObtiva/glimmer-dsl-opal) is an experimental proof-of-concept web GUI adapter for [Glimmer](https://github.com/AndyObtiva/glimmer) desktop apps (i.e. apps built with [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt)). It webifies them via [Rails](https://rubyonrails.org/), allowing Ruby desktop apps to run on the web via [Opal Ruby](https://opalrb.com/) without changing a line of code. Apps may then be custom-styled for the web with standard CSS.
 
@@ -372,9 +379,9 @@ Glimmer DSL for Opal webifier successfully reuses the entire [Glimmer](https://g
 
 To get started, visit the [Glimmer DSL for Opal project page](https://github.com/AndyObtiva/glimmer-dsl-opal) for instructions on installing the [glimmer-dsl-opal gem](https://rubygems.org/gems/glimmer-dsl-opal).
 
-### Glimmer DSL for Opal Samples
+#### Glimmer DSL for Opal Samples
 
-#### Hello, Computed!
+##### Hello, Computed!
 
 Add the following require statement to `app/assets/javascripts/application.rb`
 
@@ -493,7 +500,7 @@ You should see "Hello, Computed!"
 
 ![Glimmer DSL for Opal Hello Computed](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-opal/master/images/glimmer-dsl-opal-hello-computed.png)
 
-#### Glimmer Calculator
+##### Glimmer Calculator
 
 Add the [glimmer-cs-calculator](https://github.com/AndyObtiva/glimmer-cs-calculator) gem to `Gemfile` (without requiring):
 
@@ -573,13 +580,13 @@ You should see "Apple Calculator Theme"
 
 [![Glimmer Calculator Opal Apple Calculator Theme](https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/master/glimmer-cs-calculator-screenshot-opal-apple.png)](http://glimmer-cs-calculator-server.herokuapp.com/welcomes/apple)
 
-## Glimmer DSL for XML (& HTML)
+### Glimmer DSL for XML (& HTML)
 
 [Glimmer DSL for XML](https://github.com/AndyObtiva/glimmer-dsl-xml) provides Ruby syntax for building XML (eXtensible Markup Language) documents.
 
 Within the context of desktop development, Glimmer DSL for XML is useful in providing XML data for the [SWT Browser widget](https://github.com/AndyObtiva/glimmer/tree/master#browser-widget).
 
-### XML DSL
+#### XML DSL
 
 Simply start with `html` keyword and add HTML inside its block using Glimmer DSL syntax.
 Once done, you may call `to_s`, `to_xml`, or `to_html` to get the formatted HTML output.
@@ -611,13 +618,13 @@ Output:
 <html><head><meta name="viewport" content="width=device-width, initial-scale=2.0" /></head><body><h1>Hello, World!</h1></body></html>
 ```
 
-## Glimmer DSL for CSS
+### Glimmer DSL for CSS
 
 [Glimmer DSL for CSS](https://github.com/AndyObtiva/glimmer-dsl-css) provides Ruby syntax for building CSS (Cascading Style Sheets).
 
 Within the context of [Glimmer](https://github.com/AndyObtiva/glimmer) app development, Glimmer DSL for CSS is useful in providing CSS for the [SWT Browser widget](https://github.com/AndyObtiva/glimmer/tree/master#browser-widget).
 
-### CSS DSL
+#### CSS DSL
 
 Simply start with `css` keyword and add stylesheet rule sets inside its block using Glimmer DSL syntax.
 Once done, you may call `to_s` or `to_css` to get the formatted CSS output.
@@ -655,9 +662,9 @@ body{font-size:1.1em;background:white}body > h1{background-color:red;font-size:2
 Glimmer is fundamentally a DSL Engine that can support any number of DSLs like the official Glimmer DSLs (gems starting with the `glimmer-dsl-` prefix like `glimmer-dsl-swt`) or any DSLs for that matter.
 
 Glimmer DSL syntax consists mainly of:
-- keywords (e.g. `table` for a table widget)
-- style/args (e.g. :multi as in `table(:multi)` for a multi-line selection table widget)
-- content (e.g. `{ table_column { text 'Name'} }` as in `table(:multi) { table_column { text 'name'} }` for a multi-line selection table widget with a table column having header text property `'Name'` as content)
+- **keywords** (e.g. `table` for a table widget)
+- **style/args** (e.g. :multi as in `table(:multi)` for a multi-line selection table widget)
+- **content** (e.g. `{ table_column { text 'Name'} }` as in `table(:multi) { table_column { text 'Name'} }` for a multi-line selection table widget with a table column having header text property `'Name'` as content)
 
 The Glimmer DSL Engine's architecture is based on the following Design Patterns and Data Structures:
 - **Interpreter Design Pattern**: to define interpretable expressions of DSL keywords
@@ -665,7 +672,7 @@ The Glimmer DSL Engine's architecture is based on the following Design Patterns 
 - **Adapter Design Pattern**: to adapt expressions into handlers in a chain of responsibility
 - **Stack Data Structure**: to handle processing parent/child nesting of DSL keyword expressions in the correct order
 
-Glimmer's use of the **Interpreter Design Pattern** in processing DSLs is also known as the **Virtual Machine Architectural Style**. After all, DSL expressions are virtual machine opcodes that process nested keywords stored in a stack. I built Glimmer's original DSL back in 2007 without knowing the **Virtual Machine Architectural Style**, but stumbled upon it anyways through following the Gang of Four Design Patterns mentioned above, chiefly the **Interpreter Design Pattern**.
+Glimmer's use of the **Interpreter Design Pattern** in processing DSLs is also known as the **Virtual Machine Architectural Style**. After all, DSL expressions are virtual machine opcodes that process nested keywords stored in a stack. I built Glimmer's original DSL back in 2007 without knowing the **Virtual Machine Architectural Style** (except perhaps as an esoteric technology powering Java), but stumbled upon it anyways through following the Gang of Four Design Patterns mentioned above, chiefly the **Interpreter Design Pattern**.
 
 Every keyword in a Glimmer DSL is represented by a DSL expression that is processed by an `Expression` subclass selected from a chain of expressions (interpreters) pre-configured in a DSL chain of responsibility via `Glimmer::DSL::Engine.add_dynamic_expressions(DSLNameModule, expression_names_array)`.
 
@@ -689,6 +696,56 @@ Every `Expression` sublcass must specify two methods at least:
 - `add_content(parent, &block)`
 
 For example, some parent widgets use their block for other reasons or process their children at very specific times, so they may override that method and disable it, or otherwise call `super` and do additional work.
+
+Example of a dynamic expression:
+
+```ruby
+module Glimmer
+  module DSL
+    module SWT
+      class WidgetExpression < Expression
+        include ParentExpression
+
+        EXCLUDED_KEYWORDS = %w[shell display tab_item]
+
+        def can_interpret?(parent, keyword, *args, &block)
+          !EXCLUDED_KEYWORDS.include?(keyword) and
+            parent.respond_to?(:swt_widget) and
+            Glimmer::SWT::WidgetProxy.widget_exists?(keyword)
+        end
+
+        def interpret(parent, keyword, *args, &block)
+          Glimmer::SWT::WidgetProxy.create(keyword, parent, args)
+        end
+
+        def add_content(parent, &block)
+          super
+          parent.post_add_content
+        end
+
+      end
+    end
+  end
+end
+```
+
+Example of a static expression (does not need `can_interpret?`):
+
+```ruby
+module Glimmer
+  module DSL
+    module Opal
+      class ColorExpression < StaticExpression
+        include TopLevelExpression
+  
+        def interpret(parent, keyword, *args, &block)
+          Glimmer::SWT::ColorProxy.new(*args)
+        end
+      end
+    end
+  end
+end
+```
 
 DSL expressions go into the `glimmer/dsl/{dsl_name}` namespace directory.
 
@@ -742,11 +799,58 @@ In summary, these are the files needed to author a Glimmer DSL:
 
 ### Multi-DSL Support
 
-The Glimmer [DSL Engine](#dsl-engine) allows mixing DSLs, which comes in handy when doing things like using a desktop GUI DSL `browser` widget with the HTML DSL and CSS DSL.
+The Glimmer [DSL Engine](#dsl-engine) allows mixing DSLs, which comes in handy when doing things like rendering a desktop GUI DSL `browser` widget additionally leveraging the HTML DSL and CSS DSL for its content.
 
-DSLs are activated by top-level keywords (expressions denoted as `TopLevelExpression`). For example, the `html` keyword activates the Glimmer DSL for XML. Glimmer automatically recognizes top-level keywords in each DSL and activates the DSL accordingly. Once done processing a nested DSL top-level keyword, Glimmer switches back to the prior DSL automatically.
+DSLs are activated by top-level keywords (expressions denoted as `TopLevelExpression`). For example, the `html` keyword activates the [Glimmer DSL for XML](https://github.com/AndyObtiva/glimmer-dsl-xml) and the `css` keyword activates the [Glimmer DSL for CSS](https://github.com/AndyObtiva/glimmer-dsl-css). Glimmer automatically recognizes top-level keywords in each DSL and activates the DSL accordingly. Once done processing a nested DSL top-level keyword, Glimmer switches back to the prior DSL automatically.
 
-## Data-Binding Support
+By default, all loaded DSLs (required glimmer DSL gems) are enabled.
+
+For example, this shows "Hello, World!" inside a [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) desktop app `browser` widget using `html` and `css` from [Glimmer DSL for XML](https://github.com/AndyObtiva/glimmer-dsl-xml) and [Glimmer DSL for CSS](https://github.com/AndyObtiva/glimmer-dsl-css):
+
+```ruby
+require 'glimmer-dsl-swt'
+require 'glimmer-dsl-xml'
+require 'glimmer-dsl-css'
+
+include Glimmer
+
+shell {
+  minimum_size 130, 130
+  @browser = browser {
+    text html {
+      head {
+        meta(name: "viewport", content: "width=device-width, initial-scale=2.0")
+        style {
+          css {
+            h1 {
+              background 'yellow'
+            }
+          }
+        }
+      }
+      body {
+        h1 { "Hello, World!" }
+      }
+    }
+  }
+}.open
+```
+
+**API methods to enable/disable DSLs:**
+
+`Glimmer::DSL::Engine.disable_dsl(dsl)`: disables a particular DSL
+
+Example: `Glimmer::DSL::Engine.disable_dsl(:swt)`
+
+`Glimmer::DSL::Engine.enable_dsl(dsl)`: enables a particular DSL
+
+Example: `Glimmer::DSL::Engine.disable_dsl(:swt)`
+
+`Glimmer::DSL::Engine.enabled_dsls=(dsls)`: enables only the specified DSLs, disabling all other loaded DSLs
+
+Example: `Glimmer::DSL::Engine.enabled_dsls = [:xml, :css]`
+
+## Data-Binding Library
 
 Data-Binding enables binding GUI properties (like text and color) to Model attributes (like name and age).
 
@@ -832,7 +936,7 @@ If your company would like to invest fulltime in further development of the Glim
 
 [MIT](LICENSE.txt)
 
-Copyright (c) 2007-2020 - Andy Maleh.
+Copyright (c) 2007-2021 - Andy Maleh.
 
 --
 

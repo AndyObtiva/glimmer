@@ -9,6 +9,9 @@ Related TODO files:
 
 ## Next
 
+- Log errors via $stderr in Opal
+- Add GitHub Actions Ruby rspec testing
+- Hooks for around_interpret, before_interpret, after_interpret, before_add_content, after_add_content, etc...
 - Document Observer/Observable/Data-Binding API
 - Extract data-binding/observe keywords from glimmer-dsl-swt back into glimmer as a built in default DSL. That way, they can be shared/reused with glimmer-dsl-opal and glimmer-dsl-tk
 - Extract glimmer-dsl-databinding out of glimmer as an observer/data-binding DSL library and reuse across other DSLs (SWT, Opal, and Tk)
