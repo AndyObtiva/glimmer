@@ -22,6 +22,7 @@
 require 'logger'
 require 'set'
 require 'array_include_methods'
+require 'concurrent-ruby'
 
 $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 

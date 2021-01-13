@@ -6,7 +6,7 @@ module GlimmerSpec
   describe Glimmer::DSL::Engine do
     include Glimmer
     
-    context 'No DSLs' do    
+    context 'No DSLs' do
       before do
         @dynamic_expression_chains_of_responsibility = described_class.dynamic_expression_chains_of_responsibility
         described_class.dynamic_expression_chains_of_responsibility = {}
@@ -17,16 +17,16 @@ module GlimmerSpec
 
       after do
         $stdout = @stdout_original
-        described_class.static_expressions = @static_expressions 
+        described_class.static_expressions = @static_expressions
         described_class.dynamic_expression_chains_of_responsibility = @dynamic_expression_chains_of_responsibility
       end
       
-      it 'displays an error message without crashing' do        
+      it 'displays an error message without crashing' do
         $stdout = StringIO.new
         shell # keyword in non-configured SWT DSL
         expect($stdout.string).to eq("Glimmer has no DSLs configured. Add glimmer-dsl-swt gem or visit https://github.com/AndyObtiva/glimmer#multi-dsl-support for more details.\n")
       end
-    end    
+    end
     
     context 'DSLs defined' do
       it 'mixes multiple DSLs (SWT and XML)' do
@@ -51,7 +51,7 @@ module GlimmerSpec
       
       it 'raises error for a static keyword that cannot interpret args (e.g. text does not accept numeric)' do
         @target = shell {
-          expect {text(123)}.to raise_error          
+          expect {text(123)}.to raise_error
         }
       end
       
@@ -101,7 +101,7 @@ module GlimmerSpec
           }
         }
           
-        expect(@target.to_s).to eq('SWT shell { SWT Dynamic browser(XML html { XML Dynamic body { XML Dynamic input({:type=>"text", :value=>"Hello, World!"}) } }) }')      
+        expect(@target.to_s).to eq('SWT shell { SWT Dynamic browser(XML html { XML Dynamic body { XML Dynamic input({:type=>"text", :value=>"Hello, World!"}) } }) }')
       end
    
       it 'enables specified DSLs only' do
@@ -122,7 +122,7 @@ module GlimmerSpec
         }
           
         expect(@target.to_s).to eq('XML html { XML Dynamic shell { XML Dynamic browser }XML Dynamic style(CSS css { CSS Dynamic body(1.1em) }) }')
-      end      
+      end
     end
   end
 end

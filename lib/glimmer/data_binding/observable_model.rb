@@ -92,7 +92,7 @@ module Glimmer
       end
 
       def property_observer_list(property_name)
-        property_observer_hash[property_name.to_sym] = Set.new unless property_observer_hash[property_name.to_sym]
+        property_observer_hash[property_name.to_sym] = Concurrent::Set.new unless property_observer_hash[property_name.to_sym]
         property_observer_hash[property_name.to_sym]
       end
 
@@ -137,7 +137,7 @@ module Glimmer
       end
 
       def array_object_observer_for(property_name)
-        @array_object_observers ||= {}
+        @array_object_observers ||= Concurrent::Hash.new
         @array_object_observers[property_name] = ObservableModel::Notifier.new(self, property_name) unless @array_object_observers.has_key?(property_name)
         @array_object_observers[property_name]
       end

@@ -28,7 +28,7 @@ module Glimmer
   module DSL
     # Glimmer DSL Engine
     #
-    # Follows Interpreter and Chain of Responsibility Design Patterns
+    # Follows Interpreter, Chain of Responsibility, and Singleton Design Patterns
     #
     # When DSL engine interprets an expression, it attempts to handle
     # with ordered expression array specified via `.expressions=` method.
@@ -86,7 +86,7 @@ module Glimmer
         end
 
         def disabled_dsls
-          @disabled_dsls ||= []
+          @disabled_dsls ||= Concurrent::Array.new
         end
 
         def enabled_dsls=(dsl_names)
@@ -109,12 +109,12 @@ module Glimmer
 
         # Dynamic expression chains of responsibility indexed by dsl
         def dynamic_expression_chains_of_responsibility
-          @dynamic_expression_chains_of_responsibility ||= {}
+          @dynamic_expression_chains_of_responsibility ||= Concurrent::Hash.new
         end
 
         # Static expressions indexed by keyword and dsl
         def static_expressions
-          @static_expressions ||= {}
+          @static_expressions ||= Concurrent::Hash.new
         end
 
         # Sets dynamic expression chains of responsibility. Useful for internal testing
@@ -147,7 +147,7 @@ module Glimmer
           Glimmer::Config.logger.info {"Adding static expression: #{static_expression.class.name}"}
           keyword = static_expression.class.keyword
           static_expression_dsl = static_expression.class.dsl
-          static_expressions[keyword] ||= {}
+          static_expressions[keyword] ||= Concurrent::Hash.new
           static_expressions[keyword][static_expression_dsl] = static_expression
           Glimmer.send(:define_method, keyword, &STATIC_EXPRESSION_METHOD_FACTORY.call(keyword))
         end
@@ -203,16 +203,16 @@ module Glimmer
         def_delegator :parent_stack, :last, :parent
 
         def parent_stack
-          parent_stacks[dsl] ||= []
+          parent_stacks[dsl] ||= Concurrent::Array.new
         end
 
         def parent_stacks
-          @parent_stacks ||= {}
+          @parent_stacks ||= Concurrent::Hash.new
         end
 
         # Enables multiple DSLs to play well with each other when mixing together
         def dsl_stack
-          @dsl_stack ||= []
+          @dsl_stack ||= Concurrent::Array.new
         end
       end
     end

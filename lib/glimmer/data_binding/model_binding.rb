@@ -33,7 +33,7 @@ module Glimmer
       def initialize(base_model, property_name_expression, binding_options = nil)
         @base_model = base_model
         @property_name_expression = property_name_expression
-        @binding_options = binding_options || {}
+        @binding_options = binding_options || Concurrent::Hash.new
         if computed?
           @computed_model_bindings = computed_by.map do |computed_by_property_expression|
             self.class.new(base_model, computed_by_property_expression)
@@ -120,9 +120,9 @@ module Glimmer
       end
 
       def nested_property_observers_for(observer)
-        @nested_property_observers_collection ||= {}
+        @nested_property_observers_collection ||= Concurrent::Hash.new
         unless @nested_property_observers_collection.has_key?(observer)
-          @nested_property_observers_collection[observer] = nested_property_names.reduce({}) do |output, property_name|
+          @nested_property_observers_collection[observer] = nested_property_names.reduce(Concurrent::Hash.new) do |output, property_name|
             output.merge(
               property_name => Observer.proc do |new_value|
                 # Ensure reattaching observers when a higher level nested property is updated (e.g. person.address changes reattaches person.address.street observer)
@@ -164,7 +164,7 @@ module Glimmer
       end
 
       def computed_observer_for(observer)
-        @computed_observer_collection ||= {}
+        @computed_observer_collection ||= Concurrent::Hash.new
         unless @computed_observer_collection.has_key?(observer)
           @computed_observer_collection[observer] = Observer.proc do |new_value|
             observer.call(evaluate_property)

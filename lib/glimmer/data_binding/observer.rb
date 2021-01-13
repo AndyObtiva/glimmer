@@ -61,7 +61,7 @@ module Glimmer
       end
 
       def registrations
-        @registrations ||= Set.new
+        @registrations ||= Concurrent::Set.new
       end
 
       def registration_for(observable, property = nil)
@@ -75,7 +75,7 @@ module Glimmer
       end
 
       def dependents_for(registration)
-        dependents[registration] ||= Set.new
+        dependents[registration] ||= Concurrent::Set.new
       end
 
       # registers observer in an observable on a property (optional)

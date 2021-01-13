@@ -34,7 +34,7 @@ module Glimmer
         element_properties = element_properties.flatten.compact.uniq
         return observer if has_observer?(observer) && has_observer_element_properties?(observer, element_properties)
         property_observer_list << observer
-        observer_element_properties[observer] = element_properties_for(observer) + Set.new(element_properties)
+        observer_element_properties[observer] = element_properties_for(observer) + Concurrent::Set.new(element_properties)
         each { |element| add_element_observer(element, observer) }
         observer
       end
@@ -55,7 +55,7 @@ module Glimmer
         element_properties = element_properties.flatten.compact.uniq
         if !element_properties.empty?
           old_element_properties = element_properties_for(observer)
-          observer_element_properties[observer] = element_properties_for(observer) - Set.new(element_properties)
+          observer_element_properties[observer] = element_properties_for(observer) - Concurrent::Set.new(element_properties)
           each { |element| element_properties.each { |property| observer.unobserve(element, property) } }
         end
         if element_properties_for(observer).empty?
@@ -87,15 +87,15 @@ module Glimmer
       end
 
       def property_observer_list
-        @property_observer_list ||= Set.new
+        @property_observer_list ||= Concurrent::Set.new
       end
 
       def observer_element_properties
-        @observer_element_properties ||= {}
+        @observer_element_properties ||= Concurrent::Hash.new
       end
 
       def element_properties_for(observer)
-        observer_element_properties[observer] ||= Set.new
+        observer_element_properties[observer] ||= Concurrent::Set.new
       end
 
       def notify_observers

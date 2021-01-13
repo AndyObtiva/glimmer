@@ -5,6 +5,7 @@ GEM
     array_include_methods (1.0.4)
     awesome_print (1.8.0)
     builder (3.2.4)
+    concurrent-ruby (1.1.7)
     coveralls (0.8.23)
       json (>= 1.8, < 3)
       simplecov (~> 0.16.1)
@@ -121,6 +122,7 @@ PLATFORMS
 
 DEPENDENCIES
   array_include_methods (>= 1.0.4, < 2.0.0)
+  concurrent-ruby (>= 1.1.7, < 2.0.0)
   coveralls
   facets (>= 3.1.0, < 4.0.0)
   jeweler (>= 2.0.0, < 3.0.0)

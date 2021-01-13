@@ -9,58 +9,49 @@ Related TODO files:
 
 ## Next
 
-- Log errors via $stderr in Opal
-- Add GitHub Actions Ruby rspec testing
-- Hooks for around_interpret, before_interpret, after_interpret, before_add_content, after_add_content, etc...
 - Document Observer/Observable/Data-Binding API
 - Extract data-binding/observe keywords from glimmer-dsl-swt back into glimmer as a built in default DSL. That way, they can be shared/reused with glimmer-dsl-opal and glimmer-dsl-tk
 - Extract glimmer-dsl-databinding out of glimmer as an observer/data-binding DSL library and reuse across other DSLs (SWT, Opal, and Tk)
 - Move glimmer projects underneath glimmer organization
-
-- Fix issue with 'handle' keyword cascading to last expression handler incorrectly
-[2020-11-22 20:27:22] ERROR glimmer: Encountered an invalid keyword at this object:
-[2020-11-22 20:27:22] ERROR glimmer: /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/expression_handler.rb:58:in `handle': Glimmer keyword can_interpret? with args [nil, "async_exec"] cannot be handled! Check the validity of the code. (Glimmer::InvalidKeywordError)
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/expression_handler.rb:52:in `handle'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/expression_handler.rb:52:in `handle'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/expression_handler.rb:52:in `handle'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/expression_handler.rb:52:in `handle'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/expression_handler.rb:52:in `handle'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/expression_handler.rb:52:in `handle'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/expression_handler.rb:52:in `handle'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/expression_handler.rb:52:in `handle'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/expression_handler.rb:52:in `handle'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/expression_handler.rb:52:in `handle'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/expression_handler.rb:52:in `handle'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/expression_handler.rb:52:in `handle'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/expression_handler.rb:52:in `handle'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/expression_handler.rb:52:in `handle'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/expression_handler.rb:52:in `handle'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/engine.rb:169:in `interpret'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer.rb:73:in `method_missing'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/glimmer-1.0.4/lib/glimmer/dsl/engine.rb:58:in `block in Engine'
-  from /Users/User/code/glimmer-cs-gladiator/lib/models/glimmer/gladiator/file.rb:172:in `block in start_filewatcher'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/filewatcher-1.1.1/lib/filewatcher/cycles.rb:40:in `block in trigger_changes'
-  from org/jruby/RubyArray.java:1809:in `each'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/filewatcher-1.1.1/lib/filewatcher/cycles.rb:39:in `block in trigger_changes'
-  from /Users/User/.rvm/gems/jruby-9.2.13.0@glimmer-cs-gladiator/gems/logging-2.3.0/lib/logging/diagnostic_context.rb:474:in `block in create_with_logging_context'
-
-
 - Extract glimmer rake tasks that are common from glimmer-dsl-swt into glimmer such as list:gems:dsl
-- Report Opal project issue regarding method/singleton_method and define_method/define_singleton_method not working in direct class/module vs instance like in Ruby
 
 ### Version TBD
 
 - Add in-model support for specifying computed observer dependencies to avoid specifying it in the bind statement.
-- Consider creating a configuration DSL
+
+### Miscellaneous
+
+- Report Opal project issue regarding method/singleton_method and define_method/define_singleton_method not working in direct class/module vs instance like in Ruby
 
 ## Refactorings
 
 - Prefix ObservableModel/ObservableArray utility methods with double-underscore
 - Observer: refactor code to be more smart/polymorphic/automated and honor open/closed principle
-- Observer: Consier memoizing Observer#registration_for
+- Observer: Consier memoizing Observer#registration_for (with the caveat being more memory usage, which might not be needed if it's fast enough to create and dispose)
 
 ## DSLs
 
 - glimmer-dsl-databinding
 - glimmer-dsl-jsound
 - glimmer-dsl-wasm
+- glimmer-dsl-uml: A DSL for building UML diagrams based on the Glimmer engine. Renders as SWT app to start. Support web later via opal.
+- glimmer-dsl-object: A configuration DSL for building any Ruby object via DSL syntax instead of plain old Ruby syntax (perhaps replacing PropertyExpression in Glimmer DSL for SWT with it)
+class(*init_args) {
+  attribute_name value
+  non_setter_method(*args)
+  block_attribute {
+  }
+  nested_child_class(*init_args) { # added to parent children
+  }
+}
+
+Example:
+
+rectangle(width: 30, height: 40) {
+  solid
+  width 30
+  height 40
+  circle(x: 30, y: 70) {
+    radius: 70
+  }
+}
