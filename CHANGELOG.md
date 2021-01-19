@@ -6,6 +6,7 @@ Related Change Logs:
 ## 1.0.8
 
 - Concurrent Array/Hash/Set data structures to better support parallel multi-threading
+- Fix issue with a certain nil static_expression case not handled properly in Glimmer::DSL::Engine
 
 ## 1.0.7
 
