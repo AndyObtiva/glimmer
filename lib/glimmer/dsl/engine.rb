@@ -55,8 +55,9 @@ module Glimmer
               raise Glimmer::Error, "Unsupported keyword: #{keyword}" unless static_expression_dsl || retrieved_static_expression
               Glimmer::DSL::Engine.dsl_stack.push(static_expression_dsl || Glimmer::DSL::Engine.dsl)
               static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
-              if static_expression.nil? || !static_expression.can_interpret?(Glimmer::DSL::Engine.parent, keyword, *args, &block)
-                raise Error, "Invalid use of Glimmer keyword #{keyword} with args #{args} under parent #{Glimmer::DSL::Engine.parent.inspect}"
+              static_expression_can_interpret = nil
+              if static_expression.nil? || !(static_expression_can_interpret = static_expression.can_interpret?(Glimmer::DSL::Engine.parent, keyword, *args, &block))
+                raise Error, "Invalid use of Glimmer keyword #{keyword} with args #{args} under parent #{Glimmer::DSL::Engine.parent.inspect} with DSL #{Glimmer::DSL::Engine.dsl} and static expression #{static_expression.inspect} having can_interpret? as #{static_expression_can_interpret.inspect}"
               else
                 Glimmer::Config.logger.info {"#{static_expression.class.name} will handle expression keyword #{keyword}"}
                 Glimmer::DSL::Engine.interpret_expression(static_expression, keyword, *args, &block)
