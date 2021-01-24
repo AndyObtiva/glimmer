@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+## 1.0.9
+
+- Fixed issue with top-level static expressions sometimes not working (e.g. async_exec in DSL for SWT) with DSL detected as nil
+
 ## 1.0.8
 
 - Concurrent Array/Hash/Set data structures to better support parallel multi-threading

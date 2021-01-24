@@ -9,6 +9,9 @@ Related TODO files:
 
 ## Next
 
+- Switch DSL Engine puts with log statements
+- Refactor Engine: consider replacing Glimmer::DSL::Engine.static_expressions[keyword].keys - Glimmer::DSL::Engine.disabled_dsls with Glimmer::DSL::Engine.enabled_static_expression_dsls(keyword)
+- Deal with Engine issue regarding async_exec static expression
 - Document Observer/Observable/Data-Binding API
 - Extract data-binding/observe keywords from glimmer-dsl-swt back into glimmer as a built in default DSL. That way, they can be shared/reused with glimmer-dsl-opal and glimmer-dsl-tk
 - Extract glimmer-dsl-databinding out of glimmer as an observer/data-binding DSL library and reuse across other DSLs (SWT, Opal, and Tk)

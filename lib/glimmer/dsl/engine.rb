@@ -37,10 +37,11 @@ module Glimmer
       STATIC_EXPRESSION_METHOD_FACTORY = lambda do |keyword|
         lambda do |*args, &block|
           if Glimmer::DSL::Engine.no_dsls?
-            puts Glimmer::DSL::Engine::MESSAGE_NO_DSLS
+            puts Glimmer::DSL::Engine::MESSAGE_NO_DSLS # TODO consider switching to an error log statement
           else
             retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
-            static_expression_dsl = (Glimmer::DSL::Engine.static_expressions[keyword].keys - Glimmer::DSL::Engine.disabled_dsls).first if retrieved_static_expression.nil?
+            # TODO consider replacing Glimmer::DSL::Engine.static_expressions[keyword].keys - Glimmer::DSL::Engine.disabled_dsls with Glimmer::DSL::Engine.enabled_static_expression_dsls(keyword)
+            static_expression_dsl = (Glimmer::DSL::Engine.static_expressions[keyword].keys - Glimmer::DSL::Engine.disabled_dsls).first
             interpretation = nil
             if retrieved_static_expression.nil? && Glimmer::DSL::Engine.dsl && (static_expression_dsl.nil? || !Glimmer::DSL::Engine.static_expressions[keyword][static_expression_dsl].is_a?(TopLevelExpression))
               begin
@@ -57,7 +58,7 @@ module Glimmer
               static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
               static_expression_can_interpret = nil
               if static_expression.nil? || !(static_expression_can_interpret = static_expression.can_interpret?(Glimmer::DSL::Engine.parent, keyword, *args, &block))
-                raise Error, "Invalid use of Glimmer keyword #{keyword} with args #{args} under parent #{Glimmer::DSL::Engine.parent.inspect} with DSL #{Glimmer::DSL::Engine.dsl} and static expression #{static_expression.inspect} having can_interpret? as #{static_expression_can_interpret.inspect}"
+                raise Error, "Invalid use of Glimmer keyword #{keyword} with args #{args} under parent #{Glimmer::DSL::Engine.parent.inspect} with DSL #{Glimmer::DSL::Engine.dsl.inspect} and static expression #{static_expression.inspect} having can_interpret? as #{static_expression_can_interpret.inspect}"
               else
                 Glimmer::Config.logger.info {"#{static_expression.class.name} will handle expression keyword #{keyword}"}
                 Glimmer::DSL::Engine.interpret_expression(static_expression, keyword, *args, &block)
@@ -163,7 +164,7 @@ module Glimmer
 
         # Interprets Glimmer dynamic DSL expression consisting of keyword, args, and block (e.g. shell(:no_resize) { ... })
         def interpret(keyword, *args, &block)
-          return puts(MESSAGE_NO_DSLS) if no_dsls?
+          return puts(MESSAGE_NO_DSLS) if no_dsls? # TODO consider switching to an error log statement
           keyword = keyword.to_s
           dynamic_expression_dsl = (dynamic_expression_chains_of_responsibility.keys - disabled_dsls).first if dsl.nil?
           # TODO consider pushing this code into interpret_expresion to provide hooks that work around it regardless of static vs dynamic
