@@ -110,6 +110,7 @@ module Glimmer
         end
       end
       alias unobserve unregister
+      alias deregister unregister
 
       def unregister_dependents_with_observable(registration, dependent_observable)
         thedependents = dependents_for(registration).select do |thedependent|
@@ -117,12 +118,15 @@ module Glimmer
         end
         thedependents.each(&:unregister)
       end
+      alias unobserve_dependents_with_observable unregister_dependents_with_observable
+      alias deregister_dependents_with_observable unregister_dependents_with_observable
 
       # cleans up all registrations in observables
       def unregister_all_observables
         registrations.each(&:unregister)
       end
       alias unobserve_all_observables unregister_all_observables
+      alias deregister_all_observables unregister_all_observables
 
       # add dependent observer to unregister when unregistering observer
       def add_dependent(parent_to_dependent_hash)

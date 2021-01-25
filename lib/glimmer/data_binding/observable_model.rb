@@ -124,6 +124,7 @@ module Glimmer
         return unless old_value.is_a?(ObservableModel) || old_value.is_a?(ObservableArray)
         property_observer_list(property_name).each { |observer| observer.unregister_dependents_with_observable(observer.registration_for(self, property_name), old_value) }
       end
+      alias deregister_dependent_observers unregister_dependent_observers
 
       def ensure_array_object_observer(property_name, object, old_object = nil)
         return unless object&.is_a?(Array)

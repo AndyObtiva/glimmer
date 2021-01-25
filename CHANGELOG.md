@@ -3,6 +3,11 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+## 1.0.11
+
+- Alias unregister as deregister everywhere
+- Optimize performance of `Glimmer::Config.excluded_keyword_checkers` in glimmer method_missing
+
 ## 1.0.10
 
 - Avoid using concurrent-ruby in Opal

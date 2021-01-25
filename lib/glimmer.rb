@@ -35,6 +35,7 @@ end
 $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 
 require 'glimmer/config'
+require 'glimmer/ext/module'
 
 # Glimmer provides a JRuby Desktop UI DSL + Data-Binding functionality
 #
@@ -65,7 +66,9 @@ module Glimmer
 
   def method_missing(method_symbol, *args, &block)
     # This if statement speeds up Glimmer in girb or whenever directly including on main object
-    is_excluded = Config.excluded_keyword_checkers.reduce(false) {|result, checker| result || instance_exec(method_symbol, *args, &checker) }
+    is_excluded = Config.excluded_keyword_checkers.any? do |checker|
+      instance_exec(method_symbol, *args, &checker)
+    end
     if is_excluded
       Glimmer::Config.logger.debug "Glimmer excluded keyword: #{method_symbol}" if Glimmer::Config.log_excluded_keywords?
       super(method_symbol, *args, &block)

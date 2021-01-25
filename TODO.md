@@ -9,7 +9,10 @@ Related TODO files:
 
 ## Next
 
+- Support `observed` keyword to use in Observables around blocks of code that wouldn't trigger changes till completed.
 - Switch DSL Engine puts with log statements
+- Consider specifying a bind(`triggered_by: method_name`) option that would provide the scope for when to react to an observation.   This is similar to computed_by: except it negates updates happening outside of the computed_by method.
+- Consider supporting the idea of observing what (nested) methods are in progress of execution on a model (maybe call methods_in_progress returning an array ordering from earliest outermost to latest innermost method invocation). That way if many fine-grained updates are happening and the observer isn't interested in reacting till a large-scale operation completed, it can do so.
 - Provide concurrent data structure config option to enable explicitly
 - Refactor Engine: consider replacing Glimmer::DSL::Engine.static_expressions[keyword].keys - Glimmer::DSL::Engine.disabled_dsls with Glimmer::DSL::Engine.enabled_static_expression_dsls(keyword)
 - Deal with Engine issue regarding async_exec static expression
@@ -18,6 +21,7 @@ Related TODO files:
 - Extract glimmer-dsl-databinding out of glimmer as an observer/data-binding DSL library and reuse across other DSLs (SWT, Opal, and Tk)
 - Move glimmer projects underneath glimmer organization
 - Extract glimmer rake tasks that are common from glimmer-dsl-swt into glimmer such as list:gems:dsl
+- Consider the performance enhancement of having varied command_handlers per parent class type, hashed and ready to go
 
 ### Version TBD
 
