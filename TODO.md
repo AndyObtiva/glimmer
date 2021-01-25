@@ -10,6 +10,7 @@ Related TODO files:
 ## Next
 
 - Switch DSL Engine puts with log statements
+- Provide concurrent data structure config option to enable explicitly
 - Refactor Engine: consider replacing Glimmer::DSL::Engine.static_expressions[keyword].keys - Glimmer::DSL::Engine.disabled_dsls with Glimmer::DSL::Engine.enabled_static_expression_dsls(keyword)
 - Deal with Engine issue regarding async_exec static expression
 - Document Observer/Observable/Data-Binding API

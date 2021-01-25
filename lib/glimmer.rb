@@ -22,7 +22,15 @@
 require 'logger'
 require 'set'
 require 'array_include_methods'
-require 'concurrent-ruby'
+if RUBY_ENGINE == 'opal'
+  module Concurrent
+    Array = ::Array
+    Hash = ::Hash
+    Set = ::Set
+  end
+else
+  require 'concurrent-ruby'
+end
 
 $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 
