@@ -9,7 +9,7 @@
 
 **(The Original Glimmer Library Since 2007. Beware of Imitators!)**
 
-[**Glimmer**](https://rubygems.org/gems/glimmer) started out as a [GUI Library](https://github.com/AndyObtiva/glimmer-dsl-swt) and grew into a full-fledged [DSL Framework](#dsl-engine) with support for multiple GUI DSLs. Glimmer's namesake is referring to the Glimmer of Ruby in Graphical User Interfaces (contrary to popular myth perpetrated by [Charles Nutter](http://blog.headius.com/2007/11/tab-sweep.html), Glimmer has nothing to do with the ill-fated Whitney Houston movie, which does not in fact share the same name)
+[**Glimmer**](https://rubygems.org/gems/glimmer) started out as a [GUI Library](https://github.com/AndyObtiva/glimmer-dsl-swt) and grew into a full-fledged [DSL Framework](#dsl-engine) with support for multiple GUI DSLs. Glimmer's namesake is referring to the Glimmer of Ruby in Graphical User Interfaces (contrary to [popular myth](http://blog.headius.com/2007/11/tab-sweep.html) perpetrated by [Charles Nutter](http://blog.headius.com/2007/11/tab-sweep.html), Glimmer has nothing to do with the ill-fated Whitney Houston movie, which does not in fact share the same name)
 
 [<img src="https://covers.oreillystatic.com/images/9780596519650/lrg.jpg" width=105 /><br />
 Featured in JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do) and [Chalmers/Gothenburg University Software Engineering Master's Lecture Material](http://www.cse.chalmers.se/~bergert/slides/guest_lecture_DSLs.pdf)
@@ -76,6 +76,8 @@ To get started, visit the [Glimmer DSL for SWT project page](https://github.com/
 
 ##### Hello, World!
 
+![Hello World](images/glimmer-hello-world.png)
+
 Glimmer GUI code (from [samples/hello/hello_world.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_world.rb)):
 ```ruby
 include Glimmer
@@ -88,161 +90,140 @@ shell {
 }.open
 ```
 
-Glimmer app:
+##### Glimmer Tetris
 
-![Hello World](images/glimmer-hello-world.png)
+![Tetris](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-swt/v4.18.3.1/images/glimmer-tetris.png)
 
-##### Tic Tac Toe
-
-Glimmer GUI code (from [samples/elaborate/tic_tac_toe.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/tic_tac_toe.rb)):
+Glimmer GUI code (from [samples/elaborate/tetris.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/v4.18.3.1/samples/elaborate/tetris.rb)):
 
 ```ruby
 # ...
-    @shell = shell {
-      text "Tic-Tac-Toe"
-      minimum_size 150, 178
-      composite {
-        grid_layout 3, true
-        (1..3).each { |row|
-          (1..3).each { |column|
-            button {
-              layout_data :fill, :fill, true, true
-              text        bind(@tic_tac_toe_board[row, column], :sign)
-              enabled     bind(@tic_tac_toe_board[row, column], :empty)
-              font        style: :bold, height: 20
-              on_widget_selected {
-                @tic_tac_toe_board.mark(row, column)
-              }
-            }
-          }
-        }
+    shell(:no_resize) {
+      grid_layout {
+        num_columns 2
+        make_columns_equal_width false
+        margin_width 0
+        margin_height 0
+        horizontal_spacing 0
+      }
+      
+      text 'Glimmer Tetris'
+      minimum_size 475, 500
+      background :gray
+      
+      tetris_menu_bar(game: game)
+            
+      playfield(game_playfield: game.playfield, playfield_width: playfield_width, playfield_height: playfield_height, block_size: BLOCK_SIZE)
+      
+      score_lane(game: game, block_size: BLOCK_SIZE) {
+        layout_data(:fill, :fill, true, true)
+      }
+      
+      on_widget_disposed {
+        deregister_observers
       }
     }
 # ...
 ```
 
-Glimmer app:
+##### Hello, Table!
 
-![Tic Tac Toe](images/glimmer-tic-tac-toe-in-progress.png)
+![Hello Table](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-swt/master/images/glimmer-hello-table.png)
 
-##### Contact Manager
-
-Glimmer GUI code (from [samples/elaborate/contact_manager.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/elaborate/contact_manager.rb)):
+Glimmer GUI code (from [samples/hello/hello_table.rb](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/samples/hello/hello_table.rb)):
 
 ```ruby
 # ...
     shell {
-      text "Contact Manager"
-      composite {
-        group {
-          grid_layout(2, false) {
-            margin_width 0
-            margin_height 0
-          }
-          layout_data :fill, :center, true, false
-          text 'Lookup Contacts'
-          font height: 24
-          
-          label {
-            layout_data :right, :center, false, false
-            text "First &Name: "
-            font height: 16
-          }
-          text {
-            layout_data :fill, :center, true, false
-            text bind(@contact_manager_presenter, :first_name)
-            on_key_pressed {|key_event|
-              @contact_manager_presenter.find if key_event.keyCode == swt(:cr)
-            }
-          }
-          
-          label {
-            layout_data :right, :center, false, false
-            text "&Last Name: "
-            font height: 16
-          }
-          text {
-            layout_data :fill, :center, true, false
-            text bind(@contact_manager_presenter, :last_name)
-            on_key_pressed {|key_event|
-              @contact_manager_presenter.find if key_event.keyCode == swt(:cr)
-            }
-          }
-          
-          label {
-            layout_data :right, :center, false, false
-            text "&Email: "
-            font height: 16
-          }
-          text {
-            layout_data :fill, :center, true, false
-            text bind(@contact_manager_presenter, :email)
-            on_key_pressed {|key_event|
-              @contact_manager_presenter.find if key_event.keyCode == swt(:cr)
-            }
-          }
-          
-          composite {
-            row_layout {
-              margin_width 0
-              margin_height 0
-            }
-            layout_data(:right, :center, false, false) {
-              horizontal_span 2
-            }
+      grid_layout
+      
+      text 'Hello, Table!'
+      
+      label {
+        layout_data :center, :center, true, false
+        
+        text 'Baseball Playoff Schedule'
+        font height: 30, style: :bold
+      }
+      
+      combo(:read_only) {
+        layout_data :center, :center, true, false
+        selection bind(BaseballGame, :playoff_type)
+        font height: 16
+      }
+      
+      table(:editable) { |table_proxy|
+        layout_data :fill, :fill, true, true
+      
+        table_column {
+          text 'Game Date'
+          width 150
+          sort_property :date # ensure sorting by real date value (not `game_date` string specified in items below)
+          editor :date_drop_down, property: :date_time
+        }
+        table_column {
+          text 'Game Time'
+          width 150
+          sort_property :time # ensure sorting by real time value (not `game_time` string specified in items below)
+          editor :time, property: :date_time
+        }
+        table_column {
+          text 'Ballpark'
+          width 180
+          editor :none
+        }
+        table_column {
+          text 'Home Team'
+          width 150
+          editor :combo, :read_only # read_only is simply an SWT style passed to combo widget
+        }
+        table_column {
+          text 'Away Team'
+          width 150
+          editor :combo, :read_only # read_only is simply an SWT style passed to combo widget
+        }
+        table_column {
+          text 'Promotion'
+          width 150
+          # default text editor is used here
+        }
+        
+        # Data-bind table items (rows) to a model collection property, specifying column properties ordering per nested model
+        items bind(BaseballGame, :schedule), column_properties(:game_date, :game_time, :ballpark, :home_team, :away_team, :promotion)
+        
+        # Data-bind table selection
+        selection bind(BaseballGame, :selected_game)
+        
+        # Default initial sort property
+        sort_property :date
+        
+        # Sort by these additional properties after handling sort by the column the user clicked
+        additional_sort_properties :date, :time, :home_team, :away_team, :ballpark, :promotion
+        
+        menu {
+          menu_item {
+            text 'Book'
             
-            button {
-              text "&Find"
-              on_widget_selected { @contact_manager_presenter.find }
-              on_key_pressed {|key_event|
-                @contact_manager_presenter.find if key_event.keyCode == swt(:cr)
-              }
-            }
-            
-            button {
-              text "&List All"
-              on_widget_selected { @contact_manager_presenter.list }
-              on_key_pressed {|key_event|
-                @contact_manager_presenter.list if key_event.keyCode == swt(:cr)
-              }
+            on_widget_selected {
+              book_selected_game
             }
           }
         }
-
-        table(:multi) { |table_proxy|
-          layout_data {
-            horizontal_alignment :fill
-            vertical_alignment :fill
-            grab_excess_horizontal_space true
-            grab_excess_vertical_space true
-            height_hint 200
-          }
-          table_column {
-            text "First Name"
-            width 80
-          }
-          table_column {
-            text "Last Name"
-            width 80
-          }
-          table_column {
-            text "Email"
-            width 200
-          }
-          items bind(@contact_manager_presenter, :results),
-          column_properties(:first_name, :last_name, :email)
-          on_mouse_up { |event|
-            table_proxy.edit_table_item(event.table_item, event.column_index)
-          }
+      }
+      
+      button {
+        text 'Book Selected Game'
+        layout_data :center, :center, true, false
+        font height: 16
+        enabled bind(BaseballGame, :selected_game)
+        
+        on_widget_selected {
+          book_selected_game
         }
       }
     }.open
 # ...
 ```
-
-Glimmer App:
-
-![Contact Manager](images/glimmer-contact-manager.png)
 
 #### Production Desktop Apps Built with Glimmer DSL for SWT
 
@@ -253,6 +234,10 @@ Glimmer App:
 [<img alt="Math Bowling Logo" src="https://raw.githubusercontent.com/AndyObtiva/MathBowling/master/images/math-bowling-logo.png" width="40" />Math Bowling](https://github.com/AndyObtiva/MathBowling) - Elementary Level Math Game Featuring Bowling Rules
 
 [![Math Bowling App Screenshot](https://raw.githubusercontent.com/AndyObtiva/MathBowling/master/Math-Bowling-Screenshot.png)](https://github.com/AndyObtiva/MathBowling)
+
+[<img alt="Garderie Rainbow Daily Agenda Logo" src="https://raw.githubusercontent.com/AndyObtiva/garderie_rainbow_daily_agenda/master/images/garderie_rainbow_daily_agenda_logo.png" width="40" />Garderie Rainbow Daily Agenda](https://github.com/AndyObtiva/garderie_rainbow_daily_agenda) -  A child nursery daily agenda reporting desktop app
+
+[![Garderie Rainbow Daily Agenda App Screenshot](https://raw.githubusercontent.com/AndyObtiva/garderie_rainbow_daily_agenda/master/images/garderie_rainbow_daily_agenda_screenshot.png)](https://github.com/AndyObtiva/garderie_rainbow_daily_agenda)
 
 ### Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)
 
@@ -852,9 +837,11 @@ Example: `Glimmer::DSL::Engine.enabled_dsls = [:xml, :css]`
 
 ## Data-Binding Library
 
-Data-Binding enables binding GUI properties (like text and color) to Model attributes (like name and age).
+Data-Binding enables mapping GUI properties (like text and color) to Model attributes (like name and age).
 
-It relies on the Observer Design Pattern and MVP (Model-View-Presenter) Architectural Pattern (a variation on MVC)
+Glimmer enhances observed models automatically (including array operations like `<<` and `reject!`) on first observation. As such, you get automatic observable support, including nested and computed observations. No need to change your model code to data-bind it to the view or add repetitive boilerplate modules. View data-binding is truly decoupled from model logic by being able to observe any model attribute (Ruby attribute reader/writer combo or Ruby attribute reader alone for read-only data-binding when needed)
+
+This relies mainly on the Observer Design Pattern and the MVP (Model-View-Presenter) Architectural Pattern (a variation on MVC)
 
 These are the main classes concerning data-binding:
 - `Observer`: Provides general observer support including unique registration and deregistration for cleanup and prevention of memory leaks. Main methods concerned are: `call`, `register` (alias: `observe`), and `unregister` (alias: `unobserve` or `deregister`)
