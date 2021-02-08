@@ -2,24 +2,24 @@ require 'spec_helper'
 require 'glimmer/data_binding/model_binding'
 
 describe Glimmer::DataBinding::ModelBinding do
+  before(:all) do
+    class Person
+      attr_accessor :name, :age, :spouse
+    end
+  end
+
+  after(:all) do
+    %w[
+      Person
+    ].each do |constant|
+      Object.send(:remove_const, constant) if Object.const_defined?(constant)
+    end
+  end
+  
+  let(:person) { Person.new }
+  let(:spouse) { Person.new }
+  
   context 'converters' do
-    before(:all) do
-      class Person
-        attr_accessor :name, :age, :spouse
-      end
-    end
-  
-    after(:all) do
-      %w[
-        Person
-      ].each do |constant|
-        Object.send(:remove_const, constant) if Object.const_defined?(constant)
-      end
-    end
-    
-    let(:person) { Person.new }
-    let(:spouse) { Person.new }
-  
     it "converts value on write to model via value method symbol" do
       @model_binding = described_class.new(person, :age, on_write: :to_i)
   
@@ -127,6 +127,68 @@ describe Glimmer::DataBinding::ModelBinding do
       @model_binding.call('Provan McCullough')
       expect(person.name).to eq('provan mccullough')
       expect(@model_binding.evaluate_property).to eq('PROVAN MCCULLOUGH')
+    end
+  end
+  
+  context 'hooks' do
+    it 'before_read and after_read' do
+      person.name = 'Sean McFaun'
+  
+      array = []
+
+      @model_binding = described_class.new(
+        person,
+        :name,
+        before_read: lambda {|name| array << "name before read: #{name}"},
+        on_read: lambda {|name| array << "name on read: #{name}"; "#{name} Jr"},
+        after_read: lambda {|converted_name| array << "name after read: #{converted_name}"},
+      )
+  
+      expect(@model_binding.evaluate_property).to eq('Sean McFaun Jr')
+      
+      expect(array).to match_array(["name before read: Sean McFaun", "name on read: Sean McFaun", "name after read: Sean McFaun Jr"])
+    end
+    
+    it 'before_read and after_read without parameters' do
+      person.name = 'Sean McFaun'
+  
+      array = []
+
+      @model_binding = described_class.new(
+        person,
+        :name,
+        before_read: lambda { array << "before read"},
+        on_read: lambda {|name| array << "name on read: #{name}"; "#{name} Jr"},
+        after_read: lambda { array << "after read"},
+      )
+  
+      expect(@model_binding.evaluate_property).to eq('Sean McFaun Jr')
+      
+      expect(array).to match_array(["before read", "name on read: Sean McFaun", "after read"])
+    end
+    
+    it 'before_read and after_read as methods' do
+      array = []
+      the_name = 'Sean McFaun'
+      the_name.singleton_class.define_method(:before_read) { array << "before read"}
+      the_name.singleton_class.define_method(:after_read) { array << "after read"}
+      person.name = the_name
+
+      @model_binding = described_class.new(
+        person,
+        :name,
+        before_read: :before_read,
+        on_read: lambda {|name| array << "on read"; name},
+        after_read: :after_read,
+      )
+  
+      expect(@model_binding.evaluate_property).to eq('Sean McFaun')
+      
+      expect(array).to match_array(["before read", "on read", "after read"])
+    end
+    
+    xit 'before_write and after_write' do
+      
     end
   end
 end

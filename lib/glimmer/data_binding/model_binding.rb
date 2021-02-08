@@ -72,21 +72,6 @@ module Glimmer
         nested_property? ? nested_property_name : property_name_expression
       end
 
-      def convert_on_read(value)
-        apply_converter(@binding_options[:on_read], value)
-      end
-
-      def convert_on_write(value)
-        apply_converter(@binding_options[:on_write], value)
-      end
-
-      def apply_converter(converter, value)
-        return value if converter.nil?
-        return value.send(converter) if (converter.is_a?(String) || converter.is_a?(Symbol)) && value.respond_to?(converter)
-        return converter.call(value) if converter.respond_to?(:call, value)
-        raise Glimmer::Error, "Unsupported bind converter: #{converter.inspect}"
-      end
-
       # All nested property names
       # e.g. property name expression "address.state" gives ['address', 'state']
       # If there are any indexed property names, this returns indexes as properties.
@@ -215,9 +200,12 @@ module Glimmer
       def evaluate_property
         value = nil
         value = invoke_property_reader(model, property_name) unless model.nil?
-        convert_on_read(value)
+        apply_processor(@binding_options[:before_read], value)
+        converted_value = convert_on_read(value)
+        apply_processor(@binding_options[:after_read], converted_value)
+        converted_value
       end
-
+      
       def evaluate_options_property
         model.send(options_property_name) unless model.nil?
       end
@@ -228,6 +216,29 @@ module Glimmer
 
       def property_indexed?(property_expression)
         property_expression.to_s.start_with?('[')
+      end
+
+      private
+
+      def convert_on_read(value)
+        apply_processor(@binding_options[:on_read], value)
+      end
+
+      def convert_on_write(value)
+        apply_processor(@binding_options[:on_write], value)
+      end
+
+      def apply_processor(processor, value)
+        return value if processor.nil?
+        return value.send(processor) if (processor.is_a?(String) || processor.is_a?(Symbol)) && value.respond_to?(processor)
+        return invoke_proc_with_exact_parameters(processor, value) if processor.respond_to?(:call)
+        raise Glimmer::Error, "Unsupported bind processor: #{processor.inspect}"
+      end
+
+      def invoke_proc_with_exact_parameters(proc_object, *args)
+        return if proc_object.nil?
+        args = args[0...proc_object.parameters.size]
+        proc_object.call(*args)
       end
 
       def invoke_property_reader(object, property_expression)
