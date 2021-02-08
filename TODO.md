@@ -22,6 +22,7 @@ Related TODO files:
 - Move glimmer projects underneath glimmer organization
 - Extract glimmer rake tasks that are common from glimmer-dsl-swt into glimmer such as list:gems:dsl
 - Consider the performance enhancement of having varied command_handlers per parent class type, hashed and ready to go
+- Extract computed data-binding specs and other ModelBinding indirect specs from glimmer-dsl-swt to glimmer
 
 ### Version TBD
 

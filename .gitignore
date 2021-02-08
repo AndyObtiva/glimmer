@@ -54,3 +54,4 @@ pkg
 .gladiator
 
 tmp
+Gemfile.lock
