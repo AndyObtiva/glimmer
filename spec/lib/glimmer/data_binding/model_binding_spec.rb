@@ -187,8 +187,61 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(array).to match_array(["before read", "on read", "after read"])
     end
     
-    xit 'before_write and after_write' do
+    it 'before_write and after_write' do
+      array = []
+
+      @model_binding = described_class.new(
+        person,
+        :name,
+        before_write: lambda {|name| array << "name before write: #{name}"},
+        on_write: lambda {|name| array << "name on write: #{name}"; "#{name} Jr"},
+        after_write: lambda {|converted_name| array << "name after write: #{converted_name}"},
+      )
+  
+      @model_binding.call('Sean McFaun')
+
+      expect(person.name).to eq('Sean McFaun Jr')
       
+      expect(array).to match_array(["name before write: Sean McFaun", "name on write: Sean McFaun", "name after write: Sean McFaun Jr"])
+    end
+    
+    it 'before_write and after_write without parameters' do
+      array = []
+
+      @model_binding = described_class.new(
+        person,
+        :name,
+        before_write: lambda {array << "before write"},
+        on_write: lambda {|name| array << "name on write: #{name}"; "#{name} Jr"},
+        after_write: lambda {array << "after write"},
+      )
+  
+      @model_binding.call('Sean McFaun')
+
+      expect(person.name).to eq('Sean McFaun Jr')
+      
+      expect(array).to match_array(["before write", "name on write: Sean McFaun", "after write"])
+    end
+    
+    it 'before_write and after_write as methods' do
+      array = []
+      the_name = 'Sean McFaun'
+      the_name.singleton_class.define_method(:before_write) { array << "before write"}
+      the_name.singleton_class.define_method(:after_write) { array << "after write"}
+
+      @model_binding = described_class.new(
+        person,
+        :name,
+        before_write: :before_write,
+        on_write: lambda {|name| array << "name on write: #{name}"; name},
+        after_write: :after_write,
+      )
+  
+      @model_binding.call(the_name)
+
+      expect(person.name).to eq('Sean McFaun')
+      
+      expect(array).to match_array(["before write", "name on write: Sean McFaun", "after write"])
     end
   end
 end
