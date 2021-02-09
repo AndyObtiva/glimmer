@@ -4,7 +4,7 @@ require 'glimmer/data_binding/model_binding'
 describe Glimmer::DataBinding::ModelBinding do
   before(:all) do
     class Person
-      attr_accessor :name, :age, :spouse, :first_name, :last_name
+      attr_accessor :name, :age, :spouse, :spouses, :first_name, :last_name
       
       # optionally receives hook_array for testing
       def initialize(hook_array = nil)
@@ -174,37 +174,51 @@ describe Glimmer::DataBinding::ModelBinding do
         },
       )
       
-      Glimmer::DataBinding::Observer.proc { |new_value|
+      observer = Glimmer::DataBinding::Observer.proc { |new_value|
         read_value = new_value
-      }.observe(@model_binding)
+      }
+      observer.observe(@model_binding)
 
       person.name = 'Sean McFaun'
+
+      expect(array).to eq(["name before read: Sean McFaun", "name on read: Sean McFaun", "name after read: Sean McFaun Jr"])
+      
+      observer.unobserve(@model_binding)
+
+      person.name = 'Benjamin George'
 
       expect(array).to eq(["name before read: Sean McFaun", "name on read: Sean McFaun", "name after read: Sean McFaun Jr"])
     end
     
     it 'nested data-binding before_read and after_read without parameters' do
-      person.spouse = spouse
+      person.spouses = [spouse]
       array = []
       read_value = nil
       @model_binding = described_class.new(
         person,
-        'spouse.name',
+        'spouses[0].name',
         before_read: lambda {|name| array << "before read"},
-        on_read: lambda {|name| array << "name on read: #{name}"; "#{name} Jr"},
+        on_read: lambda {|name| array << "name on read: #{name}"; "#{name} II"},
         after_read: lambda {|converted_name|
-          expect(read_value).to eq('Sean McFaun Jr')
+          expect(read_value).to eq('Laura Magnus II')
           array << "after read"
         },
       )
       
-      Glimmer::DataBinding::Observer.proc { |new_value|
+      observer = Glimmer::DataBinding::Observer.proc { |new_value|
         read_value = new_value
-      }.observe(@model_binding)
+      }
+      observer.observe(@model_binding)
 
-      person.spouse.name = 'Sean McFaun'
+      person.spouses[0].name = 'Laura Magnus'
 
-      expect(array).to eq(["before read", "name on read: Sean McFaun", "after read"])
+      expect(array).to eq(["before read", "name on read: Laura Magnus", "after read"])
+      
+      observer.unobserve(@model_binding)
+
+      person.spouses[0].name = 'Lana Sears'
+
+      expect(array).to eq(["before read", "name on read: Laura Magnus", "after read"])
     end
     
     it 'computed data-binding before_read and after_read as methods' do
@@ -223,12 +237,18 @@ describe Glimmer::DataBinding::ModelBinding do
         after_read: :after_read
       )
       
-      Glimmer::DataBinding::Observer.proc { |new_value|
+      observer = Glimmer::DataBinding::Observer.proc { |new_value|
         read_value = new_value
-      }.observe(@model_binding)
+      }
+      observer.observe(@model_binding)
 
       person.last_name = last_name
 
+      expect(read_value).to eq('Sean McFaun')
+      expect(array).to eq(["before read", "name on read: Sean McFaun", "after read"])
+      
+      observer.unobserve(@model_binding)
+      person.last_name = 'Mickey'
       expect(read_value).to eq('Sean McFaun')
       expect(array).to eq(["before read", "name on read: Sean McFaun", "after read"])
     end

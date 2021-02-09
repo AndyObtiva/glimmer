@@ -49,9 +49,7 @@ module Glimmer
       def nested_models
         @nested_models = [base_model]
         model_property_names.reduce(base_model) do |reduced_model, nested_model_property_name|
-          if reduced_model.nil?
-            nil
-          else
+          if !reduced_model.nil?
             invoke_property_reader(reduced_model, nested_model_property_name).tap do |new_reduced_model|
               @nested_models << new_reduced_model
             end

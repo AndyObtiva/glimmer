@@ -21,7 +21,7 @@ unless jeweler_required.nil?
     gem.name = "glimmer"
     gem.homepage = "http://github.com/AndyObtiva/glimmer"
     gem.license = "MIT"
-    gem.summary = %Q{Glimmer Ruby DSL Engine}
+    gem.summary = %Q{Glimmer - DSL Engine for Ruby GUI and More}
     gem.description = %Q{Glimmer is a Ruby DSL Framework consisting of a DSL Engine and an Observable/Observer/Data-Binding Library. Used in the Glimmer DSL for SWT (JRuby Desktop Development GUI Framework), the Glimmer DSL for Tk (Ruby Desktop Development GUI Library), the Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps), the Glimmer DSL for XML (& HTML), and the Glimmer DSL for CSS.}
     gem.email = "andy.am@gmail.com"
     gem.authors = ["AndyMaleh"]
