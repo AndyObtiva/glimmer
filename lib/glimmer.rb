@@ -81,6 +81,7 @@ module Glimmer
         Glimmer.loop_reset!
       end
       Glimmer.loop_last_data = new_loop_data
+      Glimmer::Config.logger.info {">"*80}
       Glimmer::Config.logger.info {"Interpreting keyword: #{method_symbol}"}
       Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
     end

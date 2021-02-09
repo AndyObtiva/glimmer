@@ -37,8 +37,9 @@ module GlimmerSpec
       
       it 'displays an error message without crashing' do
         $stdout = StringIO.new
+        Glimmer::Config.reset_logger! # initializes logger with new stdout
         shell # keyword in non-configured SWT DSL
-        expect($stdout.string).to eq("Glimmer has no DSLs configured. Add glimmer-dsl-swt gem or visit https://github.com/AndyObtiva/glimmer#multi-dsl-support for more details.\n")
+        expect($stdout.string).to include("Glimmer has no DSLs configured. Add glimmer-dsl-swt gem or visit https://github.com/AndyObtiva/glimmer#multi-dsl-support for more details.\n")
       end
     end
     

@@ -10,7 +10,7 @@ Related TODO files:
 ## Next
 
 - Support `observed` keyword to use in Observables around blocks of code that wouldn't trigger changes till completed.
-- Switch DSL Engine puts with log statements
+- Consider including args in Engine add_content call anyways to use in logic for when to add content or not in expressions
 - Consider specifying a bind(`triggered_by: method_name`) option that would provide the scope for when to react to an observation.   This is similar to computed_by: except it negates updates happening outside of the computed_by method.
 - Consider supporting the idea of observing what (nested) methods are in progress of execution on a model (maybe call methods_in_progress returning an array ordering from earliest outermost to latest innermost method invocation). That way if many fine-grained updates are happening and the observer isn't interested in reacting till a large-scale operation completed, it can do so.
 - Provide concurrent data structure config option to enable explicitly

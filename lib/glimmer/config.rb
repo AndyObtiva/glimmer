@@ -56,10 +56,10 @@ module Glimmer
       end
   
       def reset_logger!
-        self.logger = Logger.new(STDOUT).tap do |logger|
+        self.logger = Logger.new($stdout).tap do |logger|
           logger.level = Logger::ERROR
           begin
-            logger.level = ENV['GLIMMER_LOGGER_LEVEL'].strip.downcase if ENV['GLIMMER_LOGGER_LEVEL']
+            logger.level = ENV['GLIMMER_LOGGER_LEVEL']&.strip&.downcase
           rescue => e
             puts e.message
           end

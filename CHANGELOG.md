@@ -3,6 +3,11 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+## 1.1.2
+
+- Add more logging for which DSL is assumed before interpreting expressions
+- Switch DSL Engine puts statement to a log statement for the error about no DSLs available
+
 ## 1.1.1
 
 - Ensured after_read hook truly happens after notifying observers in ModelBinding

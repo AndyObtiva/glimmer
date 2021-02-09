@@ -37,7 +37,7 @@ module Glimmer
       STATIC_EXPRESSION_METHOD_FACTORY = lambda do |keyword|
         lambda do |*args, &block|
           if Glimmer::DSL::Engine.no_dsls?
-            puts Glimmer::DSL::Engine::MESSAGE_NO_DSLS # TODO consider switching to an error log statement
+            Glimmer::Config.logger.error {Glimmer::DSL::Engine::MESSAGE_NO_DSLS}
           else
             retrieved_static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
             # TODO consider replacing Glimmer::DSL::Engine.static_expressions[keyword].keys - Glimmer::DSL::Engine.disabled_dsls with Glimmer::DSL::Engine.enabled_static_expression_dsls(keyword)
@@ -55,6 +55,7 @@ module Glimmer
             else
               raise Glimmer::Error, "Unsupported keyword: #{keyword}" unless static_expression_dsl || retrieved_static_expression
               Glimmer::DSL::Engine.dsl_stack.push(static_expression_dsl || Glimmer::DSL::Engine.dsl)
+              Glimmer::Config.logger.info {"Assuming DSL: #{Glimmer::DSL::Engine.dsl_stack.last}"}
               static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
               static_expression_can_interpret = nil
               if static_expression.nil? || !(static_expression_can_interpret = static_expression.can_interpret?(Glimmer::DSL::Engine.parent, keyword, *args, &block))
@@ -169,6 +170,7 @@ module Glimmer
           dynamic_expression_dsl = (dynamic_expression_chains_of_responsibility.keys - disabled_dsls).first if dsl.nil?
           # TODO consider pushing this code into interpret_expresion to provide hooks that work around it regardless of static vs dynamic
           dsl_stack.push(dynamic_expression_dsl || dsl)
+          Glimmer::Config.logger.info {"Assuming DSL: #{dsl_stack.last}"}
           expression = dynamic_expression_chains_of_responsibility[dsl].handle(parent, keyword, *args, &block)
           interpret_expression(expression, keyword, *args, &block)
         end
