@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+## 1.1.1
+
+- Ensured after_read hook truly happens after notifying observers in ModelBinding
+
 ## 1.1.0
 
 - ModelBinding hooks for before_read, after_read, before_write, after_write

@@ -112,7 +112,10 @@ module Glimmer
               property_name => Observer.proc do |new_value|
                 # Ensure reattaching observers when a higher level nested property is updated (e.g. person.address changes reattaches person.address.street observer)
                 add_observer(observer)
-                observer.call(evaluate_property)
+                converted_value = evaluate_property
+                observer.call(converted_value).tap do
+                  apply_processor(@binding_options[:after_read], converted_value)
+                end
               end
             )
           end
@@ -127,7 +130,10 @@ module Glimmer
           add_nested_observers(observer)
         else
           model_binding_observer = Observer.proc do |new_value|
-            observer.call(evaluate_property)
+            converted_value = evaluate_property
+            observer.call(converted_value).tap do
+              apply_processor(@binding_options[:after_read], converted_value)
+            end
           end
           observer_registration = model_binding_observer.observe(model, property_name)
           my_registration = observer.registration_for(self)
@@ -152,7 +158,10 @@ module Glimmer
         @computed_observer_collection ||= Concurrent::Hash.new
         unless @computed_observer_collection.has_key?(observer)
           @computed_observer_collection[observer] = Observer.proc do |new_value|
-            observer.call(evaluate_property)
+            converted_value = evaluate_property
+            observer.call(converted_value).tap do
+              apply_processor(@binding_options[:after_read], converted_value)
+            end
           end
         end
         @computed_observer_collection[observer]
@@ -201,9 +210,7 @@ module Glimmer
         value = nil
         value = invoke_property_reader(model, property_name) unless model.nil?
         apply_processor(@binding_options[:before_read], value)
-        converted_value = convert_on_read(value)
-        apply_processor(@binding_options[:after_read], converted_value)
-        converted_value
+        convert_on_read(value)
       end
       
       def evaluate_options_property
@@ -256,7 +263,6 @@ module Glimmer
         raise "Cannot invoke `#{property_expression}` because ModelBinding#binding_options[:read_only]=true" if @binding_options[:read_only]
         apply_processor(@binding_options[:before_write], value)
         converted_value = convert_on_write(value)
-        apply_processor(@binding_options[:after_write], converted_value)
         if property_indexed?(property_expression)
           property_method = '[]='
           property_argument = property_expression[1...-2]
@@ -265,6 +271,7 @@ module Glimmer
         else
           object.send(property_expression, converted_value)
         end
+        apply_processor(@binding_options[:after_write], converted_value)
       end
     end
   end
