@@ -2,6 +2,20 @@ require 'spec_helper'
 
 require 'tempfile'
 
+# test top-level binding inclusion of Glimmer
+
+include Glimmer
+
+GLIMMER_TOP_LEVEL_TARGET = shell {
+  browser {
+    text html {
+      body {
+        input(type: 'text', value: 'Hello, World!')
+      }
+    }
+  }
+}
+
 module GlimmerSpec
   describe Glimmer::DSL::Engine do
     include Glimmer
@@ -43,6 +57,7 @@ module GlimmerSpec
         }
           
         expect(@target.to_s).to eq('SWT shell { SWT Dynamic browser(XML html { XML Dynamic body { XML Dynamic input({:type=>"text", :value=>"Hello, World!"}) } }) }')
+        expect(GLIMMER_TOP_LEVEL_TARGET.to_s).to eq('SWT shell { SWT Dynamic browser(XML html { XML Dynamic body { XML Dynamic input({:type=>"text", :value=>"Hello, World!"}) } }) }')
       end
    
       it 'raises error for static non-top-level keyword used at the top-level' do
