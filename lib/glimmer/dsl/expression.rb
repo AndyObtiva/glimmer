@@ -50,7 +50,7 @@ module Glimmer
       # Adds block content to specified parent UI object (Optional)
       #
       # Only expressions that receive a content block should implement
-      def add_content(parent, &block)
+      def add_content(parent, keyword, *args, &block)
         # No Op by default
       end
 

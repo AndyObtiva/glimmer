@@ -25,7 +25,7 @@ module Glimmer
   module DSL
     # Mixin that represents expressions that always have a content block
     module ParentExpression
-      def add_content(parent, &block)
+      def add_content(parent, keyword, *args, &block)
         block.call(parent)
       end
     end

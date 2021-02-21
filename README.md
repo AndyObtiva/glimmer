@@ -98,7 +98,7 @@ Every `Expression` sublcass must specify two methods at least:
 `StaticExpression` sublcasses may skip the `can_interpret?` method since they include a default implementation for it that matches the name of the keyword from the class name by convention. For example, a `color` keyword would have a `ColorExpression` class, so `color` is inferred automatically from class name and used in deciding whether the class can handle a `color` keyword or not.
 
 `ParentExpression` subclasses can optionally override this extra method, which is included by default and simply invokes the parent's passed block to process its children:
-- `add_content(parent, &block)`
+- `add_content(parent, keyword, *args, &block)`
 
 For example, some parent widgets use their block for other reasons or process their children at very specific times, so they may override that method and disable it, or otherwise call `super` and do additional work.
 
@@ -123,7 +123,7 @@ module Glimmer
           Glimmer::SWT::WidgetProxy.create(keyword, parent, args)
         end
 
-        def add_content(parent, &block)
+        def add_content(parent, keyword, *args, &block)
           super
           parent.post_add_content
         end
@@ -201,7 +201,7 @@ end
 ### Setup
 
 Follow these steps to author a [Glimmer](https://rubygems.org/gems/glimmer) DSL:
-- Add `gem 'glimmer', '~> 1.1.2'` to `Gemfile` and run `bundle` or run `gem install glimmer -v1.1.2` and add `require 'glimmer'`
+- Add `gem 'glimmer', '~> 1.2.0'` to `Gemfile` and run `bundle` or run `gem install glimmer -v1.2.0` and add `require 'glimmer'`
 - Create `glimmer/dsl/[dsl_name]/dsl.rb`, which requires and adds all dynamic expressions for the [dsl_name] Glimmer DSL module as per the code shown in the previous section (or [Official DSLs](#official-dsls) as examples)
 - Create `glimmer/dsl/[dsl_name]/[expresion_name]_expresion.rb` for every [expresion_name] expression needed, whether dynamic or static
 
