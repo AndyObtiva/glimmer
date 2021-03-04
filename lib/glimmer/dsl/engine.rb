@@ -187,12 +187,12 @@ module Glimmer
         # This allows evaluating parent UI object properties and children
         #
         # For example, a shell widget would get properties set and children added
-        def add_content(parent, expression, keyword, *args, &block)
+        def add_content(new_parent, expression, keyword, *args, &block)
           if block_given? && expression.is_a?(ParentExpression)
             dsl_stack.push(expression.class.dsl)
-            parent_stack.push(parent)
+            parent_stack.push(new_parent)
             begin
-              expression.add_content(parent, keyword, *args, &block)
+              expression.add_content(new_parent, keyword, *args, &block)
             ensure
               parent_stack.pop
               dsl_stack.pop

@@ -47,10 +47,10 @@ module Glimmer
         raise Error, "#interpret must be implemented by an Expression subclass"
       end
 
-      # Adds block content to specified parent UI object (Optional)
+      # Adds block content to newly interpreted parent object (Optional)
       #
       # Only expressions that receive a content block should implement
-      def add_content(parent, keyword, *args, &block)
+      def add_content(new_parent, keyword, *args, &block)
         # No Op by default
       end
 
