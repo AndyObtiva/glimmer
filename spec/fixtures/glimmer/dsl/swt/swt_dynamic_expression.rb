@@ -14,7 +14,17 @@ module Glimmer
         end
         
         def interpret(parent, keyword, *args, &block)
-          Element.new(parent, "SWT Dynamic #{keyword}", args)
+          name = "SWT Dynamic #{keyword}"
+          if keyword.include?('_with_around_stack')
+            name += "(#{Context.around_stack.join(',')})"
+          end
+          Element.new(parent, name, args)
+        end
+        
+        def around(parent, keyword, args, block, &interpret_and_add_content)
+          Context.around_stack.push keyword
+          yield
+          Context.around_stack.pop
         end
       end
     end

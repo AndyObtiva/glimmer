@@ -102,6 +102,9 @@ Every `Expression` sublcass must specify two methods at least:
 
 For example, some parent widgets use their block for other reasons or process their children at very specific times, so they may override that method and disable it, or otherwise call `super` and do additional work.
 
+Otherwise, all expressions support the `around` hook method:
+- `around(parent, keyword, args, block, &interpret_and_add_content)`: a hook for executing code around both `interpret` and `add_content`. Clients may invoke `interpret_and_add_content.call` or `yield` when ready for interpretation. `parent`, `keyword`, `args`, and `block` are supplied in case they are needed in the `around` logic.
+
 Example of a dynamic expression:
 
 ```ruby
@@ -201,7 +204,7 @@ end
 ### Setup
 
 Follow these steps to author a [Glimmer](https://rubygems.org/gems/glimmer) DSL:
-- Add `gem 'glimmer', '~> 1.2.0'` to `Gemfile` and run `bundle` or run `gem install glimmer -v1.2.0` and add `require 'glimmer'`
+- Add `gem 'glimmer', '~> 1.3.0'` to `Gemfile` and run `bundle` or run `gem install glimmer -v1.3.0` and add `require 'glimmer'`
 - Create `glimmer/dsl/[dsl_name]/dsl.rb`, which requires and adds all dynamic expressions for the [dsl_name] Glimmer DSL module as per the code shown in the previous section (or [Official DSLs](#official-dsls) as examples)
 - Create `glimmer/dsl/[dsl_name]/[expresion_name]_expresion.rb` for every [expresion_name] expression needed, whether dynamic or static
 

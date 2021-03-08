@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 1.3.0
+
+- Support the `Expression#around` hook, which executes code around both `interpret` and `add_content`
+
 ## 1.2.0
 
 - Alter `Engine`/`Expression`/`ParentExpression` API to pass `keyword` and `args` to `#add_content` method. This enables consumers to vary behavior based on `keyword` and `args`, not just `parent` and presence of `block`.

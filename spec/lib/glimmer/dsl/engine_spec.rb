@@ -140,5 +140,23 @@ module GlimmerSpec
         expect(@target.to_s).to eq('XML html { XML Dynamic shell { XML Dynamic browser }XML Dynamic style(CSS css { CSS Dynamic body(1.1em) }) }')
       end
     end
+    
+    context 'around hook' do
+      it 'executes code around interpret and add_content' do
+        Glimmer::DSL::Engine.enabled_dsls = [:swt]
+        @target = shell {
+          composite_with_around_stack {
+            browser_with_around_stack {
+              text 'browser title'
+            }
+          }
+        }
+        
+        expect(@target.to_s).to eq('SWT shell { SWT Dynamic composite_with_around_stack(shell,composite_with_around_stack) { SWT Dynamic browser_with_around_stack(shell,composite_with_around_stack,browser_with_around_stack)(browser title) } }')
+      end
+      
+    end
+    
   end
+  
 end

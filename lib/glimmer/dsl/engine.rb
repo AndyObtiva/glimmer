@@ -176,10 +176,14 @@ module Glimmer
         end
         
         def interpret_expression(expression, keyword, *args, &block)
-          expression.interpret(parent, keyword, *args, &block).tap do |ui_object|
-            add_content(ui_object, expression, keyword, *args, &block)
-            dsl_stack.pop
+          new_parent = nil
+          expression.around(parent, keyword, args, block) do
+            new_parent = expression.interpret(parent, keyword, *args, &block).tap do |new_parent|
+              add_content(new_parent, expression, keyword, *args, &block)
+              dsl_stack.pop
+            end
           end
+          new_parent
         end
 
         # Adds content block to parent UI object

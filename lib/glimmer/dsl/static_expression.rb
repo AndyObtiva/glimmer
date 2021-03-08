@@ -50,7 +50,8 @@ module Glimmer
         end
       end
 
-      # Subclasses may optionally implement
+      # Subclasses may optionally implement, but by default it only ensures that
+      # the keyword matches lower case static expression class name minus `Expression`
       def can_interpret?(parent, keyword, *args, &block)
         true
       end

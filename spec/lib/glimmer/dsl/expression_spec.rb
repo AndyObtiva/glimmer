@@ -14,14 +14,14 @@ module GlimmerSpec
     end
   
     it 'returns error if can_interpret? is called' do
-      expect { 
-        SomeExpresion.new.can_interpret?(Object.new, 'keyword') 
+      expect {
+        SomeExpresion.new.can_interpret?(Object.new, 'keyword')
       }.to raise_error("#can_interpret? must be implemented by an Expression subclass")
     end
   
     it 'returns error if interpret is called' do
-      expect { 
-        SomeExpresion.new.interpret(Object.new, 'keyword') 
+      expect {
+        SomeExpresion.new.interpret(Object.new, 'keyword')
       }.to raise_error("#interpret must be implemented by an Expression subclass")
     end
     
@@ -41,4 +41,5 @@ module GlimmerSpec
     end
   
   end
+  
 end

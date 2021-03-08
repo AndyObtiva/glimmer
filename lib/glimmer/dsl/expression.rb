@@ -53,7 +53,17 @@ module Glimmer
       def add_content(new_parent, keyword, *args, &block)
         # No Op by default
       end
-
+      
+      # Executes code around the `interpret_and_add_content` block,
+      # which invokes `interpret` and `add_content` when called without args
+      # (parent, keyword, args, block are supplied automatically).
+      # Clients may invoke yield as an alternative to calling `interpret_and_add_content` directly.
+      # This method takes parent, keyword, args, block in case they are needed
+      # in its around logic.
+      def around(parent, keyword, args, block, &interpret_and_add_content)
+        interpret_and_add_content.call
+      end
+      
       # Checks if object is a Symbol or a String
       def textual?(object)
         object.is_a?(Symbol) or object.is_a?(String)
