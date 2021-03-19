@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 1.3.1
+
+- Use `Concurrent::Array` instead of `Array` in `Glimmer::DataBinding::ModelBinding`
+
 ### 1.3.0
 
 - Support the `Expression#around` hook, which executes code around both `interpret` and `add_content`

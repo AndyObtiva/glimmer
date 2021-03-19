@@ -9,8 +9,10 @@ Related TODO files:
 
 ## Next
 
+- Support case-insensitive expressions
 - Support `observed` keyword to use in Observables around blocks of code that wouldn't trigger changes till completed.
 - Consider specifying a bind(`triggered_by: method_name`) option that would provide the scope for when to react to an observation.   This is similar to computed_by: except it negates updates happening outside of the computed_by method.
+- General nested data-binding not just on an index (e.g. 'addresses.street' not just 'addresses[0].street')
 - Consider supporting the idea of observing what (nested) methods are in progress of execution on a model (maybe call methods_in_progress returning an array ordering from earliest outermost to latest innermost method invocation). That way if many fine-grained updates are happening and the observer isn't interested in reacting till a large-scale operation completed, it can do so.
 - Provide concurrent data structure config option to enable explicitly
 - Refactor Engine: consider replacing Glimmer::DSL::Engine.static_expressions[keyword].keys - Glimmer::DSL::Engine.disabled_dsls with Glimmer::DSL::Engine.enabled_static_expression_dsls(keyword)

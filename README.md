@@ -27,6 +27,8 @@ Featured in JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do) an
 - Multiple DSLs may be [mixed](#multi-dsl-support) together safely to achieve maximum expressability, composability, and productivity.
 - DSLs are fully configurable, so you may activate and deactivate DSLs as per your current needs only.
 
+Start by checking out Glimmer's original GUI DSL, which got extracted into its own gem: [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt)
+
 [**Glimmer**](https://rubygems.org/gems/glimmer) supports the following DSLs:
 - [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)
 - [glimmer-dsl-opal](https://github.com/AndyObtiva/glimmer-dsl-opal): Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)
@@ -204,7 +206,7 @@ end
 ### Setup
 
 Follow these steps to author a [Glimmer](https://rubygems.org/gems/glimmer) DSL:
-- Add `gem 'glimmer', '~> 1.3.0'` to `Gemfile` and run `bundle` or run `gem install glimmer -v1.3.0` and add `require 'glimmer'`
+- Add `gem 'glimmer', '~> 1.3.1'` to `Gemfile` and run `bundle` or run `gem install glimmer -v1.3.1` and add `require 'glimmer'`
 - Create `glimmer/dsl/[dsl_name]/dsl.rb`, which requires and adds all dynamic expressions for the [dsl_name] Glimmer DSL module as per the code shown in the previous section (or [Official DSLs](#official-dsls) as examples)
 - Create `glimmer/dsl/[dsl_name]/[expresion_name]_expresion.rb` for every [expresion_name] expression needed, whether dynamic or static
 
@@ -924,9 +926,9 @@ Glimmer app:
 
 ## Data-Binding Library
 
-Data-Binding enables mapping GUI properties (like text and color) to Model attributes (like name and age).
+Data-Binding enables mapping GUI properties (like text and color) to Model attributes (like name and age) for bidirectional or unidirectional synchronization and conversion as needed.
 
-Glimmer enhances observed models automatically (including array operations like `<<` and `reject!`) on first observation. As such, you get automatic observable support, including nested and computed observations. No need to change your model code to data-bind it to the view or add repetitive boilerplate modules. View data-binding is truly decoupled from model logic by being able to observe any model attribute (Ruby attribute reader/writer combo or Ruby attribute reader alone for read-only data-binding when needed)
+Glimmer enhances observed models automatically (including array operations like `<<`, `delete`, and `reject!`) on first observation. As such, you get automatic observable support, including nested and computed observations. No need to change your model code to data-bind it to the view or add repetitive boilerplate modules. View data-binding is truly decoupled from model logic by being able to observe any model attribute (Ruby attribute reader/writer combo or Ruby attribute reader alone for read-only data-binding when needed)
 
 This relies mainly on the Observer Design Pattern and the MVP (Model-View-Presenter) Architectural Pattern (a variation on MVC)
 
@@ -936,6 +938,8 @@ These are the main classes concerning data-binding:
 - `ObservableModel`: Mixin module for any observable model with observable attributes. In addition to `Observable` methods, it has a `notify_observers` method to be called when changes occur. It automatically enhances all attribute setters (ending with `=`) to notify observers on changes. Also, it automatically handles observing array attributes using `ObservableArray` appropriately so they would notify observers upon array mutation changes.
 - `ObservableArray`: Mixin module for any observable array collection that automatically handles notifying observers upon performing array mutation operations (e.g. `push` or `delete`)
 - `ModelBinding`: a higher-level abstraction that relies on all the other observer/observable classes to support basic data-binding, nested data-binding, and computed data-binding
+
+You may learn more from [Data-Binding](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#data-binding) and [Observer](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#observer) usage in [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt)
 
 ## Glimmer Process
 

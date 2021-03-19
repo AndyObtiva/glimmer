@@ -29,10 +29,12 @@ module Glimmer
 
       class Notifier
         include Observer
+        
         def initialize(observable_model, property_name)
           @observable_model = observable_model
           @property_name = property_name
         end
+        
         def call(new_value=nil)
           @observable_model.notify_observers(@property_name)
         end

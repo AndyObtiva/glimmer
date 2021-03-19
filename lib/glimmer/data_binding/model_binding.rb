@@ -35,9 +35,9 @@ module Glimmer
         @property_name_expression = property_name_expression
         @binding_options = binding_options || Concurrent::Hash.new
         if computed?
-          @computed_model_bindings = computed_by.map do |computed_by_property_expression|
+          @computed_model_bindings = Concurrent::Array.new(computed_by.map do |computed_by_property_expression|
             self.class.new(base_model, computed_by_property_expression)
-          end
+          end)
         end
       end
 
@@ -47,7 +47,7 @@ module Glimmer
 
       # e.g. person.address.state returns [person, person.address]
       def nested_models
-        @nested_models = [base_model]
+        @nested_models = Concurrent::Array.new([base_model])
         model_property_names.reduce(base_model) do |reduced_model, nested_model_property_name|
           if !reduced_model.nil?
             invoke_property_reader(reduced_model, nested_model_property_name).tap do |new_reduced_model|
@@ -75,7 +75,7 @@ module Glimmer
       # If there are any indexed property names, this returns indexes as properties.
       # e.g. property name expression "addresses[1].state" gives ['addresses', '[1]', 'state']
       def nested_property_names
-        @nested_property_names ||= property_name_expression.split(".").map {|pne| pne.match(/([^\[]+)(\[[^\]]+\])?/).to_a.drop(1)}.flatten.compact
+        @nested_property_names ||= Concurrent::Array.new(property_name_expression.split(".").map {|pne| pne.match(/([^\[]+)(\[[^\]]+\])?/).to_a.drop(1)}.flatten.compact)
       end
 
       # Final nested property name
@@ -87,7 +87,7 @@ module Glimmer
       # Model representing nested property names
       # e.g. property name expression "address.state" gives [:address]
       def model_property_names
-        nested_property_names[0...-1]
+        Concurrent::Array.new(nested_property_names[0...-1])
       end
 
       def nested_property?
@@ -99,7 +99,7 @@ module Glimmer
       end
 
       def computed_by
-        [@binding_options[:computed_by]].flatten.compact
+        Concurrent::Array.new([@binding_options[:computed_by]].flatten.compact)
       end
 
       def nested_property_observers_for(observer)
@@ -175,7 +175,7 @@ module Glimmer
 
       def add_nested_observers(observer)
         nested_property_observers = nested_property_observers_for(observer)
-        nested_models.zip(nested_property_names).each_with_index do |zip, i|
+        Concurrent::Array.new(nested_models.zip(nested_property_names)).each_with_index do |zip, i|
           model, property_name = zip
           nested_property_observer = nested_property_observers[property_name]
           previous_index = i - 1
@@ -242,7 +242,7 @@ module Glimmer
 
       def invoke_proc_with_exact_parameters(proc_object, *args)
         return if proc_object.nil?
-        args = args[0...proc_object.parameters.size]
+        args = Concurrent::Array.new(args[0...proc_object.parameters.size])
         proc_object.call(*args)
       end
 
