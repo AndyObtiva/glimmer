@@ -9,6 +9,10 @@ Related TODO files:
 
 ## Next
 
+- Extract Glimmer::DataBinding::Shine from Glimmer DSL for SWT
+
+### Version TBD
+
 - Support case-insensitive expressions
 - Support `observed` keyword to use in Observables around blocks of code that wouldn't trigger changes till completed.
 - Consider specifying a bind(`triggered_by: method_name`) option that would provide the scope for when to react to an observation.   This is similar to computed_by: except it negates updates happening outside of the computed_by method.
@@ -24,9 +28,6 @@ Related TODO files:
 - Extract glimmer rake tasks that are common from glimmer-dsl-swt into glimmer such as list:gems:dsl
 - Consider the performance enhancement of having varied command_handlers per parent class type, hashed and ready to go
 - Extract computed data-binding specs and other ModelBinding indirect specs from glimmer-dsl-swt to glimmer
-
-### Version TBD
-
 - Add in-model support for specifying computed observer dependencies to avoid specifying it in the bind statement.
 
 ### Miscellaneous

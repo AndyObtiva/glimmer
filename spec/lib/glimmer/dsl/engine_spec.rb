@@ -60,7 +60,15 @@ module GlimmerSpec
         expect(@target.to_s).to eq('SWT shell { SWT Dynamic browser(XML html { XML Dynamic body { XML Dynamic input({:type=>"text", :value=>"Hello, World!"}) } }) }')
         expect(GLIMMER_TOP_LEVEL_TARGET.to_s).to eq('SWT shell { SWT Dynamic browser(XML html { XML Dynamic body { XML Dynamic input({:type=>"text", :value=>"Hello, World!"}) } }) }')
       end
-   
+      
+      it 'supports bind ModelBinding-producing expression' do
+        object = Struct.new(:name).new('Sean')
+        @target = bind(object, :name)
+          
+        expect(@target).to be_a(Glimmer::DataBinding::ModelBinding)
+        expect(@target.evaluate_property).to eq('Sean')
+      end
+               
       it 'raises error for static non-top-level keyword used at the top-level' do
         expect {text}.to raise_error
       end

@@ -5,12 +5,11 @@ gem 'array_include_methods', '>= 1.0.4', '< 2.0.0'
 
 # 3rd party gems (flexible versions to support other user gems that may share dependencies)
 gem 'facets', '>= 3.1.0', '< 4.0.0', require: false
-gem 'concurrent-ruby', '>= 1.1.7', '< 2.0.0'
 
 group :development do
-  gem "rspec-mocks", "~> 3.5.0"
-  gem "rspec", "~> 3.5.0"
-  gem "puts_debuggerer", "~> 0.10.0", require: false
+  gem 'rspec-mocks', '~> 3.5.0'
+  gem 'rspec', '~> 3.5.0'
+  gem 'puts_debuggerer', '~> 0.13', require: false
   gem 'rake', '>= 10.1.0', '< 14.0.0'
   gem 'jeweler', '>= 2.0.0', '< 3.0.0'
   gem 'rdoc', '>= 6.2.1', '< 7.0.0'

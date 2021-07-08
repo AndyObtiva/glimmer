@@ -3,6 +3,11 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.0.0
+
+- Extract Glimmer::DSL::BindExpression from Glimmer DSL for SWT
+- Make concurrent-ruby an optional dependency (automatically using its data-structure classes if present)
+
 ### 1.3.1
 
 - Use `Concurrent::Array` instead of `Array` in `Glimmer::DataBinding::ModelBinding`

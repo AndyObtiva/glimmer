@@ -22,18 +22,10 @@
 require 'logger'
 require 'set'
 require 'array_include_methods'
-if RUBY_ENGINE == 'opal'
-  module Concurrent
-    Array = ::Array
-    Hash = ::Hash
-    Set = ::Set
-  end
-else
-  require 'concurrent-ruby'
-end
 
 $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 
+require 'glimmer/shim/concurrent'
 require 'glimmer/config'
 require 'glimmer/ext/module'
 
