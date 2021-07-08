@@ -242,7 +242,12 @@ module Glimmer
 
       def invoke_proc_with_exact_parameters(proc_object, *args)
         return if proc_object.nil?
-        args = Concurrent::Array.new(args[0...proc_object.parameters.size])
+        if RUBY_ENGINE == 'opal'
+          # opal doesn't support proc_object.parameters.size properly it seems
+          args = Concurrent::Array.new(args[0...1])
+        else
+          args = Concurrent::Array.new(args[0...proc_object.parameters.size])
+        end
         proc_object.call(*args)
       end
 
