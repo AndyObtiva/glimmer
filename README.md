@@ -36,8 +36,6 @@ Start by checking out Glimmer's original GUI DSL, which got extracted into its o
 - [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS
 - [glimmer-dsl-tk](https://github.com/AndyObtiva/glimmer-dsl-tk): Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)
 
-[Glimmer and/or Glimmer DSLs receive two updates per month](https://rubygems.org/gems/glimmer-dsl-swt/versions). You can trust [Glimmer](https://rubygems.org/gems/glimmer) with your Ruby development needs.
-
 ## Table of Contents
 
 - [Glimmer](#-glimmer---dsl-framework-for-ruby-gui-and-more)
