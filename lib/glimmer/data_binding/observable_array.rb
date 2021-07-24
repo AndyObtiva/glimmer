@@ -130,6 +130,15 @@ module Glimmer
         end
       end
       
+      def shift
+        shifted_element = first
+        unregister_dependent_observers(shifted_element)
+        remove_element_observers(shifted_element)
+        super.tap do
+          notify_observers
+        end
+      end
+      
       def delete(element)
         unregister_dependent_observers(element)
         remove_element_observers(element)

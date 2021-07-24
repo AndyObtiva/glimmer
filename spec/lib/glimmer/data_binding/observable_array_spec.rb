@@ -60,7 +60,7 @@ module Glimmer
           array.last.priority = 'Medium'
           expect(@fired).to eq(true)
         end
-      end  
+      end
 
       describe '#remove_observer' do
         it 'removes observer without element properties' do
@@ -112,7 +112,7 @@ module Glimmer
           @fired = false
           array.last.priority = 'Medium'
           expect(@fired).to eq(false)
-        end        
+        end
       
       end
       
@@ -139,8 +139,8 @@ module Glimmer
           
           @fired = false
           array.last.priority = 'Medium'
-          expect(@fired).to eq(true)        
-        end  
+          expect(@fired).to eq(true)
+        end
         
         it 'notifies observers when Array#append is called' do
           @fired = false
@@ -165,7 +165,7 @@ module Glimmer
           @fired = false
           array.last.priority = 'Medium'
           expect(@fired).to eq(true)
-        end    
+        end
         
         it 'notifies observers when Array#push is called' do
           @fired = false
@@ -190,7 +190,7 @@ module Glimmer
           @fired = false
           array.last.priority = 'Medium'
           expect(@fired).to eq(true)
-        end    
+        end
         
         it 'notifies observers when Array#[]= is called' do
           @fired = false
@@ -215,7 +215,7 @@ module Glimmer
           
           @fired = false
           old_element.priority = 'Medium'
-          expect(@fired).to eq(false)        
+          expect(@fired).to eq(false)
           
           @fired = false
           array.last.name = 'Paint Car'
@@ -227,7 +227,7 @@ module Glimmer
           
           @fired = false
           array.last.priority = 'Medium'
-          expect(@fired).to eq(true)        
+          expect(@fired).to eq(true)
 
           @fired = false
           array[1] = project_task2
@@ -243,8 +243,8 @@ module Glimmer
           
           @fired = false
           array.last.priority = 'Medium'
-          expect(@fired).to eq(true)        
-        end    
+          expect(@fired).to eq(true)
+        end
         
         it 'notifies observers when Array#pop is called' do
           @fired = false
@@ -268,8 +268,33 @@ module Glimmer
           
           @fired = false
           old_element.priority = 'Medium'
-          expect(@fired).to eq(false)          
-        end    
+          expect(@fired).to eq(false)
+        end
+        
+        it 'notifies observers when Array#shift is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1]
+          array.singleton_class.include(ObservableArray)
+            array.add_observer(observer, [:name, :priority])
+
+          old_element = array.shift
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          old_element.name = 'Paint Car'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.priority = 'Medium'
+          expect(@fired).to eq(false)
+        end
         
         it 'notifies observers when Array#delete is called' do
           @fired = false
@@ -293,8 +318,8 @@ module Glimmer
           
           @fired = false
           old_element.priority = 'Medium'
-          expect(@fired).to eq(false)          
-        end    
+          expect(@fired).to eq(false)
+        end
         
         it 'notifies observers when Array#delete_at is called' do
           @fired = false
@@ -318,8 +343,8 @@ module Glimmer
           
           @fired = false
           old_element.priority = 'Medium'
-          expect(@fired).to eq(false)          
-        end    
+          expect(@fired).to eq(false)
+        end
         
         it 'notifies observers when Array#delete_if is called' do
           @fired = false
@@ -344,8 +369,8 @@ module Glimmer
           
           @fired = false
           old_element.priority = 'Medium'
-          expect(@fired).to eq(false)          
-        end    
+          expect(@fired).to eq(false)
+        end
         
         it 'notifies observers when Array#clear is called' do
           @fired = false
@@ -370,8 +395,8 @@ module Glimmer
           
           @fired = false
           old_element.priority = 'Medium'
-          expect(@fired).to eq(false)          
-        end    
+          expect(@fired).to eq(false)
+        end
         
         it 'notifies observers when Array#reverse! is called' do
           @fired = false
@@ -384,7 +409,7 @@ module Glimmer
 
           array.reverse!
           expect(@fired).to eq(true)
-        end    
+        end
                 
         it 'notifies observers when Array#collect! is called' do
           @fired = false
@@ -405,14 +430,14 @@ module Glimmer
           
           @fired = false
           old_element.priority = 'Medium'
-          expect(@fired).to eq(false)          
+          expect(@fired).to eq(false)
           
           new_element = array.first
           
           @fired = false
           new_element.name = 'Garage Improvement'
           expect(@fired).to eq(true)
-        end    
+        end
                 
         it 'notifies observers when Array#map! is called' do
           @fired = false
@@ -433,14 +458,14 @@ module Glimmer
           
           @fired = false
           old_element.priority = 'Medium'
-          expect(@fired).to eq(false)          
+          expect(@fired).to eq(false)
           
           new_element = array.first
           
           @fired = false
           new_element.name = 'Garage Improvement'
           expect(@fired).to eq(true)
-        end    
+        end
                 
         it 'notifies observers when Array#compact! is called' do
           @fired = false
@@ -453,7 +478,7 @@ module Glimmer
 
           array.compact!
           expect(@fired).to eq(true)
-        end  
+        end
         
         it 'notifies observers when Array#flatten! is called' do
           @fired = false
@@ -483,7 +508,7 @@ module Glimmer
           
           @fired = false
           element.priority = 'Medium'
-          expect(@fired).to eq(true)          
+          expect(@fired).to eq(true)
         end
        
         it 'notifies observers when Array#flatten!(level) is called' do
@@ -514,7 +539,7 @@ module Glimmer
           
           @fired = false
           element.priority = 'Medium'
-          expect(@fired).to eq(true)          
+          expect(@fired).to eq(true)
         end
        
         it 'notifies observers when Array#rotate! is called' do
@@ -553,8 +578,8 @@ module Glimmer
           
           @fired = false
           old_element.priority = 'Medium'
-          expect(@fired).to eq(false)          
-        end    
+          expect(@fired).to eq(false)
+        end
                 
         it 'notifies observers when Array#shuffle! is called' do
           @fired = false
@@ -567,7 +592,7 @@ module Glimmer
 
           array.shuffle!
           expect(@fired).to eq(true)
-        end    
+        end
         
         it 'notifies observers when Array#slice!(index) is called' do
           @fired = false
@@ -592,8 +617,8 @@ module Glimmer
           
           @fired = false
           old_element.priority = 'Medium'
-          expect(@fired).to eq(false)          
-        end    
+          expect(@fired).to eq(false)
+        end
           
         it 'notifies observers when Array#slice!(start, length) is called' do
           @fired = false
@@ -618,8 +643,8 @@ module Glimmer
           
           @fired = false
           old_element.priority = 'Medium'
-          expect(@fired).to eq(false)          
-        end    
+          expect(@fired).to eq(false)
+        end
           
         it 'notifies observers when Array#slice!(range) is called' do
           @fired = false
@@ -644,8 +669,8 @@ module Glimmer
           
           @fired = false
           old_element.priority = 'Medium'
-          expect(@fired).to eq(false)          
-        end    
+          expect(@fired).to eq(false)
+        end
           
         it 'notifies observers when Array#sort! is called' do
           @fired = false
@@ -658,7 +683,7 @@ module Glimmer
 
           array.sort! {|a, b| a <=> b}
           expect(@fired).to eq(true)
-        end    
+        end
                 
         it 'notifies observers when Array#sort_by! is called' do
           @fired = false
@@ -696,7 +721,7 @@ module Glimmer
           
           @fired = false
           old_element.priority = 'Medium'
-          expect(@fired).to eq(false)          
+          expect(@fired).to eq(false)
 
           element = array.first
                               
@@ -710,7 +735,7 @@ module Glimmer
           
           @fired = false
           element.priority = 'Medium'
-          expect(@fired).to eq(true)          
+          expect(@fired).to eq(true)
         end
         
         it 'notifies observers when Array#unshift is called' do
@@ -736,7 +761,7 @@ module Glimmer
           @fired = false
           array.first.priority = 'Medium'
           expect(@fired).to eq(true)
-        end        
+        end
                                           
         it 'notifies observers when Array#prepend is called' do
           @fired = false
@@ -761,7 +786,7 @@ module Glimmer
           @fired = false
           array.first.priority = 'Medium'
           expect(@fired).to eq(true)
-        end        
+        end
                                           
         it 'notifies observers when Array#reject! is called' do
           @fired = false
@@ -786,10 +811,10 @@ module Glimmer
           
           @fired = false
           old_element.priority = 'Medium'
-          expect(@fired).to eq(false)        
-        end    
+          expect(@fired).to eq(false)
+        end
                                           
-      end      
+      end
       
     end
     
