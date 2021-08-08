@@ -3,6 +3,14 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.1.0
+
+- Extracted ObserveExpression from Glimmer DSL for SWT
+
+### 2.0.1
+
+-  ObservableArray notify observers on shift
+
 ### 2.0.0
 
 - Extract Glimmer::DSL::BindExpression from Glimmer DSL for SWT
