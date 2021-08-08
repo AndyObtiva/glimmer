@@ -9,8 +9,6 @@ Related TODO files:
 
 ## Next
 
-- Extract Glimmer::DataBinding::Shine from Glimmer DSL for SWT
-- Have glimmer support observing an array with changes other than setting attribute (e.g. calling push) to avoid .to_a trick
 
 ### Version TBD
 

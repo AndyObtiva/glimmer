@@ -4,11 +4,12 @@ require 'glimmer/data_binding/model_binding'
 describe Glimmer::DataBinding::ModelBinding do
   before(:all) do
     class Person
-      attr_accessor :name, :age, :spouse, :spouses, :first_name, :last_name
+      attr_accessor :name, :age, :spouse, :siblings, :first_name, :last_name
       
       # optionally receives hook_array for testing
       def initialize(hook_array = nil)
         @hook_array = hook_array
+        @siblings = []
       end
 
       def name
@@ -47,6 +48,26 @@ describe Glimmer::DataBinding::ModelBinding do
   
   let(:person) { Person.new }
   let(:spouse) { Person.new }
+  let(:sibling) { Person.new }
+
+  context 'data-binding' do
+    it 'reads data and writes data' do
+      model_binding = described_class.new(person, :siblings)
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+      end.observe(model_binding)
+      
+      person.siblings << sibling
+        
+      expect(@observer_notified).to be_truthy
+      
+      new_siblings = [Person.new, Person.new]
+      model_binding.call(new_siblings)
+        
+      expect(person.siblings).to eq(new_siblings)
+    end
+  end
   
   context 'converters' do
     it "converts value on write to model via value method symbol" do
@@ -191,12 +212,12 @@ describe Glimmer::DataBinding::ModelBinding do
     end
     
     it 'nested data-binding before_read and after_read without parameters' do
-      person.spouses = [spouse]
+      person.siblings = [sibling]
       array = []
       read_value = nil
       @model_binding = described_class.new(
         person,
-        'spouses[0].name',
+        'siblings[0].name',
         before_read: lambda {|name| array << "before read"},
         on_read: lambda {|name| array << "name on read: #{name}"; "#{name} II"},
         after_read: lambda {|converted_name|
@@ -210,13 +231,13 @@ describe Glimmer::DataBinding::ModelBinding do
       }
       observer.observe(@model_binding)
 
-      person.spouses[0].name = 'Laura Magnus'
+      person.siblings[0].name = 'Laura Magnus'
 
       expect(array).to eq(["before read", "name on read: Laura Magnus", "after read"])
       
       observer.unobserve(@model_binding)
 
-      person.spouses[0].name = 'Lana Sears'
+      person.siblings[0].name = 'Lana Sears'
 
       expect(array).to eq(["before read", "name on read: Laura Magnus", "after read"])
     end
