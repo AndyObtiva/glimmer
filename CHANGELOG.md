@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.1.1
+
+- Support double/triple/arbitrary dimension indexed arrays in ModelBinding property (e.g. `'grid[1][0]'` )
+
 ### 2.1.0
 
 - Extracted ObserveExpression from Glimmer DSL for SWT

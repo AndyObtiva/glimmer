@@ -4,12 +4,14 @@ require 'glimmer/data_binding/model_binding'
 describe Glimmer::DataBinding::ModelBinding do
   before(:all) do
     class Person
-      attr_accessor :name, :age, :spouse, :siblings, :first_name, :last_name
+      attr_accessor :name, :age, :spouse, :siblings, :first_name, :last_name, :grid, :triple_grid
       
       # optionally receives hook_array for testing
       def initialize(hook_array = nil)
         @hook_array = hook_array
         @siblings = []
+        @grid = [['x'], ['o'], ['x']]
+        @triple_grid = [[['x'], ['o'], ['x']], [['x'], ['o'], ['x']]]
       end
 
       def name
@@ -108,6 +110,44 @@ describe Glimmer::DataBinding::ModelBinding do
 
       expect(person.siblings[0].name).to eq('sibling3')
     end
+      
+    it 'reads and writes changes in a double-indexed model' do
+      model_binding = described_class.new(person, 'grid[1][0]')
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+        @observer_new_value = new_value
+      end.observe(model_binding)
+      
+      person.grid[1][0] = 'x'
+        
+      expect(@observer_notified).to be_truthy
+      expect(@observer_new_value).to eq('x')
+      
+      model_binding.call('o')
+
+      expect(person.grid[1][0]).to eq('o')
+    end
+      
+    it 'reads and writes changes in a triple-indexed model' do
+      model_binding = described_class.new(person, 'triple_grid[1][1][0]')
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+        @observer_new_value = new_value
+      end.observe(model_binding)
+      
+      person.triple_grid[1][1][0] = 'x'
+        
+      expect(@observer_notified).to be_truthy
+      expect(@observer_new_value).to eq('x')
+      
+      model_binding.call('o')
+
+      expect(person.triple_grid[1][1][0]).to eq('o')
+    end
+      
+    it 'reads and writes changes in an indexed nested model by prepending a new first element'
   end
   
   context 'converters' do
