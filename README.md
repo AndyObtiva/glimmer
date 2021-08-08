@@ -156,7 +156,8 @@ end
 ```
 
 An extra convenience expression module is included called `BindExpression`. It builds a `Glimmer::DataBinding::ModelBinding` object for [data-binding](#data-binding) purposes.
-You may learn more about it by looking at how [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) uses it.
+Another convenience expression module is `ObserveExpression`, which enables a one-way `observe` operation.
+You may learn more about both by looking at how [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) uses them.
 
 DSL expressions go into the `glimmer/dsl/{dsl_name}` namespace directory.
 
@@ -207,7 +208,7 @@ end
 ### Setup
 
 Follow these steps to author a [Glimmer](https://rubygems.org/gems/glimmer) DSL:
-- Add `gem 'glimmer', '~> 2.0.1'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.0.1` and add `require 'glimmer'`
+- Add `gem 'glimmer', '~> 2.1.0'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.1.0` and add `require 'glimmer'`
 - Create `glimmer/dsl/[dsl_name]/dsl.rb`, which requires and adds all dynamic expressions for the [dsl_name] Glimmer DSL module as per the code shown in the previous section (or [Official DSLs](#official-dsls) as examples)
 - Create `glimmer/dsl/[dsl_name]/[expresion_name]_expresion.rb` for every [expresion_name] expression needed, whether dynamic or static
 

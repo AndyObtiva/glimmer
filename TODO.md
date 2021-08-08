@@ -9,6 +9,7 @@ Related TODO files:
 
 ## Next
 
+- Extract observe expression from Glimmer DSL for SWT
 
 ### Version TBD
 
