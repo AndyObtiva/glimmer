@@ -46,12 +46,14 @@ describe Glimmer::DataBinding::ModelBinding do
     end
   end
   
-  let(:person) { Person.new }
-  let(:spouse) { Person.new }
-  let(:sibling) { Person.new }
+  let(:person) { Person.new(name: 'person') }
+  let(:spouse) { Person.new(name: 'spouse') }
+  let(:sibling) { Person.new(name: 'sibling') }
+  let(:sibling2) { Person.new(name: 'sibling2') }
+  let(:sibling3) { Person.new(name: 'sibling3') }
 
   context 'data-binding' do
-    it 'reads data and writes data' do
+    it 'reads and writes changes in an array' do
       model_binding = described_class.new(person, :siblings)
       
       Glimmer::DataBinding::Observer.proc do |new_value|
@@ -66,6 +68,26 @@ describe Glimmer::DataBinding::ModelBinding do
       model_binding.call(new_siblings)
         
       expect(person.siblings).to eq(new_siblings)
+    end
+    
+    it 'reads and writes changes in an indexed model' do
+      person.siblings = []
+      model_binding = described_class.new(person, 'siblings[0]')
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+        @observer_new_value = new_value
+      end.observe(model_binding)
+      
+      person.siblings << sibling
+      person.siblings << sibling2
+        
+      expect(@observer_notified).to be_truthy
+      expect(@observer_new_value).to eq(sibling)
+      
+      model_binding.call(sibling3) # updates siblings[0] only
+
+      expect(person.siblings).to eq([sibling3, sibling2])
     end
   end
   
