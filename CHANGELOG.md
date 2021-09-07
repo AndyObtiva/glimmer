@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.1.2
+
+- Fix issue with irrelevent error message showing up for ENV['GLIMMER_LOGGER_LEVEL'] being empty (it is not a true error)
+
 ### 2.1.1
 
 - Support double/triple/arbitrary dimension indexed arrays in ModelBinding property (e.g. `'grid[1][0]'` )

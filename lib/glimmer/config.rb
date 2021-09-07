@@ -59,7 +59,7 @@ module Glimmer
         self.logger = Logger.new($stdout).tap do |logger|
           logger.level = Logger::ERROR
           begin
-            logger.level = ENV['GLIMMER_LOGGER_LEVEL']&.strip&.downcase
+            logger.level = ENV['GLIMMER_LOGGER_LEVEL'].strip.downcase unless ENV['GLIMMER_LOGGER_LEVEL'].to_s.strip.empty?
           rescue => e
             puts e.message
           end
