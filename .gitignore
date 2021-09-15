@@ -54,4 +54,6 @@ pkg
 .gladiator
 
 tmp
-Gemfile.lock
+
+# Gemfile.lock causes issues with GitHub Actions
+Gemfile.lock 

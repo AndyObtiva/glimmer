@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.1.3
+
+- Upgrade array_include_methods gem to version 1.1.0
+
 ### 2.1.2
 
 - Fix issue with irrelevent error message showing up for ENV['GLIMMER_LOGGER_LEVEL'] being empty (it is not a true error)

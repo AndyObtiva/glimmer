@@ -35,6 +35,7 @@ Start by checking out Glimmer's original GUI DSL, which got extracted into its o
 - [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
 - [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS
 - [glimmer-dsl-tk](https://github.com/AndyObtiva/glimmer-dsl-tk): Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)
+- [glimmer-dsl-libui](https://github.com/AndyObtiva/glimmer-dsl-libui): Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)
 
 ## Table of Contents
 
@@ -49,6 +50,7 @@ Start by checking out Glimmer's original GUI DSL, which got extracted into its o
       - [Glimmer DSL for XML (& HTML)](#glimmer-dsl-for-xml--html)
       - [Glimmer DSL for CSS](#glimmer-dsl-for-css)
       - [Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)](#glimmer-dsl-for-tk-mri-ruby-desktop-development-gui-library)
+      - [Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)](#glimmer-dsl-for-libui-prerequisite-free-ruby-desktop-development-gui-library)
   - [Data-Binding Library](#data-binding-library)
   - [Glimmer Process](#glimmer-process)
   - [Resources](#resources)
@@ -208,7 +210,7 @@ end
 ### Setup
 
 Follow these steps to author a [Glimmer](https://rubygems.org/gems/glimmer) DSL:
-- Add `gem 'glimmer', '~> 2.1.2'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.1.2` and add `require 'glimmer'`
+- Add `gem 'glimmer', '~> 2.1.3'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.1.3` and add `require 'glimmer'`
 - Create `glimmer/dsl/[dsl_name]/dsl.rb`, which requires and adds all dynamic expressions for the [dsl_name] Glimmer DSL module as per the code shown in the previous section (or [Official DSLs](#official-dsls) as examples)
 - Create `glimmer/dsl/[dsl_name]/[expresion_name]_expresion.rb` for every [expresion_name] expression needed, whether dynamic or static
 
@@ -925,6 +927,291 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello combo](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-combo.png)
 ![glimmer dsl tk screenshot sample hello combo dropdown](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-combo-dropdown.png)
+
+#### Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)
+
+[Glimmer DSL for LibUI](https://github.com/AndyObtiva/glimmer-dsl-libui) is a prerequisite-free Ruby desktop development GUI library. No need to pre-install any prerequisites. Just install the gem and have platform-independent native GUI that just works!
+
+[LibUI](https://github.com/kojix2/LibUI) is a thin [Ruby](https://www.ruby-lang.org/en/) wrapper around [libui](https://github.com/andlabs/libui), a relatively new C GUI library that renders native controls on every platform (similar to [SWT](https://www.eclipse.org/swt/), but without the heavy weight of the [Java Virtual Machine](https://www.java.com/en/)).
+
+The main trade-off in using [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) as opposed to [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) or [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) is the fact that [SWT](https://www.eclipse.org/swt/) and [Tk](https://www.tcl.tk/) are more mature than mid-alpha [libui](https://github.com/andlabs/libui) as GUI toolkits. Still, if there is only a need to build a small simple application, [Glimmer DSL for LibUI](https://rubygems.org/gems/glimmer-dsl-libui) could be a good convenient choice due to having zero prerequisites beyond the dependencies included in the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui). Also, just like [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk), its apps start instantly and have a small memory footprint. [LibUI](https://github.com/kojix2/LibUI) is a promising new GUI toolkit that might prove quite worthy in the future.
+
+[Glimmer DSL for LibUI](https://github.com/AndyObtiva/glimmer-dsl-libui) aims to provide a DSL similar to the [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) to enable more productive desktop development in Ruby with:
+- Declarative DSL syntax that visually maps to the GUI widget hierarchy
+- Convention over configuration via smart defaults and automation of low-level details
+- Requiring the least amount of syntax possible to build GUI
+- Bidirectional Data-Binding to declaratively wire and automatically synchronize GUI with Business Models
+- Custom Widget support
+- Scaffolding for new custom widgets, apps, and gems
+- Native-Executable packaging on Mac, Windows, and Linux
+
+##### Glimmer DSL for LibUI Samples
+
+###### Hello, World!
+
+Mac
+
+![glimmer-dsl-libui-mac-basic-window.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-mac-basic-window.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-basic-window.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-linux-basic-window.png)
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('hello world').show
+```
+
+###### Basic Button
+
+Mac
+
+![glimmer-dsl-libui-mac-basic-button.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-mac-basic-button.png)
+![glimmer-dsl-libui-mac-basic-button-msg-box.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-mac-basic-button-msg-box.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-basic-button.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-linux-basic-button.png)
+![glimmer-dsl-libui-linux-basic-button-msg-box.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-linux-basic-button-msg-box.png)
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('hello world', 300, 200) { |w|
+  button('Button') {
+    on_clicked do
+      msg_box(w, 'Information', 'You clicked the button')
+    end
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
+
+###### Control Gallery
+
+Mac
+
+![glimmer-dsl-libui-mac-control-gallery.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-mac-control-gallery.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-control-gallery.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-linux-control-gallery.png)
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+menu('File') {
+  menu_item('Open') {
+    on_clicked do
+      file = open_file(MAIN_WINDOW)
+      puts file unless file.nil?
+    end
+  }
+
+  menu_item('Save') {
+    on_clicked do
+      file = save_file(MAIN_WINDOW)
+      puts file unless file.nil?
+    end
+  }
+  
+  quit_menu_item {
+    on_clicked do
+      puts 'Bye Bye'
+    end
+  }
+  
+  preferences_menu_item # Can optionally contain an on_clicked listener
+}
+
+menu('Edit') {
+  check_menu_item('Checkable Item_')
+  separator_menu_item
+  menu_item('Disabled Item_') {
+    enabled false
+  }
+}
+
+menu('Help') {
+  menu_item('Help')
+  
+  about_menu_item # Can optionally contain an on_clicked listener
+}
+
+MAIN_WINDOW = window('Control Gallery', 600, 500) {
+  margined true
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+  
+  vertical_box {
+    horizontal_box {
+      group('Basic Controls') {
+        vertical_box {
+          button('Button') {
+            stretchy false
+
+            on_clicked do
+              msg_box(MAIN_WINDOW, 'Information', 'You clicked the button')
+            end
+          }
+
+          checkbox('Checkbox') {
+            stretchy false
+
+            on_toggled do |c|
+              checked = c.checked == 1
+              MAIN_WINDOW.title = "Checkbox is #{checked}"
+              c.text = "I am the checkbox (#{checked})"
+            end
+          }
+
+          label('Label') { stretchy false }
+
+          horizontal_separator { stretchy false }
+
+          date_picker { stretchy false }
+
+          time_picker { stretchy false }
+
+          date_time_picker { stretchy false }
+
+          font_button { stretchy false }
+
+          color_button { stretchy false }
+        }
+      }
+
+      vertical_box {
+        group('Numbers') {
+          stretchy false
+
+          vertical_box {
+            spinbox(0, 100) {
+              stretchy false
+              value 42
+
+              on_changed do |s|
+                puts "New Spinbox value: #{s.value}"
+              end
+            }
+
+            slider(0, 100) {
+              stretchy false
+
+              on_changed do |s|
+                v = s.value
+                puts "New Slider value: #{v}"
+                @progress_bar.value = v
+              end
+            }
+
+            @progress_bar = progress_bar { stretchy false }
+          }
+        }
+
+        group('Lists') {
+          stretchy false
+
+          vertical_box {
+            combobox {
+              stretchy false
+              items 'combobox Item 1', 'combobox Item 2', 'combobox Item 3' # also accepts a single array argument
+
+              on_selected do |c|
+                puts "New combobox selection: #{c.selected}"
+              end
+            }
+
+            editable_combobox {
+              stretchy false
+              items 'Editable Item 1', 'Editable Item 2', 'Editable Item 3' # also accepts a single array argument
+            }
+
+            radio_buttons {
+              items 'Radio Button 1', 'Radio Button 2', 'Radio Button 3' # also accepts a single array argument
+            }
+          }
+        }
+
+        tab {
+          tab_item('Page 1') {
+            horizontal_box {
+              entry {
+                text 'Please enter your feelings'
+
+                on_changed do |e|
+                  puts "Current textbox data: '#{e.text}'"
+                end
+              }
+            }
+          }
+          
+          tab_item('Page 2') {
+            horizontal_box
+          }
+          
+          tab_item('Page 3') {
+            horizontal_box
+          }
+        }
+      }
+    }
+  }
+}
+
+MAIN_WINDOW.show
+```
+
+###### Basic Table
+
+Mac
+
+![glimmer-dsl-libui-mac-basic-table.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-mac-basic-table.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-basic-table.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-linux-basic-table.png)
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+data = [
+  %w[cat meow],
+  %w[dog woof],
+  %w[chicken cock-a-doodle-doo],
+  %w[hourse neigh],
+  %w[cow moo]
+]
+
+window('Animal sounds', 300, 200) {
+  horizontal_box {
+    table {
+      text_column('Animal')
+      text_column('Description')
+
+      cell_rows data
+    }
+  }
+  
+  on_closing do
+    puts 'Bye Bye'
+  end
+}.show
+```
 
 ## Data-Binding Library
 

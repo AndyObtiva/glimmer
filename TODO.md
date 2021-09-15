@@ -9,6 +9,7 @@ Related TODO files:
 
 ## Next
 
+- Check into issue with Observer.proc.new(array) resulting in new_value coming across as nil when the array is updated
 
 ### Version TBD
 
@@ -28,6 +29,7 @@ Related TODO files:
 - Consider the performance enhancement of having varied command_handlers per parent class type, hashed and ready to go
 - Extract computed data-binding specs and other ModelBinding indirect specs from glimmer-dsl-swt to glimmer
 - Add in-model support for specifying computed observer dependencies to avoid specifying it in the bind statement.
+- Check if TopLevelExpression must be verified for dynamic expressions (currently only verified for static expressions)
 
 ### Miscellaneous
 
