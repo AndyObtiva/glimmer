@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.1.4
+
+- Upgrade array_include_methods gem to version 1.2.0
+
 ### 2.1.3
 
 - Upgrade array_include_methods gem to version 1.1.0
