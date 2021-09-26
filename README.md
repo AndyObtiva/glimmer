@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 style="position: relative; top: 20px;" />](https://rubygems.org/gems/glimmer) Glimmer - DSL Framework for Ruby GUI and More
+2.1.5mg src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 style="position: relative; top: 20px;" />](https://rubygems.org/gems/glimmer) Glimmer - DSL Framework for Ruby GUI and More
 [![Gem Version](https://badge.fury.io/rb/glimmer.svg)](http://badge.fury.io/rb/glimmer)
 [![rspec](https://github.com/AndyObtiva/glimmer/workflows/rspec/badge.svg)](https://github.com/AndyObtiva/glimmer/actions?query=workflow%3Arspec)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer?branch=master)
@@ -210,7 +210,7 @@ end
 ### Setup
 
 Follow these steps to author a [Glimmer](https://rubygems.org/gems/glimmer) DSL:
-- Add `gem 'glimmer', '~> 2.1.3'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.1.3` and add `require 'glimmer'`
+- Add `gem 'glimmer', '~> 2.1.5'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.1.5` and add `require 'glimmer'`
 - Create `glimmer/dsl/[dsl_name]/dsl.rb`, which requires and adds all dynamic expressions for the [dsl_name] Glimmer DSL module as per the code shown in the previous section (or [Official DSLs](#official-dsls) as examples)
 - Create `glimmer/dsl/[dsl_name]/[expresion_name]_expresion.rb` for every [expresion_name] expression needed, whether dynamic or static
 

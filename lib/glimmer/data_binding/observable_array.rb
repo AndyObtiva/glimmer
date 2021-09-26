@@ -83,7 +83,7 @@ module Glimmer
       end
       
       def has_observer_element_properties?(observer, element_properties)
-        element_properties_for(observer).to_a.include_all?(element_properties)
+        element_properties_for(observer).to_a.include_all?(*element_properties)
       end
 
       def property_observer_list

@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 # Glimmer author owned gems
-gem 'array_include_methods', '>= 1.2.0', '< 2.0.0'
+gem 'array_include_methods', '~> 1.4.0'
 
 # 3rd party gems (flexible versions to support other user gems that may share dependencies)
 gem 'facets', '>= 3.1.0', '< 4.0.0', require: false
