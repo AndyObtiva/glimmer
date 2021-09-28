@@ -34,7 +34,7 @@ describe Glimmer::DataBinding::ObservableModel do
       expect(@observer_called).to eq('Sean')
     end
     
-    it 'adds observer to array property' do
+    it 'adds observer to Array property' do
       task = Task.new
       task.name = 'Sean'
       task.subtasks = ['subtask1', 'subtask2']
@@ -44,6 +44,18 @@ describe Glimmer::DataBinding::ObservableModel do
       end.observe(task, :subtasks)
       task.subtasks << 'subtask3'
       expect(@observer_called).to eq(['subtask1', 'subtask2', 'subtask3'])
+    end
+    
+    it 'adds observer to Hash key value' do
+      task = Task.new
+      task.name = 'Sean'
+      task.subtasks = {subtask1: 'thesubtask1', subtask2: 'thesubtask2'}
+      @observer_called = nil
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_called = new_value
+      end.observe(task, :subtasks)
+      task.subtasks[:subtask3] = 'thesubtask3'
+      expect(@observer_called).to eq({subtask1: 'thesubtask1', subtask2: 'thesubtask2', subtask3: 'thesubtask3'})
     end
     
     it 'removes observer' do

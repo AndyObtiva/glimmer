@@ -44,10 +44,11 @@ module Glimmer
         property_writer_name = "#{property_name}="
         lambda do |value|
           old_value = self.send(property_name)
-          unregister_dependent_observers(property_name, old_value) # remove dependent observers previously installed in ensure_array_object_observer
+          unregister_dependent_observers(property_name, old_value) # remove dependent observers previously installed in ensure_array_object_observer and ensure_hash_object_observer
           self.send("__original__#{property_writer_name}", value)
           notify_observers(property_name)
           ensure_array_object_observer(property_name, value, old_value)
+          ensure_hash_object_observer(property_name, value, old_value)
         end
       end
 
@@ -106,6 +107,7 @@ module Glimmer
         property_writer_name = "#{property_name}="
         method(property_writer_name)
         ensure_array_object_observer(property_name, send(property_name))
+        ensure_hash_object_observer(property_name, send(property_name))
         begin
           method("__original__#{property_writer_name}")
         rescue
@@ -143,6 +145,23 @@ module Glimmer
         @array_object_observers ||= Concurrent::Hash.new
         @array_object_observers[property_name] = ObservableModel::Notifier.new(self, property_name) unless @array_object_observers.has_key?(property_name)
         @array_object_observers[property_name]
+      end
+      
+      def ensure_hash_object_observer(property_name, object, old_object = nil)
+        return unless object&.is_a?(Hash)
+        hash_object_observer = hash_object_observer_for(property_name)
+        hash_observer_registration = hash_object_observer.observe(object)
+        property_observer_list(property_name).each do |observer|
+          my_registration = observer.registration_for(self, property_name) # TODO eliminate repetition
+          observer.add_dependent(my_registration => hash_observer_registration)
+        end
+        hash_object_observer_for(property_name).unregister(old_object) if old_object.is_a?(ObservableHash)
+      end
+
+      def hash_object_observer_for(property_name)
+        @hash_object_observers ||= Concurrent::Hash.new
+        @hash_object_observers[property_name] = ObservableModel::Notifier.new(self, property_name) unless @hash_object_observers.has_key?(property_name)
+        @hash_object_observers[property_name]
       end
     end
   end

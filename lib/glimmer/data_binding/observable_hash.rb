@@ -50,6 +50,7 @@ module Glimmer
             self.send('__original__store', key, value)
             notify_observers(key)
             ensure_array_object_observer(nil, value, old_value)
+            ensure_hash_object_observer(nil, value, old_value)
           end
         else
           old_value = self[key]
@@ -57,6 +58,7 @@ module Glimmer
           self.send('__original__store', key, value)
           notify_observers(key)
           ensure_array_object_observer(key, value, old_value)
+          ensure_hash_object_observer(key, value, old_value)
         end
       end
 
