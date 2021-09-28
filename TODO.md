@@ -9,8 +9,7 @@ Related TODO files:
 
 ## Next
 
-- Ability to observe all properties of an ObservableModel and pass property names in observer calls as second argument
-- Look into potential issue with registering multiple observers for the same property on ObservableModel (potentially repeating calls multiple times) and ability to stack as well as preserving __original__ prefix (perhaps number them?)
+- Have `ObservableHash` call `notify_observers(key)` upon performing mutation operations: `compact!`, `delete`, `delete_if`, `filter!`, `keep_if`, `merge!`, `reject!`, `replace`, `select!`, `shift`, `transform_keys!`, `transform_values!`
 - Check into issue with Observer.proc.new(array) resulting in new_value coming across as nil when the array is updated
 
 ### Version TBD
@@ -32,6 +31,7 @@ Related TODO files:
 - Extract computed data-binding specs and other ModelBinding indirect specs from glimmer-dsl-swt to glimmer
 - Add in-model support for specifying computed observer dependencies to avoid specifying it in the bind statement.
 - Check if TopLevelExpression must be verified for dynamic expressions (currently only verified for static expressions)
+- Ability to observe all properties of an ObservableModel and pass property names in observer calls as second argument
 
 ### Miscellaneous
 
