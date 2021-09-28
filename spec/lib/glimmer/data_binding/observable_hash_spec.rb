@@ -22,21 +22,33 @@ describe Glimmer::DataBinding::ObservableHash do
     
     it 'adds observer to all keys' do
       task = {}
+      @key_called = nil
       @observer_called = nil
       @called = 0
-      observer = Glimmer::DataBinding::Observer.proc do |new_value|
+      
+      Glimmer::DataBinding::Observer.proc do |key, new_value|
+        @called += 1
+        @key_called = key
+        @observer_called = new_value
+      end.observe(task)
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
         @called += 1
         @observer_called = new_value
-      end
-      observer.observe(task)
-      observer.observe(task, :address)
+      end.observe(task, :address)
+      
       task[:other] = 'Something'
+      expect(@key_called).to eq(:other)
       expect(@observer_called).to eq('Something')
       expect(@called).to eq(1)
+      
       task[:name] = 'Sean'
+      expect(@key_called).to eq(:name)
       expect(@observer_called).to eq('Sean')
       expect(@called).to eq(2)
+      
       task[:address] = '123 Main St'
+      expect(@key_called).to eq(:address)
       expect(@observer_called).to eq('123 Main St')
       expect(@called).to eq(4)
     end

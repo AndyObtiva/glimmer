@@ -113,7 +113,7 @@ module Glimmer
       
       def notify_observers(key)
         key_observer_list(key).to_a.each { |observer| observer.call(self[key]) }
-        key_observer_list(nil).to_a.each { |observer| observer.call(self[key]) }
+        key_observer_list(nil).to_a.each { |observer| observer.call(key, self[key]) }
       end
 
       def add_key_writer_observer(key = nil)

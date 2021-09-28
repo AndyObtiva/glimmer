@@ -41,8 +41,8 @@ module Glimmer
         end
 
         # Called by observables once updates occur sending in the new_value if any
-        def call(new_value=nil)
-          @observer_block.call(new_value)
+        def call(new_value=nil, *extra_args)
+          @observer_block.call(new_value, *extra_args)
         end
       end
 
@@ -143,7 +143,7 @@ module Glimmer
         dependents_for(registration).delete(dependent)
       end
 
-      def call(new_value)
+      def call(new_value = nil, *extra_args)
         raise Error, 'Not implemented!'
       end
     end
