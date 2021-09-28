@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.2.0
+
+- New `Glimmer::DataBinding::ObservableHash` support
+
 ### 2.1.5
 
 - Upgrade array_include_methods gem to version 1.4.0 (and fix minor version)

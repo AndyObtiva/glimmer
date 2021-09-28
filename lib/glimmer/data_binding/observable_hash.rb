@@ -42,7 +42,15 @@ module Glimmer
       
       OBSERVED_STORE_METHOD = lambda do |key, value|
         if key_observer_list(key).empty?
-          self.send('__original__store', key, value)
+          if all_key_observer_list.empty?
+            self.send('__original__store', key, value)
+          else
+            old_value = self[key]
+            unregister_dependent_observers(nil, old_value) # remove dependent observers previously installed in ensure_array_object_observer
+            self.send('__original__store', key, value)
+            notify_observers(key)
+            ensure_array_object_observer(nil, value, old_value)
+          end
         else
           old_value = self[key]
           unregister_dependent_observers(key, old_value) # remove dependent observers previously installed in ensure_array_object_observer
@@ -52,14 +60,14 @@ module Glimmer
         end
       end
 
-      def add_observer(observer, key)
+      def add_observer(observer, key = nil)
         return observer if has_observer?(observer, key)
         key_observer_list(key) << observer
         add_key_writer_observer(key)
         observer
       end
 
-      def remove_observer(observer, key)
+      def remove_observer(observer, key = nil)
         if has_observer?(observer, key)
           key_observer_list(key).delete(observer)
           observer.unobserve(self, key)
@@ -82,7 +90,7 @@ module Glimmer
         all_observers
       end
 
-      def has_observer?(observer, key)
+      def has_observer?(observer, key = nil)
         key_observer_list(key).include?(observer)
       end
 
@@ -98,12 +106,17 @@ module Glimmer
         key_observer_hash[key] = Concurrent::Set.new unless key_observer_hash[key]
         key_observer_hash[key]
       end
-
+      
+      def all_key_observer_list
+        key_observer_list(nil)
+      end
+      
       def notify_observers(key)
         key_observer_list(key).to_a.each { |observer| observer.call(self[key]) }
+        key_observer_list(nil).to_a.each { |observer| observer.call(self[key]) }
       end
 
-      def add_key_writer_observer(key)
+      def add_key_writer_observer(key = nil)
         ensure_array_object_observer(key, self[key])
         begin
           method('__original__store')
