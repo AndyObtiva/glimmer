@@ -86,6 +86,8 @@ module Glimmer
           # TODO refactor code to be more smart/polymorphic/automated and honor open/closed principle
           if observable.is_a?(Array)
             observable.extend(ObservableArray)
+          elsif observable.is_a?(Hash)
+            observable.extend(ObservableHash)
           else
             observable.extend(ObservableModel)
           end
@@ -150,3 +152,4 @@ end
 
 require 'glimmer/data_binding/observable_model'
 require 'glimmer/data_binding/observable_array'
+require 'glimmer/data_binding/observable_hash'

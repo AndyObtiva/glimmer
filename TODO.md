@@ -9,6 +9,8 @@ Related TODO files:
 
 ## Next
 
+- `ObservableHash` support
+- Look into potential issue with registering multiple observers for the same property on ObservableModel (potentially repeating calls multiple times) and ability to stack as well as preserving __original__ prefix (perhaps number them?)
 - Check into issue with Observer.proc.new(array) resulting in new_value coming across as nil when the array is updated
 
 ### Version TBD

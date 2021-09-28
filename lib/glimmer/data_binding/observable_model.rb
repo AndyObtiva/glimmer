@@ -44,7 +44,7 @@ module Glimmer
         property_writer_name = "#{property_name}="
         lambda do |value|
           old_value = self.send(property_name)
-          unregister_dependent_observers(property_name, old_value)
+          unregister_dependent_observers(property_name, old_value) # remove dependent observers previously installed in ensure_array_object_observer
           self.send("__original__#{property_writer_name}", value)
           notify_observers(property_name)
           ensure_array_object_observer(property_name, value, old_value)
