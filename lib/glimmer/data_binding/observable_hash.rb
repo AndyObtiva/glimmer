@@ -35,7 +35,7 @@ module Glimmer
           @key = key
         end
         
-        def call(new_value=nil)
+        def call(new_value=nil, *extra_args)
           @observable_model.notify_observers(@key)
         end
       end
@@ -46,14 +46,14 @@ module Glimmer
             self.send('__original__store', key, value)
           else
             old_value = self[key]
-            unregister_dependent_observers(nil, old_value) # remove dependent observers previously installed in ensure_array_object_observer
+            unregister_dependent_observers(nil, old_value) # remove dependent observers previously installed in ensure_array_object_observer and ensure_hash_object_observer
             self.send('__original__store', key, value)
             notify_observers(key)
             ensure_array_object_observer(nil, value, old_value)
           end
         else
           old_value = self[key]
-          unregister_dependent_observers(key, old_value) # remove dependent observers previously installed in ensure_array_object_observer
+          unregister_dependent_observers(key, old_value) # remove dependent observers previously installed in ensure_array_object_observer and ensure_hash_object_observer
           self.send('__original__store', key, value)
           notify_observers(key)
           ensure_array_object_observer(key, value, old_value)
@@ -112,12 +112,13 @@ module Glimmer
       end
       
       def notify_observers(key)
-        key_observer_list(key).to_a.each { |observer| observer.call(self[key]) }
-        key_observer_list(nil).to_a.each { |observer| observer.call(key, self[key]) }
+        key_observer_list(nil).to_a.each { |observer| observer.call(self[key], key) }
+        (key_observer_list(key).to_a - key_observer_list(nil).to_a).each { |observer| observer.call(self[key]) }
       end
 
       def add_key_writer_observer(key = nil)
         ensure_array_object_observer(key, self[key])
+        ensure_hash_object_observer(key, self[key])
         begin
           method('__original__store')
         rescue
@@ -155,6 +156,23 @@ module Glimmer
         @array_object_observers ||= Concurrent::Hash.new
         @array_object_observers[key] = ObservableModel::Notifier.new(self, key) unless @array_object_observers.has_key?(key)
         @array_object_observers[key]
+      end
+      
+      def ensure_hash_object_observer(key, object, old_object = nil)
+        return unless object&.is_a?(Hash)
+        hash_object_observer = hash_object_observer_for(key)
+        hash_observer_registration = hash_object_observer.observe(object)
+        key_observer_list(key).each do |observer|
+          my_registration = observer.registration_for(self, key) # TODO eliminate repetition
+          observer.add_dependent(my_registration => hash_observer_registration)
+        end
+        hash_object_observer_for(key).unregister(old_object) if old_object.is_a?(ObservableHash)
+      end
+
+      def hash_object_observer_for(key)
+        @hash_object_observers ||= Concurrent::Hash.new
+        @hash_object_observers[key] = ObservableModel::Notifier.new(self, key) unless @hash_object_observers.has_key?(key)
+        @hash_object_observers[key]
       end
     end
   end

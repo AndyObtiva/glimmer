@@ -35,7 +35,7 @@ module Glimmer
           @property_name = property_name
         end
         
-        def call(new_value=nil)
+        def call(new_value=nil, *extra_args)
           @observable_model.notify_observers(@property_name)
         end
       end

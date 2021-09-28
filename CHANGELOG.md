@@ -6,6 +6,7 @@ Related Change Logs:
 ### 2.2.0
 
 - New `Glimmer::DataBinding::ObservableHash` support
+- Ensure observed ObservableHash values are enhanced with ObservableHash if they were of type Hash
 
 ### 2.1.5
 
