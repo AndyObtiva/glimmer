@@ -3,7 +3,7 @@ require 'glimmer/data_binding/observer'
 require 'glimmer/data_binding/observable_hash'
 
 describe Glimmer::DataBinding::ObservableHash do
-  context 'object (instance)' do
+  context 'hash' do
     it 'adds observer based on key' do
       task = {}
       @observer_called = nil
@@ -119,6 +119,70 @@ describe Glimmer::DataBinding::ObservableHash do
       expect(task.has_observer_for_any_key?(observer)).to eq(true)
       observer.unobserve(task, :name)
       expect(task.has_observer_for_any_key?(observer)).to eq(false)
+    end
+  end
+  
+  describe 'hash mutation method' do
+    it 'notifies observers when Hash#delete is called and changes key value (i.e. was not nil before)' do
+      @fired = false
+      @changed_value = nil
+      @changed_key = nil
+      observer = Glimmer::DataBinding::Observer.proc do |value, key|
+        @fired = true
+        @changed_value = value
+        @changed_key = key
+      end
+      hash = {name: 'John'}
+      hash.singleton_class.include(described_class)
+      hash.add_observer(observer, :name)
+
+      hash.delete(:name)
+      expect(@fired).to eq(true)
+      expect(@changed_value).to eq(nil)
+      expect(@changed_key).to eq(:name)
+      
+      @fired = false
+      @changed_value = nil
+      @changed_key = nil
+      hash.remove_observer(observer, :name)
+      hash[:name] = 'John'
+      hash.add_observer(observer) # observe all keys
+
+      hash.delete(:name)
+      expect(@fired).to eq(true)
+      expect(@changed_value).to eq(nil)
+      expect(@changed_key).to eq(:name)
+    end
+    
+    it 'does not notify observers when Hash#delete is called and previous key value was nil' do
+      @fired = false
+      @changed_value = nil
+      @changed_key = nil
+      observer = Glimmer::DataBinding::Observer.proc do |value, key|
+        @fired = true
+        @changed_value = value
+        @changed_key = key
+      end
+      hash = {name: nil}
+      hash.singleton_class.include(described_class)
+      hash.add_observer(observer, :name)
+
+      hash.delete(:name)
+      expect(@fired).to eq(false)
+      expect(@changed_value).to eq(nil)
+      expect(@changed_key).to eq(nil)
+      
+      @fired = false
+      @changed_value = nil
+      @changed_key = nil
+      hash.remove_observer(observer, :name)
+      hash[:name] = nil
+      hash.add_observer(observer) # observe all keys
+
+      hash.delete(:name)
+      expect(@fired).to eq(false)
+      expect(@changed_value).to eq(nil)
+      expect(@changed_key).to eq(nil)
     end
   end
 end

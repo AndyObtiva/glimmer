@@ -9,8 +9,8 @@ Related TODO files:
 
 ## Next
 
-- Have `ObservableHash` call `notify_observers(key)` upon performing mutation operations: `compact!`, `delete`, `delete_if`, `filter!`, `keep_if`, `merge!`, `reject!`, `replace`, `select!`, `shift`, `transform_keys!`, `transform_values!`
-- Check into issue with Observer.proc.new(array) resulting in new_value coming across as nil when the array is updated
+- Have `ObservableHash` call `notify_observers(key)` upon performing mutation operation: `delete`, `delete_if`, `filter!`, `keep_if`, `merge!`, `reject!`, `replace`, `select!`, `shift`, `transform_keys!`, `transform_values!`
+- Have obesrving `ObservableArray` automatically notice if any values are arrays or hashes and observe them for micro-changes
 
 ### Version TBD
 

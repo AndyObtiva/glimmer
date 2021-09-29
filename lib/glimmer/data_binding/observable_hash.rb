@@ -115,7 +115,7 @@ module Glimmer
       
       def notify_observers(key)
         all_key_observer_list.to_a.each { |observer| observer.call(self[key], key) }
-        (key_observer_list(key).to_a - all_key_observer_list.to_a).each { |observer| observer.call(self[key]) }
+        (key_observer_list(key).to_a - all_key_observer_list.to_a).each { |observer| observer.call(self[key], key) }
       end
 
       def add_key_writer_observer(key = nil)
@@ -175,6 +175,17 @@ module Glimmer
         @hash_object_observers ||= Concurrent::Hash.new
         @hash_object_observers[key] = ObservableModel::Notifier.new(self, key) unless @hash_object_observers.has_key?(key)
         @hash_object_observers[key]
+      end
+      
+      def delete(key, &block)
+        old_value = self[key]
+        unless old_value.nil?
+          unregister_dependent_observers(key, old_value)
+          unregister_dependent_observers(nil, old_value)
+        end
+        super(key, &block).tap do
+          notify_observers(key) unless old_value.nil?
+        end
       end
     end
   end

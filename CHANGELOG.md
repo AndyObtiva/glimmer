@@ -3,6 +3,11 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.2.1
+
+- Fix issue with `Glimmer::DataBinding::Observer.proc {|new_value| ...}.observe(array)` resulting in new_value coming across as `nil when the array is updated
+- Have `ObservableHash` call `notify_observers(key)` upon performing mutation operation: `delete`
+
 ### 2.2.0
 
 - New `Glimmer::DataBinding::ObservableHash` support for observing `hash[key]=value` mutations

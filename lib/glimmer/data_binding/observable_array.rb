@@ -99,7 +99,7 @@ module Glimmer
       end
 
       def notify_observers
-        property_observer_list.to_a.each(&:call)
+        property_observer_list.to_a.each { |o| o.call(self) }
       end
       
       def <<(element)
