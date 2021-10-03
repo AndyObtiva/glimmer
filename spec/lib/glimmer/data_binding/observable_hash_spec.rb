@@ -533,5 +533,70 @@ describe Glimmer::DataBinding::ObservableHash do
       expect(@changed_value).to eq(nil)
       expect(@changed_key).to eq(nil)
     end
+    
+    it 'notifies observers when Hash#replace is called and changes key value' do
+      @fired = false
+      @changed_values = []
+      @changed_keys = []
+      observer = Glimmer::DataBinding::Observer.proc do |value, key|
+        @fired = true
+        @changed_values << value
+        @changed_keys << key
+      end
+      hash = {address: 'Los Angeles, California, USA'}
+      hash.singleton_class.include(described_class)
+      hash.add_observer(observer, :name)
+      hash.add_observer(observer, :address)
+
+      hash.replace(name: 'John')
+      expect(@fired).to eq(true)
+      expect(@changed_values).to eq([nil, 'John'])
+      expect(@changed_keys).to eq([:address, :name])
+
+      @fired = false
+      @changed_values = []
+      @changed_keys = []
+      hash.remove_observer(observer, :name)
+      hash.remove_observer(observer, :address)
+      hash.delete(:name)
+      hash[:address] = 'Los Angeles, California, USA'
+      hash.add_observer(observer) # observe all keys
+
+      hash.replace(name: 'John')
+      expect(@fired).to eq(true)
+      expect(@changed_values).to eq([nil, 'John'])
+      expect(@changed_keys).to eq([:address, :name])
+    end
+    
+    it 'does not notify observers when Hash#replace is called and previous key value remains the same' do
+      @fired = false
+      @changed_value = nil
+      @changed_key = nil
+      observer = Glimmer::DataBinding::Observer.proc do |value, key|
+        @fired = true
+        @changed_value = value
+        @changed_key = key
+      end
+      hash = {name: 'John'}
+      hash.singleton_class.include(described_class)
+      hash.add_observer(observer, :name)
+
+      hash.replace(name: 'John')
+      expect(@fired).to eq(false)
+      expect(@changed_value).to eq(nil)
+      expect(@changed_key).to eq(nil)
+      
+      @fired = false
+      @changed_value = nil
+      @changed_key = nil
+      hash.remove_observer(observer, :name)
+      hash[:name] = 'John'
+      hash.add_observer(observer) # observe all keys
+
+      hash.replace(name: 'John')
+      expect(@fired).to eq(false)
+      expect(@changed_value).to eq(nil)
+      expect(@changed_key).to eq(nil)
+    end
   end
 end

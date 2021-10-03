@@ -282,6 +282,21 @@ module Glimmer
           end
         end
       end
+      
+      def replace(other_hash)
+        old_hash = self.dup
+        super(other_hash).tap do |new_hash|
+          changed_keys = old_hash.keys + new_hash.keys
+          changed_keys.each do |changed_key|
+            old_value = old_hash[changed_key]
+            if new_hash[changed_key] != old_value
+              unregister_dependent_observers(changed_key, old_value)
+              unregister_dependent_observers(nil, old_value)
+              notify_observers(changed_key)
+            end
+          end
+        end
+      end
     end
   end
 end
