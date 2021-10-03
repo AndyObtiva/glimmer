@@ -581,6 +581,32 @@ module Glimmer
           expect(@fired).to eq(false)
         end
                 
+        it 'notifies observers when Array#filter! is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+
+          old_element = array.first
+          array.filter! {|pt| pt.name == 'Some Name'}
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          old_element.name = 'Paint Car'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.priority = 'Medium'
+          expect(@fired).to eq(false)
+        end
+                
         it 'notifies observers when Array#shuffle! is called' do
           @fired = false
           observer = Observer.proc {
@@ -799,6 +825,32 @@ module Glimmer
 
           old_element = array.first
           array.reject! {|pt| pt.name == 'Design Decorations'}
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          old_element.name = 'Paint Car'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.project_name = 'Garage Improvement'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          old_element.priority = 'Medium'
+          expect(@fired).to eq(false)
+        end
+                                          
+        it 'notifies observers when Array#replace is called' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [project_task1]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name, :priority])
+
+          old_element = array.first
+          array.replace([project_task2])
           expect(@fired).to eq(true)
           
           @fired = false

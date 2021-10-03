@@ -3,6 +3,12 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.2.2
+
+- Support auto-notifying on `ObservableArray#replace` observed changes
+- Support auto-notifying on `ObservableArray#filter!` observed changes explicitly (even if `filter!` aliases `select!`)
+- Support auto-notifying on `ObservableHash#filter!` observed changes explicitly (even if `filter!` aliases `select!`)
+
 ### 2.2.1
 
 - Have `ObservableHash` call `notify_observers(key)` upon performing all mutation operations (as expected): `delete`, `delete_if`, `filter!`, `select!`, `keep_if`, `reject!`, `merge!`, `replace`, `shift`, `transform_keys!`, `transform_values!`

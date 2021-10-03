@@ -237,6 +237,21 @@ module Glimmer
         end
       end
 
+      def filter!(&block)
+        if block_given?
+          old_array = Array.new(self)
+          super(&block).tap do
+            (old_array - self).each do |old_value|
+              unregister_dependent_observers(old_value)
+              remove_element_observers(old_value)
+            end
+            notify_observers
+          end
+        else
+          super
+        end
+      end
+
       def shuffle!(hash = nil)
         (hash.nil? ? super() : super(random: hash[:random])).tap { notify_observers }
       end
@@ -291,6 +306,17 @@ module Glimmer
             end
             notify_observers
           end
+        end
+      end
+      
+      def replace(other_array)
+        old_array = Array.new(self)
+        super(other_array).tap do
+          (old_array - self).each do |old_value|
+            unregister_dependent_observers(old_value)
+            remove_element_observers(old_value)
+          end
+          notify_observers
         end
       end
       

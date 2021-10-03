@@ -210,7 +210,7 @@ end
 ### Setup
 
 Follow these steps to author a [Glimmer](https://rubygems.org/gems/glimmer) DSL:
-- Add `gem 'glimmer', '~> 2.2.1'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.2.1` and add `require 'glimmer'`
+- Add `gem 'glimmer', '~> 2.2.2'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.2.2` and add `require 'glimmer'`
 - Create `glimmer/dsl/[dsl_name]/dsl.rb`, which requires and adds all dynamic expressions for the [dsl_name] Glimmer DSL module as per the code shown in the previous section (or [Official DSLs](#official-dsls) as examples)
 - Create `glimmer/dsl/[dsl_name]/[expresion_name]_expresion.rb` for every [expresion_name] expression needed, whether dynamic or static
 
@@ -972,10 +972,10 @@ require 'glimmer-dsl-libui'
 
 include Glimmer
 
-window('hello world', 300, 200) { |w|
+window('hello world', 300, 200) {
   button('Button') {
     on_clicked do
-      msg_box(w, 'Information', 'You clicked the button')
+      msg_box('Information', 'You clicked the button')
     end
   }
   
@@ -995,186 +995,7 @@ Linux
 ![glimmer-dsl-libui-linux-basic-button.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-linux-basic-button.png)
 ![glimmer-dsl-libui-linux-basic-button-msg-box.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-linux-basic-button-msg-box.png)
 
-###### Control Gallery
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-menu('File') {
-  menu_item('Open') {
-    on_clicked do
-      file = open_file(MAIN_WINDOW)
-      puts file unless file.nil?
-    end
-  }
-
-  menu_item('Save') {
-    on_clicked do
-      file = save_file(MAIN_WINDOW)
-      puts file unless file.nil?
-    end
-  }
-  
-  quit_menu_item {
-    on_clicked do
-      puts 'Bye Bye'
-    end
-  }
-  
-  preferences_menu_item # Can optionally contain an on_clicked listener
-}
-
-menu('Edit') {
-  check_menu_item('Checkable Item_')
-  separator_menu_item
-  menu_item('Disabled Item_') {
-    enabled false
-  }
-}
-
-menu('Help') {
-  menu_item('Help')
-  
-  about_menu_item # Can optionally contain an on_clicked listener
-}
-
-MAIN_WINDOW = window('Control Gallery', 600, 500) {
-  margined true
-  
-  on_closing do
-    puts 'Bye Bye'
-  end
-  
-  vertical_box {
-    horizontal_box {
-      group('Basic Controls') {
-        vertical_box {
-          button('Button') {
-            stretchy false
-
-            on_clicked do
-              msg_box(MAIN_WINDOW, 'Information', 'You clicked the button')
-            end
-          }
-
-          checkbox('Checkbox') {
-            stretchy false
-
-            on_toggled do |c|
-              checked = c.checked == 1
-              MAIN_WINDOW.title = "Checkbox is #{checked}"
-              c.text = "I am the checkbox (#{checked})"
-            end
-          }
-
-          label('Label') { stretchy false }
-
-          horizontal_separator { stretchy false }
-
-          date_picker { stretchy false }
-
-          time_picker { stretchy false }
-
-          date_time_picker { stretchy false }
-
-          font_button { stretchy false }
-
-          color_button { stretchy false }
-        }
-      }
-
-      vertical_box {
-        group('Numbers') {
-          stretchy false
-
-          vertical_box {
-            spinbox(0, 100) {
-              stretchy false
-              value 42
-
-              on_changed do |s|
-                puts "New Spinbox value: #{s.value}"
-              end
-            }
-
-            slider(0, 100) {
-              stretchy false
-
-              on_changed do |s|
-                v = s.value
-                puts "New Slider value: #{v}"
-                @progress_bar.value = v
-              end
-            }
-
-            @progress_bar = progress_bar { stretchy false }
-          }
-        }
-
-        group('Lists') {
-          stretchy false
-
-          vertical_box {
-            combobox {
-              stretchy false
-              items 'combobox Item 1', 'combobox Item 2', 'combobox Item 3' # also accepts a single array argument
-
-              on_selected do |c|
-                puts "New combobox selection: #{c.selected}"
-              end
-            }
-
-            editable_combobox {
-              stretchy false
-              items 'Editable Item 1', 'Editable Item 2', 'Editable Item 3' # also accepts a single array argument
-            }
-
-            radio_buttons {
-              items 'Radio Button 1', 'Radio Button 2', 'Radio Button 3' # also accepts a single array argument
-            }
-          }
-        }
-
-        tab {
-          tab_item('Page 1') {
-            horizontal_box {
-              entry {
-                text 'Please enter your feelings'
-
-                on_changed do |e|
-                  puts "Current textbox data: '#{e.text}'"
-                end
-              }
-            }
-          }
-          
-          tab_item('Page 2') {
-            horizontal_box
-          }
-          
-          tab_item('Page 3') {
-            horizontal_box
-          }
-        }
-      }
-    }
-  }
-}
-
-MAIN_WINDOW.show
-```
-
-Mac
-
-![glimmer-dsl-libui-mac-control-gallery.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-mac-control-gallery.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-control-gallery.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-linux-control-gallery.png)
-
-###### Basic Table
+###### Basic Table Progress Bar
 
 ```ruby
 require 'glimmer-dsl-libui'
@@ -1182,36 +1003,153 @@ require 'glimmer-dsl-libui'
 include Glimmer
 
 data = [
-  %w[cat meow],
-  %w[dog woof],
-  %w[chicken cock-a-doodle-doo],
-  %w[hourse neigh],
-  %w[cow moo]
+  ['task 1', 0],
+  ['task 2', 15],
+  ['task 3', 100],
+  ['task 4', 75],
+  ['task 5', -1],
 ]
 
-window('Animal sounds', 300, 200) {
-  horizontal_box {
+window('Task Progress', 300, 200) {
+  vertical_box {
     table {
-      text_column('Animal')
-      text_column('Description')
+      text_column('Task')
+      progress_bar_column('Progress')
 
-      cell_rows data
+      cell_rows data # implicit data-binding
+    }
+    
+    button('Mark All As Done') {
+      stretchy false
+      
+      on_clicked do
+        data.each_with_index do |row_data, row|
+          data[row] = [row_data[0], 100] # automatically updates table due to implicit data-binding
+        end
+      end
     }
   }
-  
-  on_closing do
-    puts 'Bye Bye'
-  end
 }.show
 ```
 
 Mac
 
-![glimmer-dsl-libui-mac-basic-table.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-mac-basic-table.png)
+![glimmer-dsl-libui-mac-basic-table-progress-bar.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-mac-basic-table-progress-bar.png)
 
 Linux
 
-![glimmer-dsl-libui-linux-basic-table.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-linux-basic-table.png)
+![glimmer-dsl-libui-linux-basic-table-progress-bar.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-linux-basic-table-progress-bar.png)
+
+###### Area Gallery
+
+```ruby
+require 'glimmer-dsl-libui'
+
+include Glimmer
+
+window('Area Gallery', 400, 400) {
+  area {
+    path { # declarative stable path
+      square(0, 0, 100)
+      square(100, 100, 400)
+      
+      fill r: 102, g: 102, b: 204
+    }
+    path { # declarative stable path
+      rectangle(0, 100, 100, 400)
+      rectangle(100, 0, 400, 100)
+      
+      fill r: 204, g: 102, b: 204
+    }
+    path { # declarative stable path
+      figure(100, 100) {
+        line(100, 400)
+        line(400, 100)
+        line(400, 400)
+
+        closed true
+      }
+
+      fill r: 202, g: 102, b: 104, a: 0.5
+      stroke r: 0, g: 0, b: 0
+    }
+    path { # declarative stable path
+      figure(0, 0) {
+        bezier(200, 100, 100, 200, 400, 100)
+        bezier(300, 100, 100, 300, 100, 400)
+        bezier(100, 300, 300, 100, 400, 400)
+
+        closed true
+      }
+
+      fill r: 202, g: 102, b: 204, a: 0.5
+      stroke r: 0, g: 0, b: 0, thickness: 2, dashes: [50, 10, 10, 10], dash_phase: -50.0
+    }
+    path { # declarative stable path
+      arc(200, 200, 90, 0, 360, false)
+
+      fill r: 202, g: 102, b: 204, a: 0.5
+      stroke r: 0, g: 0, b: 0, thickness: 2
+    }
+    
+    on_mouse_event do |area_mouse_event|
+      p area_mouse_event
+    end
+    
+    on_mouse_moved do |area_mouse_event|
+      puts 'moved'
+    end
+    
+    on_mouse_down do |area_mouse_event|
+      puts 'mouse down'
+    end
+    
+    on_mouse_up do |area_mouse_event|
+      puts 'mouse up'
+    end
+    
+    on_mouse_drag_started do |area_mouse_event|
+      puts 'drag started'
+    end
+    
+    on_mouse_dragged do |area_mouse_event|
+      puts 'dragged'
+    end
+    
+    on_mouse_dropped do |area_mouse_event|
+      puts 'dropped'
+    end
+    
+    on_mouse_entered do
+      puts 'entered'
+    end
+    
+    on_mouse_exited do
+      puts 'exited'
+    end
+    
+    on_key_event do |area_key_event|
+      p area_key_event
+    end
+    
+    on_key_up do |area_key_event|
+      puts 'key up'
+    end
+    
+    on_key_down do |area_key_event|
+      puts 'key down'
+    end
+  }
+}.show
+```
+
+Mac
+
+![glimmer-dsl-libui-mac-area-gallery.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-mac-area-gallery.png)
+
+Linux
+
+![glimmer-dsl-libui-linux-area-gallery.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-linux-area-gallery.png)
 
 ## Data-Binding Library
 
