@@ -184,5 +184,67 @@ describe Glimmer::DataBinding::ObservableHash do
       expect(@changed_value).to eq(nil)
       expect(@changed_key).to eq(nil)
     end
+    
+    it 'notifies observers when Hash#delete_if is called and changes key value (i.e. was not nil before)' do
+      @fired = false
+      @changed_value = nil
+      @changed_key = nil
+      observer = Glimmer::DataBinding::Observer.proc do |value, key|
+        @fired = true
+        @changed_value = value
+        @changed_key = key
+      end
+      hash = {name: 'John'}
+      hash.singleton_class.include(described_class)
+      hash.add_observer(observer, :name)
+
+      hash.delete_if { |k,v| k == :name }
+      expect(@fired).to eq(true)
+      expect(@changed_value).to eq(nil)
+      expect(@changed_key).to eq(:name)
+      
+      @fired = false
+      @changed_value = nil
+      @changed_key = nil
+      hash.remove_observer(observer, :name)
+      hash[:name] = 'John'
+      hash.add_observer(observer) # observe all keys
+
+      hash.delete_if { |k,v| k == :name }
+      expect(@fired).to eq(true)
+      expect(@changed_value).to eq(nil)
+      expect(@changed_key).to eq(:name)
+    end
+    
+    it 'does not notify observers when Hash#delete_if is called and previous key value was nil' do
+      @fired = false
+      @changed_value = nil
+      @changed_key = nil
+      observer = Glimmer::DataBinding::Observer.proc do |value, key|
+        @fired = true
+        @changed_value = value
+        @changed_key = key
+      end
+      hash = {name: nil}
+      hash.singleton_class.include(described_class)
+      hash.add_observer(observer, :name)
+
+      hash.delete_if { |k,v| k == :name }
+      expect(@fired).to eq(false)
+      expect(@changed_value).to eq(nil)
+      expect(@changed_key).to eq(nil)
+      
+      @fired = false
+      @changed_value = nil
+      @changed_key = nil
+      hash.remove_observer(observer, :name)
+      hash[:name] = nil
+      hash.add_observer(observer) # observe all keys
+
+      hash.delete_if { |k,v| k == :name }
+      expect(@fired).to eq(false)
+      expect(@changed_value).to eq(nil)
+      expect(@changed_key).to eq(nil)
+    end
   end
 end
