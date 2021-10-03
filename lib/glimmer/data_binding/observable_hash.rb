@@ -263,6 +263,25 @@ module Glimmer
           super
         end
       end
+      
+      def merge!(*other_hashes, &block)
+        if other_hashes.empty?
+          super
+        else
+          old_hash = self.dup
+          super(*other_hashes, &block).tap do |new_hash|
+            changed_keys = other_hashes.map(&:keys).reduce(:+)
+            changed_keys.each do |changed_key|
+              old_value = old_hash[changed_key]
+              if new_hash[changed_key] != old_value
+                unregister_dependent_observers(changed_key, old_value)
+                unregister_dependent_observers(nil, old_value)
+                notify_observers(changed_key)
+              end
+            end
+          end
+        end
+      end
     end
   end
 end

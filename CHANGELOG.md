@@ -6,7 +6,7 @@ Related Change Logs:
 ### 2.2.1
 
 - Fix issue with `Glimmer::DataBinding::Observer.proc {|new_value| ...}.observe(array)` resulting in new_value coming across as `nil when the array is updated
-- Have `ObservableHash` call `notify_observers(key)` upon performing mutation operation: `delete`, `delete_if`, `filter!`, `select!`, `keep_if`, `reject!`
+- Have `ObservableHash` call `notify_observers(key)` upon performing mutation operation: `delete`, `delete_if`, `filter!`, `select!`, `keep_if`, `reject!`, `merge!`
 
 ### 2.2.0
 
