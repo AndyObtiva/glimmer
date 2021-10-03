@@ -264,6 +264,22 @@ module Glimmer
         end
       end
       
+      def shift
+        old_hash = self.dup
+        super.tap do
+          new_hash = self
+          pd deleted_keys = old_hash.keys - new_hash.keys
+          deleted_keys.each do |deleted_key|
+            deleted_value = old_hash[deleted_key]
+            unless deleted_value.nil?
+              unregister_dependent_observers(deleted_key, deleted_value)
+              unregister_dependent_observers(nil, deleted_value)
+              notify_observers(deleted_key)
+            end
+          end
+        end
+      end
+      
       def merge!(*other_hashes, &block)
         if other_hashes.empty?
           super
