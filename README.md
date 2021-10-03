@@ -1226,7 +1226,7 @@ These are the main classes concerning data-binding:
 - `Glimmer::DataBinding::Observable`: General super-module for all observables. Main methods concerned are: `add_observer` and `remove_observer`
 - `Glimmer::DataBinding::ObservableModel`: Mixin module for any observable model with observable attributes. In addition to `Observable` methods, it has a `notify_observers` method to be called when changes occur. It automatically enhances all attribute setters (ending with `=`) to notify observers on changes. Also, it automatically handles observing array attributes using `ObservableArray` appropriately so they would notify observers upon array mutation changes.
 - `Glimmer::DataBinding::ObservableArray`: Mixin module for any observable array collection that automatically handles notifying observers upon performing array mutation operations (e.g. `push`, `select!`, or `delete`)
-- `Glimmer::DataBinding::ObservableHash`: Mixin module for any observable hash that automatically handles notifying observers upon performing array mutation operation (e.g. `hash[key]=value`)
+- `Glimmer::DataBinding::ObservableHash`: Mixin module for any observable hash that automatically handles notifying observers upon performing hash mutation operations (e.g. `hash[key]=value`, `select!`, `merge!`)
 - `Glimmer::DataBinding::ModelBinding`: a higher-level abstraction that relies on all the other observer/observable classes to support basic data-binding, nested data-binding, and computed data-binding
 - `Glimmer::DataBinding::Shine`: enables highly intuitive and visually expressive syntax to perform bidirectional (two-way) data-binding with `<=>` and unidirectional (one-way) data-binding with `<=`
 

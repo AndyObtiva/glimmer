@@ -333,6 +333,24 @@ module Glimmer
           end
         end
       end
+      
+      def transform_values!(&block)
+        if block_given?
+          old_hash = self.dup
+          super(&block).tap do |new_hash|
+            new_hash.keys.each do |changed_key|
+              old_value = old_hash[changed_key]
+              if new_hash[changed_key] != old_value
+                unregister_dependent_observers(changed_key, old_value)
+                unregister_dependent_observers(nil, old_value)
+                notify_observers(changed_key)
+              end
+            end
+          end
+        else
+          super
+        end
+      end
     end
   end
 end
