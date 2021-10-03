@@ -662,5 +662,69 @@ describe Glimmer::DataBinding::ObservableHash do
       expect(@changed_value).to eq(nil)
       expect(@changed_key).to eq(nil)
     end
+    
+    it 'notifies observers when Hash#transform_keys! is called and changes key value' do
+      @fired = false
+      @changed_values = []
+      @changed_keys = []
+      observer = Glimmer::DataBinding::Observer.proc do |value, key|
+        @fired = true
+        @changed_values << value
+        @changed_keys << key
+      end
+      hash = {address: 'Los Angeles, California, USA'}
+      hash.singleton_class.include(described_class)
+      hash.add_observer(observer, :location)
+      hash.add_observer(observer, :address)
+
+      hash.transform_keys! { |key| :location }
+      expect(@fired).to eq(true)
+      expect(@changed_values).to eq([nil, 'Los Angeles, California, USA'])
+      expect(@changed_keys).to eq([:address, :location])
+
+      @fired = false
+      @changed_values = []
+      @changed_keys = []
+      hash.remove_observer(observer, :location)
+      hash.remove_observer(observer, :address)
+      hash.delete(:location)
+      hash[:address] = 'Los Angeles, California, USA'
+      hash.add_observer(observer) # observe all keys
+
+      hash.transform_keys! { |key| :location }
+      expect(@fired).to eq(true)
+      expect(@changed_values).to eq([nil, 'Los Angeles, California, USA'])
+      expect(@changed_keys).to eq([:address, :location])
+    end
+    
+    it 'does not notify observers when Hash#transform_keys! is called and previous key value remains the same' do
+      @fired = false
+      @changed_value = nil
+      @changed_key = nil
+      observer = Glimmer::DataBinding::Observer.proc do |value, key|
+        @fired = true
+        @changed_value = value
+        @changed_key = key
+      end
+      hash = {name: 'John'}
+      hash.singleton_class.include(described_class)
+      hash.add_observer(observer, :name)
+
+      hash.transform_keys! {|key| :name}
+      expect(@fired).to eq(false)
+      expect(@changed_value).to eq(nil)
+      expect(@changed_key).to eq(nil)
+      
+      @fired = false
+      @changed_value = nil
+      @changed_key = nil
+      hash.remove_observer(observer, :name)
+      hash.add_observer(observer) # observe all keys
+
+      hash.transform_keys! {|key| :name}
+      expect(@fired).to eq(false)
+      expect(@changed_value).to eq(nil)
+      expect(@changed_key).to eq(nil)
+    end
   end
 end

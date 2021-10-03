@@ -268,7 +268,7 @@ module Glimmer
         old_hash = self.dup
         super.tap do
           new_hash = self
-          pd deleted_keys = old_hash.keys - new_hash.keys
+          deleted_keys = old_hash.keys - new_hash.keys
           deleted_keys.each do |deleted_key|
             deleted_value = old_hash[deleted_key]
             unless deleted_value.nil?
@@ -309,6 +309,26 @@ module Glimmer
               unregister_dependent_observers(changed_key, old_value)
               unregister_dependent_observers(nil, old_value)
               notify_observers(changed_key)
+            end
+          end
+        end
+      end
+      
+      def transform_keys!(hash2 = nil, &block)
+        if hash2.nil? && block.nil?
+          super
+        else
+          old_hash = self.dup
+          result = hash2.nil? ? super(&block) : super(hash2, &block)
+          result.tap do |new_hash|
+            changed_keys = old_hash.keys + new_hash.keys
+            changed_keys.each do |changed_key|
+              old_value = old_hash[changed_key]
+              if new_hash[changed_key] != old_value
+                unregister_dependent_observers(changed_key, old_value)
+                unregister_dependent_observers(nil, old_value)
+                notify_observers(changed_key)
+              end
             end
           end
         end
