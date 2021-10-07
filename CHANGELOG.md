@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.3.0
+
+- Have observing `ObservableArray` automatically notice if any values are nested arrays and observe them for micro-changes (recursively all the way down)
+
 ### 2.2.2
 
 - Support auto-notifying on `ObservableArray#replace` observed changes

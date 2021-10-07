@@ -210,7 +210,7 @@ end
 ### Setup
 
 Follow these steps to author a [Glimmer](https://rubygems.org/gems/glimmer) DSL:
-- Add `gem 'glimmer', '~> 2.2.2'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.2.2` and add `require 'glimmer'`
+- Add `gem 'glimmer', '~> 2.3.0'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.3.0` and add `require 'glimmer'`
 - Create `glimmer/dsl/[dsl_name]/dsl.rb`, which requires and adds all dynamic expressions for the [dsl_name] Glimmer DSL module as per the code shown in the previous section (or [Official DSLs](#official-dsls) as examples)
 - Create `glimmer/dsl/[dsl_name]/[expresion_name]_expresion.rb` for every [expresion_name] expression needed, whether dynamic or static
 
@@ -1163,7 +1163,7 @@ These are the main classes concerning data-binding:
 - `Glimmer::DataBinding::Observer`: Provides general observer support including unique registration and deregistration for cleanup and prevention of memory leaks. Main methods concerned are: `call`, `register` (alias: `observe`), and `unregister` (alias: `unobserve` or `deregister`)
 - `Glimmer::DataBinding::Observable`: General super-module for all observables. Main methods concerned are: `add_observer` and `remove_observer`
 - `Glimmer::DataBinding::ObservableModel`: Mixin module for any observable model with observable attributes. In addition to `Observable` methods, it has a `notify_observers` method to be called when changes occur. It automatically enhances all attribute setters (ending with `=`) to notify observers on changes. Also, it automatically handles observing array attributes using `ObservableArray` appropriately so they would notify observers upon array mutation changes.
-- `Glimmer::DataBinding::ObservableArray`: Mixin module for any observable array collection that automatically handles notifying observers upon performing array mutation operations (e.g. `push`, `select!`, or `delete`)
+- `Glimmer::DataBinding::ObservableArray`: Mixin module for any observable array collection that automatically handles notifying observers upon performing array mutation operations (e.g. `push`, `select!`, or `delete`) recursively (meaning if an array contained arrays and they changed, observers are notified)
 - `Glimmer::DataBinding::ObservableHash`: Mixin module for any observable hash that automatically handles notifying observers upon performing hash mutation operations (e.g. `hash[key]=value`, `select!`, `merge!`)
 - `Glimmer::DataBinding::ModelBinding`: a higher-level abstraction that relies on all the other observer/observable classes to support basic data-binding, nested data-binding, and computed data-binding
 - `Glimmer::DataBinding::Shine`: enables highly intuitive and visually expressive syntax to perform bidirectional (two-way) data-binding with `<=>` and unidirectional (one-way) data-binding with `<=`

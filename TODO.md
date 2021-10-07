@@ -9,7 +9,7 @@ Related TODO files:
 
 ## Next
 
-- Have observing `ObservableArray` automatically notice if any values are arrays or hashes and observe them for micro-changes
+- Have observing `ObservableArray` automatically notice if any values are hashes and observe them for micro-changes
 
 ### Version TBD
 

@@ -143,7 +143,7 @@ module Glimmer
 
       def array_object_observer_for(property_name)
         @array_object_observers ||= Concurrent::Hash.new
-        @array_object_observers[property_name] = ObservableModel::Notifier.new(self, property_name) unless @array_object_observers.has_key?(property_name)
+        @array_object_observers[property_name] = Notifier.new(self, property_name) unless @array_object_observers.has_key?(property_name)
         @array_object_observers[property_name]
       end
       
@@ -160,7 +160,7 @@ module Glimmer
 
       def hash_object_observer_for(property_name)
         @hash_object_observers ||= Concurrent::Hash.new
-        @hash_object_observers[property_name] = ObservableModel::Notifier.new(self, property_name) unless @hash_object_observers.has_key?(property_name)
+        @hash_object_observers[property_name] = Notifier.new(self, property_name) unless @hash_object_observers.has_key?(property_name)
         @hash_object_observers[property_name]
       end
     end

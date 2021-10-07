@@ -21,6 +21,7 @@
 
 require 'set'
 require 'glimmer/data_binding/observable'
+require 'glimmer/data_binding/observer'
 require 'array_include_methods'
 
 using ArrayIncludeMethods
@@ -29,6 +30,20 @@ module Glimmer
   module DataBinding
     module ObservableArray
       include Observable
+      
+      class Notifier
+        include Observer
+        
+        attr_reader :observable_array
+        
+        def initialize(observable_array)
+          @observable_array = observable_array
+        end
+        
+        def call(new_value=nil, *extra_args)
+          @observable_array.notify_observers
+        end
+      end
 
       def add_observer(observer, *element_properties)
         element_properties = element_properties.flatten.compact.uniq
@@ -49,6 +64,23 @@ module Glimmer
         element_properties_for(observer).each do |property|
           observer.observe(element, property)
         end
+        ensure_array_object_observer(element) if element.is_a?(Array)
+      end
+      
+      def ensure_array_object_observer(object)
+        return unless object&.is_a?(Array)
+        array_object_observer = array_object_observer_for(object)
+        array_observer_registration = array_object_observer.observe(object)
+        property_observer_list.each do |observer|
+          my_registration = observer.registration_for(self)
+          observer.add_dependent(my_registration => array_observer_registration)
+        end
+      end
+      
+      def array_object_observer_for(object)
+        @array_object_observers ||= Concurrent::Hash.new
+        @array_object_observers[object] = Notifier.new(self) unless @array_object_observers.has_key?(object)
+        @array_object_observers[object]
       end
 
       def remove_observer(observer, *element_properties)
@@ -75,6 +107,15 @@ module Glimmer
       def remove_element_observer(element, observer)
         element_properties_for(observer).each do |property|
           observer.unobserve(element, property)
+        end
+        if element.is_a?(ObservableArray)
+          array_object_observer_for(element).unobserve(element)
+          element.property_observer_list.select {|o| o.observable_array == self}.each do |o|
+            o.registrations.each do |registration|
+              registration.deregister
+            end
+            @array_object_observers.reject! {|k, v| v == o}
+          end
         end
       end
 
