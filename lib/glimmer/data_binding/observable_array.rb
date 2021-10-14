@@ -45,26 +45,26 @@ module Glimmer
         end
       end
 
-      def add_observer(observer, *element_properties)
+      def add_observer(observer, *element_properties, recursive: false)
         element_properties = element_properties.flatten.compact.uniq
         return observer if has_observer?(observer) && has_observer_element_properties?(observer, element_properties)
         property_observer_list << observer
         observer_element_properties[observer] = element_properties_for(observer) + Concurrent::Set.new(element_properties)
-        each { |element| add_element_observer(element, observer) }
+        each { |element| add_element_observer(element, observer, recursive: recursive) }
         observer
       end
       
-      def add_element_observers(element)
+      def add_element_observers(element, recursive: false)
         property_observer_list.each do |observer|
-          add_element_observer(element, observer)
+          add_element_observer(element, observer, recursive: recursive)
         end
       end
 
-      def add_element_observer(element, observer)
+      def add_element_observer(element, observer, recursive: false)
         element_properties_for(observer).each do |property|
           observer.observe(element, property)
         end
-        ensure_array_object_observer(element) if element.is_a?(Array)
+        ensure_array_object_observer(element) if recursive && element.is_a?(Array)
       end
       
       def ensure_array_object_observer(object)

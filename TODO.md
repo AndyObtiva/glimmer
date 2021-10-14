@@ -9,7 +9,6 @@ Related TODO files:
 
 ## Next
 
-- Make observing nested arrays within an array optional (e.g. with recursive: true or something)
 - Ensure removing observers from hash in observablemodel when removed from observable
 - Extract Shine data-binding expression from Glimmer DSL for SWT to Glimmer
 - Have observing `ObservableArray` automatically notice if any values are hashes and observe them for micro-changes
