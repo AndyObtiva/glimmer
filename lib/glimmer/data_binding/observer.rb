@@ -110,8 +110,8 @@ module Glimmer
         # TODO optimize performance in the future via indexing and/or making a registration official object/class
         registration = registration_for(observable, *args.compact)
         dependents_for(registration).each do |dependent|
-          dependent.unregister
           remove_dependent(registration => dependent)
+          dependent.unregister if dependent != registration
         end
         registrations.delete(registration).tap do |registration|
           args = args[0...-1] if args.last == {}
