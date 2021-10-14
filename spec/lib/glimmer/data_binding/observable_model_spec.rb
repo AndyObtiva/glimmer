@@ -46,6 +46,26 @@ describe Glimmer::DataBinding::ObservableModel do
       expect(@observer_called).to eq(['subtask1', 'subtask2', 'subtask3'])
     end
     
+    it 'adds observer to Array of Arrays property recursively' do
+      task = Task.new
+      task.name = 'Sean'
+      task.subtasks = [[['subtask1', 'subtask2']]]
+      @observer_called = nil
+      observer = Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_called = new_value
+      end
+      
+      observer.observe(task, :subtasks)
+      task.subtasks[0][0] << 'subtask3'
+      expect(@observer_called).to be_nil
+
+      observer.unobserve(task, :subtasks)
+      
+      observer.observe(task, :subtasks, recursive: true)
+      task.subtasks[0][0] << 'subtask4'
+      expect(@observer_called).to eq([[["subtask1", "subtask2", "subtask3", "subtask4"]]])
+    end
+    
     it 'adds observer to Hash key value' do
       task = Task.new
       task.name = 'Sean'

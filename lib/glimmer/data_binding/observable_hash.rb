@@ -74,6 +74,7 @@ module Glimmer
       end
 
       def remove_observer(observer, key = nil, options = {})
+        old_value = self[key]
         if has_observer?(observer, key)
           key_observer_list(key).delete(observer)
           observer.unobserve(self, key)
@@ -169,7 +170,7 @@ module Glimmer
         options ||= {}
         return unless object&.is_a?(Hash)
         hash_object_observer = hash_object_observer_for(key)
-        hash_observer_registration = hash_object_observer.observe(object, nil, options)
+        hash_observer_registration = hash_object_observer.observe(object, options)
         key_observer_list(key).each do |observer|
           my_registration = observer.registration_for(self, key) # TODO eliminate repetition
           observer.add_dependent(my_registration => hash_observer_registration)

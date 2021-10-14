@@ -72,7 +72,7 @@ module Glimmer
       def ensure_array_object_observer(object, options)
         return unless object&.is_a?(Array)
         array_object_observer = array_object_observer_for(object)
-        array_observer_registration = array_object_observer.observe(object, [], options)
+        array_observer_registration = array_object_observer.observe(object, options)
         property_observer_list.each do |observer|
           my_registration = observer.registration_for(self)
           observer.add_dependent(my_registration => array_observer_registration)
@@ -87,7 +87,6 @@ module Glimmer
 
       def remove_observer(observer, *args)
         options = args.last.is_a?(Hash) ? args.pop : {recursive: false}
-        recursive = options[:recursive]
         element_properties = args
         element_properties = element_properties.flatten.compact.uniq
         if !element_properties.empty?

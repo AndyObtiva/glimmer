@@ -134,7 +134,7 @@ module Glimmer
         options ||= {}
         return unless object&.is_a?(Array)
         array_object_observer = array_object_observer_for(property_name)
-        array_observer_registration = array_object_observer.observe(object, [], options)
+        array_observer_registration = array_object_observer.observe(object, options)
         property_observer_list(property_name).each do |observer|
           my_registration = observer.registration_for(self, property_name) # TODO eliminate repetition
           observer.add_dependent(my_registration => array_observer_registration)

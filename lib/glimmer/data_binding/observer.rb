@@ -65,7 +65,8 @@ module Glimmer
       end
 
       def registration_for(observable, *args)
-        args = args[0...-1] if args.last == {}
+        args = args[0...-1] if args.last.is_a?(Hash)
+        args = args[0...-1] if args.last == []
         args = args.compact
         Registration.new(observer: self, observable: observable, args: args)
       end
@@ -77,6 +78,7 @@ module Glimmer
       end
 
       def dependents_for(registration)
+        registration = dependents.keys.find {|key| key == registration}
         dependents[registration] ||= Concurrent::Set.new
       end
 
@@ -95,6 +97,7 @@ module Glimmer
           end
         end
         args = args[0...-1] if args.last == {}
+        args = args[0...-1] if args.last == []
         observable.add_observer(*[self, *args].compact)
         registration_for(observable, *args.compact).tap do |registration|
           self.registrations << registration
@@ -112,6 +115,7 @@ module Glimmer
         end
         registrations.delete(registration).tap do |registration|
           args = args[0...-1] if args.last == {}
+          args = args[0...-1] if args.last == []
           observable.remove_observer(*[self, *args].compact)
         end
       end
