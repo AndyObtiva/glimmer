@@ -114,10 +114,8 @@ module Glimmer
         end
         if element.is_a?(ObservableArray)
           array_object_observer_for(element).unobserve(element)
-          element.property_observer_list.select {|o| o.observable_array == self}.each do |o|
-            o.registrations.each do |registration|
-              registration.deregister
-            end
+          element.property_observer_list.select {|o| o.respond_to?(:observable_array) && o.observable_array == self}.each do |o|
+            o.unregister_all_observables
             @array_object_observers.reject! {|k, v| v == o}
           end
         end
