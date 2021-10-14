@@ -364,7 +364,7 @@ module Glimmer
       end
       
       def unregister_dependent_observers(old_value)
-        return unless old_value.is_a?(ObservableModel) || old_value.is_a?(ObservableArray) || old_value.is_a?(ObservableHash)
+        return unless old_value.is_a?(ObservableModel) || old_value.is_a?(ObservableArray)
         property_observer_list.each { |observer| observer.unregister_dependents_with_observable(observer.registration_for(self), old_value) }
       end
       alias deregister_dependent_observers unregister_dependent_observers
