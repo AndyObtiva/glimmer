@@ -62,14 +62,18 @@ module Glimmer
         end
       end
 
-      def add_observer(observer, key = nil)
+      def add_observer(observer, key = nil, options = {})
+        if key.is_a?(Hash)
+          options = key
+          key = nil
+        end
         return observer if has_observer?(observer, key)
         key_observer_list(key) << observer
-        add_key_writer_observer(key)
+        add_key_writer_observer(key, options)
         observer
       end
 
-      def remove_observer(observer, key = nil)
+      def remove_observer(observer, key = nil, options = {})
         if has_observer?(observer, key)
           key_observer_list(key).delete(observer)
           observer.unobserve(self, key)
@@ -118,9 +122,9 @@ module Glimmer
         (key_observer_list(key).to_a - all_key_observer_list.to_a).each { |observer| observer.call(self[key], key) }
       end
 
-      def add_key_writer_observer(key = nil)
-        ensure_array_object_observer(key, self[key])
-        ensure_hash_object_observer(key, self[key])
+      def add_key_writer_observer(key = nil, options)
+        ensure_array_object_observer(key, self[key], nil, options)
+        ensure_hash_object_observer(key, self[key], nil, options)
         begin
           method('__original__store')
         rescue
@@ -143,10 +147,11 @@ module Glimmer
       end
       alias deregister_dependent_observers unregister_dependent_observers
 
-      def ensure_array_object_observer(key, object, old_object = nil)
+      def ensure_array_object_observer(key, object, old_object = nil, options = {})
+        options ||= {}
         return unless object&.is_a?(Array)
         array_object_observer = array_object_observer_for(key)
-        array_observer_registration = array_object_observer.observe(object)
+        array_observer_registration = array_object_observer.observe(object, options)
         key_observer_list(key).each do |observer|
           my_registration = observer.registration_for(self, key) # TODO eliminate repetition
           observer.add_dependent(my_registration => array_observer_registration)
@@ -160,10 +165,11 @@ module Glimmer
         @array_object_observers[key]
       end
       
-      def ensure_hash_object_observer(key, object, old_object = nil)
+      def ensure_hash_object_observer(key, object, old_object = nil, options = {})
+        options ||= {}
         return unless object&.is_a?(Hash)
         hash_object_observer = hash_object_observer_for(key)
-        hash_observer_registration = hash_object_observer.observe(object)
+        hash_observer_registration = hash_object_observer.observe(object, nil, options)
         key_observer_list(key).each do |observer|
           my_registration = observer.registration_for(self, key) # TODO eliminate repetition
           observer.add_dependent(my_registration => hash_observer_registration)

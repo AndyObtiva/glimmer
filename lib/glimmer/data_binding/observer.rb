@@ -46,9 +46,9 @@ module Glimmer
         end
       end
 
-      class Registration < Struct.new(:observer, :observable, :property, keyword_init: true)
+      class Registration < Struct.new(:observer, :observable, :args, keyword_init: true)
         def unregister
-          observer.unobserve(observable, property)
+          observer.unobserve(observable, *args)
         end
         alias unobserve unregister
         alias deregister unregister
@@ -64,8 +64,10 @@ module Glimmer
         @registrations ||= Concurrent::Set.new
       end
 
-      def registration_for(observable, property = nil)
-        Registration.new(observer: self, observable: observable, property: property)
+      def registration_for(observable, *args)
+        args = args[0...-1] if args.last == {}
+        args = args.compact
+        Registration.new(observer: self, observable: observable, args: args)
       end
 
       # mapping of registrations to dependents
@@ -78,12 +80,12 @@ module Glimmer
         dependents[registration] ||= Concurrent::Set.new
       end
 
-      # registers observer in an observable on a property (optional)
+      # registers observer in an observable on args usually containing a property and options (optional)
       # observer maintains registration list to unregister later
-      def register(observable, property = nil, *args)
+      def register(observable, *args)
         return if observable.nil?
         unless observable.is_a?(Observable)
-          # TODO refactor code to be more smart/polymorphic/automated and honor open/closed principle
+          # TODO refactor code to be more smart/polymorphic/automated and honor open/closed principle (e.g. for SomeClass, search if there is ObservableSomeClass)
           if observable.is_a?(Array)
             observable.extend(ObservableArray)
           elsif observable.is_a?(Hash)
@@ -92,23 +94,25 @@ module Glimmer
             observable.extend(ObservableModel)
           end
         end
-        observable.add_observer(*[self, property, *args].compact)
-        registration_for(observable, property).tap do |registration|
+        args = args[0...-1] if args.last == {}
+        observable.add_observer(*[self, *args].compact)
+        registration_for(observable, *args.compact).tap do |registration|
           self.registrations << registration
         end
       end
       alias observe register
 
-      def unregister(observable, property = nil)
+      def unregister(observable, *args)
         return unless observable.is_a?(Observable)
         # TODO optimize performance in the future via indexing and/or making a registration official object/class
-        registration = registration_for(observable, property)
+        registration = registration_for(observable, *args.compact)
         dependents_for(registration).each do |dependent|
           dependent.unregister
           remove_dependent(registration => dependent)
         end
         registrations.delete(registration).tap do |registration|
-          observable.remove_observer(*[self, property].compact)
+          args = args[0...-1] if args.last == {}
+          observable.remove_observer(*[self, *args].compact)
         end
       end
       alias unobserve unregister

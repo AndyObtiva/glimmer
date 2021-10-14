@@ -320,6 +320,10 @@ describe Glimmer::DataBinding::ModelBinding do
 
       person.siblings[0].name = 'Lana Sears'
 
+      person.siblings[0] = sibling2
+      
+      person.siblings = [sibling2]
+      
       expect(array).to eq(["before read", "name on read: Laura Magnus", "after read"])
     end
     

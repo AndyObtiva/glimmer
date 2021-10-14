@@ -5,7 +5,8 @@ Related Change Logs:
 
 ### 2.4.0
 
-- Make observing nested arrays within an array optional (e.g. with `recursive: true` option)
+- Support passing arbitrary options to `Observer` `#observe` (`#register`) method (not just properties, like `recursive: true` for example)
+- Make observing nested arrays within an array optional with `recursive: true` option
 
 ### 2.3.0
 

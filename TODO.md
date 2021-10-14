@@ -9,7 +9,8 @@ Related TODO files:
 
 ## Next
 
-- Ensure removing observers from hash in observablemodel when removed from observable
+- Support `recursive: [integer]` option for ObservableArray#add_observer for finite recursion
+- Ensure removing observers from hash in ObservableModel when removed from observable
 - Extract Shine data-binding expression from Glimmer DSL for SWT to Glimmer
 - Have observing `ObservableArray` automatically notice if any values are hashes and observe them for micro-changes
 
@@ -46,8 +47,11 @@ Related TODO files:
 
 ## DSLs
 
-- glimmer-dsl-databinding
-- glimmer-dsl-jsound
+- glimmer-dsl-gtk
+- glimmer-dsl-fox: fxruby has 900,000+ downloads, so there is a lot of demand for it and providing a DSL for it is useful.
+- glimmer-dsl-swing: swing has high demand in Java, so providing a DSL for it is useful.
+- glimmer-dsl-javafx: javafx has high demand in Java and using fxml can be a pain, so providing a DSL for it is useful.
+- glimmer-dsl-javasound
 - glimmer-dsl-wasm
 - glimmer-dsl-uml: A DSL for building UML diagrams based on the Glimmer engine. Renders as SWT app to start. Support web later via opal.
 - glimmer-dsl-object: A configuration DSL for building any Ruby object via DSL syntax instead of plain old Ruby syntax (perhaps replacing PropertyExpression in Glimmer DSL for SWT with it)

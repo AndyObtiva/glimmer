@@ -45,32 +45,34 @@ module Glimmer
         end
       end
 
-      def add_observer(observer, *element_properties, recursive: false)
+      def add_observer(observer, *args)
+        options = args.last.is_a?(Hash) ? args.pop : {recursive: false}
+        element_properties = args
         element_properties = element_properties.flatten.compact.uniq
         return observer if has_observer?(observer) && has_observer_element_properties?(observer, element_properties)
         property_observer_list << observer
         observer_element_properties[observer] = element_properties_for(observer) + Concurrent::Set.new(element_properties)
-        each { |element| add_element_observer(element, observer, recursive: recursive) }
+        each { |element| add_element_observer(element, observer, options) }
         observer
       end
       
-      def add_element_observers(element, recursive: false)
+      def add_element_observers(element, options = {})
         property_observer_list.each do |observer|
-          add_element_observer(element, observer, recursive: recursive)
+          add_element_observer(element, observer, options)
         end
       end
 
-      def add_element_observer(element, observer, recursive: false)
+      def add_element_observer(element, observer, options = {})
         element_properties_for(observer).each do |property|
-          observer.observe(element, property)
+          observer.observe(element, property, options)
         end
-        ensure_array_object_observer(element) if recursive && element.is_a?(Array)
+        ensure_array_object_observer(element, options) if options[:recursive] && element.is_a?(Array)
       end
       
-      def ensure_array_object_observer(object)
+      def ensure_array_object_observer(object, options)
         return unless object&.is_a?(Array)
         array_object_observer = array_object_observer_for(object)
-        array_observer_registration = array_object_observer.observe(object)
+        array_observer_registration = array_object_observer.observe(object, [], options)
         property_observer_list.each do |observer|
           my_registration = observer.registration_for(self)
           observer.add_dependent(my_registration => array_observer_registration)
@@ -83,7 +85,10 @@ module Glimmer
         @array_object_observers[object]
       end
 
-      def remove_observer(observer, *element_properties)
+      def remove_observer(observer, *args)
+        options = args.last.is_a?(Hash) ? args.pop : {recursive: false}
+        recursive = options[:recursive]
+        element_properties = args
         element_properties = element_properties.flatten.compact.uniq
         if !element_properties.empty?
           old_element_properties = element_properties_for(observer)
@@ -362,7 +367,7 @@ module Glimmer
       end
       
       def unregister_dependent_observers(old_value)
-        return unless old_value.is_a?(ObservableModel) || old_value.is_a?(ObservableArray)
+        return unless old_value.is_a?(ObservableModel) || old_value.is_a?(ObservableArray) || old_value.is_a?(ObservableHash)
         property_observer_list.each { |observer| observer.unregister_dependents_with_observable(observer.registration_for(self), old_value) }
       end
       alias deregister_dependent_observers unregister_dependent_observers

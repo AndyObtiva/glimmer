@@ -101,6 +101,10 @@ module Glimmer
       def computed_by
         Concurrent::Array.new([@binding_options[:computed_by]].flatten.compact)
       end
+      
+      def observation_options
+        @binding_options.slice(:recursive)
+      end
 
       def nested_property_observers_for(observer)
         @nested_property_observers_collection ||= Concurrent::Hash.new
@@ -121,7 +125,7 @@ module Glimmer
         @nested_property_observers_collection[observer]
       end
 
-      def add_observer(observer)
+      def add_observer(observer, extra_options = {})
         if computed?
           add_computed_observers(observer)
         elsif nested_property?
@@ -133,19 +137,20 @@ module Glimmer
               apply_processor(@binding_options[:after_read], converted_value)
             end
           end
-          observer_registration = model_binding_observer.observe(model, property_name)
+          observer_registration = model_binding_observer.observe(model, property_name, observation_options)
           my_registration = observer.registration_for(self)
           observer.add_dependent(my_registration => observer_registration)
         end
       end
 
-      def remove_observer(observer)
+      def remove_observer(observer, extra_options = {})
         if computed?
           @computed_model_bindings.each do |computed_model_binding|
             computed_observer_for(observer).unobserve(computed_model_binding)
           end
           @computed_observer_collection.delete(observer)
         elsif nested_property?
+          remove_nested_observers(observer)
           nested_property_observers_for(observer).clear
         else
           observer.unobserve(model, property_name)
@@ -167,7 +172,7 @@ module Glimmer
 
       def add_computed_observers(observer)
         @computed_model_bindings.each do |computed_model_binding|
-          observer_registration = computed_observer_for(observer).observe(computed_model_binding)
+          observer_registration = computed_observer_for(observer).observe(computed_model_binding, observation_options)
           my_registration = observer.registration_for(self)
           observer.add_dependent(my_registration => observer_registration)
         end
@@ -191,10 +196,29 @@ module Glimmer
           parent_property_name = nil if parent_property_name.to_s.start_with?('[')
           unless model.nil?
             # TODO figure out a way to deal with this more uniformly
-            observer_registration = property_indexed?(property_name) ? nested_property_observer.observe(model) : nested_property_observer.observe(model, property_name)
-            parent_registration = parent_observer.registration_for(parent_model, parent_property_name)
+            observer_registration = property_indexed?(property_name) ? nested_property_observer.observe(model, observation_options) : nested_property_observer.observe(model, property_name, observation_options)
+            parent_registration = parent_observer.registration_for(parent_model, *[parent_property_name].compact)
             parent_observer.add_dependent(parent_registration => observer_registration)
           end
+        end
+      end
+      
+      def remove_nested_observers(observer)
+        nested_property_observers = nested_property_observers_for(observer)
+        Concurrent::Array.new(nested_models.zip(nested_property_names)).each_with_index do |zip, i|
+          model, property_name = zip
+          nested_property_observer = nested_property_observers[property_name]
+          previous_index = i - 1
+          if previous_index.negative?
+            parent_model = self
+            parent_property_name = nil
+            parent_observer = observer
+          else
+            parent_model = nested_models[previous_index]
+            parent_property_name = nested_property_names[previous_index]
+            parent_observer = nested_property_observers[parent_property_name]
+          end
+          parent_observer&.unregister_all_observables
         end
       end
 
