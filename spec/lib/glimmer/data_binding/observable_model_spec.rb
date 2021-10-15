@@ -89,6 +89,18 @@ describe Glimmer::DataBinding::ObservableModel do
       expect(@observer_called).to be_nil
     end
     
+    it 'removes observer for an array property' do
+      task = Task.new
+      task.subtasks = ['subtask1', 'subtask2']
+      observer = Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_called = new_value
+      end
+      observer.observe(task, :subtasks)
+      observer.unobserve(task, :subtasks)
+      task.subtasks << 'Sean'
+      expect(@observer_called).to be_nil
+    end
+    
     it 'removes observers for a property' do
       task = Task.new
       observer = Glimmer::DataBinding::Observer.proc do |new_value|
