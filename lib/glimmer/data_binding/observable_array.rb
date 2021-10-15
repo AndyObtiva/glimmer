@@ -46,7 +46,7 @@ module Glimmer
       end
 
       def add_observer(observer, *args)
-        options = args.last.is_a?(Hash) ? args.pop : {recursive: false}
+        options = args.last.is_a?(Hash) ? args.pop : {}
         element_properties = args
         element_properties = element_properties.flatten.compact.uniq
         return observer if has_observer?(observer) && has_observer_element_properties?(observer, element_properties)
@@ -86,7 +86,7 @@ module Glimmer
       end
 
       def remove_observer(observer, *args)
-        options = args.last.is_a?(Hash) ? args.pop : {recursive: false}
+        options = args.last.is_a?(Hash) ? args.pop : {}
         element_properties = args
         element_properties = element_properties.flatten.compact.uniq
         if !element_properties.empty?

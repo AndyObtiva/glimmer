@@ -7,6 +7,7 @@ Related Change Logs:
 
 - Support passing arbitrary options to `Observer` `#observe` (`#register`) method (not just properties, like `recursive: true` for example)
 - Make observing nested arrays within an array optional with `recursive: true` option
+- Make observer dependents collection rely on Concurrent::Hash when available
 
 ### 2.3.0
 

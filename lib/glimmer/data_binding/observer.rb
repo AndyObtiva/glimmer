@@ -74,11 +74,13 @@ module Glimmer
       # mapping of registrations to dependents
       # {[observable, property] => [[dependent, dependent_observable, dependent_property], ...]}
       def dependents
-        @dependents ||= Hash.new
+        @dependents ||= Concurrent::Hash.new
       end
 
       def dependents_for(registration)
-        registration = dependents.keys.find {|key| key == registration}
+        found = dependents[registration]
+        return found unless found.nil?
+        dependents.rehash
         dependents[registration] ||= Concurrent::Set.new
       end
 
@@ -109,11 +111,12 @@ module Glimmer
         return unless observable.is_a?(Observable)
         # TODO optimize performance in the future via indexing and/or making a registration official object/class
         registration = registration_for(observable, *args.compact)
-        dependents_for(registration).each do |dependent|
-          remove_dependent(registration => dependent)
-          dependent.unregister if dependent != registration
-        end
-        registrations.delete(registration).tap do |registration|
+        registrations.delete(registration)
+        registration.tap do |registration|
+          dependents_for(registration).each do |dependent|
+            remove_dependent(registration => dependent)
+            dependent.unregister if dependent != registration
+          end
           args = args[0...-1] if args.last == {}
           args = args[0...-1] if args.last == []
           observable.remove_observer(*[self, *args].compact)
