@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["AndyMaleh".freeze]
-  s.date = "2021-10-14"
+  s.date = "2021-10-15"
   s.description = "Glimmer is a Ruby DSL Framework for Ruby GUI and More, consisting of a DSL Engine and an Observable / Observer / Data-Binding Library (including Observable Model, Observable Array, and Observable Hash). Used in Glimmer DSL for SWT (JRuby Desktop Development GUI Framework), Glimmer DSL for Tk (Ruby Desktop Development GUI Library), Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library), Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps), Glimmer DSL for XML (& HTML), and Glimmer DSL for CSS.".freeze
   s.email = "andy.am@gmail.com".freeze
   s.extra_rdoc_files = [

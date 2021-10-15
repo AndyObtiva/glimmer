@@ -61,15 +61,14 @@ module Glimmer
       end
 
       def registrations
-        @registrations ||= Concurrent::Set.new
+        @registrations ||= Concurrent::Hash.new
       end
 
       def registration_for(observable, *args)
-        args = args[0...-1] if args.last.is_a?(Hash)
-        args = args[0...-1] if args.last == []
-        args = args.compact
-        Registration.new(observer: self, observable: observable, args: args)
+        args = compact_args(args)
+        registrations[[observable.object_id, args]] ||= Registration.new(observer: self, observable: observable, args: args)
       end
+      alias ensure_registration_for! registration_for
 
       # mapping of registrations to dependents
       # {[observable, property] => [[dependent, dependent_observable, dependent_property], ...]}
@@ -78,10 +77,7 @@ module Glimmer
       end
 
       def dependents_for(registration)
-        found = dependents[registration]
-        return found unless found.nil?
-        dependents.rehash
-        dependents[registration] ||= Concurrent::Set.new
+        dependents[registration.object_id] ||= Concurrent::Set.new
       end
 
       # registers observer in an observable on args usually containing a property and options (optional)
@@ -98,28 +94,23 @@ module Glimmer
             observable.extend(ObservableModel)
           end
         end
-        args = args[0...-1] if args.last == {}
-        args = args[0...-1] if args.last == []
-        observable.add_observer(*[self, *args].compact)
-        registration_for(observable, *args.compact).tap do |registration|
-          self.registrations << registration
-        end
+        args = compact_args(args)
+        observable.add_observer(self, *args)
+        ensure_registration_for!(observable, *args)
       end
       alias observe register
 
       def unregister(observable, *args)
         return unless observable.is_a?(Observable)
-        # TODO optimize performance in the future via indexing and/or making a registration official object/class
-        registration = registration_for(observable, *args.compact)
-        registrations.delete(registration)
+        args = compact_args(args)
+        registration = registration_for(observable, *args)
+        registrations.delete([observable.object_id, args])
         registration.tap do |registration|
           dependents_for(registration).each do |dependent|
             remove_dependent(registration => dependent)
-            dependent.unregister if dependent != registration
+            dependent.deregister if dependent != registration
           end
-          args = args[0...-1] if args.last == {}
-          args = args[0...-1] if args.last == []
-          observable.remove_observer(*[self, *args].compact)
+          observable.remove_observer(self, *args)
         end
       end
       alias unobserve unregister
@@ -129,14 +120,17 @@ module Glimmer
         thedependents = dependents_for(registration).select do |thedependent|
           thedependent.observable == dependent_observable
         end
-        thedependents.each(&:unregister)
+        thedependents.each(&:deregister)
       end
       alias unobserve_dependents_with_observable unregister_dependents_with_observable
       alias deregister_dependents_with_observable unregister_dependents_with_observable
 
       # cleans up all registrations in observables
       def unregister_all_observables
-        registrations.each(&:unregister)
+        registrations.values.dup.each do |registration|
+          registration.deregister
+          registrations.delete([registration.observable.object_id, registration.args])
+        end
       end
       alias unobserve_all_observables unregister_all_observables
       alias deregister_all_observables unregister_all_observables
@@ -151,11 +145,19 @@ module Glimmer
       def remove_dependent(parent_to_dependent_hash)
         registration = parent_to_dependent_hash.keys.first
         dependent = parent_to_dependent_hash.values.first
-        dependents_for(registration).delete(dependent)
+        dependents_for(registration).delete(dependent).tap do
+          dependents.delete([registration.object_id]) if dependents_for(registration).empty?
+        end
       end
 
       def call(new_value = nil, *extra_args)
         raise Error, 'Not implemented!'
+      end
+      
+      def compact_args(args)
+        args = args[0...-1] if args.last == {}
+        args = args[0...-1] if args.last == []
+        args.compact
       end
     end
   end

@@ -115,7 +115,7 @@ module Glimmer
         if element.is_a?(ObservableArray)
           array_object_observer_for(element).unobserve(element)
           element.property_observer_list.select {|o| o.respond_to?(:observable_array) && o.observable_array == self}.each do |o|
-            o.unregister_all_observables
+            o.deregister_all_observables
             @array_object_observers.reject! {|k, v| v == o}
           end
         end
@@ -247,6 +247,7 @@ module Glimmer
       alias map! collect!
 
       def compact!
+        # TODO consider checking which exact indices changed and only notifying if there is a change
         super.tap { notify_observers }
       end
 

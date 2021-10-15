@@ -16,6 +16,7 @@ Related TODO files:
 
 ### Version TBD
 
+- refactor observer registration code to be more smart/polymorphic/automated and honor open/closed principle (e.g. for SomeClass, search if there is ObservableSomeClass)
 - Support indexed data-binding for string/symbol keyed hashes (e.g. `addresses['home'].street`)
 - Support case-insensitive static expressions
 - Support `observed` keyword to use in Observables around blocks of code that wouldn't trigger changes till completed.

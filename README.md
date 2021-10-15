@@ -856,7 +856,7 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello world](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-world.png)
 
-###### Hello, Tab!
+###### Hello, Notebook!
 
 Glimmer code (from [samples/hello/hello_tab.rb](https://github.com/AndyObtiva/glimmer-dsl-tk/blob/master/samples/hello/hello_tab.rb)):
 
@@ -864,7 +864,7 @@ Glimmer code (from [samples/hello/hello_tab.rb](https://github.com/AndyObtiva/gl
 include Glimmer
 
 root {
-  title 'Hello, Tab!'
+  title 'Hello, Notebook!'
    
   notebook {
     frame(text: 'English') {
@@ -885,13 +885,13 @@ root {
 Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
 
 ```
-ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_tab.rb'"
+ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_notebook.rb'"
 ```
 
 Glimmer app:
 
-![glimmer dsl tk screenshot sample hello tab English](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-tab-english.png)
-![glimmer dsl tk screenshot sample hello tab French](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-tab-french.png)
+![glimmer dsl tk screenshot sample hello notebook English](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-notebook-english.png)
+![glimmer dsl tk screenshot sample hello notebook French](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-notebook-french.png)
 
 ###### Hello, Combo!
 
@@ -900,7 +900,7 @@ Glimmer code (from [samples/hello/hello_combo.rb](https://github.com/AndyObtiva/
 ```ruby
 # ... more code precedes
 root {
-  title 'Hello, Combo!'
+  title 'Hello, Combobox!'
   
   combobox { |proxy|
     state 'readonly'
@@ -920,13 +920,13 @@ root {
 Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
 
 ```
-ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_combo.rb'"
+ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_combobox.rb'"
 ```
 
 Glimmer app:
 
-![glimmer dsl tk screenshot sample hello combo](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-combo.png)
-![glimmer dsl tk screenshot sample hello combo dropdown](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-combo-dropdown.png)
+![glimmer dsl tk screenshot sample hello combo](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-combobox.png)
+![glimmer dsl tk screenshot sample hello combo dropdown](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-combobox-dropdown.png)
 
 #### Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)
 
