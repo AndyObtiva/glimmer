@@ -72,6 +72,28 @@ module Glimmer
           expect(@fired).to eq(false)
         end
         
+        it 'adds recursive observer (1-level only) to an array having array elements (without element properties) using alternate syntax' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = [[['a', 'b']]]
+          array.singleton_class.include(ObservableArray)
+          observer.observe(array, recursive: 1)
+          
+          @fired = false
+          array[0][0][0] = 'c'
+          expect(@fired).to eq(false)
+          
+          @fired = false
+          array[0][0] = ['e', 'f']
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array[0] = [['c', 'd']]
+          expect(@fired).to eq(true)
+        end
+        
         it 'adds non-recursive observer to an array having array elements (without element properties)' do
           @fired = false
           observer = Observer.proc {

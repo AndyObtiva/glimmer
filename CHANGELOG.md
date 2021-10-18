@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.4.1
+
+- Support `recursive: [integer]` option for ObservableArray#add_observer for finite recursion
+
 ### 2.4.0
 
 - Support passing arbitrary options to `Observer` `#observe` (`#register`) method (not just properties, like `recursive: true` for example)

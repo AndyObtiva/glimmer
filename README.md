@@ -16,7 +16,7 @@ Featured in JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do) an
 
 [**Glimmer**](https://rubygems.org/gems/glimmer) is a DSL (Domain-Specific Language) Framework that consists of two things:
 - [DSL Engine](#dsl-engine): enables building internal DSLs embedded in Ruby (e.g. for GUI, XML, or CSS).
-- [Data-Binding Library](#data-binding-library): enables synchronizing GUI with Model Attributes bidirectionally **(now with Shine syntax support in v2)**.
+- [Data-Binding Library](#data-binding-library): enables synchronizing GUI with Model Attributes bidirectionally **(now with [Shine](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#shine) syntax support in v2)**.
 
 [**Glimmer**](https://rubygems.org/gems/glimmer) is ***the cream of the crop*** when it comes to building DSLs in Ruby:
 - Supports building the tersest most concise domain specific language syntax in Ruby.
@@ -32,10 +32,10 @@ Start by checking out Glimmer's original GUI DSL, which got extracted into its o
 [**Glimmer**](https://rubygems.org/gems/glimmer) supports the following DSLs:
 - [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)
 - [glimmer-dsl-opal](https://github.com/AndyObtiva/glimmer-dsl-opal): Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)
-- [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
-- [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS
 - [glimmer-dsl-tk](https://github.com/AndyObtiva/glimmer-dsl-tk): Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)
 - [glimmer-dsl-libui](https://github.com/AndyObtiva/glimmer-dsl-libui): Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)
+- [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
+- [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS
 
 ## Table of Contents
 
@@ -47,10 +47,10 @@ Start by checking out Glimmer's original GUI DSL, which got extracted into its o
     - [Official DSLs](#official-dsls)
       - [Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)](#glimmer-dsl-for-swt-jruby-desktop-development-gui-framework)
       - [Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)](#glimmer-dsl-for-opal-pure-ruby-web-gui-and-auto-webifier-of-desktop-apps)
-      - [Glimmer DSL for XML (& HTML)](#glimmer-dsl-for-xml--html)
-      - [Glimmer DSL for CSS](#glimmer-dsl-for-css)
       - [Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)](#glimmer-dsl-for-tk-mri-ruby-desktop-development-gui-library)
       - [Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)](#glimmer-dsl-for-libui-prerequisite-free-ruby-desktop-development-gui-library)
+      - [Glimmer DSL for XML (& HTML)](#glimmer-dsl-for-xml--html)
+      - [Glimmer DSL for CSS](#glimmer-dsl-for-css)
   - [Data-Binding Library](#data-binding-library)
   - [Glimmer Process](#glimmer-process)
   - [Resources](#resources)
@@ -71,13 +71,32 @@ Glimmer is fundamentally a DSL Engine that can support any number of DSLs like t
 Glimmer DSL syntax consists mainly of:
 - **keywords** (e.g. `table` for a table widget)
 - **style/args** (e.g. :multi as in `table(:multi)` for a multi-line selection table widget)
-- **content** (e.g. `{ table_column { text 'Name'} }` as in `table(:multi) { table_column { text 'Name'} }` for a multi-line selection table widget with a table column having header text property `'Name'` as content)
+- **content (nested attributes/keywords)** (e.g. `{ table_column { text 'Name'} }` as in `table(:multi) { table_column { text 'Name'} }` for a multi-line selection table widget with a table column having header text property `'Name'` as content)
+
+Here is a Hello, World! example from [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt):
+
+```ruby
+include Glimmer
+
+shell(:no_resize) { # keyword + style arg
+  text "Glimmer" # attribute content
+  
+  label { # keyword content
+    text "Hello, World!" # attribute content
+  }
+}.open
+```
+
+That code renders the following GUI (Graphical User Interface):
+
+![Hello World](images/glimmer-hello-world.png)
 
 The Glimmer DSL Engine's architecture is based on the following Design Patterns and Data Structures:
 - **Interpreter Design Pattern**: to define interpretable expressions of DSL keywords
 - **Chain of Responsibility Design Pattern / Queue Data Structure**: to chain expression handlers in order of importance for processing DSL keywords
 - **Adapter Design Pattern**: to adapt expressions into handlers in a chain of responsibility
 - **Stack Data Structure**: to handle processing parent/child nesting of DSL keyword expressions in the correct order
+- **Proxy Design Pattern**: to shield consumers of GUI libraries built with Glimmer from low-level GUI widget details
 
 Glimmer's use of the **Interpreter Design Pattern** in processing DSLs is also known as the **Virtual Machine Architectural Style**. After all, DSL expressions are virtual machine opcodes that process nested keywords stored in a stack. I built Glimmer's original DSL back in 2007 without knowing the **Virtual Machine Architectural Style** (except perhaps as an esoteric technology powering Java), but stumbled upon it anyways through following the Gang of Four Design Patterns mentioned above, chiefly the **Interpreter Design Pattern**.
 
@@ -210,7 +229,7 @@ end
 ### Setup
 
 Follow these steps to author a [Glimmer](https://rubygems.org/gems/glimmer) DSL:
-- Add `gem 'glimmer', '~> 2.4.0'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.4.0` and add `require 'glimmer'`
+- Add `gem 'glimmer', '~> 2.4.1'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.4.1` and add `require 'glimmer'`
 - Create `glimmer/dsl/[dsl_name]/dsl.rb`, which requires and adds all dynamic expressions for the [dsl_name] Glimmer DSL module as per the code shown in the previous section (or [Official DSLs](#official-dsls) as examples)
 - Create `glimmer/dsl/[dsl_name]/[expresion_name]_expresion.rb` for every [expresion_name] expression needed, whether dynamic or static
 
@@ -734,83 +753,6 @@ You should see "Apple Calculator Theme"
 
 [![Glimmer Calculator Opal Apple Calculator Theme](https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/master/glimmer-cs-calculator-screenshot-opal-apple.png)](http://glimmer-cs-calculator-server.herokuapp.com/welcomes/apple)
 
-#### Glimmer DSL for XML (& HTML)
-
-[Glimmer DSL for XML](https://github.com/AndyObtiva/glimmer-dsl-xml) provides Ruby syntax for building XML (eXtensible Markup Language) documents.
-
-Within the context of desktop development, Glimmer DSL for XML is useful in providing XML data for the [SWT Browser widget](https://github.com/AndyObtiva/glimmer/tree/master#browser-widget).
-
-##### XML DSL
-
-Simply start with `html` keyword and add HTML inside its block using Glimmer DSL syntax.
-Once done, you may call `to_s`, `to_xml`, or `to_html` to get the formatted HTML output.
-
-Here are all the Glimmer XML DSL top-level keywords:
-- `html`
-- `tag`: enables custom tag creation for exceptional cases by passing tag name as '_name' attribute
-- `name_space`: enables namespacing html tags
-
-Element properties are typically passed as a key/value hash (e.g. `section(id: 'main', class: 'accordion')`) . However, for properties like "selected" or "checked", you must leave value `nil` or otherwise pass in front of the hash (e.g. `input(:checked, type: 'checkbox')` )
-
-Example (basic HTML):
-
-```ruby
-@xml = html {
-  head {
-    meta(name: "viewport", content: "width=device-width, initial-scale=2.0")
-  }
-  body {
-    h1 { "Hello, World!" }
-  }
-}
-puts @xml
-```
-
-Output:
-
-```
-<html><head><meta name="viewport" content="width=device-width, initial-scale=2.0" /></head><body><h1>Hello, World!</h1></body></html>
-```
-
-#### Glimmer DSL for CSS
-
-[Glimmer DSL for CSS](https://github.com/AndyObtiva/glimmer-dsl-css) provides Ruby syntax for building CSS (Cascading Style Sheets).
-
-Within the context of [Glimmer](https://github.com/AndyObtiva/glimmer) app development, Glimmer DSL for CSS is useful in providing CSS for the [SWT Browser widget](https://github.com/AndyObtiva/glimmer/tree/master#browser-widget).
-
-##### CSS DSL
-
-Simply start with `css` keyword and add stylesheet rule sets inside its block using Glimmer DSL syntax.
-Once done, you may call `to_s` or `to_css` to get the formatted CSS output.
-
-`css` is the only top-level keyword in the Glimmer CSS DSL
-
-Selectors may be specified by `s` keyword or HTML element keyword directly (e.g. `body`)
-Rule property values may be specified by `pv` keyword or underscored property name directly (e.g. `font_size`)
-
-Example:
-
-```ruby
-@css = css {
-  body {
-    font_size '1.1em'
-    pv 'background', 'white'
-  }
-  
-  s('body > h1') {
-    background_color :red
-    pv 'font-size', '2em'
-  }
-}
-puts @css
-```
-
-Output:
-
-```
-body{font-size:1.1em;background:white}body > h1{background-color:red;font-size:2em}
-```
-
 #### Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)
 
 [Tcl/Tk](https://www.tcl.tk/) has evolved into a practical desktop GUI toolkit due to gaining truely native looking widgets on Mac, Windows, and Linux in [Tk version 8.5](https://www.tcl.tk/software/tcltk/8.5.html#:~:text=Highlights%20of%20Tk%208.5&text=Font%20rendering%3A%20Now%20uses%20anti,and%20window%20layout%2C%20and%20more.).
@@ -893,28 +835,51 @@ Glimmer app:
 ![glimmer dsl tk screenshot sample hello notebook English](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-notebook-english.png)
 ![glimmer dsl tk screenshot sample hello notebook French](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-notebook-french.png)
 
-###### Hello, Combo!
+###### Hello, Combobox!
 
-Glimmer code (from [samples/hello/hello_combo.rb](https://github.com/AndyObtiva/glimmer-dsl-tk/blob/master/samples/hello/hello_combo.rb)):
+Glimmer code (from [samples/hello/hello_combobox.rb](https://github.com/AndyObtiva/glimmer-dsl-tk/blob/master/samples/hello/hello_combobox.rb)):
 
 ```ruby
-# ... more code precedes
-root {
-  title 'Hello, Combobox!'
+require 'glimmer-dsl-tk'
+
+class Person
+  attr_accessor :country, :country_options
+
+  def initialize
+    self.country_options=["", "Canada", "US", "Mexico"]
+    self.country = "Canada"
+  end
+
+  def reset_country
+    self.country = "Canada"
+  end
+end
+
+class HelloCombobox
+  include Glimmer
   
-  combobox { |proxy|
-    state 'readonly'
-    text bind(person, :country)
-  }
-  
-  button { |proxy|
-    text "Reset Selection"
-    command {
-      person.reset_country
-    }
-  }
-}.open
-# ... more code follows
+  def launch
+    person = Person.new
+    
+    root {
+      title 'Hello, Combobox!'
+      
+      combobox {
+        readonly true # this applies to text editing only (item selection still triggers a write to model)
+        text <=> [person, :country]
+      }
+      
+      button {
+        text "Reset Selection"
+        command {
+          person.reset_country
+        }
+      }
+    }.open
+  end
+end
+
+HelloCombobox.new.launch
 ```
 
 Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
@@ -925,8 +890,8 @@ ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_combobox.rb'"
 
 Glimmer app:
 
-![glimmer dsl tk screenshot sample hello combo](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-combobox.png)
-![glimmer dsl tk screenshot sample hello combo dropdown](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-combobox-dropdown.png)
+![glimmer dsl tk screenshot sample hello combobox](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-combobox.png)
+![glimmer dsl tk screenshot sample hello combobox dropdown](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-combobox-dropdown.png)
 
 #### Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)
 
@@ -961,39 +926,13 @@ Mac
 
 ![glimmer-dsl-libui-mac-basic-window.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-mac-basic-window.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-basic-window.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-windows-basic-window.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-basic-window.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-linux-basic-window.png)
-
-###### Basic Button
-
-```ruby
-require 'glimmer-dsl-libui'
-
-include Glimmer
-
-window('hello world', 300, 200) {
-  button('Button') {
-    on_clicked do
-      msg_box('Information', 'You clicked the button')
-    end
-  }
-  
-  on_closing do
-    puts 'Bye Bye'
-  end
-}.show
-```
-
-Mac
-
-![glimmer-dsl-libui-mac-basic-button.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-mac-basic-button.png)
-![glimmer-dsl-libui-mac-basic-button-msg-box.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-mac-basic-button-msg-box.png)
-
-Linux
-
-![glimmer-dsl-libui-linux-basic-button.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-linux-basic-button.png)
-![glimmer-dsl-libui-linux-basic-button-msg-box.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-linux-basic-button-msg-box.png)
 
 ###### Basic Table Progress Bar
 
@@ -1035,6 +974,10 @@ window('Task Progress', 300, 200) {
 Mac
 
 ![glimmer-dsl-libui-mac-basic-table-progress-bar.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-mac-basic-table-progress-bar.png)
+
+Windows
+
+![glimmer-dsl-libui-windows-basic-table-progress-bar.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-windows-basic-table-progress-bar.png)
 
 Linux
 
@@ -1147,9 +1090,90 @@ Mac
 
 ![glimmer-dsl-libui-mac-area-gallery.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-mac-area-gallery.png)
 
+Windows
+
+![glimmer-dsl-libui-windows-area-gallery.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-windows-area-gallery.png)
+
 Linux
 
 ![glimmer-dsl-libui-linux-area-gallery.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-linux-area-gallery.png)
+
+#### Glimmer DSL for XML (& HTML)
+
+[Glimmer DSL for XML](https://github.com/AndyObtiva/glimmer-dsl-xml) provides Ruby syntax for building XML (eXtensible Markup Language) documents.
+
+Within the context of desktop development, Glimmer DSL for XML is useful in providing XML data for the [SWT Browser widget](https://github.com/AndyObtiva/glimmer/tree/master#browser-widget).
+
+##### XML DSL
+
+Simply start with `html` keyword and add HTML inside its block using Glimmer DSL syntax.
+Once done, you may call `to_s`, `to_xml`, or `to_html` to get the formatted HTML output.
+
+Here are all the Glimmer XML DSL top-level keywords:
+- `html`
+- `tag`: enables custom tag creation for exceptional cases by passing tag name as '_name' attribute
+- `name_space`: enables namespacing html tags
+
+Element properties are typically passed as a key/value hash (e.g. `section(id: 'main', class: 'accordion')`) . However, for properties like "selected" or "checked", you must leave value `nil` or otherwise pass in front of the hash (e.g. `input(:checked, type: 'checkbox')` )
+
+Example (basic HTML):
+
+```ruby
+@xml = html {
+  head {
+    meta(name: "viewport", content: "width=device-width, initial-scale=2.0")
+  }
+  body {
+    h1 { "Hello, World!" }
+  }
+}
+puts @xml
+```
+
+Output:
+
+```
+<html><head><meta name="viewport" content="width=device-width, initial-scale=2.0" /></head><body><h1>Hello, World!</h1></body></html>
+```
+
+#### Glimmer DSL for CSS
+
+[Glimmer DSL for CSS](https://github.com/AndyObtiva/glimmer-dsl-css) provides Ruby syntax for building CSS (Cascading Style Sheets).
+
+Within the context of [Glimmer](https://github.com/AndyObtiva/glimmer) app development, Glimmer DSL for CSS is useful in providing CSS for the [SWT Browser widget](https://github.com/AndyObtiva/glimmer/tree/master#browser-widget).
+
+##### CSS DSL
+
+Simply start with `css` keyword and add stylesheet rule sets inside its block using Glimmer DSL syntax.
+Once done, you may call `to_s` or `to_css` to get the formatted CSS output.
+
+`css` is the only top-level keyword in the Glimmer CSS DSL
+
+Selectors may be specified by `s` keyword or HTML element keyword directly (e.g. `body`)
+Rule property values may be specified by `pv` keyword or underscored property name directly (e.g. `font_size`)
+
+Example:
+
+```ruby
+@css = css {
+  body {
+    font_size '1.1em'
+    pv 'background', 'white'
+  }
+  
+  s('body > h1') {
+    background_color :red
+    pv 'font-size', '2em'
+  }
+}
+puts @css
+```
+
+Output:
+
+```
+body{font-size:1.1em;background:white}body > h1{background-color:red;font-size:2em}
+```
 
 ## Data-Binding Library
 
@@ -1163,12 +1187,76 @@ These are the main classes concerning data-binding:
 - `Glimmer::DataBinding::Observer`: Provides general observer support including unique registration and deregistration for cleanup and prevention of memory leaks. Main methods concerned are: `call`, `register` (alias: `observe`), and `unregister` (alias: `unobserve` or `deregister`)
 - `Glimmer::DataBinding::Observable`: General super-module for all observables. Main methods concerned are: `add_observer` and `remove_observer`
 - `Glimmer::DataBinding::ObservableModel`: Mixin module for any observable model with observable attributes. In addition to `Observable` methods, it has a `notify_observers` method to be called when changes occur. It automatically enhances all attribute setters (ending with `=`) to notify observers on changes. Also, it automatically handles observing array attributes using `ObservableArray` appropriately so they would notify observers upon array mutation changes.
-- `Glimmer::DataBinding::ObservableArray`: Mixin module for any observable array collection that automatically handles notifying observers upon performing array mutation operations (e.g. `push`, `select!`, or `delete`) recursively (meaning if an array contained arrays and they changed, observers are notified). Accepts `recursive: true` option in `add_observer` method to recursively observe nested arrays all the way down.
+- `Glimmer::DataBinding::ObservableArray`: Mixin module for any observable array collection that automatically handles notifying observers upon performing array mutation operations (e.g. `push`, `select!`, or `delete`) recursively (meaning if an array contained arrays and they changed, observers are notified). Accepts `recursive: true` option in `add_observer` method to recursively observe nested arrays all the way down. Alternatively, pass `recursive: [integer]` to limit recursion in `Array` observation to a specific number of levels beyond the first level (which is always included).
 - `Glimmer::DataBinding::ObservableHash`: Mixin module for any observable hash that automatically handles notifying observers upon performing hash mutation operations (e.g. `hash[key]=value`, `select!`, `merge!`)
 - `Glimmer::DataBinding::ModelBinding`: a higher-level abstraction that relies on all the other observer/observable classes to support basic data-binding, nested data-binding, and computed data-binding
 - `Glimmer::DataBinding::Shine`: enables highly intuitive and visually expressive syntax to perform bidirectional (two-way) data-binding with `<=>` and unidirectional (one-way) data-binding with `<=`
 
-You may learn more from [Data-Binding](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#data-binding) and [Observer](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#observer) usage in [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt)
+To do simple observation of models, arrays, or hashes, you can use the `Glimmer::DataBinding::Observer::proc` method, which builds an observer from a block. When invoking the `#observe` method on it, it automatically enhances the object argument being observed into an `Observable` (whether `ObservableModel`, `ObservableArray`, or `ObervableHash`).
+
+Example of observing a model attribute:
+
+```ruby
+Glimmer::DataBinding::Observer.proc do |new_value|
+  # Do some work with new value for model attribute
+end.observe(model, attribute)
+```
+
+Example of observing an array recursively (avoid recursion unless really needed since it fires on all fine-grained nested array changes):
+
+```ruby
+Glimmer::DataBinding::Observer.proc do |new_value|
+  # Do some work with new array value
+end.observe(array, recursive: true)
+```
+
+Example of observing a hash key:
+
+```ruby
+Glimmer::DataBinding::Observer.proc do |new_value|
+  # Do some work with new value for hash key
+end.observe(hash, :price)
+```
+
+Example of observing a hash for all key changes:
+
+```ruby
+Glimmer::DataBinding::Observer.proc do |new_value, changed_key|
+  # Do some work with new value and changed key for hash
+end.observe(hash)
+```
+
+If you would like to observe nested model attribute changes and/or indexed array changes (specifying a nested array index/indices), you can use the more advanced `Glimmer::DataBinding::ModelBinding` class instead.
+
+Example of observing nested model attributes:
+
+```ruby
+ModelBinding.new(model, "address1.street").add_observer do |new_address1_street_value|
+  # Do some work with new address 1 street value
+end
+```
+
+Example of observing indexed array changes (combined with a nested model attribute):
+
+```ruby
+ModelBinding.new(model, "employees[5].name").add_observer do |new_employee_6_name|
+  # Do some work with new employee 6 (index 5)'s name
+end
+```
+
+Example of observing double-indexed nested array changes:
+
+```ruby
+ModelBinding.new(model, "grid[5][7]").add_observer do |new_grid_cell_value|
+  # Do some work with new grid cell value for row index 5 and column index 7
+end
+```
+
+Note that if an observed model attribute or hash key is an array, it is automatically observed for array changes, not just attribute/key-value changes.
+
+All of the features above make Glimmer's data-binding library one of the most sophisticated and advanced in the industry since they automate everything instead of requiring endless manual configuration, thus resulting in some of the tersest most declarative syntax for using observers and data-binding.
+
+You may learn more by looking into [data-binding specs](/Users/andy/code/glimmer/spec/lib/glimmer/data_binding) as well as [Data-Binding](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#data-binding) and [Observer](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#observer) usage in [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt)
 
 ## Glimmer Process
 
@@ -1221,8 +1309,9 @@ If you would like to contribute to Glimmer, please study up on Glimmer and [SWT]
 
 You may apply for contributing to any of these Glimmer DSL gems whether you prefer to focus on the desktop or web:
 - [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)
-- [glimmer-dsl-tk](https://github.com/AndyObtiva/glimmer-dsl-tk): Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)
 - [glimmer-dsl-opal](https://github.com/AndyObtiva/glimmer-dsl-opal): Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)
+- [glimmer-dsl-tk](https://github.com/AndyObtiva/glimmer-dsl-tk): Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)
+- [glimmer-dsl-libui](https://github.com/AndyObtiva/glimmer-dsl-libui): Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)
 - [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
 - [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS
 

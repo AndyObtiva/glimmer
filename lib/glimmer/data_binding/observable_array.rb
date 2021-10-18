@@ -52,6 +52,10 @@ module Glimmer
         return observer if has_observer?(observer) && has_observer_element_properties?(observer, element_properties)
         property_observer_list << observer
         observer_element_properties[observer] = element_properties_for(observer) + Concurrent::Set.new(element_properties)
+        if !options.empty? && options[:recursive].is_a?(Integer)
+          options = options.clone
+          options[:recursive] = options[:recursive] - 1
+        end
         each { |element| add_element_observer(element, observer, options) }
         observer
       end
@@ -66,7 +70,9 @@ module Glimmer
         element_properties_for(observer).each do |property|
           observer.observe(element, property, options)
         end
-        ensure_array_object_observer(element, options) if options[:recursive] && element.is_a?(Array)
+        if element.is_a?(Array) && (options[:recursive] == true || (options[:recursive].is_a?(Integer) && options[:recursive] >= 0))
+          ensure_array_object_observer(element, options)
+        end
       end
       
       def ensure_array_object_observer(object, options)
