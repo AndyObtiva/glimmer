@@ -34,6 +34,7 @@ Start by checking out Glimmer's original GUI DSL, which got extracted into its o
 - [glimmer-dsl-opal](https://github.com/AndyObtiva/glimmer-dsl-opal): Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)
 - [glimmer-dsl-tk](https://github.com/AndyObtiva/glimmer-dsl-tk): Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)
 - [glimmer-dsl-libui](https://github.com/AndyObtiva/glimmer-dsl-libui): Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)
+- [glimmer-dsl-gtk](https://github.com/AndyObtiva/glimmer-dsl-gtk): Glimmer DSL for GTK (Ruby-GNOME Desktop Development GUI Library)
 - [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
 - [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS
 
@@ -1254,7 +1255,7 @@ end
 
 Note that if an observed model attribute or hash key is an array, it is automatically observed for array changes, not just attribute/key-value changes.
 
-All of the features above make Glimmer's data-binding library one of the most sophisticated and advanced in the industry since they automate everything instead of requiring endless manual configuration, thus resulting in some of the tersest most declarative syntax for using observers and data-binding.
+All of the features above make Glimmer's data-binding library one of the most sophisticated and advanced in the industry since it automates everything instead of requiring endless manual configuration, thus resulting in some of the tersest most declarative syntax for using observers and data-binding.
 
 You may learn more by looking into [data-binding specs](/Users/andy/code/glimmer/spec/lib/glimmer/data_binding) as well as [Data-Binding](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#data-binding) and [Observer](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#observer) usage in [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt)
 
