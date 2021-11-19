@@ -8,6 +8,7 @@ Related Change Logs:
 - Support observing `Struct`/`OpenStruct` changes via `:[]=` method in addition to attribute writers.
 - Support read-only direct observation of `Hash` object without key via `ModelBinding` (e.g. `ModelBinding.new(some_hash)`)
 - Support read-only direct observation of `Array` object without index via `ModelBinding` (e.g. `ModelBinding.new(some_array)`)
+- Support observing `Hash` attribute with `ModelBinding` (all keys or a single key)
 
 ### 2.4.1
 

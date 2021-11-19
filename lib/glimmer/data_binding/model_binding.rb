@@ -206,7 +206,7 @@ module Glimmer
       def call(value, *extra_args)
         return if model.nil?
         converted_value = value
-        invoke_property_writer(model, "#{property_name}=", converted_value) unless converted_value == evaluate_property || property_name.nil?
+        invoke_property_writer(model, model.is_a?(Hash) ? property_name : "#{property_name}=", converted_value) unless converted_value == evaluate_property || property_name.nil?
       end
 
       def evaluate_property
@@ -263,7 +263,13 @@ module Glimmer
           property_argument = property_argument.to_i if property_argument.match(/\d+/)
           object.send(property_method, property_argument)
         else
-          property_expression.nil? ? object : object.send(property_expression)
+          if property_expression.nil?
+            object
+          elsif object.is_a?(Hash)
+            object[property_expression]
+          else
+            object.send(property_expression)
+          end
         end
       end
 
@@ -278,7 +284,11 @@ module Glimmer
           property_argument = property_argument.to_i if property_argument.match(/\d+/)
           object.send(property_method, property_argument, converted_value)
         else
-          object.send(property_expression, converted_value)
+          if object.is_a?(Hash)
+            object[property_expression] = converted_value
+          else
+            object.send(property_expression, converted_value)
+          end
         end
         apply_processor(@binding_options[:after_write], converted_value)
       end

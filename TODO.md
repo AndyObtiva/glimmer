@@ -9,7 +9,6 @@ Related TODO files:
 
 ## Next
 
-- Support observing `Hash` attribute with `ModelBinding` (not just `Object` and `Array` attribute)
 - Consider disabling `#ensure_hash_object_observer` and making optional in ObservableModel/ObservableHash/ObservableArray since it has performance implications and usually is not necessary
 - Consider making `#ensure_array_object_observer` optional in ObservableModel/ObservableHash/ObservableArray since it has performance implications
 - Fix issue with ensure_array_object_observer not receiving recursive: true option when updating value of an attribute in ObservableModel
