@@ -32,23 +32,25 @@ module Glimmer
     module ObservableHashable
       include Observable
       
-      OBSERVED_STORE_METHOD = lambda do |key, value|
-        if key_observer_list(key).empty?
-          if all_key_observer_list.empty?
-            self.send('__original__store', key, value)
+      OBSERVED_STORE_METHOD = lambda do |options|
+        lambda do |key, value|
+          if key_observer_list(key).empty?
+            if all_key_observer_list.empty?
+              self.send('__original__store', key, value)
+            else
+              old_value = self[key]
+              unregister_dependent_observers(nil, old_value) # remove dependent observers previously installed in ensure_array_object_observer
+              self.send('__original__store', key, value)
+              notify_observers(key)
+              ensure_array_object_observer(nil, value, old_value, options)
+            end
           else
             old_value = self[key]
-            unregister_dependent_observers(nil, old_value) # remove dependent observers previously installed in ensure_array_object_observer
+            unregister_dependent_observers(key, old_value) # remove dependent observers previously installed in ensure_array_object_observer
             self.send('__original__store', key, value)
             notify_observers(key)
-            ensure_array_object_observer(nil, value, old_value)
+            ensure_array_object_observer(key, value, old_value, options)
           end
-        else
-          old_value = self[key]
-          unregister_dependent_observers(key, old_value) # remove dependent observers previously installed in ensure_array_object_observer
-          self.send('__original__store', key, value)
-          notify_observers(key)
-          ensure_array_object_observer(key, value, old_value)
         end
       end
 
@@ -58,7 +60,7 @@ module Glimmer
           method('__original__store')
         rescue
           define_singleton_method('__original__store', store_method)
-          define_singleton_method('[]=', &OBSERVED_STORE_METHOD)
+          define_singleton_method('[]=', &OBSERVED_STORE_METHOD.call(options))
         end
       rescue => e
         #ignore writing if no key writer exists

@@ -71,15 +71,14 @@ describe Glimmer::DataBinding::ObservableHash do
         @observer_called = new_value
       end
       
-      observer.observe(task, :subtasks)
-      task[:subtasks][0][0] << 'subtask3'
-      expect(@observer_called).to be_nil
-
-      observer.unobserve(task, :subtasks)
-      
       observer.observe(task, :subtasks, recursive: true)
       task[:subtasks][0][0] << 'subtask4'
-      expect(@observer_called).to eq([[["subtask1", "subtask2", "subtask3", "subtask4"]]])
+      expect(@observer_called).to eq([[["subtask1", "subtask2", "subtask4"]]])
+      
+      task[:subtasks] = [[["subtask1", "subtask2", "subtask3"]]]
+      @observer_called = nil
+      task[:subtasks][0][0][0] = 'subtask4'
+      expect(@observer_called).to eq([[["subtask4", "subtask2", "subtask3"]]])
     end
     
     it 'removes observer' do
