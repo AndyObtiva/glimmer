@@ -40,14 +40,14 @@ module Glimmer
         end
       end
       
-      PROPERTY_WRITER_FACTORY = lambda do |property_name|
+      PROPERTY_WRITER_FACTORY = lambda do |property_name, options|
         property_writer_name = "#{property_name}="
         lambda do |value|
           old_value = self.send(property_name)
           unregister_dependent_observers(property_name, old_value) # remove dependent observers previously installed in ensure_array_object_observer
           self.send("__original__#{property_writer_name}", value)
           notify_observers(property_name)
-          ensure_array_object_observer(property_name, value, old_value)
+          ensure_array_object_observer(property_name, value, old_value, options)
         end
       end
       
@@ -119,7 +119,9 @@ module Glimmer
           method("__original__#{property_writer_name}")
         rescue
           define_singleton_method("__original__#{property_writer_name}", property_writer_method(property_writer_name))
-          define_singleton_method(property_writer_name, &PROPERTY_WRITER_FACTORY.call(property_name))
+          # Note the limitation that the first observe call options apply to all subsequent observations meaning even if unobserve was called, options do not change from initial ones
+          # It is good enough for now. If there is a need to address this in the future, this is where to start the work
+          define_singleton_method(property_writer_name, &PROPERTY_WRITER_FACTORY.call(property_name, options))
         end
       rescue => e
         #ignore writing if no property writer exists
