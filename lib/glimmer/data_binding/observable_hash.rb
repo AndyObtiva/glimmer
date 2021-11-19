@@ -19,13 +19,13 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/data_binding/observable'
+require 'glimmer/data_binding/observable_hashable'
 require 'glimmer/data_binding/observer'
 
 module Glimmer
   module DataBinding
     module ObservableHash
-      include Observable
+      include ObservableHashable
 
       class Notifier
         include Observer
@@ -40,28 +40,6 @@ module Glimmer
         end
       end
       
-      OBSERVED_STORE_METHOD = lambda do |key, value|
-        if key_observer_list(key).empty?
-          if all_key_observer_list.empty?
-            self.send('__original__store', key, value)
-          else
-            old_value = self[key]
-            unregister_dependent_observers(nil, old_value) # remove dependent observers previously installed in ensure_array_object_observer and ensure_hash_object_observer
-            self.send('__original__store', key, value)
-            notify_observers(key)
-            ensure_array_object_observer(nil, value, old_value)
-            ensure_hash_object_observer(nil, value, old_value)
-          end
-        else
-          old_value = self[key]
-          unregister_dependent_observers(key, old_value) # remove dependent observers previously installed in ensure_array_object_observer and ensure_hash_object_observer
-          self.send('__original__store', key, value)
-          notify_observers(key)
-          ensure_array_object_observer(key, value, old_value)
-          ensure_hash_object_observer(key, value, old_value)
-        end
-      end
-
       def add_observer(observer, key = nil, options = {})
         if key.is_a?(Hash)
           options = key
@@ -121,24 +99,6 @@ module Glimmer
       def notify_observers(key)
         all_key_observer_list.to_a.each { |observer| observer.call(self[key], key) }
         (key_observer_list(key).to_a - all_key_observer_list.to_a).each { |observer| observer.call(self[key], key) }
-      end
-
-      def add_key_writer_observer(key = nil, options)
-        ensure_array_object_observer(key, self[key], nil, options)
-        ensure_hash_object_observer(key, self[key], nil, options)
-        begin
-          method('__original__store')
-        rescue
-          define_singleton_method('__original__store', store_method)
-          define_singleton_method('[]=', &OBSERVED_STORE_METHOD)
-        end
-      rescue => e
-        #ignore writing if no key writer exists
-        Glimmer::Config.logger.debug {"No need to observe store method: '[]='\n#{e.message}\n#{e.backtrace.join("\n")}"}
-      end
-      
-      def store_method
-        self.class.instance_method('[]=') rescue self.method('[]=')
       end
 
       def unregister_dependent_observers(key, old_value)

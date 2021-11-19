@@ -19,13 +19,13 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/data_binding/observable'
+require 'glimmer/data_binding/observable_hashable'
 require 'glimmer/data_binding/observer'
 
 module Glimmer
   module DataBinding
     module ObservableModel
-      include Observable
+      include ObservableHashable
 
       class Notifier
         include Observer
@@ -52,28 +52,6 @@ module Glimmer
         end
       end
       
-      OBSERVED_STORE_METHOD = lambda do |key, value|
-        if property_observer_list(key).empty?
-          if all_property_observer_list.empty?
-            self.send('__original__store', key, value)
-          else
-            old_value = self[key]
-            unregister_dependent_observers(nil, old_value) # remove dependent observers previously installed in ensure_array_object_observer and ensure_hash_object_observer
-            self.send('__original__store', key, value)
-            notify_observers(key)
-            ensure_array_object_observer(nil, value, old_value)
-            ensure_hash_object_observer(nil, value, old_value)
-          end
-        else
-          old_value = self[key]
-          unregister_dependent_observers(key, old_value) # remove dependent observers previously installed in ensure_array_object_observer and ensure_hash_object_observer
-          self.send('__original__store', key, value)
-          notify_observers(key)
-          ensure_array_object_observer(key, value, old_value)
-          ensure_hash_object_observer(key, value, old_value)
-        end
-      end
-
       def add_observer(observer, property_name, options = {})
         return observer if has_observer?(observer, property_name)
         property_observer_list(property_name) << observer
@@ -81,7 +59,7 @@ module Glimmer
         add_key_writer_observer(property_name, options) if is_a?(Struct) || is_a?(OpenStruct)
         observer
       end
-
+      
       def remove_observer(observer, property_name, options = {})
         if has_observer?(observer, property_name)
           property_observer_list(property_name).delete(observer)
@@ -90,10 +68,11 @@ module Glimmer
       end
 
       def remove_observers(property_name)
-        property_observer_hash[property_name.to_sym].each do |observer|
+        property_key = property_name&.to_sym
+        property_observer_hash[property_key].each do |observer|
           remove_observer(observer, property_name)
         end
-        property_observer_hash.delete(property_name.to_sym)
+        property_observer_hash.delete(property_key)
       end
 
       def remove_all_observers
@@ -118,13 +97,16 @@ module Glimmer
       end
 
       def property_observer_list(property_name)
-        property_observer_hash[property_name.to_sym] = Concurrent::Set.new unless property_observer_hash[property_name.to_sym]
-        property_observer_hash[property_name.to_sym]
+        property_key = property_name&.to_sym
+        property_observer_hash[property_key] = Concurrent::Set.new unless property_observer_hash[property_key]
+        property_observer_hash[property_key]
       end
+      alias key_observer_list property_observer_list
       
       def all_property_observer_list
         property_observer_list(nil)
       end
+      alias all_key_observer_list all_property_observer_list
 
       def notify_observers(property_name)
         property_observer_list(property_name).to_a.each { |observer| observer.call(send(property_name)) }
@@ -144,20 +126,6 @@ module Glimmer
       rescue => e
         #ignore writing if no property writer exists
         Glimmer::Config.logger.debug {"No need to observe property writer: #{property_writer_name}\n#{e.message}\n#{e.backtrace.join("\n")}"}
-      end
-      
-      def add_key_writer_observer(key = nil, options)
-        ensure_array_object_observer(key, self[key], nil, options)
-        ensure_hash_object_observer(key, self[key], nil, options)
-        begin
-          method('__original__store')
-        rescue
-          define_singleton_method('__original__store', store_method)
-          define_singleton_method('[]=', &OBSERVED_STORE_METHOD)
-        end
-      rescue => e
-        #ignore writing if no key writer exists
-        Glimmer::Config.logger.debug {"No need to observe store method: '[]='\n#{e.message}\n#{e.backtrace.join("\n")}"}
       end
       
       def property_writer_method(property_writer_name)
@@ -205,10 +173,6 @@ module Glimmer
         @hash_object_observers ||= Concurrent::Hash.new
         @hash_object_observers[property_name] = Notifier.new(self, property_name) unless @hash_object_observers.has_key?(property_name)
         @hash_object_observers[property_name]
-      end
-      
-      def store_method
-        self.class.instance_method('[]=') rescue self.method('[]=')
       end
     end
   end
