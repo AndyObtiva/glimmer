@@ -30,9 +30,9 @@ module Glimmer
 
       attr_reader :binding_options, :property_name_expression
 
-      def initialize(base_model, property_name_expression, binding_options = nil)
-        @base_model = base_model
-        @property_name_expression = property_name_expression
+      def initialize(*args)
+        binding_options = args.pop if args.size > 1 && args.last.is_a?(Hash)
+        @base_model, @property_name_expression = args
         @binding_options = binding_options || Concurrent::Hash.new
         if computed?
           @computed_model_bindings = Concurrent::Array.new(computed_by.map do |computed_by_property_expression|
@@ -91,7 +91,7 @@ module Glimmer
       end
 
       def nested_property?
-        property_name_expression.match(/[.\[]/)
+        property_name_expression.to_s.match(/[.\[]/)
       end
 
       def computed?
@@ -137,7 +137,7 @@ module Glimmer
               apply_processor(@binding_options[:after_read], converted_value)
             end
           end
-          observer_registration = model_binding_observer.observe(model, property_name, observation_options)
+          observer_registration = model_binding_observer.observe(*[model, property_name, observation_options].compact)
           my_registration = observer.registration_for(self)
           observer.add_dependent(my_registration => observer_registration)
         end
@@ -206,7 +206,7 @@ module Glimmer
       def call(value, *extra_args)
         return if model.nil?
         converted_value = value
-        invoke_property_writer(model, "#{property_name}=", converted_value) unless converted_value == evaluate_property
+        invoke_property_writer(model, "#{property_name}=", converted_value) unless converted_value == evaluate_property || property_name.nil?
       end
 
       def evaluate_property
@@ -263,11 +263,12 @@ module Glimmer
           property_argument = property_argument.to_i if property_argument.match(/\d+/)
           object.send(property_method, property_argument)
         else
-          object.send(property_expression)
+          property_expression.nil? ? object : object.send(property_expression)
         end
       end
 
       def invoke_property_writer(object, property_expression, value)
+        return if property_expression.nil?
         raise "Cannot invoke `#{property_expression}` because ModelBinding#binding_options[:read_only]=true" if @binding_options[:read_only]
         apply_processor(@binding_options[:before_write], value)
         converted_value = convert_on_write(value)

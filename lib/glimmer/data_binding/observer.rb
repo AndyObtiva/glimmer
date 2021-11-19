@@ -47,11 +47,11 @@ module Glimmer
       end
 
       class Registration < Struct.new(:observer, :observable, :args, keyword_init: true)
-        def unregister
+        def deregister
           observer.unobserve(observable, *args)
         end
-        alias unobserve unregister
-        alias deregister unregister
+        alias unregister deregister
+        alias unobserve deregister
       end
 
       class << self
@@ -82,7 +82,7 @@ module Glimmer
 
       # registers observer in an observable on args usually containing a property and options (optional)
       # observer maintains registration list to unregister later
-      def register(observable, *args)
+      def observe(observable, *args)
         return if observable.nil?
         unless observable.is_a?(Observable)
           # TODO refactor code to be more smart/polymorphic/automated and honor open/closed principle (e.g. for SomeClass, search if there is ObservableSomeClass)
@@ -98,9 +98,9 @@ module Glimmer
         observable.add_observer(self, *args)
         ensure_registration_for!(observable, *args)
       end
-      alias observe register
+      alias register observe
 
-      def unregister(observable, *args)
+      def unobserve(observable, *args)
         return unless observable.is_a?(Observable)
         args = compact_args(args)
         registration = registration_for(observable, *args)
@@ -113,27 +113,27 @@ module Glimmer
           observable.remove_observer(self, *args)
         end
       end
-      alias unobserve unregister
-      alias deregister unregister
+      alias unregister unobserve
+      alias deregister unobserve
 
-      def unregister_dependents_with_observable(registration, dependent_observable)
+      def unobserve_dependents_with_observable(registration, dependent_observable)
         thedependents = dependents_for(registration).select do |thedependent|
           thedependent.observable == dependent_observable
         end
         thedependents.each(&:deregister)
       end
-      alias unobserve_dependents_with_observable unregister_dependents_with_observable
-      alias deregister_dependents_with_observable unregister_dependents_with_observable
+      alias unregister_dependents_with_observable unobserve_dependents_with_observable
+      alias deregister_dependents_with_observable unobserve_dependents_with_observable
 
       # cleans up all registrations in observables
-      def unregister_all_observables
+      def unobserve_all_observables
         registrations.values.dup.each do |registration|
           registration.deregister
           registrations.delete([registration.observable.object_id, registration.args])
         end
       end
-      alias unobserve_all_observables unregister_all_observables
-      alias deregister_all_observables unregister_all_observables
+      alias unregister_all_observables unobserve_all_observables
+      alias deregister_all_observables unobserve_all_observables
 
       # add dependent observer to unregister when unregistering observer
       def add_dependent(parent_to_dependent_hash)

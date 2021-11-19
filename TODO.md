@@ -9,12 +9,18 @@ Related TODO files:
 
 ## Next
 
-- Observe all attribute writers in an `ObservableModel`
-- Support observing `Hash` with `ModelBinding` (not just arrays and models)
+- Support observing `Hash` attribute with `ModelBinding` (not just `Object` and `Array` attribute)
+- Consider disabling `#ensure_hash_object_observer` and making optional in ObservableModel/ObservableHash/ObservableArray since it has performance implications and usually is not necessary
+- Consider making `#ensure_array_object_observer` optional in ObservableModel/ObservableHash/ObservableArray since it has performance implications
+- Fix issue with ensure_array_object_observer not receiving recursive: true option when updating value of an attribute in ObservableModel
+
+- Observe all attribute writers in an `Object` (observe every attribute ending with =)
+- Observe all attribute writers in a `Struct` (observe every attribute ending with = as well as []= method)
+- Observe all attribute writers in an `OpenStruct` (observe `set_ostruct_member_value` method)
 
 - Consider if there is a need to invoke `ensure_array_object_observer` and `ensure_hash_object_observer` when observing all Hash keys
 - Consider if there is a need to invoke `ensure_array_object_observer` and `ensure_hash_object_observer` when observing all Model properties
-- Support Hash indexed properties (not just Arrays')
+- Support Hash indexed properties via `ModelBinding` (not just Arrays') (e.g. `'some_hash[:some_key]'`)
 - Support recursive: true with hashes that have nested hashes
 - Support recursive: true with models that have nested models
 - Support keyword arguments in expression interpretors

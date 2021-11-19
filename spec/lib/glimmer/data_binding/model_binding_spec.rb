@@ -4,7 +4,7 @@ require 'glimmer/data_binding/model_binding'
 describe Glimmer::DataBinding::ModelBinding do
   before(:all) do
     class Person
-      attr_accessor :name, :age, :spouse, :siblings, :first_name, :last_name, :grid, :triple_grid
+      attr_accessor :name, :age, :spouse, :siblings, :first_name, :last_name, :grid, :triple_grid, :hash_attribute
       
       # optionally receives hook_array for testing
       def initialize(hook_array = nil)
@@ -12,6 +12,7 @@ describe Glimmer::DataBinding::ModelBinding do
         @siblings = []
         @grid = [['x'], ['o'], ['x']]
         @triple_grid = [[['x'], ['o'], ['x']], [['x'], ['o'], ['x']]]
+        @hash_attribute = {a: 1, b: 2, c: 3}
       end
 
       def name
@@ -55,7 +56,43 @@ describe Glimmer::DataBinding::ModelBinding do
   let(:sibling3) { Person.new(name: 'sibling3') }
 
   context 'data-binding' do
-    it 'reads and writes changes in an array' do
+    it 'reads changes in an array object observed directly (not as a property)' do
+      model_binding = described_class.new(person.siblings)
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+      end.observe(model_binding)
+      
+      person.siblings << sibling
+        
+      expect(@observer_notified).to be_truthy
+      
+      new_siblings = [Person.new, Person.new]
+      model_binding.call(new_siblings)
+        
+      # If no property is specified in ModelBinding.new, then call does nothing (it is a read only binding)
+      expect(person.siblings).to_not eq(new_siblings)
+    end
+    
+    it 'reads changes in a hash object observed directly (not as a property)' do
+      model_binding = described_class.new(person.hash_attribute)
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+      end.observe(model_binding)
+      
+      person.hash_attribute[:somekey] = 'somevalue'
+        
+      expect(@observer_notified).to be_truthy
+      
+      new_hash = {d: 4}
+      model_binding.call(new_hash)
+        
+      # If no property is specified in ModelBinding.new, then call does nothing (it is a read only binding)
+      expect(person.hash_attribute).to_not eq(new_hash)
+    end
+    
+    it 'reads and writes changes in an array attribute' do
       model_binding = described_class.new(person, :siblings)
       
       Glimmer::DataBinding::Observer.proc do |new_value|

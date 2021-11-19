@@ -139,7 +139,7 @@ module Glimmer
       end
       alias deregister_dependent_observers unregister_dependent_observers
 
-      def ensure_array_object_observer(property_name, object, old_object = nil, options = {})
+      def ensure_array_object_observer(property_name, object, old_object = nil, options = nil)
         options ||= {}
         return unless object&.is_a?(Array)
         array_object_observer = array_object_observer_for(property_name)
@@ -157,7 +157,7 @@ module Glimmer
         @array_object_observers[property_name]
       end
       
-      def ensure_hash_object_observer(property_name, object, old_object = nil, options)
+      def ensure_hash_object_observer(property_name, object, old_object = nil, options = nil)
         options ||= {}
         return unless object&.is_a?(Hash)
         hash_object_observer = hash_object_observer_for(property_name)
