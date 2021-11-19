@@ -9,8 +9,12 @@ Related TODO files:
 
 ## Next
 
-- Special treatment for Hashes created with hash_proxy gem (can observe for all keys or per property)
-- Support Hash with ModelBinding (not just arrays and models)
+- Special treatment for `Struct`/`OpenStruct` (observe `:[]=` method in addition to attribute writers)
+- Observe all attribute writers in an `ObservableModel`
+- Support observing `Hash` with `ModelBinding` (not just arrays and models)
+
+- Consider if there is a need to invoke `ensure_array_object_observer` and `ensure_hash_object_observer` when observing all Hash keys
+- Consider if there is a need to invoke `ensure_array_object_observer` and `ensure_hash_object_observer` when observing all Model properties
 - Support Hash indexed properties (not just Arrays')
 - Support recursive: true with hashes that have nested hashes
 - Support recursive: true with models that have nested models
@@ -21,13 +25,13 @@ Related TODO files:
 % ruby /Users/andymaleh/code/pixel/pixelart/sandbox/test_glimmer.rb
 pixelart/1.2.1 on Ruby 3.0.2 (2021-07-07) [x86_64-darwin19] in (/Users/andymaleh/code/pixel/pixelart)
 /Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/engine.rb:195:in `add_content': uninitialized constant #<Class:Glimmer::DSL::Engine>::ParentExpression (NameError)
-	from /Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/engine.rb:182:in `block (2 levels) in interpret_expression'
-	from <internal:kernel>:90:in `tap'
-	from /Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/engine.rb:181:in `block in interpret_expression'
-	from /Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/expression.rb:64:in `around'
-	from /Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/engine.rb:180:in `interpret_expression'
-	from /Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/engine.rb:65:in `block (2 levels) in <class:Engine>'
-	from /Users/andymaleh/code/pixel/pixelart/sandbox/test_glimmer.rb:69:in `<main>'
+  from /Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/engine.rb:182:in `block (2 levels) in interpret_expression'
+  from <internal:kernel>:90:in `tap'
+  from /Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/engine.rb:181:in `block in interpret_expression'
+  from /Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/expression.rb:64:in `around'
+  from /Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/engine.rb:180:in `interpret_expression'
+  from /Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/engine.rb:65:in `block (2 levels) in <class:Engine>'
+  from /Users/andymaleh/code/pixel/pixelart/sandbox/test_glimmer.rb:69:in `<main>'
 ```
 - Add a Glimmer DSL comparison table to clarify advantages and trade-offs between different GUI toolkits
 - Observe an array for all children changes on a specific property (e.g. observe(@game, 'blocks[][].color') ; returns |new_color, block|)
@@ -69,7 +73,7 @@ pixelart/1.2.1 on Ruby 3.0.2 (2021-07-07) [x86_64-darwin19] in (/Users/andymaleh
 ## DSLs
 
 - glimmer-dsl-specifications: A brand new alternative to rspec since it became cumbersome and undeclarative after they switched to imperative expect syntax.
-- glimmer-dsl-rubymotion: Ruby Motion enables mobile app development with Ruby. Providing a DSL for it is useful. 
+- glimmer-dsl-rubymotion: Ruby Motion enables mobile app development with Ruby. Providing a DSL for it is useful.
 - glimmer-dsl-fox: fxruby has 900,000+ downloads, so there is a lot of demand for it and providing a DSL for it is useful.
 - glimmer-dsl-swing: swing has high demand in Java, so providing a DSL for it is useful.
 - glimmer-dsl-javafx: javafx has high demand in Java and using fxml can be a pain, so providing a DSL for it is useful.

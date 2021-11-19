@@ -16,5 +16,5 @@ group :development do
   gem 'coveralls', require: false
   gem 'simplecov', '~> 0.16.1', require: nil
   gem 'simplecov-lcov', '~> 0.7.0', require: nil
-  gem 'rake-tui'
+  gem 'rake-tui', '> 0'
 end
