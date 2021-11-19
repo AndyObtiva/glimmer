@@ -9,7 +9,8 @@ Related TODO files:
 
 ## Next
 
-- Fix issue with ensure_array_object_observer not receiving `recursive: true` option when updating value of an attribute in ObservableModel
+# - Fix issue with `#ensure_array_object_observer` not receiving `recursive: true` option when updating value of an attribute in `ObservableModel`
+# - Fix issue with `#ensure_array_object_observer` not receiving `recursive: true` option when updating value of an attribute in `ObservableHash`
 
 - Observe all attribute writers in an `Object` (observe every attribute ending with =)
 - Observe all attribute writers in a `Struct` (observe every attribute ending with = as well as []= method)

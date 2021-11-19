@@ -44,7 +44,7 @@ module Glimmer
           @fired = false
           old_array << 'e'
           expect(@fired).to eq(false)
-          array[0] << 'e'
+          old_array[0] << 'e'
           expect(@fired).to eq(false)
         end
         
@@ -54,7 +54,6 @@ module Glimmer
             @fired = true
           }
           array = [['a', 'b']]
-          array.singleton_class.include(ObservableArray)
           observer.observe(array, recursive: true)
           expect(@fired).to eq(false)
           array[0][0] = 'c'
@@ -66,9 +65,13 @@ module Glimmer
           expect(@fired).to eq(true)
           
           @fired = false
+          array[0][0] = 'e'
+          expect(@fired).to eq(true)
+          
+          @fired = false
           old_array << 'e'
           expect(@fired).to eq(false)
-          array[0] << 'e'
+          old_array[0] << 'e'
           expect(@fired).to eq(false)
         end
         
@@ -78,7 +81,6 @@ module Glimmer
             @fired = true
           }
           array = [[['a', 'b']]]
-          array.singleton_class.include(ObservableArray)
           observer.observe(array, recursive: 1)
           
           @fired = false

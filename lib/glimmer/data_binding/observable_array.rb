@@ -50,7 +50,7 @@ module Glimmer
         element_properties = args
         element_properties = element_properties.flatten.compact.uniq
         return observer if has_observer?(observer) && has_observer_element_properties?(observer, element_properties)
-        property_observer_list << observer
+        property_observer_list[observer] = options
         observer_element_properties[observer] = element_properties_for(observer) + Concurrent::Set.new(element_properties)
         if !options.empty? && options[:recursive].is_a?(Integer)
           options = options.clone
@@ -60,9 +60,9 @@ module Glimmer
         observer
       end
       
-      def add_element_observers(element, options = {})
-        property_observer_list.each do |observer|
-          add_element_observer(element, observer, options)
+      def add_element_observers(element, general_options = {})
+        property_observer_list.each do |observer, options|
+          add_element_observer(element, observer, options.merge(general_options))
         end
       end
 
@@ -79,7 +79,7 @@ module Glimmer
         return unless object&.is_a?(Array)
         array_object_observer = array_object_observer_for(object)
         array_observer_registration = array_object_observer.observe(object, options)
-        property_observer_list.each do |observer|
+        property_observer_list.each do |observer, options|
           my_registration = observer.registration_for(self)
           observer.add_dependent(my_registration => array_observer_registration)
         end
@@ -109,7 +109,7 @@ module Glimmer
       end
 
       def remove_element_observers(element)
-        property_observer_list.each do |observer|
+        property_observer_list.each do |observer, options|
           remove_element_observer(element, observer)
         end
       end
@@ -120,7 +120,7 @@ module Glimmer
         end
         if element.is_a?(ObservableArray)
           array_object_observer_for(element).unobserve(element)
-          element.property_observer_list.select {|o| o.respond_to?(:observable_array) && o.observable_array == self}.each do |o|
+          element.property_observer_list.select {|obs, opt| obs.respond_to?(:observable_array) && obs.observable_array == self}.each do |o|
             o.deregister_all_observables
             @array_object_observers.reject! {|k, v| v == o}
           end
@@ -128,7 +128,7 @@ module Glimmer
       end
 
       def has_observer?(observer)
-        property_observer_list.include?(observer)
+        property_observer_list.keys.include?(observer)
       end
       
       def has_observer_element_properties?(observer, element_properties)
@@ -136,7 +136,7 @@ module Glimmer
       end
 
       def property_observer_list
-        @property_observer_list ||= Concurrent::Set.new
+        @property_observer_list ||= Concurrent::Hash.new
       end
 
       def observer_element_properties
@@ -148,7 +148,7 @@ module Glimmer
       end
 
       def notify_observers
-        property_observer_list.to_a.each { |o| o.call(self) }
+        property_observer_list.to_a.each { |obs, opt| obs.call(self) }
       end
       
       def <<(element)
@@ -372,7 +372,7 @@ module Glimmer
       
       def unregister_dependent_observers(old_value)
         return unless old_value.is_a?(ObservableModel) || old_value.is_a?(ObservableArray)
-        property_observer_list.each { |observer| observer.unregister_dependents_with_observable(observer.registration_for(self), old_value) }
+        property_observer_list.each { |observer, options| observer.unregister_dependents_with_observable(observer.registration_for(self), old_value) }
       end
       alias deregister_dependent_observers unregister_dependent_observers
     end
