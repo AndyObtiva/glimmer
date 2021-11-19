@@ -9,7 +9,6 @@ Related TODO files:
 
 ## Next
 
-- Special treatment for `Struct`/`OpenStruct` (observe `:[]=` method in addition to attribute writers)
 - Observe all attribute writers in an `ObservableModel`
 - Support observing `Hash` with `ModelBinding` (not just arrays and models)
 

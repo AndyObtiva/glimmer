@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.5.0
+
+- Special treatment for `Struct`/`OpenStruct` (observe `:[]=` method in addition to attribute writers)
+
 ### 2.4.1
 
 - Support `recursive: [integer]` option for ObservableArray#add_observer for finite recursion
