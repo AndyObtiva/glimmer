@@ -9,17 +9,14 @@ Related TODO files:
 
 ## Next
 
-- Consider disabling `#ensure_hash_object_observer` and making optional in ObservableModel/ObservableHash/ObservableArray since it has performance implications and usually is not necessary
-- Consider making `#ensure_array_object_observer` optional in ObservableModel/ObservableHash/ObservableArray since it has performance implications
-- Fix issue with ensure_array_object_observer not receiving recursive: true option when updating value of an attribute in ObservableModel
+- Fix issue with ensure_array_object_observer not receiving `recursive: true` option when updating value of an attribute in ObservableModel
 
 - Observe all attribute writers in an `Object` (observe every attribute ending with =)
 - Observe all attribute writers in a `Struct` (observe every attribute ending with = as well as []= method)
 - Observe all attribute writers in an `OpenStruct` (observe `set_ostruct_member_value` method)
 
-- Consider if there is a need to invoke `ensure_array_object_observer` and `ensure_hash_object_observer` when observing all Hash keys
-- Consider if there is a need to invoke `ensure_array_object_observer` and `ensure_hash_object_observer` when observing all Model properties
-- Support Hash indexed properties via `ModelBinding` (not just Arrays') (e.g. `'some_hash[:some_key]'`)
+- Support Hash indexed properties via `ModelBinding` (not just Arrays') (e.g. `'some_hash_attribute[:some_key]'`)
+- Support nested Hash indexed properties via `ModelBinding` (e.g. `'some_attribute.some_hash_attribute[:some_key].some_other_attribute'`)
 - Support recursive: true with hashes that have nested hashes
 - Support recursive: true with models that have nested models
 - Support keyword arguments in expression interpretors
@@ -63,6 +60,8 @@ pixelart/1.2.1 on Ruby 3.0.2 (2021-07-07) [x86_64-darwin19] in (/Users/andymaleh
 - Add in-model support for specifying computed observer dependencies to avoid specifying it in the bind statement.
 - Check if TopLevelExpression must be verified for dynamic expressions (currently only verified for static expressions)
 - Ability to observe all properties of an ObservableModel and pass property names in observer calls as second argument
+- Observe nested hashes recursively for all keys (similar to Array recursive observation)
+- Consider making `#ensure_array_object_observer` optional in ObservableModel/ObservableHash/ObservableArray since it has performance implications (and perhaps make it happen as part of recursive: 1, shifting the depth understanding, instead of happening on recursive: false like it is now)
 
 ### Miscellaneous
 

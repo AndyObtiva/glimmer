@@ -109,23 +109,6 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.siblings).to eq(new_siblings)
     end
     
-    it 'reads and writes changes in a hash attribute' do
-      model_binding = described_class.new(person, :hash_attribute)
-      
-      Glimmer::DataBinding::Observer.proc do |new_value|
-        @observer_notified = true
-      end.observe(model_binding)
-      
-      person.hash_attribute[:d] = 4
-        
-      expect(@observer_notified).to be_truthy
-      
-      new_value = {e: 5}
-      model_binding.call(new_value)
-        
-      expect(person.hash_attribute).to eq(new_value)
-    end
-    
     it 'reads and writes changes in a hash attribute key' do
       model_binding = described_class.new(person.hash_attribute, :d)
       

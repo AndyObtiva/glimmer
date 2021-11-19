@@ -29,7 +29,6 @@ module Glimmer
     # - all_key_observer_list
     # - unregister_dependent_observer
     # - ensure_array_object_observer
-    # - ensure_hash_object_observer
     module ObservableHashable
       include Observable
       
@@ -39,25 +38,22 @@ module Glimmer
             self.send('__original__store', key, value)
           else
             old_value = self[key]
-            unregister_dependent_observers(nil, old_value) # remove dependent observers previously installed in ensure_array_object_observer and ensure_hash_object_observer
+            unregister_dependent_observers(nil, old_value) # remove dependent observers previously installed in ensure_array_object_observer
             self.send('__original__store', key, value)
             notify_observers(key)
             ensure_array_object_observer(nil, value, old_value)
-            ensure_hash_object_observer(nil, value, old_value)
           end
         else
           old_value = self[key]
-          unregister_dependent_observers(key, old_value) # remove dependent observers previously installed in ensure_array_object_observer and ensure_hash_object_observer
+          unregister_dependent_observers(key, old_value) # remove dependent observers previously installed in ensure_array_object_observer
           self.send('__original__store', key, value)
           notify_observers(key)
           ensure_array_object_observer(key, value, old_value)
-          ensure_hash_object_observer(key, value, old_value)
         end
       end
 
       def add_key_writer_observer(key = nil, options)
         ensure_array_object_observer(key, self[key], nil, options)
-        ensure_hash_object_observer(key, self[key], nil, options)
         begin
           method('__original__store')
         rescue

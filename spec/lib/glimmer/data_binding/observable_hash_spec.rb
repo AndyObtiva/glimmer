@@ -82,18 +82,6 @@ describe Glimmer::DataBinding::ObservableHash do
       expect(@observer_called).to eq([[["subtask1", "subtask2", "subtask3", "subtask4"]]])
     end
     
-    it 'adds observer to Hash key value' do
-      task = {}
-      task[:name] = 'Sean'
-      task[:subtasks] = {subtask1: 'thesubtask1', subtask2: 'thesubtask2'}
-      @observer_called = nil
-      Glimmer::DataBinding::Observer.proc do |new_value|
-        @observer_called = new_value
-      end.observe(task, :subtasks)
-      task[:subtasks][:subtask3] = 'thesubtask3'
-      expect(@observer_called).to eq({subtask1: 'thesubtask1', subtask2: 'thesubtask2', subtask3: 'thesubtask3'})
-    end
-    
     it 'removes observer' do
       task = {}
       observer = Glimmer::DataBinding::Observer.proc do |new_value|

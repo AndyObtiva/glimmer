@@ -9,6 +9,7 @@ Related Change Logs:
 - Support read-only direct observation of `Hash` object without key via `ModelBinding` (e.g. `ModelBinding.new(some_hash)`)
 - Support read-only direct observation of `Array` object without index via `ModelBinding` (e.g. `ModelBinding.new(some_array)`)
 - Support observing `Hash` attribute with `ModelBinding` (all keys or a single key)
+- Disable `#ensure_hash_object_observer` in ObservableModel/ObservableHash/ObservableArray since it has performance implications and is not necessary
 
 ### 2.4.1
 
