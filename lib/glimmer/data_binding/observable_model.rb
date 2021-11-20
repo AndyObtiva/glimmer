@@ -55,7 +55,8 @@ module Glimmer
         return observer if has_observer?(observer, property_name)
         property_observer_list(property_name) << observer
         add_property_writer_observers(property_name, options)
-        add_key_writer_observer(property_name, options) if is_a?(Struct) || is_a?(OpenStruct)
+        open_struct_loaded = !!::OpenStruct rescue false
+        add_key_writer_observer(property_name, options) if is_a?(Struct) || (open_struct_loaded && is_a?(OpenStruct))
         observer
       end
       

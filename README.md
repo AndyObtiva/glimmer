@@ -230,7 +230,7 @@ end
 ### Setup
 
 Follow these steps to author a [Glimmer](https://rubygems.org/gems/glimmer) DSL:
-- Add `gem 'glimmer', '~> 2.5.0'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.5.0` and add `require 'glimmer'`
+- Add `gem 'glimmer', '~> 2.5.1'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.5.1` and add `require 'glimmer'`
 - Create `glimmer/dsl/[dsl_name]/dsl.rb`, which requires and adds all dynamic expressions for the [dsl_name] Glimmer DSL module as per the code shown in the previous section (or [Official DSLs](#official-dsls) as examples)
 - Create `glimmer/dsl/[dsl_name]/[expresion_name]_expresion.rb` for every [expresion_name] expression needed, whether dynamic or static
 

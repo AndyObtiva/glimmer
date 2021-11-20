@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.5.1
+
+- Fix issue with referencing `OpenStruct` without 'ostruct' library being required (it now checks if `OpenStruct` is loaded first and avoids referencing otherwise).
+
 ### 2.5.0
 
 - Support observing `Struct`/`OpenStruct` changes via `:[]=` method in addition to attribute writers.
