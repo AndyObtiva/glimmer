@@ -9,9 +9,7 @@ Related TODO files:
 
 ## Next
 
-# - Fix issue with `#ensure_array_object_observer` not receiving `recursive: true` option when updating value of an attribute in `ObservableModel`
-# - Fix issue with `#ensure_array_object_observer` not receiving `recursive: true` option when updating value of an attribute in `ObservableHash`
-
+- Support observing an array object index directly (e.g. `ModelBinding.new(array, '[0]')`)
 - Observe all attribute writers in an `Object` (observe every attribute ending with =)
 - Observe all attribute writers in a `Struct` (observe every attribute ending with = as well as []= method)
 - Observe all attribute writers in an `OpenStruct` (observe `set_ostruct_member_value` method)
@@ -63,6 +61,8 @@ pixelart/1.2.1 on Ruby 3.0.2 (2021-07-07) [x86_64-darwin19] in (/Users/andymaleh
 - Ability to observe all properties of an ObservableModel and pass property names in observer calls as second argument
 - Observe nested hashes recursively for all keys (similar to Array recursive observation)
 - Consider making `#ensure_array_object_observer` optional in ObservableModel/ObservableHash/ObservableArray since it has performance implications (and perhaps make it happen as part of recursive: 1, shifting the depth understanding, instead of happening on recursive: false like it is now)
+- Fix issue with `#ensure_array_object_observer` not receiving `recursive: true` option (except first time) when updating value of an attribute in `ObservableModel`
+- Fix issue with `#ensure_array_object_observer` not receiving `recursive: true` option (except first time) when updating value of an attribute in `ObservableHash`
 
 ### Miscellaneous
 
