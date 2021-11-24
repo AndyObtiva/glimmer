@@ -37,7 +37,6 @@ Start by checking out Glimmer's original GUI DSL, which got extracted into its o
 - [glimmer-dsl-gtk](https://github.com/AndyObtiva/glimmer-dsl-gtk): Glimmer DSL for GTK (Ruby-GNOME Desktop Development GUI Library)
 - [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
 - [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS
-- [glimmer-dsl-specification](https://github.com/AndyObtiva/glimmer-dsl-specification): Glimmer DSL for Specification (Pure Ruby Declarative Use Case Specification and Automated Verification)
 
 ## Table of Contents
 
