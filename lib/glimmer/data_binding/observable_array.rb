@@ -51,7 +51,7 @@ module Glimmer
         element_properties = element_properties.flatten.compact.uniq
         return observer if has_observer?(observer) && has_observer_element_properties?(observer, element_properties)
         property_observer_list[observer] = options
-        observer_element_properties[observer] = element_properties_for(observer) + Concurrent::Set.new(element_properties)
+        observer_element_properties[observer] = Concurrent::Set.new(Concurrent::Array.new(element_properties_for(observer).to_a) + Concurrent::Array.new(element_properties)) # converting to Array as a workaround to jruby-9.3.2.0 issue TODO remove this workaround when no longer needed
         if !options.empty? && options[:recursive].is_a?(Integer)
           options = options.clone
           options[:recursive] = options[:recursive] - 1
@@ -97,7 +97,7 @@ module Glimmer
         element_properties = element_properties.flatten.compact.uniq
         if !element_properties.empty?
           old_element_properties = element_properties_for(observer)
-          observer_element_properties[observer] = element_properties_for(observer) - Concurrent::Set.new(element_properties)
+          observer_element_properties[observer] = Concurrent::Set.new(Concurrent::Array.new(element_properties_for(observer).to_a) - Concurrent::Array.new(element_properties)) # TODO remove this workaround when no longer needed (it is for jruby-9.3.2.0 issue)
           each { |element| element_properties.each { |property| observer.unobserve(element, property) } }
         end
         if element_properties_for(observer).empty?

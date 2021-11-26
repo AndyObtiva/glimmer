@@ -9,7 +9,10 @@ Related TODO files:
 
 ## Next
 
+- Document data-binding options like on_read, after_read, etc...
 - Support observing an array object index directly (e.g. `ModelBinding.new(array, '[0]')`)
+- Extract Shine data-binding expression from Glimmer DSL for SWT to Glimmer
+- Fix issue where if a static expression fails the can_interpret? test, no dynamic expressions are exercised next (yet an error shouts instead)
 - Observe all attribute writers in an `Object` (observe every attribute ending with =)
 - Observe all attribute writers in a `Struct` (observe every attribute ending with = as well as []= method)
 - Observe all attribute writers in an `OpenStruct` (observe `set_ostruct_member_value` method)
@@ -35,7 +38,6 @@ pixelart/1.2.1 on Ruby 3.0.2 (2021-07-07) [x86_64-darwin19] in (/Users/andymaleh
 ```
 - Add a Glimmer DSL comparison table to clarify advantages and trade-offs between different GUI toolkits
 - Observe an array for all children changes on a specific property (e.g. observe(@game, 'blocks[][].color') ; returns |new_color, block|)
-- Extract Shine data-binding expression from Glimmer DSL for SWT to Glimmer
 - Ensure removing observers from hash in ObservableModel when removed from observable
 
 ### Version TBD

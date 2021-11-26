@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.5.2
+
+- Fix issue with jruby-9.3.2.0 not supporting `Concurrent::Set#+` operation (workaround of converting `Concurrent::Set` to `Array` first and then reconverting to `Concurrent::Set` after `+` operation)
+
 ### 2.5.1
 
 - Fix issue with referencing `OpenStruct` without 'ostruct' library being required (it now checks if `OpenStruct` is loaded first and avoids referencing otherwise).
