@@ -93,7 +93,7 @@ module Glimmer
       end
 
       def property_observer_hash
-        @property_observers ||= Hash.new
+        @property_observers ||= Concurrent::Hash.new
       end
 
       def property_observer_list(property_name)

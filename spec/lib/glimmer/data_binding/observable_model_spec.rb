@@ -72,6 +72,36 @@ describe Glimmer::DataBinding::ObservableModel do
       expect(@observer_called).to eq([[["subtask4", "subtask2", "subtask3"]]])
     end
     
+    it 'fails to add observer to immutable object since it will not have changes' do
+      model = :some_symbol
+      expect {
+        Glimmer::DataBinding::Observer.proc {}.observe(model, :to_s)
+      }.to raise_error(TypeError)
+    end
+    
+    it 'silently ignores adding observer to immutable object when :ignore_frozen option is specified' do
+      model = :some_symbol
+      expect {
+        Glimmer::DataBinding::Observer.proc {}.observe(model, :to_s, ignore_frozen: true)
+      }.to_not raise_error(TypeError)
+    end
+    
+    it 'fails to add observer to frozen object since it will not have changes' do
+      model = {}
+      model.freeze
+      expect {
+        Glimmer::DataBinding::Observer.proc {}.observe(model, :to_s)
+      }.to raise_error(FrozenError)
+    end
+    
+    it 'silently ignores adding observer to frozen object when :ignore_frozen option is specified' do
+      model = {}
+      model.freeze
+      expect {
+        Glimmer::DataBinding::Observer.proc {}.observe(model, :to_s, ignore_frozen: true)
+      }.to_not raise_error(FrozenError)
+    end
+    
     it 'removes observer' do
       task = Task.new
       observer = Glimmer::DataBinding::Observer.proc do |new_value|

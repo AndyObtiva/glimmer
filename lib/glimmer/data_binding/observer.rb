@@ -83,7 +83,9 @@ module Glimmer
       # registers observer in an observable on args usually containing a property and options (optional)
       # observer maintains registration list to unregister later
       def observe(observable, *args)
+        options = args.last.is_a?(Hash) ? args.last : {}
         return if observable.nil?
+        return if options[:ignore_frozen] && observable.frozen?
         unless observable.is_a?(Observable)
           # TODO refactor code to be more smart/polymorphic/automated and honor open/closed principle (e.g. for SomeClass, search if there is ObservableSomeClass)
           if observable.is_a?(Array)

@@ -3,9 +3,11 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
-### 2.5.2
+### 2.5.3
 
-- Fix issue with jruby-9.3.2.0 not supporting `Concurrent::Set#+` operation (workaround of converting `Concurrent::Set` to `Array` first and then reconverting to `Concurrent::Set` after `+` operation)
+- Provide `Observer#observe` option to tolerate not being able to extend an object for observation by silently not observing such object
+- Use `Concurrent::Hash` for `ObservableModel#property_observer_hash`
+- Use `Concurrent::Hash` for `ObservableHash#key_observer_hash`
 
 ### 2.5.1
 

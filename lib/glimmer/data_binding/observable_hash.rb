@@ -84,7 +84,7 @@ module Glimmer
       end
 
       def key_observer_hash
-        @key_observers ||= Hash.new
+        @key_observers ||= Concurrent::Hash.new
       end
 
       def key_observer_list(key)

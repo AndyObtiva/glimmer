@@ -230,7 +230,7 @@ end
 ### Setup
 
 Follow these steps to author a [Glimmer](https://rubygems.org/gems/glimmer) DSL:
-- Add `gem 'glimmer', '~> 2.5.1'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.5.1` and add `require 'glimmer'`
+- Add `gem 'glimmer', '~> 2.5.3'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.5.3` and add `require 'glimmer'`
 - Create `glimmer/dsl/[dsl_name]/dsl.rb`, which requires and adds all dynamic expressions for the [dsl_name] Glimmer DSL module as per the code shown in the previous section (or [Official DSLs](#official-dsls) as examples)
 - Create `glimmer/dsl/[dsl_name]/[expresion_name]_expresion.rb` for every [expresion_name] expression needed, whether dynamic or static
 
@@ -1185,7 +1185,7 @@ Glimmer enhances observed models automatically (including array operations like 
 This relies mainly on the Observer Design Pattern and the MVP (Model-View-Presenter) Architectural Pattern (a variation on MVC)
 
 These are the main classes concerning data-binding:
-- `Glimmer::DataBinding::Observer`: Provides general observer support including unique registration and deregistration for cleanup and prevention of memory leaks. Main methods concerned are: `call`, `register` (alias: `observe`), and `unregister` (alias: `unobserve` or `deregister`)
+- `Glimmer::DataBinding::Observer`: Provides general observer support including unique registration and deregistration for cleanup and prevention of memory leaks. Main methods concerned are: `call`, `register` (alias: `observe`), and `unregister` (alias: `unobserve` or `deregister`). Passing the option `ignore_frozen: true` at the end of the args of `register` (alias: `observe`) method results in silently ignoring any passed frozen observable without raising an error (it raises an error otherwise for frozen/immutable objects).
 - `Glimmer::DataBinding::Observable`: General super-module for all observables. Main methods concerned are: `add_observer` and `remove_observer`
 - `Glimmer::DataBinding::ObservableModel`: Mixin module for any observable model (`Object`, `Struct` or `OpenStruct`) with observable attributes (observes attribute writers and `Struct`/`OpenStruct` `:[]=` method). In addition to `Observable` methods, it has a `notify_observers` method to be called when changes occur. It automatically enhances all attribute setters (ending with `=`) to notify observers on changes. Also, it automatically handles observing array attributes using `ObservableArray` appropriately so they would notify observers upon array mutation changes.
 - `Glimmer::DataBinding::ObservableArray`: Mixin module for any observable array collection that automatically handles notifying observers upon performing array mutation operations (e.g. `push`, `select!`, or `delete`) recursively (meaning if an array contained arrays and they changed, observers are notified). Accepts `recursive: true` option in `add_observer` method to recursively observe nested arrays all the way down. Alternatively, pass `recursive: [integer]` to limit recursion in `Array` observation to a specific number of levels beyond the first level (which is always included).
