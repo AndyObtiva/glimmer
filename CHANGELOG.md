@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.5.4
+
+- `Glimmer::DataBinding::ObservableModel` support for observing model attributes with specified `:attribute_writer_type` option (default: `:attribute=`), which can be a single symbol or an array (e.g. `attribute_writer_type: [:attribute=, :set_attribute]`). Glimmer automatches attribute name and automatically generates observer notification attribute writer methods.
+
 ### 2.5.3
 
 - Provide `Observer#observe` option to tolerate not being able to extend an object for observation by silently not observing such object

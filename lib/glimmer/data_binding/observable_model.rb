@@ -40,8 +40,7 @@ module Glimmer
         end
       end
       
-      PROPERTY_WRITER_FACTORY = lambda do |property_name, options|
-        property_writer_name = "#{property_name}="
+      PROPERTY_WRITER_FACTORY = lambda do |property_name, property_writer_name, options|
         lambda do |value|
           old_value = self.send(property_name)
           unregister_dependent_observers(property_name, old_value) # remove dependent observers previously installed in ensure_array_object_observer
@@ -52,6 +51,7 @@ module Glimmer
       end
       
       def add_observer(observer, property_name, options = {})
+        initialize_observer_options(options)
         return observer if has_observer?(observer, property_name)
         property_observer_list(property_name) << observer
         add_property_writer_observers(property_name, options)
@@ -113,20 +113,24 @@ module Glimmer
       end
       
       def add_property_writer_observers(property_name, options)
-        property_writer_name = "#{property_name}="
-        method(property_writer_name)
-        ensure_array_object_observer(property_name, send(property_name), nil, options)
-        begin
-          method("__original__#{property_writer_name}")
-        rescue
-          define_singleton_method("__original__#{property_writer_name}", property_writer_method(property_writer_name))
-          # Note the limitation that the first observe call options apply to all subsequent observations meaning even if unobserve was called, options do not change from initial ones
-          # It is good enough for now. If there is a need to address this in the future, this is where to start the work
-          define_singleton_method(property_writer_name, &PROPERTY_WRITER_FACTORY.call(property_name, options))
+        options[:attribute_writer_type].each do |attribute_writer_type|
+          begin
+            property_writer_name = attribute_writer_type.to_s.gsub('attribute', property_name.to_s)
+            method(property_writer_name)
+            ensure_array_object_observer(property_name, send(property_name), nil, options)
+            begin
+              method("__original__#{property_writer_name}")
+            rescue
+              define_singleton_method("__original__#{property_writer_name}", property_writer_method(property_writer_name))
+              # Note the limitation that the first observe call options apply to all subsequent observations meaning even if unobserve was called, options do not change from initial ones
+              # It is good enough for now. If there is a need to address this in the future, this is where to start the work
+              define_singleton_method(property_writer_name, &PROPERTY_WRITER_FACTORY.call(property_name, property_writer_name, options))
+            end
+          rescue => e
+            #ignore writing if no property writer exists
+            Glimmer::Config.logger.debug {"No need to observe property writer: #{property_writer_name}\n#{e.message}\n#{e.backtrace.join("\n")}"}
+          end
         end
-      rescue => e
-        #ignore writing if no property writer exists
-        Glimmer::Config.logger.debug {"No need to observe property writer: #{property_writer_name}\n#{e.message}\n#{e.backtrace.join("\n")}"}
       end
       
       def property_writer_method(property_writer_name)
@@ -156,6 +160,11 @@ module Glimmer
         @array_object_observers ||= Concurrent::Hash.new
         @array_object_observers[property_name] = Notifier.new(self, property_name) unless @array_object_observers.has_key?(property_name)
         @array_object_observers[property_name]
+      end
+
+      def initialize_observer_options(options)
+        options[:attribute_writer_type] ||= [:attribute=]
+        options[:attribute_writer_type] = [options[:attribute_writer_type]] if !options[:attribute_writer_type].is_a?(Array)
       end
     end
   end

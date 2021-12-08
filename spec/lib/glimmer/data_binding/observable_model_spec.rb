@@ -12,6 +12,7 @@ describe Glimmer::DataBinding::ObservableModel do
     
     class Task
       attr_accessor :name, :subtasks
+      alias set_name name=
       
       class << self
         attr_accessor :name_filter
@@ -39,6 +40,33 @@ describe Glimmer::DataBinding::ObservableModel do
       end.observe(task, :name)
       task.name = 'Sean'
       expect(@observer_called).to eq('Sean')
+    end
+    
+    it 'adds observer that gets notified when set_attribute type of attribute writer is called (not attribute=)' do
+      task = Task.new
+      @observer_called = nil
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_called = new_value
+      end.observe(task, :name, attribute_writer_type: :set_attribute)
+      
+      task.set_name 'Sean'
+      
+      expect(@observer_called).to eq('Sean')
+    end
+    
+    it 'adds observer that gets notified when both set_attribute and attribute= types of attribute writer are called' do
+      task = Task.new
+      @observer_called = nil
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_called = new_value
+      end.observe(task, :name, attribute_writer_type: [:attribute=, :set_attribute])
+      
+      task.name = 'Sean'
+      expect(@observer_called).to eq('Sean')
+      
+      @observer_called = nil
+      task.set_name 'Lisa'
+      expect(@observer_called).to eq('Lisa')
     end
     
     it 'adds observer to Array property' do
