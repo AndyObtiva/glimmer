@@ -75,6 +75,30 @@ module Glimmer
           expect(@fired).to eq(false)
         end
         
+        it 'adds recursive observer to an empty array' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          array = []
+          observer.observe(array, recursive: true)
+          expect(@fired).to eq(false)
+          array[0] = []
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array[0][0] = []
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array[0][0][0] = 'e'
+          expect(@fired).to eq(true)
+          
+          @fired = false
+          array.replace([[['e']]])
+          expect(@fired).to eq(true)
+        end
+        
         it 'adds recursive observer (1-level only) to an array having array elements (without element properties) using alternate syntax' do
           @fired = false
           observer = Observer.proc {

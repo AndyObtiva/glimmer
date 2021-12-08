@@ -72,6 +72,20 @@ describe Glimmer::DataBinding::ObservableModel do
       expect(@observer_called).to eq([[["subtask4", "subtask2", "subtask3"]]])
     end
     
+    it 'adds observer to empty Array recursively' do
+      task = Task.new
+      task.subtasks = []
+      observer = Glimmer::DataBinding::Observer.proc do |new_subtasks|
+        @observer_called = new_subtasks
+      end
+      
+      observer.observe(task, :subtasks, recursive: true)
+      
+      @observer_called = nil
+      task.subtasks = [['subtask1', 'subtask2', 'subtask3']]
+      expect(@observer_called).to eq([["subtask1", "subtask2", "subtask3"]])
+    end
+    
     it 'fails to add observer to immutable object since it will not have changes' do
       model = :some_symbol
       expect {
