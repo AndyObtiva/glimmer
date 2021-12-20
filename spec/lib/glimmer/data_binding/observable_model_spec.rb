@@ -32,7 +32,7 @@ describe Glimmer::DataBinding::ObservableModel do
   end
   
   context 'Object (instance)' do
-    it 'adds observer' do
+    it 'adds observer to a standard model' do
       task = Task.new
       @observer_called = nil
       Glimmer::DataBinding::Observer.proc do |new_value|

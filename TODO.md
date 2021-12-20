@@ -9,6 +9,7 @@ Related TODO files:
 
 ## Next
 
+- consider avoiding compacting of model with property in ModelBinding and instead, only eliminate nil in property/args, but keep model even if nil to get a better error message in that case
 - Document data-binding options like on_read, after_read, etc...
 - Support observing an array object index directly (e.g. `ModelBinding.new(array, '[0]')`)
 - Extract Shine data-binding expression from Glimmer DSL for SWT to Glimmer
@@ -52,7 +53,6 @@ pixelart/1.2.1 on Ruby 3.0.2 (2021-07-07) [x86_64-darwin19] in (/Users/andymaleh
 - Refactor Engine: consider replacing Glimmer::DSL::Engine.static_expressions[keyword].keys - Glimmer::DSL::Engine.disabled_dsls with Glimmer::DSL::Engine.enabled_static_expression_dsls(keyword)
 - Deal with Engine issue regarding async_exec static expression
 - Document Observer/Observable/Data-Binding API
-- Extract data-binding/observe keywords from glimmer-dsl-swt back into glimmer as a built in default DSL. That way, they can be shared/reused with glimmer-dsl-opal and glimmer-dsl-tk
 - Extract glimmer-dsl-databinding out of glimmer as an observer/data-binding DSL library and reuse across other DSLs (SWT, Opal, and Tk)
 - Move glimmer projects underneath glimmer organization
 - Extract glimmer rake tasks that are common from glimmer-dsl-swt into glimmer such as list:gems:dsl
@@ -78,14 +78,8 @@ pixelart/1.2.1 on Ruby 3.0.2 (2021-07-07) [x86_64-darwin19] in (/Users/andymaleh
 
 ## DSLs
 
-- glimmer-dsl-specifications: A brand new alternative to rspec since it became cumbersome and undeclarative after they switched to imperative expect syntax.
 - glimmer-dsl-rubymotion: Ruby Motion enables mobile app development with Ruby. Providing a DSL for it is useful.
-- glimmer-dsl-fox: fxruby has 900,000+ downloads, so there is a lot of demand for it and providing a DSL for it is useful.
-- glimmer-dsl-swing: swing has high demand in Java, so providing a DSL for it is useful.
-- glimmer-dsl-javafx: javafx has high demand in Java and using fxml can be a pain, so providing a DSL for it is useful.
-- glimmer-dsl-javasound
-- glimmer-dsl-wasm
-- glimmer-dsl-uml: A DSL for building UML diagrams based on the Glimmer engine. Renders as SWT app to start. Support web later via opal.
+- glimmer-dsl-tui: Glimmer DSL for Text-Based User Interfaces (aka Textual User Interfaces). Have it adapt desktop apps just like Glimmer DSL for Opal
 - glimmer-dsl-object: A configuration DSL for building any Ruby object via DSL syntax instead of plain old Ruby syntax (perhaps replacing PropertyExpression in Glimmer DSL for SWT with it)
 class(*init_args) {
   attribute_name value
@@ -103,6 +97,6 @@ rectangle(width: 30, height: 40) {
   width 30
   height 40
   circle(x: 30, y: 70) {
-    radius: 70
+    radius 70
   }
 }
