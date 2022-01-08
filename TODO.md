@@ -9,7 +9,6 @@ Related TODO files:
 
 ## Next
 
-- consider avoiding compacting of model with property in ModelBinding and instead, only eliminate nil in property/args, but keep model even if nil to get a better error message in that case
 - Document data-binding options like on_read, after_read, etc...
 - Support observing an array object index directly (e.g. `ModelBinding.new(array, '[0]')`)
 - Extract Shine data-binding expression from Glimmer DSL for SWT to Glimmer

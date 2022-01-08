@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.5.5
+
+- Avoid compacting model with property in `ModelBinding` yet only compact property/args and keep model as is get a better error message in the case of a `nil` model
+
 ### 2.5.4
 
 - `Glimmer::DataBinding::ObservableModel` support for observing model attributes with specified `:attribute_writer_type` option (default: `:attribute=`), which can be a single symbol or an array (e.g. `attribute_writer_type: [:attribute=, :set_attribute]`). Glimmer automatches attribute name and automatically generates observer notification attribute writer methods.

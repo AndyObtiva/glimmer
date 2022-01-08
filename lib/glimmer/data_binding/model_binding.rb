@@ -137,7 +137,7 @@ module Glimmer
               apply_processor(@binding_options[:after_read], converted_value)
             end
           end
-          observer_registration = model_binding_observer.observe(*[model, property_name, observation_options].compact)
+          observer_registration = model_binding_observer.observe(*([model] + [property_name, observation_options].compact))
           my_registration = observer.registration_for(self)
           observer.add_dependent(my_registration => observer_registration)
         end
