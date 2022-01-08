@@ -6,6 +6,7 @@ Related Change Logs:
 ### 2.5.5
 
 - Avoid compacting model with property in `ModelBinding` yet only compact property/args and keep model as is get a better error message in the case of a `nil` model
+- Document data-binding options like on_read, after_read, etc...
 
 ### 2.5.4
 

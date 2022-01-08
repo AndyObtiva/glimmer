@@ -9,7 +9,6 @@ Related TODO files:
 
 ## Next
 
-- Document data-binding options like on_read, after_read, etc...
 - Support observing an array object index directly (e.g. `ModelBinding.new(array, '[0]')`)
 - Extract Shine data-binding expression from Glimmer DSL for SWT to Glimmer
 - Fix issue where if a static expression fails the can_interpret? test, no dynamic expressions are exercised next (yet an error shouts instead)

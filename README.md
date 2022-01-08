@@ -1251,6 +1251,20 @@ ModelBinding.new(model, "grid[5][7]").add_observer do |new_grid_cell_value|
 end
 ```
 
+Data-bound `ModelBinding` attribute can be:
+- **Direct:** `Symbol` representing attribute reader/writer (e.g. `[person, :name`])
+- **Nested:** `String` representing nested attribute path (e.g. `[company, 'address.street']`). That results in "nested data-binding"
+- **Indexed:** `String` containing array attribute index (e.g. `[customer, 'addresses[0].street']`). That results in "indexed data-binding"
+
+Data-binding options include:
+- `before_read {|value| ...}`: performs an operation before reading data from Model to update View.
+- `on_read {|value| ...}`: converts value read from Model to update the View.
+- `after_read {|converted_value| ...}`: performs an operation after read from Model to update View.
+- `before_write {|value| ...}`: performs an operation before writing data to Model from View.
+- `on_write {|value| ...}`: converts value read from View to update the Model.
+- `after_write {|converted_value| ...}`: performs an operation after writing to Model from View.
+- `computed_by attribute` or `computed_by [attribute1, attribute2, ...]`: indicates model attribute is computed from specified attribute(s), thus updated when they are updated. That is known as "computed data-binding".
+
 Note that if an observed model attribute or hash key is an array, it is automatically observed for array changes, not just attribute/key-value changes.
 
 All of the features above make Glimmer's data-binding library one of the most sophisticated and advanced in the industry since it automates everything instead of requiring endless manual configuration, thus resulting in some of the tersest most declarative syntax for using observers and data-binding.
