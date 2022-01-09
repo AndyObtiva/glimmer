@@ -16,7 +16,7 @@ Featured in JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do) an
 
 [**Glimmer**](https://rubygems.org/gems/glimmer) is a DSL (Domain-Specific Language) Framework that consists of two things:
 - [DSL Engine](#dsl-engine): enables building internal DSLs embedded in Ruby (e.g. for GUI, XML, or CSS).
-- [Data-Binding Library](#data-binding-library): enables synchronizing GUI with Model Attributes bidirectionally **(now with [Shine](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#shine) syntax support in v2)**.
+- [Data-Binding Library](#data-binding-library): enables synchronizing GUI with Model Attributes bidirectionally **(now with [Shine](#shine-data-binding-syntax) syntax support in v2)**.
 
 [**Glimmer**](https://rubygems.org/gems/glimmer) is ***the cream of the crop*** when it comes to building DSLs in Ruby:
 - Supports building the tersest most concise domain specific language syntax in Ruby.
@@ -177,9 +177,11 @@ module Glimmer
 end
 ```
 
-An extra convenience expression module is included called `BindExpression`. It builds a `Glimmer::DataBinding::ModelBinding` object for [data-binding](#data-binding) purposes.
-Another convenience expression module is `ObserveExpression`, which enables a one-way `observe` operation.
-You may learn more about both by looking at how [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) uses them.
+Extra convenience expression mixins/superclasses for use via inclusion/subclassing in Glimmer GUI libraries:
+- `Glimmer::DSL::BindExpression`: enables usage of `bind` data-binding keyword to build a `Glimmer::DataBinding::ModelBinding` object for [data-binding](#data-binding) purposes.
+- `Glimmer::DSL::ShineDataBindingExpression`: enables [Shine data-binding syntax](#shine-data-binding-syntax) via `Glimmer::DataBinding::Shine`, a facade for the `bind` keyword, hiding it with the `<=>` operator for bidirectional (two-way) data-binding and the `<=` operator for unidirectional (one-way) data-binding.
+- `Glimmer::DSL::ObserveExpression`: enables a one-way `observe` operation.
+You may learn more about them by looking at how [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) uses them.
 
 DSL expressions go into the `glimmer/dsl/{dsl_name}` namespace directory.
 
@@ -230,7 +232,7 @@ end
 ### Setup
 
 Follow these steps to author a [Glimmer](https://rubygems.org/gems/glimmer) DSL:
-- Add `gem 'glimmer', '~> 2.5.4'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.5.4` and add `require 'glimmer'`
+- Add `gem 'glimmer', '~> 2.5.5'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.5.5` and add `require 'glimmer'`
 - Create `glimmer/dsl/[dsl_name]/dsl.rb`, which requires and adds all dynamic expressions for the [dsl_name] Glimmer DSL module as per the code shown in the previous section (or [Official DSLs](#official-dsls) as examples)
 - Create `glimmer/dsl/[dsl_name]/[expresion_name]_expresion.rb` for every [expresion_name] expression needed, whether dynamic or static
 
@@ -1189,7 +1191,7 @@ These are the main classes concerning data-binding:
 - `Glimmer::DataBinding::ObservableArray`: Mixin module for any observable array collection that automatically handles notifying observers upon performing array mutation operations (e.g. `push`, `select!`, or `delete`) recursively (meaning if an array contained arrays and they changed, observers are notified). Accepts `recursive: true` option in `add_observer` method to recursively observe nested arrays all the way down. Alternatively, pass `recursive: [integer]` to limit recursion in `Array` observation to a specific number of levels beyond the first level (which is always included).
 - `Glimmer::DataBinding::ObservableHash`: Mixin module for any observable hash that automatically handles notifying observers upon performing hash mutation operations (e.g. `hash[key]=value`, `select!`, `merge!`).  Also, it automatically handles observing array values using `ObservableArray` appropriately so they would notify observers upon array mutation changes.
 - `Glimmer::DataBinding::ModelBinding`: a higher-level abstraction that relies on all the other observer/observable classes to support basic data-binding, nested data-binding, and computed data-binding
-- `Glimmer::DataBinding::Shine`: enables highly intuitive and visually expressive syntax to perform bidirectional (two-way) data-binding with `<=>` and unidirectional (one-way) data-binding with `<=`
+- `Glimmer::DataBinding::Shine`: enables [highly intuitive and visually expressive syntax](#shine-data-binding-syntax) to perform bidirectional (two-way) data-binding with `<=>` and unidirectional (one-way) data-binding with `<=`
 
 To do simple observation of models, arrays, or hashes, you can use the `Glimmer::DataBinding::Observer::proc` method, which builds an observer from a block. When invoking the `#observe` method on it, it automatically enhances the object argument being observed into an `Observable` (whether `ObservableModel`, `ObservableArray`, or `ObervableHash`).
 
@@ -1265,11 +1267,41 @@ Data-binding options include:
 - `after_write {|converted_value| ...}`: performs an operation after writing to Model from View.
 - `computed_by attribute` or `computed_by [attribute1, attribute2, ...]`: indicates model attribute is computed from specified attribute(s), thus updated when they are updated. That is known as "computed data-binding".
 
-Note that if an observed model attribute or hash key is an array, it is automatically observed for array changes, not just attribute/key-value changes.
+Note that if an observed model attribute or hash key is an `Array`, it is automatically observed for `Array` changes (e.g. via mutation methods `<<`, `delete`, `map!`), not just attribute/key-value changes.
 
 All of the features above make Glimmer's data-binding library one of the most sophisticated and advanced in the industry since it automates everything instead of requiring endless manual configuration, thus resulting in some of the tersest most declarative syntax for using observers and data-binding.
 
 You may learn more by looking into [data-binding specs](/Users/andy/code/glimmer/spec/lib/glimmer/data_binding) as well as [Data-Binding](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#data-binding) and [Observer](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#observer) usage in [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt)
+
+### Shine Data-Binding Syntax
+
+The Shine data-binding syntax is a highly intuitive and visually expressive way of data-binding that enables performing bidirectional (two-way) data-binding with the `<=>` operator and unidirectional (one-way) data-binding with the `<=` operator.
+
+It is facilitated by the combination of the `Glimmer::DSL::ShineDataBindingExpression` and `Glimmer::DataBinding::Shine` classes, which depend on `Glimmer::DSL::BindExpression` and `Glimmer::DataBinding::ModelBinding`.
+
+Below are some examples of Shine usage in GUI DSLs:
+
+`text <=> [contact, :first_name]`
+
+This example bidirectionally binds the text property of a widget like label to the first name of a contact model.
+
+`text <=> [contact, 'address.street']`
+
+This example binds the text property of a widget like label to the nested street of the address of a contact. This is called nested property data binding.
+
+`text <=> [contact, 'address.street', on_read: :upcase, on_write: :downcase]`
+
+This example adds on the one above it by specifying converters on read and write of the model property, like in the case of a text widget. The text widget will then displays the street upper case and the model will store it lower case. When specifying converters, read and write operations must be symmetric.
+
+`enabled <= [user, :logged_in]`
+
+This example unidirectionally binds the enabled property of a widget like button to the logged in status of a user.
+
+`enabled <= [user, :logged_in, on_read: :!]`
+
+This example unidirectionally binds the enabled property of a widget like entry to the negated logged in status of a user. Note that when using a single on read converter with unidirectional data-binding, there is no need for a symmetric on_write converter as well since writing is never done with unidirectional (one-way) data-binding.
+
+[Learn more about Shine data-binding syntax from its usage in Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/docs/reference/GLIMMER_GUI_DSL_SYNTAX.md#shine)
 
 ## Glimmer Process
 

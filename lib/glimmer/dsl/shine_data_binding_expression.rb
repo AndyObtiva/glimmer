@@ -19,37 +19,20 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'glimmer/dsl/expression'
+require 'glimmer/data_binding/shine'
+
 module Glimmer
-  module DataBinding
-    class Shine
-      include Glimmer
-      
-      def initialize(parent, parent_attribute)
-        @parent = parent
-        @parent_attribute = parent_attribute
+  module DSL
+    class ShineDataBindingExpression < Expression
+      # Including class can override can_interpret? and call super to augment it
+      def can_interpret?(parent, keyword, *args, &block)
+         args.size == 0 and
+           block.nil?
       end
-      
-      def <=>(other)
-        if other.is_a?(Array)
-          args_clone = other.clone
-          @parent.content {
-            send(@parent_attribute, bind(*args_clone))
-          }
-        end
-      end
-    
-      def <=(other)
-        if other.is_a?(Array)
-          args_clone = other.clone
-          if args_clone.last.is_a?(Hash)
-            args_clone.last[:read_only] = true
-          else
-            args_clone << {read_only: true}
-          end
-          @parent.content {
-            send(@parent_attribute, bind(*args_clone))
-          }
-        end
+
+      def interpret(parent, keyword, *args, &block)
+        Glimmer::DataBinding::Shine.new(parent, keyword)
       end
     end
   end

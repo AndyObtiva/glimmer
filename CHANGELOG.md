@@ -5,6 +5,8 @@ Related Change Logs:
 
 ### 2.5.5
 
+- Support observing an array object index directly (e.g. `ModelBinding.new(array, '[0]')` as opposed to `ModelBinding.new(self, 'array[0]')`)
+- Extract Shine data-binding expression from Glimmer DSL for SWT to Glimmer as a reusable class: `Glimmer::DSL::ShineDataBindingExpression`
 - Avoid compacting model with property in `ModelBinding` yet only compact property/args and keep model as is get a better error message in the case of a `nil` model
 - Document data-binding options like on_read, after_read, etc...
 

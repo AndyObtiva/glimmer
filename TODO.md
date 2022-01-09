@@ -9,10 +9,8 @@ Related TODO files:
 
 ## Next
 
-- Support observing an array object index directly (e.g. `ModelBinding.new(array, '[0]')`)
-- Extract Shine data-binding expression from Glimmer DSL for SWT to Glimmer
-
 - Fix issue where if a static expression fails the can_interpret? test, no dynamic expressions are exercised next (yet an error shouts instead)
+- Add a diagram to README that illustrates data-binding and MVP
 
 - Support Hash indexed properties via `ModelBinding` (not just Arrays') (e.g. `'some_hash_attribute[:some_key]'` or `'some_hash_attribute['some_key']'`)
 - Support Hash indexed nested properties via `ModelBinding` (e.g. `'some_attribute.some_hash_attribute[:some_key].some_other_attribute'`)
