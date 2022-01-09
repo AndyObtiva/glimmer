@@ -11,15 +11,11 @@ Related TODO files:
 
 - Support observing an array object index directly (e.g. `ModelBinding.new(array, '[0]')`)
 - Extract Shine data-binding expression from Glimmer DSL for SWT to Glimmer
-- Fix issue where if a static expression fails the can_interpret? test, no dynamic expressions are exercised next (yet an error shouts instead)
-- Observe all attribute writers in an `Object` (observe every attribute ending with =)
-- Observe all attribute writers in a `Struct` (observe every attribute ending with = as well as []= method)
-- Observe all attribute writers in an `OpenStruct` (observe `set_ostruct_member_value` method)
 
-- Support Hash indexed properties via `ModelBinding` (not just Arrays') (e.g. `'some_hash_attribute[:some_key]'`)
-- Support nested Hash indexed properties via `ModelBinding` (e.g. `'some_attribute.some_hash_attribute[:some_key].some_other_attribute'`)
-- Support recursive: true with hashes that have nested hashes
-- Support recursive: true with models that have nested models
+- Fix issue where if a static expression fails the can_interpret? test, no dynamic expressions are exercised next (yet an error shouts instead)
+
+- Support Hash indexed properties via `ModelBinding` (not just Arrays') (e.g. `'some_hash_attribute[:some_key]'` or `'some_hash_attribute['some_key']'`)
+- Support Hash indexed nested properties via `ModelBinding` (e.g. `'some_attribute.some_hash_attribute[:some_key].some_other_attribute'`)
 - Support keyword arguments in expression interpretors
 - Support building a DSL only with static expressions
 - Fix issue with having only one static expression that is not a parent expression:
@@ -63,6 +59,14 @@ pixelart/1.2.1 on Ruby 3.0.2 (2021-07-07) [x86_64-darwin19] in (/Users/andymaleh
 - Consider making `#ensure_array_object_observer` optional in ObservableModel/ObservableHash/ObservableArray since it has performance implications (and perhaps make it happen as part of recursive: 1, shifting the depth understanding, instead of happening on recursive: false like it is now)
 - Fix issue with `#ensure_array_object_observer` not receiving `recursive: true` option (except first time) when updating value of an attribute in `ObservableModel`
 - Fix issue with `#ensure_array_object_observer` not receiving `recursive: true` option (except first time) when updating value of an attribute in `ObservableHash`
+
+### Maybe
+
+- Observe all attribute writers in an `Object` (observe every attribute ending with =)
+- Observe all attribute writers in a `Struct` (observe every attribute ending with = as well as []= method)
+- Observe all attribute writers in an `OpenStruct` (observe `set_ostruct_member_value` method)
+- Support `recursive: true` with hashes that have nested hashes
+- Support `recursive: true` with models that have nested models
 
 ### Miscellaneous
 

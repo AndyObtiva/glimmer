@@ -75,7 +75,7 @@ module Glimmer
       # If there are any indexed property names, this returns indexes as properties.
       # e.g. property name expression "addresses[1].state" gives ['addresses', '[1]', 'state']
       def nested_property_names
-        @nested_property_names ||= Concurrent::Array.new(property_name_expression.split(/\[|\./).map {|pne| pne.end_with?(']') ? "[#{pne}" : pne })
+        @nested_property_names ||= Concurrent::Array.new(property_name_expression.split(/\[|\./).map {|pne| pne.end_with?(']') ? "[#{pne}" : pne }.reject {|pne| pne.empty? })
       end
 
       # Final nested property name
@@ -85,7 +85,7 @@ module Glimmer
       end
 
       # Model representing nested property names
-      # e.g. property name expression "address.state" gives [:address]
+      # e.g. property name expression "address.state" gives ['address']
       def model_property_names
         Concurrent::Array.new(nested_property_names[0...-1])
       end

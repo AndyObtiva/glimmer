@@ -151,9 +151,55 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.siblings).to eq([sibling3, sibling2])
     end
     
+    it 'reads and writes changes in a directly indexed property' do
+      person.siblings = []
+      model_binding = described_class.new(person.siblings, '[0]')
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+        @observer_new_value = new_value
+      end.observe(model_binding)
+      
+      person.siblings << sibling
+      person.siblings << sibling2
+        
+      expect(@observer_notified).to be_truthy
+      expect(@observer_new_value).to eq(sibling)
+      
+      model_binding.call(sibling3) # updates siblings[0] only
+
+      expect(person.siblings).to eq([sibling3, sibling2])
+    end
+    
     it 'reads and writes changes in an indexed nested model' do
       person.siblings = [sibling]
       model_binding = described_class.new(person, 'siblings[0].name')
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+        @observer_new_value = new_value
+      end.observe(model_binding)
+      
+      person.siblings[0].name = 'sibling2'
+        
+      expect(@observer_notified).to be_truthy
+      expect(@observer_new_value).to eq('sibling2')
+      
+      @observer_notified = false
+      @observer_new_value = nil
+      person.siblings.prepend(sibling3)
+      
+      expect(@observer_notified).to be_truthy
+      expect(@observer_new_value).to eq('sibling3')
+      
+      model_binding.call('sibling4') # updates siblings[0].name
+
+      expect(person.siblings[0].name).to eq('sibling4')
+    end
+      
+    it 'reads and writes changes in a directly indexed nested property' do
+      person.siblings = [sibling]
+      model_binding = described_class.new(person.siblings, '[0].name')
       
       Glimmer::DataBinding::Observer.proc do |new_value|
         @observer_notified = true
