@@ -27,13 +27,13 @@ Featured in JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do) an
 - Multiple DSLs may be [mixed](#multi-dsl-support) together safely to achieve maximum expressability, composability, and productivity.
 - DSLs are fully configurable, so you may activate and deactivate DSLs as per your current needs only.
 
-Start by checking out Glimmer's original GUI DSL (for [JRuby](https://www.jruby.org/)), which got extracted into its own gem (100% complete); [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt), and Glimmer's CRuby GUI DSL (100% complete), which has no prerequisites beyond installing the Ruby gem; [Glimmer DSL for LibUI](https://github.com/AndyObtiva/glimmer-dsl-libui).
+Start by checking out [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt), Glimmer's original GUI DSL (for [JRuby](https://www.jruby.org/)), which got extracted into its own gem; and [Glimmer DSL for LibUI](https://github.com/AndyObtiva/glimmer-dsl-libui), Glimmer's CRuby GUI DSL, which has no prerequisites beyond installing the Ruby gem.
 
 [**Glimmer**](https://rubygems.org/gems/glimmer) supports the following DSLs:
 - [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)
 - [glimmer-dsl-opal](https://github.com/AndyObtiva/glimmer-dsl-opal): Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)
-- [glimmer-dsl-tk](https://github.com/AndyObtiva/glimmer-dsl-tk): Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)
 - [glimmer-dsl-libui](https://github.com/AndyObtiva/glimmer-dsl-libui): Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)
+- [glimmer-dsl-tk](https://github.com/AndyObtiva/glimmer-dsl-tk): Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)
 - [glimmer-dsl-gtk](https://github.com/AndyObtiva/glimmer-dsl-gtk): Glimmer DSL for GTK (Ruby-GNOME Desktop Development GUI Library)
 - [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
 - [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS
@@ -48,8 +48,8 @@ Start by checking out Glimmer's original GUI DSL (for [JRuby](https://www.jruby.
     - [Official DSLs](#official-dsls)
       - [Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)](#glimmer-dsl-for-swt-jruby-desktop-development-gui-framework)
       - [Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)](#glimmer-dsl-for-opal-pure-ruby-web-gui-and-auto-webifier-of-desktop-apps)
-      - [Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)](#glimmer-dsl-for-tk-mri-ruby-desktop-development-gui-library)
       - [Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)](#glimmer-dsl-for-libui-prerequisite-free-ruby-desktop-development-gui-library)
+      - [Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)](#glimmer-dsl-for-tk-mri-ruby-desktop-development-gui-library)
       - [Glimmer DSL for XML (& HTML)](#glimmer-dsl-for-xml--html)
       - [Glimmer DSL for CSS](#glimmer-dsl-for-css)
   - [Data-Binding Library](#data-binding-library)
@@ -232,7 +232,7 @@ end
 ### Setup
 
 Follow these steps to author a [Glimmer](https://rubygems.org/gems/glimmer) DSL:
-- Add `gem 'glimmer', '~> 2.5.5'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.5.5` and add `require 'glimmer'`
+- Add `gem 'glimmer', '~> 2.6.0'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.6.0` and add `require 'glimmer'`
 - Create `glimmer/dsl/[dsl_name]/dsl.rb`, which requires and adds all dynamic expressions for the [dsl_name] Glimmer DSL module as per the code shown in the previous section (or [Official DSLs](#official-dsls) as examples)
 - Create `glimmer/dsl/[dsl_name]/[expresion_name]_expresion.rb` for every [expresion_name] expression needed, whether dynamic or static
 
@@ -756,144 +756,6 @@ You should see "Apple Calculator Theme"
 
 [![Glimmer Calculator Opal Apple Calculator Theme](https://raw.githubusercontent.com/AndyObtiva/glimmer-cs-calculator/master/glimmer-cs-calculator-screenshot-opal-apple.png)](http://glimmer-cs-calculator-server.herokuapp.com/welcomes/apple)
 
-#### Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)
-
-[Tcl/Tk](https://www.tcl.tk/) has recently improved by gaining native looking themed widgets on Mac, Windows, and Linux in [Tk version 8.5](https://www.tcl.tk/software/tcltk/8.5.html#:~:text=Highlights%20of%20Tk%208.5&text=Font%20rendering%3A%20Now%20uses%20anti,and%20window%20layout%2C%20and%20more.). Additionally, [Ruby](https://www.ruby-lang.org/en/) 3.0 Ractor (formerly known as [Guilds](https://olivierlacan.com/posts/concurrency-in-ruby-3-with-guilds/)) supports truly parallel multi-threading, making both [MRI](https://github.com/ruby/ruby) and [Tk](https://www.tcl.tk/) finally viable for support in [Glimmer](https://github.com/AndyObtiva/glimmer) (Ruby Desktop Development GUI Library) as an alternative to [JRuby on SWT](https://github.com/AndyObtiva/glimmer-dsl-swt).
-
-The trade-off is that while [SWT](https://www.eclipse.org/swt/) provides a plethora of high quality reusable widgets for the Enterprise (such as [Nebula](https://www.eclipse.org/nebula/)), [Tk](https://www.tcl.tk/) enables very fast app startup time and a small memory footprint via [MRI Ruby](https://www.ruby-lang.org/en/).
-
-[Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) aims to provide a DSL similar to the [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) to enable more productive desktop development in Ruby with:
-- Declarative DSL syntax that visually maps to the GUI widget hierarchy
-- Convention over configuration via smart defaults and automation of low-level details
-- Requiring the least amount of syntax possible to build GUI
-- Bidirectional Data-Binding to declaratively wire and automatically synchronize GUI with Business Models
-- Custom Widget support
-- Scaffolding for new custom widgets, apps, and gems
-- Native-Executable packaging on Mac, Windows, and Linux
-
-To get started, visit the [Glimmer DSL for Tk project page](https://github.com/AndyObtiva/glimmer-dsl-tk#pre-requisites) for instructions on installing the [glimmer-dsl-tk gem](https://rubygems.org/gems/glimmer-dsl-tk).
-
-##### Glimmer DSL for Tk Samples
-
-###### Hello, World!
-
-Glimmer code (from [samples/hello/hello_world.rb](https://github.com/AndyObtiva/glimmer-dsl-tk/blob/master/samples/hello/hello_world.rb)):
-
-```ruby
-include Glimmer
-
-root {
-  label {
-    text 'Hello, World!'
-  }
-}.open
-```
-
-Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
-
-```
-ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_world.rb'"
-```
-
-Glimmer app:
-
-![glimmer dsl tk screenshot sample hello world](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-world.png)
-
-###### Hello, Notebook!
-
-Glimmer code (from [samples/hello/hello_tab.rb](https://github.com/AndyObtiva/glimmer-dsl-tk/blob/master/samples/hello/hello_tab.rb)):
-
-```ruby
-include Glimmer
-
-root {
-  title 'Hello, Notebook!'
-   
-  notebook {
-    frame(text: 'English') {
-      label {
-        text 'Hello, World!'
-      }
-    }
-     
-    frame(text: 'French') {
-      label {
-        text 'Bonjour, Univers!'
-      }
-    }
-  }
-}.open
-```
-
-Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
-
-```
-ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_notebook.rb'"
-```
-
-Glimmer app:
-
-![glimmer dsl tk screenshot sample hello notebook English](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-notebook-english.png)
-![glimmer dsl tk screenshot sample hello notebook French](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-notebook-french.png)
-
-###### Hello, Combobox!
-
-Glimmer code (from [samples/hello/hello_combobox.rb](https://github.com/AndyObtiva/glimmer-dsl-tk/blob/master/samples/hello/hello_combobox.rb)):
-
-```ruby
-require 'glimmer-dsl-tk'
-
-class Person
-  attr_accessor :country, :country_options
-
-  def initialize
-    self.country_options=["", "Canada", "US", "Mexico"]
-    self.country = "Canada"
-  end
-
-  def reset_country
-    self.country = "Canada"
-  end
-end
-
-class HelloCombobox
-  include Glimmer
-  
-  def launch
-    person = Person.new
-    
-    root {
-      title 'Hello, Combobox!'
-      
-      combobox {
-        readonly true # this applies to text editing only (item selection still triggers a write to model)
-        text <=> [person, :country]
-      }
-      
-      button {
-        text "Reset Selection"
-        command {
-          person.reset_country
-        }
-      }
-    }.open
-  end
-end
-
-HelloCombobox.new.launch
-```
-
-Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
-
-```
-ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_combobox.rb'"
-```
-
-Glimmer app:
-
-![glimmer dsl tk screenshot sample hello combobox](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-combobox.png)
-![glimmer dsl tk screenshot sample hello combobox dropdown](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-combobox-dropdown.png)
-
 #### Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)
 
 [Glimmer DSL for LibUI](https://github.com/AndyObtiva/glimmer-dsl-libui) is a prerequisite-free Ruby desktop development GUI library. No need to pre-install any prerequisites. Just install the gem and have platform-independent native GUI that just works!
@@ -1098,6 +960,144 @@ Windows
 Linux
 
 ![glimmer-dsl-libui-linux-area-gallery.png](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-libui/master/images/glimmer-dsl-libui-linux-area-gallery.png)
+
+#### Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)
+
+[Tcl/Tk](https://www.tcl.tk/) has recently improved by gaining native looking themed widgets on Mac, Windows, and Linux in [Tk version 8.5](https://www.tcl.tk/software/tcltk/8.5.html#:~:text=Highlights%20of%20Tk%208.5&text=Font%20rendering%3A%20Now%20uses%20anti,and%20window%20layout%2C%20and%20more.). Additionally, [Ruby](https://www.ruby-lang.org/en/) 3.0 Ractor (formerly known as [Guilds](https://olivierlacan.com/posts/concurrency-in-ruby-3-with-guilds/)) supports truly parallel multi-threading, making both [MRI](https://github.com/ruby/ruby) and [Tk](https://www.tcl.tk/) finally viable for support in [Glimmer](https://github.com/AndyObtiva/glimmer) (Ruby Desktop Development GUI Library) as an alternative to [JRuby on SWT](https://github.com/AndyObtiva/glimmer-dsl-swt).
+
+The trade-off is that while [SWT](https://www.eclipse.org/swt/) provides a plethora of high quality reusable widgets for the Enterprise (such as [Nebula](https://www.eclipse.org/nebula/)), [Tk](https://www.tcl.tk/) enables very fast app startup time and a small memory footprint via [MRI Ruby](https://www.ruby-lang.org/en/).
+
+[Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) aims to provide a DSL similar to the [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) to enable more productive desktop development in Ruby with:
+- Declarative DSL syntax that visually maps to the GUI widget hierarchy
+- Convention over configuration via smart defaults and automation of low-level details
+- Requiring the least amount of syntax possible to build GUI
+- Bidirectional Data-Binding to declaratively wire and automatically synchronize GUI with Business Models
+- Custom Widget support
+- Scaffolding for new custom widgets, apps, and gems
+- Native-Executable packaging on Mac, Windows, and Linux
+
+To get started, visit the [Glimmer DSL for Tk project page](https://github.com/AndyObtiva/glimmer-dsl-tk#pre-requisites) for instructions on installing the [glimmer-dsl-tk gem](https://rubygems.org/gems/glimmer-dsl-tk).
+
+##### Glimmer DSL for Tk Samples
+
+###### Hello, World!
+
+Glimmer code (from [samples/hello/hello_world.rb](https://github.com/AndyObtiva/glimmer-dsl-tk/blob/master/samples/hello/hello_world.rb)):
+
+```ruby
+include Glimmer
+
+root {
+  label {
+    text 'Hello, World!'
+  }
+}.open
+```
+
+Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
+
+```
+ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_world.rb'"
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello world](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-world.png)
+
+###### Hello, Notebook!
+
+Glimmer code (from [samples/hello/hello_tab.rb](https://github.com/AndyObtiva/glimmer-dsl-tk/blob/master/samples/hello/hello_tab.rb)):
+
+```ruby
+include Glimmer
+
+root {
+  title 'Hello, Notebook!'
+   
+  notebook {
+    frame(text: 'English') {
+      label {
+        text 'Hello, World!'
+      }
+    }
+     
+    frame(text: 'French') {
+      label {
+        text 'Bonjour, Univers!'
+      }
+    }
+  }
+}.open
+```
+
+Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
+
+```
+ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_notebook.rb'"
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello notebook English](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-notebook-english.png)
+![glimmer dsl tk screenshot sample hello notebook French](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-notebook-french.png)
+
+###### Hello, Combobox!
+
+Glimmer code (from [samples/hello/hello_combobox.rb](https://github.com/AndyObtiva/glimmer-dsl-tk/blob/master/samples/hello/hello_combobox.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+class Person
+  attr_accessor :country, :country_options
+
+  def initialize
+    self.country_options=["", "Canada", "US", "Mexico"]
+    self.country = "Canada"
+  end
+
+  def reset_country
+    self.country = "Canada"
+  end
+end
+
+class HelloCombobox
+  include Glimmer
+  
+  def launch
+    person = Person.new
+    
+    root {
+      title 'Hello, Combobox!'
+      
+      combobox {
+        readonly true # this applies to text editing only (item selection still triggers a write to model)
+        text <=> [person, :country]
+      }
+      
+      button {
+        text "Reset Selection"
+        command {
+          person.reset_country
+        }
+      }
+    }.open
+  end
+end
+
+HelloCombobox.new.launch
+```
+
+Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
+
+```
+ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_combobox.rb'"
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello combobox](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-combobox.png)
+![glimmer dsl tk screenshot sample hello combobox dropdown](https://raw.githubusercontent.com/AndyObtiva/glimmer-dsl-tk/master/images/glimmer-dsl-tk-screenshot-sample-hello-combobox-dropdown.png)
 
 #### Glimmer DSL for XML (& HTML)
 

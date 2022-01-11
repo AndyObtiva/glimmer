@@ -59,7 +59,11 @@ module Glimmer
               static_expression = Glimmer::DSL::Engine.static_expressions[keyword][Glimmer::DSL::Engine.dsl]
               static_expression_can_interpret = nil
               if static_expression.nil? || !(static_expression_can_interpret = static_expression.can_interpret?(Glimmer::DSL::Engine.parent, keyword, *args, &block))
-                raise Error, "Invalid use of Glimmer keyword #{keyword} with args #{args} under parent #{Glimmer::DSL::Engine.parent.inspect} with DSL #{Glimmer::DSL::Engine.dsl.inspect} and static expression #{static_expression.inspect} having can_interpret? as #{static_expression_can_interpret.inspect}"
+                begin
+                  Glimmer::DSL::Engine.interpret(keyword, *args, &block)
+                rescue => e
+                  raise Error, "Invalid use of Glimmer keyword #{keyword} with args #{args} under parent #{Glimmer::DSL::Engine.parent.inspect} with DSL #{Glimmer::DSL::Engine.dsl.inspect} and static expression #{static_expression.inspect} having can_interpret? as #{static_expression_can_interpret.inspect} and no dynamic expressions to be able to handle either!"
+                end
               else
                 Glimmer::Config.logger.info {"#{static_expression.class.name} will handle expression keyword #{keyword}"}
                 Glimmer::DSL::Engine.interpret_expression(static_expression, keyword, *args, &block)

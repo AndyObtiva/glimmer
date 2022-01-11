@@ -79,6 +79,14 @@ module GlimmerSpec
         }
       end
       
+      it 'processes a static keyword that cannot interpret args (e.g. text does not accept numeric) with the available dynamic expressions' do
+        @target = shell {
+          @spinner = spinner
+        }
+        
+        expect(@spinner).to be_a(Glimmer::DSL::Element)
+      end
+      
       it 'disables SWT DSL to build an XML document containing SWT keywords' do
         Glimmer::DSL::Engine.disable_dsl(:swt)
    

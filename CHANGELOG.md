@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.6.0
+
+- If a static expression cannot handle keyword, it is tried with available dynamic expressions instead of erroring out.
+
 ### 2.5.5
 
 - Support observing an array object index directly (e.g. `ModelBinding.new(array, '[0]')` as opposed to `ModelBinding.new(self, 'array[0]')`)
