@@ -1180,6 +1180,10 @@ body{font-size:1.1em;background:white}body > h1{background-color:red;font-size:2
 
 Data-Binding enables mapping GUI properties (like text and color) to Model attributes (like name and age) for bidirectional or unidirectional synchronization and conversion as needed.
 
+Data-binding supports utilizing the [MVP (Model View Presenter)](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) flavor of [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) by observing both the View and a Presenter for changes and updating the opposite side upon encountering them. This enables writing more decoupled cleaner code that keeps View code and Model code disentangled and highly maintainable.
+
+![MVP](https://www.researchgate.net/profile/Gilles-Perrouin/publication/320249584/figure/fig8/AS:668260987068418@1536337243385/Model-view-presenter-architecture.png)
+
 Glimmer enhances observed models automatically (including array operations like `<<`, `delete`, and `reject!`) on first observation. As such, you get automatic observable support, including nested and computed observations. No need to change your model code to data-bind it to the view or add repetitive boilerplate modules. View data-binding is truly decoupled from model logic by being able to observe any model attribute (Ruby attribute reader/writer combo or Ruby attribute reader alone for read-only data-binding when needed)
 
 This relies mainly on the Observer Design Pattern and the MVP (Model-View-Presenter) Architectural Pattern (a variation on MVC)
@@ -1377,7 +1381,7 @@ If your company would like to invest fulltime in further development of the Glim
 
 [MIT](LICENSE.txt)
 
-Copyright (c) 2007-2022 - Andy Maleh.
+Copyright (c) 2007-2021 - Andy Maleh.
 
 --
 
