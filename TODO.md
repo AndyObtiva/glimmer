@@ -10,7 +10,6 @@ Related TODO files:
 ## Next
 
 - Add a diagram to README that illustrates data-binding and MVP
-- Update copy to 2022
 
 - Support Hash indexed properties via `ModelBinding` (not just Arrays') (e.g. `'some_hash_attribute[:some_key]'` or `'some_hash_attribute['some_key']'`)
 - Support Hash indexed nested properties via `ModelBinding` (e.g. `'some_attribute.some_hash_attribute[:some_key].some_other_attribute'`)
