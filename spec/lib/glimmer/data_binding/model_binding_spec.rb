@@ -131,7 +131,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.hash_attribute[:d]).to eq(new_value)
     end
     
-    it 'reads and writes changes in an indexed model' do
+    it 'reads and writes changes in an array-indexed model' do
       person.siblings = []
       model_binding = described_class.new(person, 'siblings[0]')
       
@@ -151,7 +151,27 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.siblings).to eq([sibling3, sibling2])
     end
     
-    it 'reads and writes changes in a directly indexed property' do
+    it 'reads and writes changes in a hash-symbol-indexed model' do
+      person.siblings = []
+      model_binding = described_class.new(person, 'hash_attribute[:a]')
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+        @observer_new_value = new_value
+      end.observe(model_binding)
+      
+      person.hash_attribute[:a] = 11
+        
+      expect(@observer_notified).to be_truthy
+      expect(@observer_new_value).to eq(11)
+      
+      model_binding.call(111) # updates siblings[0] only
+
+      expect(person.hash_attribute[:a]).to eq(111)
+      expect(person.hash_attribute).to eq({a: 111, b: 2, c: 3})
+    end
+    
+    it 'reads and writes changes in a directly array-indexed property' do
       person.siblings = []
       model_binding = described_class.new(person.siblings, '[0]')
       
@@ -171,7 +191,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.siblings).to eq([sibling3, sibling2])
     end
     
-    it 'reads and writes changes in an indexed nested model' do
+    it 'reads and writes changes in an array-indexed nested model' do
       person.siblings = [sibling]
       model_binding = described_class.new(person, 'siblings[0].name')
       
@@ -197,7 +217,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.siblings[0].name).to eq('sibling4')
     end
       
-    it 'reads and writes changes in a directly indexed nested property' do
+    it 'reads and writes changes in a directly array-indexed nested property' do
       person.siblings = [sibling]
       model_binding = described_class.new(person.siblings, '[0].name')
       
@@ -223,7 +243,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.siblings[0].name).to eq('sibling4')
     end
       
-    it 'reads and writes changes in a double-indexed model' do
+    it 'reads and writes changes in an array-double-indexed model' do
       model_binding = described_class.new(person, 'grid[1][0]')
       
       Glimmer::DataBinding::Observer.proc do |new_value|
@@ -241,7 +261,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.grid[1][0]).to eq('o')
     end
       
-    it 'reads and writes changes in a triple-indexed model' do
+    it 'reads and writes changes in an array-triple-indexed model' do
       model_binding = described_class.new(person, 'triple_grid[1][1][0]')
       
       Glimmer::DataBinding::Observer.proc do |new_value|

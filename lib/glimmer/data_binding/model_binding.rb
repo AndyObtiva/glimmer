@@ -27,6 +27,9 @@ module Glimmer
     class ModelBinding
       include Observable
       include Observer
+      
+      ARRAY_INDEXED_PROPERTY_ARGUMENT_REGEX = /\d+/
+      HASH_SYMBOL_INDEXED_PROPERTY_ARGUMENT_REGEX = /:[^:]+/
 
       attr_reader :binding_options, :property_name_expression
 
@@ -206,7 +209,7 @@ module Glimmer
       def call(value, *extra_args)
         return if model.nil?
         converted_value = value
-        invoke_property_writer(model, model.is_a?(Hash) ? property_name : "#{property_name}=", converted_value) unless converted_value == evaluate_property || property_name.nil?
+        invoke_property_writer(model, model.is_a?(Hash) && !property_indexed?(property_name) ? property_name : "#{property_name}=", converted_value) unless converted_value == evaluate_property || property_name.nil?
       end
 
       def evaluate_property
@@ -260,7 +263,11 @@ module Glimmer
         if property_indexed?(property_expression)
           property_method = '[]'
           property_argument = property_expression[1...-1]
-          property_argument = property_argument.to_i if property_argument.match(/\d+/)
+          if property_argument.match(ARRAY_INDEXED_PROPERTY_ARGUMENT_REGEX)
+            property_argument = property_argument.to_i
+          elsif property_argument.match(HASH_SYMBOL_INDEXED_PROPERTY_ARGUMENT_REGEX)
+            property_argument = property_argument.sub(':', '').to_sym
+          end
           object.send(property_method, property_argument)
         else
           if property_expression.nil?
@@ -281,7 +288,11 @@ module Glimmer
         if property_indexed?(property_expression)
           property_method = '[]='
           property_argument = property_expression[1...-2]
-          property_argument = property_argument.to_i if property_argument.match(/\d+/)
+          if property_argument.match(ARRAY_INDEXED_PROPERTY_ARGUMENT_REGEX)
+            property_argument = property_argument.to_i
+          elsif property_argument.match(HASH_SYMBOL_INDEXED_PROPERTY_ARGUMENT_REGEX)
+            property_argument = property_argument.sub(':', '').to_sym
+          end
           object.send(property_method, property_argument, converted_value)
         else
           if object.is_a?(Hash)

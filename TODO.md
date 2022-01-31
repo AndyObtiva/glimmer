@@ -9,34 +9,17 @@ Related TODO files:
 
 ## Next
 
-- Add a diagram to README that illustrates data-binding and MVP
-
 - Support Hash indexed properties via `ModelBinding` (not just Arrays') (e.g. `'some_hash_attribute[:some_key]'` or `'some_hash_attribute['some_key']'`)
 - Support Hash indexed nested properties via `ModelBinding` (e.g. `'some_attribute.some_hash_attribute[:some_key].some_other_attribute'`)
-- Support keyword arguments in expression interpretors
-- Support building a DSL only with static expressions
-- Fix issue with having only one static expression that is not a parent expression:
-```
-% ruby /Users/andymaleh/code/pixel/pixelart/sandbox/test_glimmer.rb
-pixelart/1.2.1 on Ruby 3.0.2 (2021-07-07) [x86_64-darwin19] in (/Users/andymaleh/code/pixel/pixelart)
-/Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/engine.rb:195:in `add_content': uninitialized constant #<Class:Glimmer::DSL::Engine>::ParentExpression (NameError)
-  from /Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/engine.rb:182:in `block (2 levels) in interpret_expression'
-  from <internal:kernel>:90:in `tap'
-  from /Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/engine.rb:181:in `block in interpret_expression'
-  from /Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/expression.rb:64:in `around'
-  from /Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/engine.rb:180:in `interpret_expression'
-  from /Users/andymaleh/.rvm/gems/ruby-3.0.2@pixelart/gems/glimmer-2.4.1/lib/glimmer/dsl/engine.rb:65:in `block (2 levels) in <class:Engine>'
-  from /Users/andymaleh/code/pixel/pixelart/sandbox/test_glimmer.rb:69:in `<main>'
-```
-- Add a Glimmer DSL comparison table to clarify advantages and trade-offs between different GUI toolkits
+- Support case-insensitive static expressions
 - Observe an array for all children changes on a specific property (e.g. observe(@game, 'blocks[][].color') ; returns |new_color, block|)
 - Ensure removing observers from hash in ObservableModel when removed from observable
 
 ### Version TBD
 
+- Support keyword arguments in expression interpretors
 - refactor observer registration code to be more smart/polymorphic/automated and honor open/closed principle (e.g. for SomeClass, search if there is ObservableSomeClass)
 - Support indexed data-binding for string/symbol keyed hashes (e.g. `addresses['home'].street`)
-- Support case-insensitive static expressions
 - Support `observed` keyword to use in Observables around blocks of code that wouldn't trigger changes till completed.
 - Consider specifying a bind(`triggered_by: method_name`) option that would provide the scope for when to react to an observation.   This is similar to computed_by: except it negates updates happening outside of the computed_by method.
 - General nested data-binding not just on an index (e.g. 'addresses.street' not just 'addresses[0].street')
@@ -68,6 +51,7 @@ pixelart/1.2.1 on Ruby 3.0.2 (2021-07-07) [x86_64-darwin19] in (/Users/andymaleh
 ### Miscellaneous
 
 - Report Opal project issue regarding method/singleton_method and define_method/define_singleton_method not working in direct class/module vs instance like in Ruby
+- After hitting v1.0.0 on Glimmer DSL for LibUI, suggest merging Glimmer into Ruby core to provide Ruby developers with built-in support for creating the best Internal (Embedded) DSL syntax possible. This should elevate Ruby into a whole other level.
 
 ## Refactorings
 
@@ -77,9 +61,14 @@ pixelart/1.2.1 on Ruby 3.0.2 (2021-07-07) [x86_64-darwin19] in (/Users/andymaleh
 
 ## DSLs
 
+- glimmer-dsl-hexapdf: Declarative Glimmer DSL for [HexaPDF](https://github.com/gettalong/hexapdf)'s canvas graphics (and general PDF generation) imperative syntax (maybe even attempt to merge back to HexaPDF if its author is interested)
+- glimmer-dsl-prawn: Declarative Glimmer DSL for [Prawn](https://github.com/prawnpdf/prawn)'s canvas graphics (and general PDF generation) imperative syntax (maybe even attempt to merge back to Prawn if its author is interested)
+- glimmer-dsl-optparse: A clean Glimmer DSL for optparse since its built-in DSL is extremely verbose and redundant
 - glimmer-dsl-rubymotion: Ruby Motion enables mobile app development with Ruby. Providing a DSL for it is useful.
 - glimmer-dsl-tui: Glimmer DSL for Text-Based User Interfaces (aka Textual User Interfaces). Have it adapt desktop apps just like Glimmer DSL for Opal
-- glimmer-dsl-object: A configuration DSL for building any Ruby object via DSL syntax instead of plain old Ruby syntax (perhaps replacing PropertyExpression in Glimmer DSL for SWT with it)
+- glimmer-dsl-object: A configuration DSL for building any Ruby object via DSL syntax instead of plain old Ruby syntax (perhaps replacing PropertyExpression in Glimmer DSL for SWT with it) (perhaps using as a way to scaffold the base of new DSLs since they all share a few things like elements, properties, listeners, and data-binding)
+
+```ruby
 class(*init_args) {
   attribute_name value
   non_setter_method(*args)
@@ -88,9 +77,11 @@ class(*init_args) {
   nested_child_class(*init_args) { # added to parent children
   }
 }
+```
 
 Example:
 
+```ruby
 rectangle(width: 30, height: 40) {
   solid
   width 30
@@ -99,3 +90,4 @@ rectangle(width: 30, height: 40) {
     radius 70
   }
 }
+```
