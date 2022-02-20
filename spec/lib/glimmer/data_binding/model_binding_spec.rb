@@ -13,7 +13,7 @@ describe Glimmer::DataBinding::ModelBinding do
         @siblings = []
         @grid = [['x'], ['o'], ['x']]
         @triple_grid = [[['x'], ['o'], ['x']], [['x'], ['o'], ['x']]]
-        @hash_attribute = {a: 1, b: 2, c: 3, 'a' => 1111}
+        @hash_attribute = {a: 1, b: 2, c: 3, e: {ea: 5, eb: 6, ec: 7, ed: 8, ee: {eea: 9, eea: 10}}, 'a' => 1111, 'b' => {'ba' => 2222, 'bb' => {'bba' => 3333}}}
       end
 
       def name
@@ -374,6 +374,60 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.grid[1][0]).to eq('o')
     end
       
+    it 'reads and writes changes in an hash-symbol-double-indexed model' do
+      model_binding = described_class.new(person, 'hash_attribute[:e][:ea]')
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+        @observer_new_value = new_value
+      end.observe(model_binding)
+      
+      person.hash_attribute[:e][:ea] = 55
+        
+      expect(@observer_notified).to be_truthy
+      expect(@observer_new_value).to eq(55)
+      
+      model_binding.call(555)
+
+      expect(person.hash_attribute[:e][:ea]).to eq(555)
+    end
+      
+    it 'reads and writes changes in an hash-single-quote-double-indexed model' do
+      model_binding = described_class.new(person, "hash_attribute['b']['ba']")
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+        @observer_new_value = new_value
+      end.observe(model_binding)
+      
+      person.hash_attribute['b']['ba'] = 55
+        
+      expect(@observer_notified).to be_truthy
+      expect(@observer_new_value).to eq(55)
+      
+      model_binding.call(555)
+
+      expect(person.hash_attribute['b']['ba']).to eq(555)
+    end
+      
+    it 'reads and writes changes in an hash-double-quote-double-indexed model' do
+      model_binding = described_class.new(person, 'hash_attribute["b"]["ba"]')
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+        @observer_new_value = new_value
+      end.observe(model_binding)
+      
+      person.hash_attribute["b"]["ba"] = 55
+        
+      expect(@observer_notified).to be_truthy
+      expect(@observer_new_value).to eq(55)
+      
+      model_binding.call(555)
+
+      expect(person.hash_attribute["b"]["ba"]).to eq(555)
+    end
+      
     it 'reads and writes changes in an array-triple-indexed model' do
       model_binding = described_class.new(person, 'triple_grid[1][1][0]')
       
@@ -390,6 +444,60 @@ describe Glimmer::DataBinding::ModelBinding do
       model_binding.call('o')
 
       expect(person.triple_grid[1][1][0]).to eq('o')
+    end
+      
+    it 'reads and writes changes in an hash-symbol-triple-indexed model' do
+      model_binding = described_class.new(person, 'hash_attribute[:e][:ee][:eea]')
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+        @observer_new_value = new_value
+      end.observe(model_binding)
+      
+      person.hash_attribute[:e][:ee][:eea] = 99
+        
+      expect(@observer_notified).to be_truthy
+      expect(@observer_new_value).to eq(99)
+      
+      model_binding.call(999)
+
+      expect(person.hash_attribute[:e][:ee][:eea]).to eq(999)
+    end
+    
+    it 'reads and writes changes in an hash-single-quote-triple-indexed model' do
+      model_binding = described_class.new(person, "hash_attribute['b']['bb']['bba']")
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+        @observer_new_value = new_value
+      end.observe(model_binding)
+      
+      person.hash_attribute['b']['bb']['bba'] = 55
+        
+      expect(@observer_notified).to be_truthy
+      expect(@observer_new_value).to eq(55)
+      
+      model_binding.call(555)
+
+      expect(person.hash_attribute['b']['bb']['bba']).to eq(555)
+    end
+      
+    it 'reads and writes changes in an hash-double-quote-triple-indexed model' do
+      model_binding = described_class.new(person, 'hash_attribute["b"]["bb"]["bba"]')
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+        @observer_new_value = new_value
+      end.observe(model_binding)
+      
+      person.hash_attribute["b"]["bb"]["bba"] = 55
+        
+      expect(@observer_notified).to be_truthy
+      expect(@observer_new_value).to eq(55)
+      
+      model_binding.call(555)
+
+      expect(person.hash_attribute["b"]["bb"]["bba"]).to eq(555)
     end
   end
   
