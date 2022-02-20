@@ -151,7 +151,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.siblings).to eq([sibling3, sibling2])
     end
     
-    it 'reads and writes changes in a hash-symbol-indexed model' do
+    it 'reads and writes changes in a hash-symbol-keyed model' do
       person.siblings = []
       model_binding = described_class.new(person, 'hash_attribute[:a]')
       
@@ -170,7 +170,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.hash_attribute[:a]).to eq(111)
     end
     
-    it 'reads and writes changes in a hash-single-quote-string-indexed model' do
+    it 'reads and writes changes in a hash-single-quote-string-keyed model' do
       person.siblings = []
       model_binding = described_class.new(person, "hash_attribute['a']")
       
@@ -189,7 +189,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.hash_attribute['a']).to eq(111111)
     end
     
-    it 'reads and writes changes in a hash-double-quote-string-indexed model' do
+    it 'reads and writes changes in a hash-double-quote-string-keyed model' do
       person.siblings = []
       model_binding = described_class.new(person, 'hash_attribute["a"]')
       
@@ -228,7 +228,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.siblings).to eq([sibling3, sibling2])
     end
     
-    it 'reads and writes changes in a directly hash-symbol-indexed property' do
+    it 'reads and writes changes in a directly hash-symbol-keyed property' do
       person.siblings = []
       model_binding = described_class.new(person.hash_attribute, '[:a]')
       
@@ -247,7 +247,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.hash_attribute[:a]).to eq(111)
     end
     
-    it 'reads and writes changes in a directly hash-single-quote-indexed property' do
+    it 'reads and writes changes in a directly hash-single-quote-string-keyed property' do
       person.siblings = []
       model_binding = described_class.new(person.hash_attribute, "['a']")
       
@@ -266,7 +266,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.hash_attribute['a']).to eq(111)
     end
     
-    it 'reads and writes changes in a directly hash-double-quote-indexed property' do
+    it 'reads and writes changes in a directly hash-double-quote-string-keyed property' do
       person.siblings = []
       model_binding = described_class.new(person.hash_attribute, '["a"]')
       
@@ -285,7 +285,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.hash_attribute["a"]).to eq(111)
     end
     
-    it 'reads and writes changes in a directly hash-symbol-indexed property' do
+    it 'reads and writes changes in a directly hash-symbol-keyed property' do
       person.siblings = []
       model_binding = described_class.new(person.hash_attribute, '[:a]')
       
@@ -374,7 +374,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.grid[1][0]).to eq('o')
     end
       
-    it 'reads and writes changes in an hash-symbol-double-indexed model' do
+    it 'reads and writes changes in an hash-symbol-double-keyed model' do
       model_binding = described_class.new(person, 'hash_attribute[:e][:ea]')
       
       Glimmer::DataBinding::Observer.proc do |new_value|
@@ -392,7 +392,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.hash_attribute[:e][:ea]).to eq(555)
     end
       
-    it 'reads and writes changes in an hash-single-quote-double-indexed model' do
+    it 'reads and writes changes in an hash-single-quote-double-keyed model' do
       model_binding = described_class.new(person, "hash_attribute['b']['ba']")
       
       Glimmer::DataBinding::Observer.proc do |new_value|
@@ -410,7 +410,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.hash_attribute['b']['ba']).to eq(555)
     end
       
-    it 'reads and writes changes in an hash-double-quote-double-indexed model' do
+    it 'reads and writes changes in an hash-double-quote-double-keyed model' do
       model_binding = described_class.new(person, 'hash_attribute["b"]["ba"]')
       
       Glimmer::DataBinding::Observer.proc do |new_value|
@@ -446,7 +446,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.triple_grid[1][1][0]).to eq('o')
     end
       
-    it 'reads and writes changes in an hash-symbol-triple-indexed model' do
+    it 'reads and writes changes in an hash-symbol-triple-keyed model' do
       model_binding = described_class.new(person, 'hash_attribute[:e][:ee][:eea]')
       
       Glimmer::DataBinding::Observer.proc do |new_value|
@@ -464,7 +464,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.hash_attribute[:e][:ee][:eea]).to eq(999)
     end
     
-    it 'reads and writes changes in an hash-single-quote-triple-indexed model' do
+    it 'reads and writes changes in an hash-single-quote-triple-keyed model' do
       model_binding = described_class.new(person, "hash_attribute['b']['bb']['bba']")
       
       Glimmer::DataBinding::Observer.proc do |new_value|
@@ -482,7 +482,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.hash_attribute['b']['bb']['bba']).to eq(555)
     end
       
-    it 'reads and writes changes in an hash-double-quote-triple-indexed model' do
+    it 'reads and writes changes in an hash-double-quote-triple-keyed model' do
       model_binding = described_class.new(person, 'hash_attribute["b"]["bb"]["bba"]')
       
       Glimmer::DataBinding::Observer.proc do |new_value|
@@ -500,7 +500,7 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.hash_attribute["b"]["bb"]["bba"]).to eq(555)
     end
     
-    it 'reads and writes changes in a nested hash-symbol-triple-indexed model' do
+    it 'reads and writes changes in a nested hash-symbol-triple-keyed model' do
       person.spouse = spouse
       spouse.hash_attribute[:e][:ee][:person] = person
       model_binding = described_class.new(person, 'spouse.hash_attribute[:e][:ee][:person].name')

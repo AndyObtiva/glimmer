@@ -9,8 +9,6 @@ Related TODO files:
 
 ## Next
 
-- Support Hash indexed properties via `ModelBinding` (not just Arrays') (e.g. `'some_hash_attribute[:some_key]'` or `'some_hash_attribute['some_key']'`)
-- Support Hash indexed nested properties via `ModelBinding` (e.g. `'some_attribute.some_hash_attribute[:some_key].some_other_attribute'`)
 - Support case-insensitive static expressions
 - Observe an array for all children changes on a specific property (e.g. observe(@game, 'blocks[][].color') ; returns |new_color, block|)
 - Ensure removing observers from hash in ObservableModel when removed from observable

@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 style="position: relative; top: 20px;" />](https://rubygems.org/gems/glimmer) Glimmer 2.6.0
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 style="position: relative; top: 20px;" />](https://rubygems.org/gems/glimmer) Glimmer 2.7.0
 ## DSL Framework for Ruby GUI and More
 [![Gem Version](https://badge.fury.io/rb/glimmer.svg)](http://badge.fury.io/rb/glimmer)
 [![rspec](https://github.com/AndyObtiva/glimmer/workflows/rspec/badge.svg)](https://github.com/AndyObtiva/glimmer/actions?query=workflow%3Arspec)
@@ -31,7 +31,7 @@ Start by checking out [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimme
 **[Glimmer](https://rubygems.org/gems/glimmer) DSL Comparison Table:**
 DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
 ----|-----------|---------|------------------|------|------|--------
-[Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)](https://github.com/AndyObtiva/glimmer-dsl-swt) | Mac / Windows / Linux | Yes | Yes (Canvas Shape DSL) | Very Mature / Scaffolding / Native Executable Packaging / Custom Widgets | Slow JRuby Startup Time / Heavy Memory Footprint | Java / JRuby 
+[Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)](https://github.com/AndyObtiva/glimmer-dsl-swt) | Mac / Windows / Linux | Yes | Yes (Canvas Shape DSL) | Very Mature / Scaffolding / Native Executable Packaging / Custom Widgets | Slow JRuby Startup Time / Heavy Memory Footprint | Java / JRuby
 [Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)](https://github.com/AndyObtiva/glimmer-dsl-opal) | All Web Browsers | No | Yes (Canvas Shape DSL) | Simpler than All JavaScript Technologies / Auto-Webify Desktop Apps | Setup Process / Incomplete Alpha | Rails
 [Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-libui) | Mac / Windows / Linux | Yes | Yes (Area API) | Very Simple Setup / Fast Startup Time / Light Memory Footprint | LibUI is an Incomplete Mid-Alpha Only | None Other Than MRI Ruby
 [Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-tk) | Mac / Windows / Linux | Some Native-Themed Widgets (Not Truly Native) | Yes (Canvas) | Fast Startup Time / Light Memory Footprint | Complicated setup / Widgets Do Not Look Truly Native, Espcially on Linux | ActiveTcl / MRI Ruby
@@ -241,7 +241,7 @@ end
 ### Setup
 
 Follow these steps to author a [Glimmer](https://rubygems.org/gems/glimmer) DSL:
-- Add `gem 'glimmer', '~> 2.6.0'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.6.0` and add `require 'glimmer'`
+- Add `gem 'glimmer', '~> 2.7.0'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.7.0` and add `require 'glimmer'`
 - Create `glimmer/dsl/[dsl_name]/dsl.rb`, which requires and adds all dynamic expressions for the [dsl_name] Glimmer DSL module as per the code shown in the previous section (or [Official DSLs](#official-dsls) as examples)
 - Create `glimmer/dsl/[dsl_name]/[expresion_name]_expresion.rb` for every [expresion_name] expression needed, whether dynamic or static
 
@@ -1240,7 +1240,7 @@ Glimmer::DataBinding::Observer.proc do |new_value, changed_key|
 end.observe(hash)
 ```
 
-If you would like to observe nested model attribute changes and/or indexed array changes (specifying a nested array index/indices), you can use the more advanced `Glimmer::DataBinding::ModelBinding` class instead.
+If you would like to observe nested model attribute changes, you can use the more advanced `Glimmer::DataBinding::ModelBinding` class instead.
 
 Example of observing nested model attributes:
 
@@ -1250,7 +1250,7 @@ ModelBinding.new(model, "address1.street").add_observer do |new_address1_street_
 end
 ```
 
-Example of observing indexed array changes (combined with a nested model attribute):
+Example of observing indexed array changes (specifying an array index) (combined with a nested model attribute):
 
 ```ruby
 ModelBinding.new(model, "employees[5].name").add_observer do |new_employee_6_name|
@@ -1266,10 +1266,19 @@ ModelBinding.new(model, "grid[5][7]").add_observer do |new_grid_cell_value|
 end
 ```
 
+Example of observing keyed hash changes (specifying a hash key as `Symbol` or single/double-quoted `String`) (combined with a nested model attribute):
+
+```ruby
+ModelBinding.new(model, "employees[:manager].name").add_observer do |new_employee_6_name|
+  # Do some work with new manager employee's name
+end
+```
+
 Data-bound `ModelBinding` attribute can be:
 - **Direct:** `Symbol` representing attribute reader/writer (e.g. `[person, :name`])
 - **Nested:** `String` representing nested attribute path (e.g. `[company, 'address.street']`). That results in "nested data-binding"
 - **Indexed:** `String` containing array attribute index (e.g. `[customer, 'addresses[0].street']`). That results in "indexed data-binding"
+- **Keyed:** `String` containing hash attribute key (e.g. `[customer, 'addresses[:main].street']`). That results in "keyed data-binding"
 
 Data-binding options include:
 - `before_read {|value| ...}`: performs an operation before reading data from Model to update View.
