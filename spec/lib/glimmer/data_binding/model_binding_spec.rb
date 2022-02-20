@@ -189,6 +189,25 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(person.hash_attribute['a']).to eq(111111)
     end
     
+    it 'reads and writes changes in a hash-double-quote-string-indexed model' do
+      person.siblings = []
+      model_binding = described_class.new(person, 'hash_attribute["a"]')
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+        @observer_new_value = new_value
+      end.observe(model_binding)
+      
+      person.hash_attribute["a"] = 11111
+        
+      expect(@observer_notified).to be_truthy
+      expect(@observer_new_value).to eq(11111)
+      
+      model_binding.call(111111)
+
+      expect(person.hash_attribute['a']).to eq(111111)
+    end
+    
     it 'reads and writes changes in a directly array-indexed property' do
       person.siblings = []
       model_binding = described_class.new(person.siblings, '[0]')

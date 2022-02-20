@@ -31,6 +31,7 @@ module Glimmer
       ARRAY_INDEXED_PROPERTY_ARGUMENT_REGEX = /\d+/
       HASH_SYMBOL_INDEXED_PROPERTY_ARGUMENT_REGEX = /:[^:]+/
       HASH_SINGLE_QUOTE_INDEXED_PROPERTY_ARGUMENT_REGEX = /'[^']+'/
+      HASH_DOUBLE_QUOTE_INDEXED_PROPERTY_ARGUMENT_REGEX = /"[^"]+"/
 
       attr_reader :binding_options, :property_name_expression
 
@@ -304,6 +305,8 @@ module Glimmer
           property_argument.sub(':', '').to_sym
         elsif property_argument.match(HASH_SINGLE_QUOTE_INDEXED_PROPERTY_ARGUMENT_REGEX)
           property_argument.gsub("'", '')
+        elsif property_argument.match(HASH_DOUBLE_QUOTE_INDEXED_PROPERTY_ARGUMENT_REGEX)
+          property_argument.gsub('"', '')
         else
           property_argument
         end
