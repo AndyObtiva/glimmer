@@ -13,7 +13,7 @@ describe Glimmer::DataBinding::ModelBinding do
         @siblings = []
         @grid = [['x'], ['o'], ['x']]
         @triple_grid = [[['x'], ['o'], ['x']], [['x'], ['o'], ['x']]]
-        @hash_attribute = {a: 1, b: 2, c: 3}
+        @hash_attribute = {a: 1, b: 2, c: 3, 'a' => 1111}
       end
 
       def name
@@ -165,10 +165,28 @@ describe Glimmer::DataBinding::ModelBinding do
       expect(@observer_notified).to be_truthy
       expect(@observer_new_value).to eq(11)
       
-      model_binding.call(111) # updates siblings[0] only
+      model_binding.call(111)
 
       expect(person.hash_attribute[:a]).to eq(111)
-      expect(person.hash_attribute).to eq({a: 111, b: 2, c: 3})
+    end
+    
+    it 'reads and writes changes in a hash-single-quote-string-indexed model' do
+      person.siblings = []
+      model_binding = described_class.new(person, "hash_attribute['a']")
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+        @observer_new_value = new_value
+      end.observe(model_binding)
+      
+      person.hash_attribute['a'] = 11111
+        
+      expect(@observer_notified).to be_truthy
+      expect(@observer_new_value).to eq(11111)
+      
+      model_binding.call(111111)
+
+      expect(person.hash_attribute['a']).to eq(111111)
     end
     
     it 'reads and writes changes in a directly array-indexed property' do

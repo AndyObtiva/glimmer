@@ -30,6 +30,7 @@ module Glimmer
       
       ARRAY_INDEXED_PROPERTY_ARGUMENT_REGEX = /\d+/
       HASH_SYMBOL_INDEXED_PROPERTY_ARGUMENT_REGEX = /:[^:]+/
+      HASH_SINGLE_QUOTE_INDEXED_PROPERTY_ARGUMENT_REGEX = /'[^']+'/
 
       attr_reader :binding_options, :property_name_expression
 
@@ -263,11 +264,7 @@ module Glimmer
         if property_indexed?(property_expression)
           property_method = '[]'
           property_argument = property_expression[1...-1]
-          if property_argument.match(ARRAY_INDEXED_PROPERTY_ARGUMENT_REGEX)
-            property_argument = property_argument.to_i
-          elsif property_argument.match(HASH_SYMBOL_INDEXED_PROPERTY_ARGUMENT_REGEX)
-            property_argument = property_argument.sub(':', '').to_sym
-          end
+          property_argument = indexed_property_argument(property_argument)
           object.send(property_method, property_argument)
         else
           if property_expression.nil?
@@ -288,11 +285,7 @@ module Glimmer
         if property_indexed?(property_expression)
           property_method = '[]='
           property_argument = property_expression[1...-2]
-          if property_argument.match(ARRAY_INDEXED_PROPERTY_ARGUMENT_REGEX)
-            property_argument = property_argument.to_i
-          elsif property_argument.match(HASH_SYMBOL_INDEXED_PROPERTY_ARGUMENT_REGEX)
-            property_argument = property_argument.sub(':', '').to_sym
-          end
+          property_argument = indexed_property_argument(property_argument)
           object.send(property_method, property_argument, converted_value)
         else
           if object.is_a?(Hash)
@@ -302,6 +295,18 @@ module Glimmer
           end
         end
         apply_processor(@binding_options[:after_write], converted_value)
+      end
+      
+      def indexed_property_argument(property_argument)
+        if property_argument.match(ARRAY_INDEXED_PROPERTY_ARGUMENT_REGEX)
+          property_argument.to_i
+        elsif property_argument.match(HASH_SYMBOL_INDEXED_PROPERTY_ARGUMENT_REGEX)
+          property_argument.sub(':', '').to_sym
+        elsif property_argument.match(HASH_SINGLE_QUOTE_INDEXED_PROPERTY_ARGUMENT_REGEX)
+          property_argument.gsub("'", '')
+        else
+          property_argument
+        end
       end
     end
   end
