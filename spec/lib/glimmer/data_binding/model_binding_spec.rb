@@ -499,6 +499,27 @@ describe Glimmer::DataBinding::ModelBinding do
 
       expect(person.hash_attribute["b"]["bb"]["bba"]).to eq(555)
     end
+    
+    it 'reads and writes changes in a nested hash-symbol-triple-indexed model' do
+      person.spouse = spouse
+      spouse.hash_attribute[:e][:ee][:person] = person
+      model_binding = described_class.new(person, 'spouse.hash_attribute[:e][:ee][:person].name')
+      
+      Glimmer::DataBinding::Observer.proc do |new_value|
+        @observer_notified = true
+        @observer_new_value = new_value
+      end.observe(model_binding)
+      
+      person.spouse.hash_attribute[:e][:ee][:person].name = 'jonathan'
+        
+      expect(@observer_notified).to be_truthy
+      expect(@observer_new_value).to eq('jonathan')
+      
+      model_binding.call('jared')
+
+      expect(person.spouse.hash_attribute[:e][:ee][:person].name).to eq('jared')
+    end
+    
   end
   
   context 'converters' do
