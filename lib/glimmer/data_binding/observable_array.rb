@@ -47,8 +47,7 @@ module Glimmer
 
       def add_observer(observer, *args)
         options = args.last.is_a?(Hash) ? args.pop : {}
-        element_properties = args
-        element_properties = element_properties.flatten.compact.uniq
+        element_properties = args.flatten.compact.uniq
         return observer if has_observer?(observer) && has_observer_element_properties?(observer, element_properties)
         property_observer_list[observer] = options
         observer_element_properties[observer] = Concurrent::Set.new(Concurrent::Array.new(element_properties_for(observer).to_a) + Concurrent::Array.new(element_properties)) # converting to Array as a workaround to jruby-9.3.2.0 issue TODO remove this workaround when no longer needed

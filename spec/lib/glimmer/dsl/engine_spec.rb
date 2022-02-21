@@ -61,6 +61,39 @@ module GlimmerSpec
         expect(GLIMMER_TOP_LEVEL_TARGET.to_s).to eq('SWT shell { SWT Dynamic browser(XML html { XML Dynamic body { XML Dynamic input({:type=>"text", :value=>"Hello, World!"}) } }) }')
       end
       
+      it 'standard static expression' do
+        @target = shell {
+        }
+          
+        expect(@target.to_s).to eq('SWT shell')
+      end
+      
+      it 'upcased/downcased static expression' do
+        @target = SHELL {
+        }
+          
+        expect(@target.to_s).to eq('SWT SHELL')
+        
+        @target = shell {
+        }
+          
+        expect(@target.to_s).to eq('SWT shell')
+      end
+      
+      it 'upcased-only static expression' do
+        @target = UPCASED_SHELL {
+        }
+          
+        expect(@target.to_s).to eq('SWT UPCASED_SHELL')
+        
+        @target = upcased_shell {
+        }
+          
+        expect(@target.to_s).to_not eq('SWT upcased_shell')
+        # It gets handled by the dynamic expression instead
+        expect(@target.to_s).to eq('SWT Dynamic upcased_shell')
+      end
+      
       it 'supports bind ModelBinding-producing expression' do
         object = Struct.new(:name).new('Sean')
         @target = bind(object, :name)

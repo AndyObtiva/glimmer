@@ -44,16 +44,42 @@ module Glimmer
           Glimmer::DSL::Engine.add_static_expression(base.new)
           super
         end
-
+        
         def keyword
           @keyword ||= name.split(/::/).last.sub(/Expression$/, '').underscore
         end
+        
+        def downcased(value)
+          @downcased = value
+          Glimmer::DSL::Engine.add_downcased_static_expression(new) if @downcased
+        end
+        alias downcase downcased
+        
+        def downcased?
+          # default is true when no attributes are set
+          @downcased.nil? && @upcased.nil? ? true : @downcased
+        end
+        alias downcase? downcased?
+        
+        def upcased(value)
+          @upcased = value
+          Glimmer::DSL::Engine.add_upcased_static_expression(new) if @upcased
+        end
+        alias upcase upcased
+        
+        def upcased?
+          @upcased
+        end
+        alias upcase? upcased?
       end
 
       # Subclasses may optionally implement, but by default it only ensures that
       # the keyword matches lower case static expression class name minus `Expression`
       def can_interpret?(parent, keyword, *args, &block)
-        true
+        result = false
+        result ||= keyword.downcase == keyword if self.class.downcased?
+        result ||= keyword.upcase == keyword if self.class.upcased?
+        result
       end
     end
   end

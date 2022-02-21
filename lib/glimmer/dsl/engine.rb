@@ -150,13 +150,34 @@ module Glimmer
           end
         end
 
-        def add_static_expression(static_expression)
+        def add_downcased_static_expression(static_expression)
           Glimmer::Config.logger.info {"Adding static expression: #{static_expression.class.name}"}
           keyword = static_expression.class.keyword
-          static_expression_dsl = static_expression.class.dsl
           static_expressions[keyword] ||= Concurrent::Hash.new
+          static_expression_dsl = static_expression.class.dsl
           static_expressions[keyword][static_expression_dsl] = static_expression
           Glimmer.send(:define_method, keyword, &STATIC_EXPRESSION_METHOD_FACTORY.call(keyword))
+        end
+        alias add_static_expression add_downcased_static_expression
+        
+        def remove_downcased_static_expression(static_expression)
+          if !static_expression.class.downcased?
+            keyword = static_expression.class.keyword
+            static_expressions[keyword].delete(static_expression_dsl) if static_expressions[keyword]
+            static_expressions.delete(keyword) if static_expressions[keyword].empty?
+            Glimmer.send(:undef_method, keyword) if (Glimmer.method(keyword) rescue nil)
+          end
+        end
+        
+        def add_upcased_static_expression(static_expression)
+          if static_expression.class.upcased?
+            Glimmer::Config.logger.info {"Adding upcased static expression: #{static_expression.class.name}"}
+            keyword = static_expression.class.keyword
+            static_expression_dsl = static_expression.class.dsl
+            static_expressions[keyword.upcase] ||= Concurrent::Hash.new
+            static_expressions[keyword.upcase][static_expression_dsl] = static_expression
+            Glimmer.send(:define_method, keyword.upcase, &STATIC_EXPRESSION_METHOD_FACTORY.call(keyword.upcase))
+          end
         end
 
         def expression_class(dsl_namespace, expression_name)

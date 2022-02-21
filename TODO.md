@@ -9,6 +9,7 @@ Related TODO files:
 
 ## Next
 
+- Support capitalized static expressions
 - Support case-insensitive static expressions
 - Observe an array for all children changes on a specific property (e.g. observe(@game, 'blocks[][].color') ; returns |new_color, block|)
 - Ensure removing observers from hash in ObservableModel when removed from observable
@@ -59,6 +60,7 @@ Related TODO files:
 
 ## DSLs
 
+- glimmer-dsl-ruby2d: Declarative Glimmer DSL for [Ruby2D](https://github.com/ruby2d/ruby2d) gaming library
 - glimmer-dsl-hexapdf: Declarative Glimmer DSL for [HexaPDF](https://github.com/gettalong/hexapdf)'s canvas graphics (and general PDF generation) imperative syntax (maybe even attempt to merge back to HexaPDF if its author is interested)
 - glimmer-dsl-prawn: Declarative Glimmer DSL for [Prawn](https://github.com/prawnpdf/prawn)'s canvas graphics (and general PDF generation) imperative syntax (maybe even attempt to merge back to Prawn if its author is interested)
 - glimmer-dsl-optparse: A clean Glimmer DSL for optparse since its built-in DSL is extremely verbose and redundant

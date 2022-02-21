@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.7.1
+
+- Support upcased static expressions (in addition to default downcased ones)
+
 ### 2.7.0
 
 - Support Hash keyed properties via `ModelBinding` (e.g. property as `some_hash_attribute[:some_key]`, `some_hash_attribute['some_key']`, `some_hash_attribute["some_key"]`)

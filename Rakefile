@@ -21,8 +21,8 @@ unless jeweler_required.nil?
     gem.name = "glimmer"
     gem.homepage = "http://github.com/AndyObtiva/glimmer"
     gem.license = "MIT"
-    gem.summary = %Q{Glimmer - DSL Engine for Ruby GUI and More}
-    gem.description = %Q{Glimmer is a Ruby DSL Framework for Ruby GUI and More, consisting of a DSL Engine and an Observable / Observer / Data-Binding Library (including Observable Model, Observable Array, and Observable Hash). Used in Glimmer DSL for SWT (JRuby Desktop Development GUI Framework), Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps), Glimmer DSL for Tk (Ruby Desktop Development GUI Library), Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library), Glimmer DSL for GTK (Ruby-GNOME Desktop Development GUI Library), Glimmer DSL for XML (& HTML), and Glimmer DSL for CSS.}
+    gem.summary = %Q{Glimmer - DSL Framework for Ruby GUI and More}
+    gem.description = %Q{Glimmer is a Ruby DSL Framework for Ruby GUI and More, consisting of a DSL Engine and an Observable / Observer / Data-Binding Library (including Observable Model, Observable Array, and Observable Hash). Used in Glimmer DSL for SWT (JRuby Desktop Development GUI Framework), Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps), Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library), Glimmer DSL for Tk (Ruby Tk Desktop Development GUI Library), Glimmer DSL for GTK (Ruby-GNOME Desktop Development GUI Library), Glimmer DSL for FX (FOX Toolkit Ruby Desktop Development GUI Library), Glimmer DSL for Swing (JRuby Swing Desktop Development GUI Library), Glimmer DSL for JFX (JRuby JavaFX Desktop Development GUI Library), Glimmer DSL for XML (& HTML), and Glimmer DSL for CSS.}
     gem.email = "andy.am@gmail.com"
     gem.authors = ["AndyMaleh"]
     # gem.executables = ['glimmer', 'girb'] # moved to glimmer-dsl-swt for now
