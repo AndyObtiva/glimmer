@@ -57,7 +57,7 @@ module Glimmer
         
         def downcased?
           # default is true when no attributes are set
-          @downcased.nil? && @upcased.nil? ? true : @downcased
+          @downcased.nil? && @upcased.nil? && @capitalized.nil? ? true : @downcased
         end
         alias downcase? downcased?
         
@@ -71,6 +71,19 @@ module Glimmer
           @upcased
         end
         alias upcase? upcased?
+        
+        def capitalized(value)
+          @capitalized = value
+          Glimmer::DSL::Engine.add_capitalized_static_expression(new) if @capitalized
+        end
+        alias capitalize capitalized
+        alias capital capitalized
+        
+        def capitalized?
+          @capitalized
+        end
+        alias capitalize? capitalized?
+        alias capital? capitalized?
       end
 
       # Subclasses may optionally implement, but by default it only ensures that
@@ -79,6 +92,7 @@ module Glimmer
         result = false
         result ||= keyword.downcase == keyword if self.class.downcased?
         result ||= keyword.upcase == keyword if self.class.upcased?
+        result ||= keyword.capitalize == keyword if self.class.capitalized?
         result
       end
     end

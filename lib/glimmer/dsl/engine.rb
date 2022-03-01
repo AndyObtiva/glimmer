@@ -179,6 +179,17 @@ module Glimmer
             Glimmer.send(:define_method, keyword.upcase, &STATIC_EXPRESSION_METHOD_FACTORY.call(keyword.upcase))
           end
         end
+        
+        def add_capitalized_static_expression(static_expression)
+          if static_expression.class.capitalized?
+            Glimmer::Config.logger.info {"Adding capitalized static expression: #{static_expression.class.name}"}
+            keyword = static_expression.class.keyword
+            static_expression_dsl = static_expression.class.dsl
+            static_expressions[keyword.capitalize] ||= Concurrent::Hash.new
+            static_expressions[keyword.capitalize][static_expression_dsl] = static_expression
+            Glimmer.send(:define_method, keyword.capitalize, &STATIC_EXPRESSION_METHOD_FACTORY.call(keyword.capitalize))
+          end
+        end
 
         def expression_class(dsl_namespace, expression_name)
           dsl_namespace.const_get(expression_class_name(expression_name).to_sym)

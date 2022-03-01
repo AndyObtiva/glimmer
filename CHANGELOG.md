@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.7.2
+
+- Support capitalized static expressions
+
 ### 2.7.1
 
 - Support upcased static expressions (in addition to default downcased ones)

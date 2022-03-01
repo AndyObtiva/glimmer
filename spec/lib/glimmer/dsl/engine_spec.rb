@@ -68,11 +68,16 @@ module GlimmerSpec
         expect(@target.to_s).to eq('SWT shell')
       end
       
-      it 'upcased/downcased static expression' do
+      it 'upcased/capitalized/downcased static expression' do
         @target = SHELL {
         }
           
         expect(@target.to_s).to eq('SWT SHELL')
+        
+        @target = Shell {
+        }
+          
+        expect(@target.to_s).to eq('SWT Shell')
         
         @target = shell {
         }
@@ -86,12 +91,40 @@ module GlimmerSpec
           
         expect(@target.to_s).to eq('SWT UPCASED_SHELL')
         
+        @target = Upcased_shell {
+        }
+          
+        expect(@target.to_s).to_not eq('SWT Upcased_shell')
+        # It gets handled by the dynamic expression instead
+        expect(@target.to_s).to eq('SWT Dynamic Upcased_shell')
+        
         @target = upcased_shell {
         }
           
         expect(@target.to_s).to_not eq('SWT upcased_shell')
         # It gets handled by the dynamic expression instead
         expect(@target.to_s).to eq('SWT Dynamic upcased_shell')
+      end
+      
+      it 'capitalized-only static expression' do
+        @target = Capitalized_shell {
+        }
+
+        expect(@target.to_s).to eq('SWT Capitalized_shell')
+        
+        @target = CAPITALIZED_SHELL {
+        }
+          
+        expect(@target.to_s).to_not eq('SWT CAPITALIZED_SHELL')
+        # It gets handled by the dynamic expression instead
+        expect(@target.to_s).to eq('SWT Dynamic CAPITALIZED_SHELL')
+        
+        @target = capitalized_shell {
+        }
+          
+        expect(@target.to_s).to_not eq('SWT capitalized_shell')
+        # It gets handled by the dynamic expression instead
+        expect(@target.to_s).to eq('SWT Dynamic capitalized_shell')
       end
       
       it 'supports bind ModelBinding-producing expression' do

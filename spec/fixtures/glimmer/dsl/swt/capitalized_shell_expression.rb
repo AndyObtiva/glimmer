@@ -7,12 +7,10 @@ require_relative '../element'
 module Glimmer
   module DSL
     module SWT
-      class ShellExpression < StaticExpression
+      class CapitalizedShellExpression < StaticExpression
         include ParentExpression
         include TopLevelExpression
         
-        downcased true
-        upcased true
         capitalized true
         
         def interpret(parent, keyword, *args, &block)

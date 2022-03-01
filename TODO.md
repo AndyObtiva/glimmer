@@ -9,7 +9,6 @@ Related TODO files:
 
 ## Next
 
-- Support capitalized static expressions
 - Support case-insensitive static expressions
 - Observe an array for all children changes on a specific property (e.g. observe(@game, 'blocks[][].color') ; returns |new_color, block|)
 - Ensure removing observers from hash in ObservableModel when removed from observable
@@ -17,8 +16,7 @@ Related TODO files:
 ### Version TBD
 
 - Support keyword arguments in expression interpretors
-- refactor observer registration code to be more smart/polymorphic/automated and honor open/closed principle (e.g. for SomeClass, search if there is ObservableSomeClass)
-- Support indexed data-binding for string/symbol keyed hashes (e.g. `addresses['home'].street`)
+- refactor observer registration code to be more smart/polymorphic/automated and honor open/closed principle (e.g. for SomeClass, search if there is ObservableSomeClass for the various hash, array, and model observables)
 - Support `observed` keyword to use in Observables around blocks of code that wouldn't trigger changes till completed.
 - Consider specifying a bind(`triggered_by: method_name`) option that would provide the scope for when to react to an observation.   This is similar to computed_by: except it negates updates happening outside of the computed_by method.
 - General nested data-binding not just on an index (e.g. 'addresses.street' not just 'addresses[0].street')
