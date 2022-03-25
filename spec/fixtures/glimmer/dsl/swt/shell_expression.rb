@@ -11,9 +11,7 @@ module Glimmer
         include ParentExpression
         include TopLevelExpression
         
-        downcased true
-        upcased true
-        capitalized true
+        case_insensitive true
         
         def interpret(parent, keyword, *args, &block)
           Element.new(parent, "SWT #{keyword}")

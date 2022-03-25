@@ -9,13 +9,11 @@ Related TODO files:
 
 ## Next
 
-- Support case-insensitive static expressions
 - Observe an array for all children changes on a specific property (e.g. observe(@game, 'blocks[][].color') ; returns |new_color, block|)
 - Ensure removing observers from hash in ObservableModel when removed from observable
 
 ### Version TBD
 
-- Support keyword arguments in expression interpretors
 - refactor observer registration code to be more smart/polymorphic/automated and honor open/closed principle (e.g. for SomeClass, search if there is ObservableSomeClass for the various hash, array, and model observables)
 - Support `observed` keyword to use in Observables around blocks of code that wouldn't trigger changes till completed.
 - Consider specifying a bind(`triggered_by: method_name`) option that would provide the scope for when to react to an observation.   This is similar to computed_by: except it negates updates happening outside of the computed_by method.
@@ -36,6 +34,7 @@ Related TODO files:
 - Consider making `#ensure_array_object_observer` optional in ObservableModel/ObservableHash/ObservableArray since it has performance implications (and perhaps make it happen as part of recursive: 1, shifting the depth understanding, instead of happening on recursive: false like it is now)
 - Fix issue with `#ensure_array_object_observer` not receiving `recursive: true` option (except first time) when updating value of an attribute in `ObservableModel`
 - Fix issue with `#ensure_array_object_observer` not receiving `recursive: true` option (except first time) when updating value of an attribute in `ObservableHash`
+- Support keyword arguments via **kwargs in expression interpretors (new Ruby 2.7+ feature to implement once supported by JRuby and Ruby 2.6 support is dropped)
 
 ### Maybe
 

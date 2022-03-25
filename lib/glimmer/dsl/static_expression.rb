@@ -84,6 +84,22 @@ module Glimmer
         end
         alias capitalize? capitalized?
         alias capital? capitalized?
+        
+        def case_insensitive(value)
+          if value
+            self.downcased(true)
+            self.upcased(true)
+            self.capitalized(true)
+          else
+            self.downcased(true)
+            self.upcased(false)
+            self.capitalized(false)
+          end
+        end
+        
+        def case_insensitive?
+          downcased? && upcased? && capitalized?
+        end
       end
 
       # Subclasses may optionally implement, but by default it only ensures that

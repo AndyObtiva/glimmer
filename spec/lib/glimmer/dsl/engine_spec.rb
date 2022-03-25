@@ -68,7 +68,7 @@ module GlimmerSpec
         expect(@target.to_s).to eq('SWT shell')
       end
       
-      it 'upcased/capitalized/downcased static expression' do
+      it 'case-insensitive (upcased/capitalized/downcased) static expression' do
         @target = SHELL {
         }
           
