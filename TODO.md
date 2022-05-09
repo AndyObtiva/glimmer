@@ -11,6 +11,7 @@ Related TODO files:
 
 - Observe an array for all children changes on a specific property (e.g. observe(@game, 'blocks[][].color') ; returns |new_color, block|)
 - Ensure removing observers from hash in ObservableModel when removed from observable
+- Avoid `< Struct.new` in specs (tests)
 
 ### Version TBD
 
@@ -43,6 +44,7 @@ Related TODO files:
 - Observe all attribute writers in an `OpenStruct` (observe `set_ostruct_member_value` method)
 - Support `recursive: true` with hashes that have nested hashes
 - Support `recursive: true` with models that have nested models
+- Observe multiple attributes or indexed/keyed/nested attribute expressions with a single observer
 
 ### Miscellaneous
 
