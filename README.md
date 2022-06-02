@@ -17,7 +17,7 @@ Featured in JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do) an
 
 [**Glimmer**](https://rubygems.org/gems/glimmer) is a DSL (Domain-Specific Language) Framework that consists of two things:
 - [DSL Engine](#dsl-engine): enables building internal DSLs embedded in Ruby (e.g. for GUI, XML, or CSS).
-- [Data-Binding Library](#data-binding-library): enables synchronizing GUI with Model Attributes bidirectionally **(now with [Shine](#shine-data-binding-syntax) syntax support in v2)**.
+- [Data-Binding Library](#data-binding-library): enables synchronizing GUI with Model Attributes bidirectionally **(now with [Shine](#shine-data-binding-syntax) syntax support in v2, which was [originally conceived back in 2007](https://andymaleh.blogspot.com/2007/12/data-shining-in-glimmer.html))**.
 
 [**Glimmer**](https://rubygems.org/gems/glimmer) is ***the cream of the crop*** when it comes to building DSLs in Ruby:
 - Supports building the tersest most concise domain specific language syntax in Ruby.
