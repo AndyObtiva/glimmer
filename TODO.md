@@ -59,11 +59,10 @@ Related TODO files:
 
 ## DSLs
 
+- glimmer-dsl-rubymotion: Ruby Motion enables mobile app development with Ruby. Providing a DSL for it is useful.
 - glimmer-dsl-ruby2d: Declarative Glimmer DSL for [Ruby2D](https://github.com/ruby2d/ruby2d) gaming library
 - glimmer-dsl-hexapdf: Declarative Glimmer DSL for [HexaPDF](https://github.com/gettalong/hexapdf)'s canvas graphics (and general PDF generation) imperative syntax (maybe even attempt to merge back to HexaPDF if its author is interested)
-- glimmer-dsl-prawn: Declarative Glimmer DSL for [Prawn](https://github.com/prawnpdf/prawn)'s canvas graphics (and general PDF generation) imperative syntax (maybe even attempt to merge back to Prawn if its author is interested)
 - glimmer-dsl-optparse: A clean Glimmer DSL for optparse since its built-in DSL is extremely verbose and redundant
-- glimmer-dsl-rubymotion: Ruby Motion enables mobile app development with Ruby. Providing a DSL for it is useful.
 - glimmer-dsl-tui: Glimmer DSL for Text-Based User Interfaces (aka Textual User Interfaces). Have it adapt desktop apps just like Glimmer DSL for Opal
 - glimmer-dsl-object: A configuration DSL for building any Ruby object via DSL syntax instead of plain old Ruby syntax (perhaps replacing PropertyExpression in Glimmer DSL for SWT with it) (perhaps using as a way to scaffold the base of new DSLs since they all share a few things like elements, properties, listeners, and data-binding)
 
