@@ -8,7 +8,7 @@
 
 **(The Original Glimmer Library Handling the World’s Ruby GUI Needs Since 2007. Beware of Imitators!)**
 
-[**(Glimmer DSL for LibUI Won a Fukuoka Ruby 2022 Special Award!)**](http://www.digitalfukuoka.jp/topics/187?locale=ja)
+(**[Glimmer DSL for LibUI Won a Fukuoka Ruby 2022 Special Award](https://andymaleh.blogspot.com/2022/02/glimmer-dsl-for-libui-wins-fukuoka-ruby.html)** [[Announcement]](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 
 [**(Ruby Rogues Podcast Interview - Desktop Apps in Ruby ft. Andy)**](https://andymaleh.blogspot.com/2022/05/ruby-rogues-podcast-interview-desktop.html)
 
