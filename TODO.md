@@ -39,6 +39,7 @@ Related TODO files:
 - Fix issue with `#ensure_array_object_observer` not receiving `recursive: true` option (except first time) when updating value of an attribute in `ObservableModel`
 - Fix issue with `#ensure_array_object_observer` not receiving `recursive: true` option (except first time) when updating value of an attribute in `ObservableHash`
 - Support keyword arguments via **kwargs in expression interpretors (new Ruby 2.7+ feature to implement once supported by JRuby and Ruby 2.6 support is dropped)
+- Rubocop checker for Glimmer GUI DSL syntax
 
 ### Maybe
 
