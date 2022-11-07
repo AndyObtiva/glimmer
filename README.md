@@ -6,13 +6,19 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/38fbc278022862794414/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer/maintainability)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+**[If You Liked Shoes, You'll Love Glimmer!](#faq)**
+
 **(The Original Glimmer Library Handling the World’s Ruby GUI Needs Since 2007. Beware of Imitators!)**
 
 (**[Glimmer DSL for LibUI Won a Fukuoka Ruby 2022 Special Award](https://andymaleh.blogspot.com/2022/02/glimmer-dsl-for-libui-wins-fukuoka-ruby.html)** [[Announcement]](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 
+(**[***RubyConf 2022 Talk - Building Native GUI Apps in Ruby***](https://andymaleh.blogspot.com/2023/02/rubyconf-2022-talk-video-for-building.html)**)
+
 [**(Ruby Rogues Podcast Interview - Desktop Apps in Ruby ft. Andy)**](https://andymaleh.blogspot.com/2022/05/ruby-rogues-podcast-interview-desktop.html)
 
 [GLIMMER VIDEO TUTORIAL CHANNEL](https://www.youtube.com/channel/UC5hzDE23HZXsZLAxYk2UJEw)
+
+![glimmer demo](https://github.com/AndyObtiva/glimmer-dsl-swt/raw/master/images/glimmer-dsl-swt-demo-hello-world.gif)
 
 [**Glimmer**](https://rubygems.org/gems/glimmer) started out as a [GUI Library](https://github.com/AndyObtiva/glimmer-dsl-swt) and grew into a full-fledged [DSL Framework](#dsl-engine) with support for multiple GUI DSLs. Glimmer's namesake is referring to the Glimmer of Ruby in Graphical User Interfaces (contrary to [popular myth](http://blog.headius.com/2007/11/tab-sweep.html) perpetrated by [Charles Nutter](http://blog.headius.com/2007/11/tab-sweep.html), Glimmer has nothing to do with the ill-fated Whitney Houston movie, which does not in fact share the same name)
 
@@ -34,7 +40,7 @@ Featured in JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do) an
 
 Start by checking out [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt), Glimmer's original GUI DSL (for [JRuby](https://www.jruby.org/)), which got extracted into its own gem; and [Glimmer DSL for LibUI](https://github.com/AndyObtiva/glimmer-dsl-libui), Glimmer's CRuby GUI DSL, which has no prerequisites beyond installing the Ruby gem.
 
-**[Glimmer](https://rubygems.org/gems/glimmer) DSL Comparison Table:**
+## [Glimmer](https://rubygems.org/gems/glimmer) DSL Comparison Table:
 DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
 ----|-----------|---------|------------------|------|------|--------
 [Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)](https://github.com/AndyObtiva/glimmer-dsl-swt) | Mac / Windows / Linux | Yes | Yes (Canvas Shape DSL) | Very Mature / Scaffolding / Native Executable Packaging / Custom Widgets | Slow JRuby Startup Time / Heavy Memory Footprint | Java / JRuby
@@ -1341,6 +1347,64 @@ This example unidirectionally binds the enabled property of a widget like entry 
 [Glimmer Process](PROCESS.md) is the lightweight software development process used for building Glimmer libraries and Glimmer apps, which goes beyond Agile, rendering all Agile processes obsolete. [Glimmer Process](PROCESS.md) is simply made up of 7 guidelines to pick and choose as necessary until software development needs are satisfied.
 
 Learn more by reading the [GPG](PROCESS.md) (Glimmer Process Guidelines)
+
+## FAQ
+
+(Frequently Asked Questions)
+
+**How do Glimmer GUI DSLs compare to Shoes?**
+
+If you liked Shoes, you'll love Glimmer!
+
+That is because Glimmer does everything that Shoes did, but with a lighter and better GUI DSL (Graphical User Interface Domain Specific Language) that addresses all the issues that Shoes suffered from, such as:
+- Shoes does not allow code in Shoes blocks to use variables defined outside of Shoes blocks in a straightforward manner as it changes `self` inside Shoes blocks, breaking Ruby expectations and producing confusing behavior. On the other hand, Glimmer DSL blocks are 100% standard Ruby blocks that represent real closures, so they enable usage of variables defined outside the blocks in a 100% standard Ruby way.
+- Shoes lacks support for high-quality business widget controls (View components) like table and tree. Glimmer GUI DSLs that are feature complete like Glimmer DSL for SWT do support table and tree widgets. Some non-final Glimmer GUI DSLs like Glimmer DSL for LibUI support the table control too.
+- Shoes does not encourage proper separation of concerns with a correct MVC architecture (Model-View-Controller), resulting in a lot of non-presentation logic mixed with View code. Glimmer GUI DSLs do support proper separation of concerns 100% following the MVC or MVP (Model-View-Presenter) architecture by default.
+- Shoes does not provide a simple way for connecting View components to Model data. Glimmer GUI DSLs provide full bidirectional/unidirectional data-binding support out of the box that provides the terest code syntax for connecting Views to Models and keeping them in sync.
+- Shoes does not support a native mechanism for building custom View components. Glimmer GUI DSLs do support the ability to build custom widgets (aka controls or View components), custom windows (aka shells), and custom shapes (canvas graphics), enabling software engineers to expand a Glimmer DSL’s vocabulary with new keywords representing brand new visual concepts. That results in much higher productivity by enabling the reuse of higher visual concepts as their own self-encapsulated components.
+- Shoes does not expose native features of its wrapped GUI toolkit. Glimmer GUI DSLs do expose all native features of their wrapped GUI toolkits, thus enabling developers to use a GUI toolkit like SWT directly when needed on top of using Glimmer DSL for SWT (a widget initialized via SWT directly could be passed to Glimmer DSL for SWT to wrap as a Glimmer `WidgetProxy` object and integrate with other Glimmer initialized `WidgetProxy` objects). That facilitates the 80/20 rule of having Glimmer GUI DSLs automate 80% of the work while still enabling software engineers to reach down to the low-level GUI toolkit API in 20% of the cases when needed (though in practice, it's probably more like 1% of the cases).
+
+It is great that Shoes paved the way for creating desktop GUI DSLs in Ruby. Glimmer took that approach to its maximum and produced the ultimate evolution of Shoes.
+
+**What is the difference between Glimmer and Glimmer DSL for SWT?**
+
+Glimmer DSL for SWT was the first GUI DSL created as part of the Glimmer project to enable building desktop applications, and it was originally just called Glimmer. It relied on the Eclipse SWT library to render native GUI (Graphical User Interface) widget controls (View components) on every platform (Mac, Windows, and Linux). Eventually, the idea of a Glimmer DSL proved itself so successful and viable for building desktop apps with a fraction of the effort needed in other programming languages/technologies that it was expanded to support other GUI toolkits. So, Glimmer got renamed to Glimmer DSL for SWT, and the core Glimmer DSL engine got extracted to Glimmer (becoming a DSL framework), which then got reused to build other Glimmer GUI DSLs such as Glimmer DSL for LibUI and Glimmer DSL for GTK, among many others.
+
+**What is the difference between Glimmer DSL for SWT and Glimmer DSL for LibUI?**
+
+Both Glimmer DSL for SWT and Glimmer DSL for LibUI support rendering platform native widgets/controls, which enable building native desktop apps that look 100% native on every platform (Mac, Windows, and Linux). 
+
+However, Glimmer DSL for SWT runs in JRuby (Ruby running in the JVM [Java Virtual Machine]) whereas Glimmer DSL for LibUI runs in standard Ruby (aka MRI Ruby or CRuby).
+
+Glimmer DSL for SWT is 100% feature-complete and has a final release. Glimmer DSL for LibUI is 100% complete as far as covering the LibUI features, but LibUI itself is still a mid-alpha library, so it is missing a few features that will get added eventually.
+
+**What is the difference between Glimmer DSL for LibUI, Glimmer DSL for GTK, Glimmer DSL for Tk, and Glimmer DSL for FX?**
+
+All of Glimmer DSL for LibUI, Glimmer DSL for GTK, Glimmer DSL for Tk, and Glimmer DSL for FX run in standard Ruby (aka MRI Ruby or CRuby).
+
+However, only Glimmer DSL for LibUI renders native controls on every platform (Mac, Windows, and Linux). The other libraries do not render native controls on every platform, albeit Glimmer DSL for GTK renders native controls on Linux distributions utilizing Gnome.
+
+Also, Glimmer DSL for LibUI does not require any prerequisites beyond installing the Ruby gem, so you can install it and get instant GUI with very little effort, whereas Glimmer DSL for GTK, Glimmer DSL for Tk, and Glimmer DSL for FX do require extra dependencies in general, albeit Glimmer DSL for GTK has everything it needs in Linux Gnome flavors and Glimmer DSL for FX has everything it needs in Windows.
+
+You may learn more about the differences between various Glimmer DSLs by checking out the [Glimmer DSL Comparison Table](#glimmer-dsl-comparison-table).
+
+**What is the difference between Glimmer DSL for SWT, Glimmer DSL for Swing, and Glimmer DSL for JFX?**
+
+Glimmer DSL for SWT relies on the Eclipse SWT library, which renders native widgets on every platform (Mac, Windows, and Linux) to build desktop apps that look 100% native on every platform (Mac, Windows, and Linux). 
+
+Glimmer DSL for Swing relies on Swing, which does not render native widgets on every platform. Glimmer DSL for JFX relies on JavaFX, which also does not render native widgets on every platform.
+
+Also, SWT initializes native widgets in memory using non-Java code (e.g. C/C++), thus ensuring native OS high performance for rendering native widgets without being prone to Java garbage collection pauses. On the other hand, Swing and JavaFX initialize non-native widgets in memory using Java code, thus depend on the performance of the Java Virtual Machine while being prone to Java garbage collection pauses. As a result, SWT provides a better user experience than Swing and JavaFX.
+
+You may learn more about the differences between various Glimmer DSLs by checking out the [Glimmer DSL Comparison Table](#glimmer-dsl-comparison-table).
+
+**Why not just use SWT, LibUI, GTK, Tk, FOX Toolkit, Swing, or JavaFX from Ruby directly?**
+
+GUI Toolkits implement low-level GUI rendering concerns. And, while some of them do offer object-oriented APIs, their APIs are very verbose and imperative by design due to being low-level APIs. As such, they require software engineers to write a lot more low-level code that does not map intuitively to the structure of the GUI visually, slowing down productivity and making maintainability more expensive.
+
+Glimmer GUI DSLs on the other hand are fully declarative and they enable software engineers to write the simplest most minimalistic code that maps to the actual visual GUI concepts, thus maximizing productivity and resulting in code that is very maintainable and intuitive to reason about. 
+
+Furthermore, Glimmer GUI DSLs offer advanced bidirectional/unidirectional data-binding support, which enables syncing View data with Model attributes with the tersest code syntax possible to greatly simplify reasoning about the code while supporting proper separation of concerns through correct adherence to MVC (Model-View-Controller) and MVP (Model-View-Presenter). As a result, productivity increases even further and maintainability becomes even less expensive, thus enabling software engineers to deliver pieces of software in a matter of minutes or hours for desktop application MVPs (Minimal Viable Products). As such, Glimmer GUI DSLs significantly shorten the feedback cycle and enable incrementally releasing features at a very fast pace, not possible with GUI toolkit low-level APIs.
 
 ## Resources
 
