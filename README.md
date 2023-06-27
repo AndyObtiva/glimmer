@@ -47,8 +47,9 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
 [Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)](https://github.com/AndyObtiva/glimmer-dsl-opal) | All Web Browsers | No | Yes (Canvas Shape DSL) | Simpler than All JavaScript Technologies / Auto-Webify Desktop Apps | Setup Process / Incomplete Alpha | Rails
 [Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-libui) | Mac / Windows / Linux | Yes | Yes (Area API) | Very Simple Setup / Fast Startup Time / Light Memory Footprint | LibUI is an Incomplete Mid-Alpha Only | None Other Than MRI Ruby
 [Glimmer DSL for Tk (Ruby Tk Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-tk) | Mac / Windows / Linux | Some Native-Themed Widgets (Not Truly Native) | Yes (Canvas) | Fast Startup Time / Light Memory Footprint | Complicated setup / Widgets Do Not Look Truly Native, Espcially on Linux | ActiveTcl / MRI Ruby
-[Glimmer DSL for GTK (Ruby-GNOME Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-gtk) | Mac / Windows / Linux | Only on Linux | Yes (Cairo) | Complete Access to GNOME Features on Linux | Not Native on Mac and Windows | None Other Than MRI Ruby on Linux / Brew Packages on Mac / MSYS & MING Toolchains on Windows / MRI Ruby
-[Glimmer DSL for FX (FOX Toolkit Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-fx) | Mac (requires XQuartz) / Windows / Linux | No | Yes (Canvas) | No Prerequisites on Windows | Widgets Do Not Look Native / Mac Usage Obtrusively Starts XQuartz | None Other Than MRI Ruby on Windows / XQuarts on Mac / MRI Ruby
+[Glimmer DSL for GTK (Ruby-GNOME Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-gtk) | Mac / Windows / Linux | Only on Linux | Yes (Cairo) | Complete Access to GNOME Features on Linux (Forte) | Not Native on Mac and Windows | None Other Than MRI Ruby on Linux / Brew Packages on Mac / MSYS & MING Toolchains on Windows / MRI Ruby
+[Glimmer DSL for FX (FOX Toolkit Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-fx) | Mac (requires XQuartz) / Windows / Linux | No | Yes (Canvas) | No Prerequisites on Windows (Forte Since Binaries Are Included Out of The Box) | Widgets Do Not Look Native / Mac Usage Obtrusively Starts XQuartz | None Other Than MRI Ruby on Windows / XQuarts on Mac / MRI Ruby
+[Glimmer DSL for WX (wxWidgets Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-wx) | Mac / Windows / Linux | Yes | Yes | Fast Startup Time / Light Memory Footprint | wxruby3 is still beta and does not support Mac yet | wxWidgets, Doxygen, SWIG, GNU g++ 4.8 on Linux or RubyInstaller+DevKit on Windows
 [Glimmer DSL for JFX (JRuby JavaFX Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-jfx) | Mac / Windows / Linux | No | Yes (javafx.scene.shape and javafx.scene.canvas) | Rich in Custom Widgets | Slow JRuby Startup Time / Heavy Memory Footprint / Widgets Do Not Look Native | Java / JRuby / JavaFX SDK
 [Glimmer DSL for Swing (JRuby Swing Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-swing) | Mac / Windows / Linux | No | Yes (Java2D) | Very Mature | Slow JRuby Startup Time / Heavy Memory Footprint / Widgets Do Not Look Native | Java / JRuby
 [Glimmer DSL for XML (& HTML)](https://github.com/AndyObtiva/glimmer-dsl-xml) | All Web Browsers | No | Yes (SVG) | Programmable / Lighter-weight Than Actual XML | XML Elements Are Sometimes Not Well-Named (Many Types of Input) | None
@@ -70,6 +71,7 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
       - [Glimmer DSL for CSS](#glimmer-dsl-for-css)
       - [Glimmer DSL for GTK (Ruby-GNOME Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-gtk)
       - [Glimmer DSL for FX (FOX Toolkit Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-fx)
+      - [Glimmer DSL for WX (wXwidgets Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-wx)
       - [Glimmer DSL for JFX (JRuby JavaFX Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-jfx)
       - [Glimmer DSL for Swing (JRuby Swing Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-swing)
   - [Data-Binding Library](#data-binding-library)
@@ -1378,13 +1380,13 @@ However, Glimmer DSL for SWT runs in JRuby (Ruby running in the JVM [Java Virtua
 
 Glimmer DSL for SWT is 100% feature-complete and has a final release. Glimmer DSL for LibUI is 100% complete as far as covering the LibUI features, but LibUI itself is still a mid-alpha library, so it is missing a few features that will get added eventually.
 
-**What is the difference between Glimmer DSL for LibUI, Glimmer DSL for GTK, Glimmer DSL for Tk, and Glimmer DSL for FX?**
+**What is the difference between Glimmer DSL for LibUI, Glimmer DSL for GTK, Glimmer DSL for Tk, Glimmer DSL for FX, and Glimmer DSL for WX?**
 
-All of Glimmer DSL for LibUI, Glimmer DSL for GTK, Glimmer DSL for Tk, and Glimmer DSL for FX run in standard Ruby (aka MRI Ruby or CRuby).
+All of Glimmer DSL for LibUI, Glimmer DSL for GTK, Glimmer DSL for Tk, Glimmer DSL for FX, and Glimmer DSL for WX run in standard Ruby (aka MRI Ruby or CRuby).
 
-However, only Glimmer DSL for LibUI renders native controls on every platform (Mac, Windows, and Linux). The other libraries do not render native controls on every platform, albeit Glimmer DSL for GTK renders native controls on Linux distributions utilizing Gnome.
+However, only Glimmer DSL for LibUI and Glimmer DSL for WX render native controls on every platform. The other libraries do not render native controls on every platform, albeit Glimmer DSL for GTK renders native controls on Linux distributions utilizing Gnome.
 
-Also, Glimmer DSL for LibUI does not require any prerequisites beyond installing the Ruby gem, so you can install it and get instant GUI with very little effort, whereas Glimmer DSL for GTK, Glimmer DSL for Tk, and Glimmer DSL for FX do require extra dependencies in general, albeit Glimmer DSL for GTK has everything it needs in Linux Gnome flavors and Glimmer DSL for FX has everything it needs in Windows.
+Also, Glimmer DSL for LibUI does not require any prerequisites beyond installing the Ruby gem, so you can install it and get instant GUI with very little effort, whereas Glimmer DSL for GTK, Glimmer DSL for Tk, Glimmer DSL for FX, and Glimmer DSL for WX do require extra dependencies in general, albeit Glimmer DSL for GTK has everything it needs in Linux Gnome flavors and both Glimmer DSL for FX and Glimmer DSL for WX have everything they need on Windows by including pre-built binaries.
 
 You may learn more about the differences between various Glimmer DSLs by checking out the [Glimmer DSL Comparison Table](#glimmer-dsl-comparison-table).
 
@@ -1398,7 +1400,7 @@ Also, SWT initializes native widgets in memory using non-Java code (e.g. C/C++),
 
 You may learn more about the differences between various Glimmer DSLs by checking out the [Glimmer DSL Comparison Table](#glimmer-dsl-comparison-table).
 
-**Why not just use SWT, LibUI, GTK, Tk, FOX Toolkit, Swing, or JavaFX from Ruby directly?**
+**Why not just use SWT, LibUI, GTK, Tk, FOX Toolkit, wxWidgets, Swing, or JavaFX from Ruby directly?**
 
 GUI Toolkits implement low-level GUI rendering concerns. And, while some of them do offer object-oriented APIs, their APIs are very verbose and imperative by design due to being low-level APIs. As such, they require software engineers to write a lot more low-level code that does not map intuitively to the structure of the GUI visually, slowing down productivity and making maintainability more expensive.
 
