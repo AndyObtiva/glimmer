@@ -19,6 +19,7 @@ Related TODO files:
 - Improve API for `add_observer` methods on observables (make it accept a block, and perhaps reverse arg order)
 - Allow being able to include Glimmer for a particular DSL (e.g. `include Glimmer[:data_binding]` to add `observe` keyword only) without having to enable/disable DSLs (create scoped realms of DSL activation)
 - refactor observer registration code to be more smart/polymorphic/automated and honor open/closed principle (e.g. for SomeClass, search if there is ObservableSomeClass for the various hash, array, and model observables)
+- Support automatic computed data-binding by monitoring method invocations of a top-level data-bound attribute. This will need the newest Ruby updates for Tracepoint, and perhaps passing options to Ruby when running apps. Whatever this Ruby bug yielded must be used: https://bugs.ruby-lang.org/issues/16383
 - Support `observed` keyword to use in Observables around blocks of code that wouldn't trigger changes till completed.
 - Consider specifying a bind(`triggered_by: method_name`) option that would provide the scope for when to react to an observation.   This is similar to computed_by: except it negates updates happening outside of the computed_by method.
 - General nested data-binding not just on an index (e.g. 'addresses.street' not just 'addresses[0].street')
