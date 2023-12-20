@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.7.4
+
+- Have `ObserveExpression` support passing an arbitrary number of arguments (not just the object and attribute) to support newer options from the Glimmer DSL like `recursive: true`
+
 ### 2.7.3
 
 - Support case-insensitive static expressions

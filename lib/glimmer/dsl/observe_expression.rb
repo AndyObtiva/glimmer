@@ -30,16 +30,16 @@ module Glimmer
       def can_interpret?(parent, keyword, *args, &block)
         keyword == 'observe' and
           block_given? and
-          (args.size == 2) and
-          textual?(args[1])
+          (args.size >= 1) and
+          (args[1].nil? || args[1].is_a?(Hash) || textual?(args[1]))
       end
 
       def interpret(parent, keyword, *args, &block)
         observer = DataBinding::Observer.proc(&block)
         if args[1].to_s.match(REGEX_NESTED_OR_INDEXED_PROPERTY)
-          observer_registration = observer.observe(DataBinding::ModelBinding.new(args[0], args[1]))
+          observer_registration = observer.observe(DataBinding::ModelBinding.new(*args))
         else
-          observer_registration = observer.observe(args[0], args[1])
+          observer_registration = observer.observe(*args)
         end
         observer_registration
       end
