@@ -54,7 +54,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/AndyObtiva/glimmer".freeze
   s.licenses = ["MIT".freeze]
   s.rubygems_version = "3.4.10".freeze
-  s.summary = "Glimmer - DSL Framework for Ruby GUI and More".freeze
+  s.summary = "Glimmer (DSL Framework for Ruby GUI and More)".freeze
 
   s.specification_version = 4
 
