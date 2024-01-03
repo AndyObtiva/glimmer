@@ -78,7 +78,7 @@ module Glimmer
       Glimmer::DSL::Engine.interpret(method_symbol, *args, &block)
     end
   rescue InvalidKeywordError => e
-    Glimmer::Config.logger.error {"Encountered an invalid keyword at this object: #{self}"}
+    Glimmer::Config.logger.error {"Encountered an invalid keyword '#{method_symbol}' at this object: #{self.inspect}"}
     Glimmer::Config.logger.error {e.full_message}
     super(method_symbol, *args, &block)
   end
