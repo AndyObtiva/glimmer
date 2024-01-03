@@ -46,7 +46,7 @@ module Glimmer
         end
       end
 
-      class Registration < Struct.new(:observer, :observable, :args, keyword_init: true)
+      Registration = Struct.new(:observer, :observable, :args, keyword_init: true) do
         def deregister
           observer.unobserve(observable, *args)
         end
