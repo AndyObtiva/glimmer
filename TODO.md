@@ -15,6 +15,7 @@ Related TODO files:
 - Observe an array for all children changes on a specific property (e.g. observe(@game, 'blocks[][].color') ; returns |new_color, block|)
 - Ensure removing observers from hash in ObservableModel when removed from observable
 - Avoid `< Struct.new` in specs (tests)
+- Add built-in support to Glimmer::DSL::Engine to memoize/cache expressions similar to how that is supported for StaticExpression (but allowing an outside keyword and non-static expression to be used)
 
 ### Version TBD
 

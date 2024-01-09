@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.7.7
+
+- Relax `array_include_methods` gem dependency to '>= 1.4.0', '< 1.6.0'
+
 ### 2.7.6
 
 - Fix an issue in Opal by updating `Glimmer::DataBinding::Observer::Registration` to correctly inherit from `Struct` by assigning a `Struct.new` and opening a `do; end` block
