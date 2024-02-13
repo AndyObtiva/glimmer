@@ -19,6 +19,7 @@ Related TODO files:
 
 ### Version TBD
 
+- Support observing multiple model attributes at the same time for the same model or different models, providing syntax for it in `ModelBinding`, `observe` keyword, data-binding, and `content` data-binding (e.g. `content(paginator, :page_count, :page_number)`, considering aliases `content(paginator, [:page_count, :page_number])` and `content(paginator => [:page_count, :page_number])` , or `content(user, :addresses, friend, :addresses)` , considering alias `content(user => :addresses, friend => :addresses)` if it was beneficial at all )
 - Improve API for `add_observer` methods on observables (make it accept a block, and perhaps reverse arg order)
 - Allow being able to include Glimmer for a particular DSL (e.g. `include Glimmer[:data_binding]` to add `observe` keyword only) without having to enable/disable DSLs (create scoped realms of DSL activation)
 - refactor observer registration code to be more smart/polymorphic/automated and honor open/closed principle (e.g. for SomeClass, search if there is ObservableSomeClass for the various hash, array, and model observables)
