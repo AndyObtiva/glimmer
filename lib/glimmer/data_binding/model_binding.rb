@@ -131,6 +131,8 @@ module Glimmer
       end
 
       def add_observer(observer, extra_options = {})
+        # TODO couldn't we have a scenario where it is both computed? and nested_property? at the same time?
+        # or computed and not nested at the same time (else statement)?
         if computed?
           add_computed_observers(observer)
         elsif nested_property?
@@ -252,12 +254,7 @@ module Glimmer
 
       def invoke_proc_with_exact_parameters(proc_object, *args)
         return if proc_object.nil?
-        if RUBY_ENGINE == 'opal'
-          # opal doesn't support proc_object.parameters.size properly it seems
-          args = Concurrent::Array.new(args[0...1])
-        else
-          args = Concurrent::Array.new(args[0...proc_object.parameters.size])
-        end
+        args = Concurrent::Array.new(args[0...proc_object.parameters.size])
         proc_object.call(*args)
       end
 

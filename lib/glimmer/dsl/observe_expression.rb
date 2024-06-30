@@ -36,11 +36,7 @@ module Glimmer
 
       def interpret(parent, keyword, *args, &block)
         observer = DataBinding::Observer.proc(&block)
-        if args[1].to_s.match(REGEX_NESTED_OR_INDEXED_PROPERTY)
-          observer_registration = observer.observe(DataBinding::ModelBinding.new(*args))
-        else
-          observer_registration = observer.observe(*args)
-        end
+        observer_registration = observer.observe(DataBinding::ModelBinding.new(*args))
         observer_registration
       end
     end

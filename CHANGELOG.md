@@ -3,6 +3,13 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.7.8
+
+- Allow passing `BindExpression` only 1 argument (e.g. presenter.todos) or 1 argument + 1 hash (e.g. presenter.todos, on_read: -> {})
+- `ObserveExpression` always uses `ModelBinding` for arguments to leverage its advanced features, like nested/computed/indexed/keyed data-binding
+- In Opal, `ModelBinding` converters/hooks do not require an argument anymore (e.g. can invoke `after_write: -> { do_something }` without block args)
+- Fix issue whereby observing `model, :collection` was not firing on collection changes, but observing `model.collection` was firing on collection changes (now both fire on collection changes)
+
 ### 2.7.7
 
 - Relax `array_include_methods` gem dependency to '>= 1.4.0', '< 1.6.0'

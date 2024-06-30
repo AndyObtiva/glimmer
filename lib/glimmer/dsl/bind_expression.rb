@@ -32,8 +32,15 @@ module Glimmer
           keyword == 'bind' and
             (
               (
+                (args.size == 1)
+              ) ||
+              (
                 (args.size == 2) and
                   textual?(args[1])
+              ) ||
+              (
+                (args.size == 2) and
+                  (args[1].is_a?(Hash))
               ) ||
                 (
                   (args.size == 3) and
@@ -43,11 +50,12 @@ module Glimmer
             )
         )
       end
+      
 
       def interpret(parent, keyword, *args, &block)
-        binding_options = args[2] || {}
+        binding_options = args.last.is_a?(Hash) ? args.pop : {}
         binding_options[:on_read] = binding_options.delete(:on_read) || binding_options.delete('on_read') || block
-        DataBinding::ModelBinding.new(args[0], args[1].to_s, binding_options)
+        DataBinding::ModelBinding.new(*args, binding_options)
       end
     end
   end

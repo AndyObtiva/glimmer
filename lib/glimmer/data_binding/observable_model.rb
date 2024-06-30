@@ -54,6 +54,7 @@ module Glimmer
         initialize_observer_options(options)
         return observer if has_observer?(observer, property_name)
         property_observer_list(property_name) << observer
+        # if property writer does not exist, add_property_writer_observers will ensure_array_object_observer only
         add_property_writer_observers(property_name, options)
         open_struct_loaded = !!::OpenStruct rescue false
         add_key_writer_observer(property_name, options) if is_a?(Struct) || (open_struct_loaded && is_a?(OpenStruct))
@@ -116,8 +117,8 @@ module Glimmer
         options[:attribute_writer_type].each do |attribute_writer_type|
           begin
             property_writer_name = attribute_writer_type.to_s.gsub('attribute', property_name.to_s)
-            method(property_writer_name)
             ensure_array_object_observer(property_name, send(property_name), nil, options)
+            method(property_writer_name)
             begin
               method("__original__#{property_writer_name}")
             rescue
