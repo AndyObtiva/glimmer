@@ -3,6 +3,11 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.8.0
+
+- Support ability to interpret multiple DSL expression hierarchies, by suspending interpretation of a hierarchy, interpreting another until done, and then resuming interpretation of previous hierarchy until done too. That is done by starting a new expression hierarchy interpretation using `Glimmer::DSL::Engine::new_parent_stack` in the middle of interpreting another expression hierarchy.
+- Refactor/rename `Glimmer::DSL::Engine::parent_stacks` to `Glimmer::DSL::Engine::dsl_parent_stacks` and have it include an `Array` of `Array`s of parent stacks per DSL.
+
 ### 2.7.9
 
 - Optimize performance of `Glimmer::DataBinding::ObservableModel#add_observer` by removing `OpenStruct` constant check.

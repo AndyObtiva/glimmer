@@ -61,6 +61,24 @@ module GlimmerSpec
         expect(GLIMMER_TOP_LEVEL_TARGET.to_s).to eq('SWT shell { SWT Dynamic browser(XML html { XML Dynamic body { XML Dynamic input({:type=>"text", :value=>"Hello, World!"}) } }) }')
       end
       
+      it 'interprets another expression hierarchy in the middle of interpreting an expression hierarchy' do
+        @target1 = shell {
+          spinner {
+            # start a second hierarchy
+            Glimmer::DSL::Engine.new_parent_stack
+            @target2 = shell {
+              table {
+              }
+            }
+            # continue back in first hierarchy
+            progress
+          }
+        }
+          
+        expect(@target1.to_s).to eq('SWT shell { SWT Dynamic spinner { SWT Dynamic progress } }')
+        expect(@target2.to_s).to eq('SWT shell { SWT Dynamic table }')
+      end
+      
       it 'standard static expression' do
         @target = shell {
         }

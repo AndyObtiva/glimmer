@@ -103,7 +103,7 @@ module Glimmer
     
         # Resets Glimmer's engine activity and configuration. Useful in rspec before or after blocks in tests.
         def reset
-          parent_stacks.values.each do |a_parent_stack|
+          dsl_parent_stacks.values.each do |a_parent_stack|
             a_parent_stack.clear
           end
           dsl_stack.clear
@@ -230,11 +230,11 @@ module Glimmer
         def add_content(new_parent, expression, keyword, *args, &block)
           if block_given? && expression.is_a?(ParentExpression)
             dsl_stack.push(expression.class.dsl)
-            parent_stack.push(new_parent)
+            push_parent_into_parent_stack(new_parent)
             begin
               expression.add_content(new_parent, keyword, *args, &block)
             ensure
-              parent_stack.pop
+              pop_parent_from_parent_stack
               dsl_stack.pop
             end
           end
@@ -244,14 +244,34 @@ module Glimmer
         #
         # Parents are maintained in a stack while evaluating Glimmer DSL
         # to ensure properly ordered interpretation of DSL syntax
-        def_delegator :parent_stack, :last, :parent
+        def parent
+          parent_stack.last
+        end
 
+        def push_parent_into_parent_stack(parent)
+          parent_stack.push(parent)
+        end
+
+        def pop_parent_from_parent_stack
+          parent_stack.pop
+          parent_stacks.pop if parent_stacks.size > 1 && parent_stacks.last.empty?
+        end
+        
         def parent_stack
-          parent_stacks[dsl] ||= Concurrent::Array.new
+          new_parent_stack if parent_stacks.last.nil?
+          parent_stacks.last
+        end
+        
+        def new_parent_stack
+          parent_stacks.push(Concurrent::Array.new)
         end
 
         def parent_stacks
-          @parent_stacks ||= Concurrent::Hash.new
+          dsl_parent_stacks[dsl] ||= Concurrent::Array.new # TODO insted of having one array, we need to nest it within an array of arrays
+        end
+
+        def dsl_parent_stacks
+          @dsl_parent_stacks ||= Concurrent::Hash.new
         end
 
         # Enables multiple DSLs to play well with each other when mixing together

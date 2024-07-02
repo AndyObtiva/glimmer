@@ -9,11 +9,12 @@ Related TODO files:
 
 ## Next
 
+- Shine Data Binding Expression (+ optimize shine to avoid calling bind)
 - Observe an array or nested arrays for all children changes on a specific property (e.g. observe(@game, 'tetris_blocks[][].color') ; returns |new_color, tetris_block| / observe(@game.players, '[].name') ; returns |name, player|)
 - Observe multiple attributes (e.g. observe(@game, [:width, :height]) returns |value, attribute_name|)
 - Fix issue with computed data-binding when combined with nested/indexed data-binding (it looks up computed attributes on root object instead of nested object, it seems)
 - Support nested computed attributes (e.g. computed_by: {address1: [:street, :city, :state, :zip]})
-- Consider the idea of having Observer#observe accept an optional block to do observation without implementing `call` (kinda like when using the `observe` keyword in the Glimmer DSL). 
+- Consider the idea of having Observer#observe accept an optional block to do observation without implementing `call` (kinda like when using the `observe` keyword in the Glimmer DSL).
 - Ensure removing observers from hash in ObservableModel when removed from observable
 - Avoid `< Struct.new` in specs (tests)
 - Add built-in support to Glimmer::DSL::Engine to memoize/cache expressions similar to how that is supported for StaticExpression (but allowing an outside keyword and non-static expression to be used)
@@ -56,6 +57,7 @@ Related TODO files:
 - Support `recursive: true` with models that have nested models
 - Observe multiple attributes or indexed/keyed/nested attribute expressions with a single observer
 - Consider the idea of having before_read and before_write support cancelling a data-binding operation by returning `false`, returning `:cancel`, Or by receiving an extra arg that enables calling arg.cancel on or something similar to avoid having normal code cancel the data-binding operation just because it returns nil.
+- Consider supporting concurrent/parallel interpretation of expression hierarchies by assigning each one an ID that is used to identify it if multiple hierarchies were interpreted in multiple concurrent/parallel threads.
 
 ### Miscellaneous
 
