@@ -56,8 +56,7 @@ module Glimmer
         property_observer_list(property_name) << observer
         # if property writer does not exist, add_property_writer_observers will ensure_array_object_observer only
         add_property_writer_observers(property_name, options)
-        open_struct_loaded = !!::OpenStruct rescue false
-        add_key_writer_observer(property_name, options) if is_a?(Struct) || (open_struct_loaded && is_a?(OpenStruct))
+        add_key_writer_observer(property_name, options) unless (['Struct', 'OpenStruct'] & self.class.ancestors.map(&:to_s)).empty?
         observer
       end
       

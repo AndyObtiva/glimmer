@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.7.9
+
+- Optimize performance of `Glimmer::DataBinding::ObservableModel#add_observer` by removing `OpenStruct` constant check.
+
 ### 2.7.8
 
 - Allow passing `BindExpression` only 1 argument (e.g. presenter.todos) or 1 argument + 1 hash (e.g. presenter.todos, on_read: -> {})
