@@ -32,7 +32,7 @@ module Glimmer
       def remove_observer(observer, property_or_properties=nil)
         raise Error, 'Not implemented!'
       end
- 
+      
       # Overriding inspect to avoid printing very long observer hierarchies
       def inspect
         "#<#{self.class.name}:0x#{self.hash.to_s(16)}>"

@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.8.0
+
+- `ObservableEventEmitter` enables observing events that are not tied to properties on a model
+
 ### 2.7.7
 
 - Relax `array_include_methods` gem dependency to '>= 1.4.0', '< 1.6.0'

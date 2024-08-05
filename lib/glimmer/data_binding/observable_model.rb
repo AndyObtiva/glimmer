@@ -24,8 +24,15 @@ require 'glimmer/data_binding/observer'
 
 module Glimmer
   module DataBinding
+    # ObservableModel enables observing a model for its properties (attributes),
+    # so it always assumes that observed properties exist in the model (meaning
+    # they are not just event signals with no properties behind them)
+    # If you need to observe event signals with no properties behind them,
+    # use ObservableEventEmitter instead.
     module ObservableModel
       include ObservableHashable
+      # TODO upgrade ObservableModel to become also an ObservableEventEmitter and have its
+      # code automatically use it when listening to a property that does not exist on the model
 
       class Notifier
         include Observer
