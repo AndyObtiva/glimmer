@@ -33,6 +33,10 @@ module Glimmer
       include ObservableHashable
       # TODO upgrade ObservableModel to become also an ObservableEventEmitter and have its
       # code automatically use it when listening to a property that does not exist on the model
+      # Should we vary the notify_observers method name in ObservableEventEmitter to make it not
+      # conflict with that method in ObservableModel?
+      # Should we just add ObservableEventEmitter support to ObservableModel? and drop the other observable class?
+      # maybe update ObservableEventEmitter tests to use ObservableModel and pass them that way instead (copying to that class's specs)
 
       class Notifier
         include Observer

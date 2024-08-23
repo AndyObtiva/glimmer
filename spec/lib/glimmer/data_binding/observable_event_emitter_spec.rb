@@ -178,4 +178,6 @@ describe Glimmer::DataBinding::ObservableEventEmitter do
     
     expect(@observer_called).to be_nil
   end
+  
+  it 'removes all observers for an event'
 end
