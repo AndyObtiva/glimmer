@@ -58,6 +58,7 @@ Related TODO files:
 - Observe multiple attributes or indexed/keyed/nested attribute expressions with a single observer
 - Consider the idea of having before_read and before_write support cancelling a data-binding operation by returning `false`, returning `:cancel`, Or by receiving an extra arg that enables calling arg.cancel on or something similar to avoid having normal code cancel the data-binding operation just because it returns nil.
 - Consider supporting concurrent/parallel interpretation of expression hierarchies by assigning each one an ID that is used to identify it if multiple hierarchies were interpreted in multiple concurrent/parallel threads.
+- Consider model attribute to attribute data-binding that prevents the need for calling Glimmer::DataBinding::Observer.proc {}.observe() explicitly
 
 ### Miscellaneous
 
