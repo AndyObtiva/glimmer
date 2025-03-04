@@ -57,8 +57,8 @@ module GlimmerSpec
           }
         }
           
-        expect(@target.to_s).to eq('SWT shell { SWT Dynamic browser(XML html { XML Dynamic body { XML Dynamic input({:type=>"text", :value=>"Hello, World!"}) } }) }')
-        expect(GLIMMER_TOP_LEVEL_TARGET.to_s).to eq('SWT shell { SWT Dynamic browser(XML html { XML Dynamic body { XML Dynamic input({:type=>"text", :value=>"Hello, World!"}) } }) }')
+        expect(@target.to_s).to eq('SWT shell { SWT Dynamic browser(XML html { XML Dynamic body { XML Dynamic input({type: "text", value: "Hello, World!"}) } }) }')
+        expect(GLIMMER_TOP_LEVEL_TARGET.to_s).to eq('SWT shell { SWT Dynamic browser(XML html { XML Dynamic body { XML Dynamic input({type: "text", value: "Hello, World!"}) } }) }')
       end
       
       it 'interprets another expression hierarchy in the middle of interpreting an expression hierarchy' do
@@ -217,7 +217,7 @@ module GlimmerSpec
           }
         }
           
-        expect(@target.to_s).to eq('SWT shell { SWT Dynamic browser(XML html { XML Dynamic body { XML Dynamic input({:type=>"text", :value=>"Hello, World!"}) } }) }')
+        expect(@target.to_s).to eq('SWT shell { SWT Dynamic browser(XML html { XML Dynamic body { XML Dynamic input({type: "text", value: "Hello, World!"}) } }) }')
       end
    
       it 'enables specified DSLs only' do
