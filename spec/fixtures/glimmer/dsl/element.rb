@@ -17,7 +17,19 @@ module Glimmer
       def to_s
         output = @name.to_s
         if @args && !@args.to_a.empty?
-          output += "(#{@args.to_a.map(&:to_s).join})"
+          output_args = @args.to_a.map do |element|
+            if element.is_a?(Hash)
+              element_output = element.reduce('') do |output, key_value_pair|
+                key, value = key_value_pair
+                output = "#{output}, " unless output.empty?
+                "#{output}#{key}: \"#{value}\""
+              end
+              "{#{element_output}}"
+            else
+              element.to_s
+            end
+          end.join
+          output += "(#{output_args})"
         end
         if !children.empty?
           output += " { "
