@@ -10,6 +10,8 @@
 
 **(Original Glimmer Library Handling World’s Ruby GUI Needs Since 2007. Beware of Imitators!)**
 
+(**[Glimmer DSL for Web Won a Fukuoka Prefecture Future IT Initiative 2025 Money Forward Award](https://andymaleh.blogspot.com/2025/01/glimmer-dsl-for-web-wins-in-fukuoka.html)**)
+
 (**[Glimmer DSL for LibUI Won a Fukuoka Ruby 2022 Special Award](https://andymaleh.blogspot.com/2022/02/glimmer-dsl-for-libui-wins-fukuoka-ruby.html)** [[Announcement]](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 
 (**[***RubyConf 2023 Workshop - How To Build Desktop Applications in Ruby***](https://github.com/AndyObtiva/how-to-build-desktop-applications-in-ruby)**)
