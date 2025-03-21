@@ -3,6 +3,10 @@
 Related Change Logs:
 - [glimmer-dsl-swt/CHANGELOG.md](https://github.com/AndyObtiva/glimmer-dsl-swt/blob/master/CHANGELOG.md)
 
+### 2.8.1
+
+- Fix an issue in `ModelBinding#options_property_name` that was breaking Glimmer DSL for SWT on Linux
+
 ### 2.8.0
 
 - Support ability to interpret multiple DSL expression hierarchies, by suspending interpretation of a hierarchy, interpreting another until done, and then resuming interpretation of previous hierarchy until done too. That is done by starting a new expression hierarchy interpretation using `Glimmer::DSL::Engine::new_parent_stack` in the middle of interpreting another expression hierarchy.

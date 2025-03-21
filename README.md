@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 style="position: relative; top: 20px;" />](https://rubygems.org/gems/glimmer) Glimmer 2.8.0
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 style="position: relative; top: 20px;" />](https://rubygems.org/gems/glimmer) Glimmer 2.8.1
 ## DSL Framework for Ruby GUI and More
 [![Gem Version](https://badge.fury.io/rb/glimmer.svg)](http://badge.fury.io/rb/glimmer)
 [![rspec](https://github.com/AndyObtiva/glimmer/workflows/rspec/badge.svg)](https://github.com/AndyObtiva/glimmer/actions?query=workflow%3Arspec)
@@ -10,7 +10,7 @@
 
 **(Original Glimmer Library Handling World’s Ruby GUI Needs Since 2007. Beware of Imitators!)**
 
-(**[Glimmer DSL for Web Won a Fukuoka Prefecture Future IT Initiative 2025 Money Forward Award](https://andymaleh.blogspot.com/2025/01/glimmer-dsl-for-web-wins-in-fukuoka.html)**)
+**([Fukuoka Prefecture Future IT Initiative 2025 Money Forward Award Winner](https://andymaleh.blogspot.com/2025/01/glimmer-dsl-for-web-wins-in-fukuoka.html)) [[Announcement]](https://digitalfukuoka.jp/news/info/528/)**
 
 (**[Glimmer DSL for LibUI Won a Fukuoka Ruby 2022 Special Award](https://andymaleh.blogspot.com/2022/02/glimmer-dsl-for-libui-wins-fukuoka-ruby.html)** [[Announcement]](http://www.digitalfukuoka.jp/topics/187?locale=ja))
 
@@ -42,7 +42,7 @@ Featured in JRuby Cookbook](http://shop.oreilly.com/product/9780596519650.do) an
 - Multiple DSLs may be [mixed](#multi-dsl-support) together safely to achieve maximum expressability, composability, and productivity.
 - DSLs are fully configurable, so you may activate and deactivate DSLs as per your current needs only.
 
-Start by checking out: 
+Start by checking out:
 - [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt), Glimmer's original GUI DSL (for [JRuby](https://www.jruby.org/)), which got extracted into its own [Ruby gem](https://rubygems.org/gems/glimmer-dsl-swt).
 - [Glimmer DSL for LibUI](https://github.com/AndyObtiva/glimmer-dsl-libui), Glimmer's GUI DSL for standard [Ruby](https://www.ruby-lang.org/) (aka MRI Ruby or CRuby), which has no prerequisites beyond installing the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-libui), and has won a [Fukuoka Ruby 2022 Special Award](https://andymaleh.blogspot.com/2022/02/glimmer-dsl-for-libui-wins-fukuoka-ruby.html).
 - [Glimmer DSL for Web](https://github.com/AndyObtiva/glimmer-dsl-web) enables using all the advanced data-binding features of Glimmer in Web Frontends by providing a Ruby HTML DSL and a Ruby CSS DSL.
@@ -270,7 +270,7 @@ end
 ### Setup
 
 Follow these steps to author a [Glimmer](https://rubygems.org/gems/glimmer) DSL:
-- Add `gem 'glimmer', '~> 2.8.0'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.8.0` and add `require 'glimmer'`
+- Add `gem 'glimmer', '~> 2.8.1'` to `Gemfile` and run `bundle` or run `gem install glimmer -v2.8.1` and add `require 'glimmer'`
 - Create `glimmer/dsl/[dsl_name]/dsl.rb`, which requires and adds all dynamic expressions for the [dsl_name] Glimmer DSL module as per the code shown in the previous section (or [Official DSLs](#official-dsls) as examples)
 - Create `glimmer/dsl/[dsl_name]/[expresion_name]_expresion.rb` for every [expresion_name] expression needed, whether dynamic or static
 
@@ -1384,7 +1384,7 @@ Glimmer DSL for SWT was the first GUI DSL created as part of the Glimmer project
 
 **What is the difference between Glimmer DSL for SWT and Glimmer DSL for LibUI?**
 
-Both Glimmer DSL for SWT and Glimmer DSL for LibUI support rendering platform native widgets/controls, which enable building native desktop apps that look 100% native on every platform (Mac, Windows, and Linux). 
+Both Glimmer DSL for SWT and Glimmer DSL for LibUI support rendering platform native widgets/controls, which enable building native desktop apps that look 100% native on every platform (Mac, Windows, and Linux).
 
 However, Glimmer DSL for SWT runs in JRuby (Ruby running in the JVM [Java Virtual Machine]) whereas Glimmer DSL for LibUI runs in standard Ruby (aka MRI Ruby or CRuby).
 
@@ -1402,7 +1402,7 @@ You may learn more about the differences between various Glimmer DSLs by checkin
 
 **What is the difference between Glimmer DSL for SWT, Glimmer DSL for Swing, and Glimmer DSL for JFX?**
 
-Glimmer DSL for SWT relies on the Eclipse SWT library, which renders native widgets on every platform (Mac, Windows, and Linux) to build desktop apps that look 100% native on every platform (Mac, Windows, and Linux). 
+Glimmer DSL for SWT relies on the Eclipse SWT library, which renders native widgets on every platform (Mac, Windows, and Linux) to build desktop apps that look 100% native on every platform (Mac, Windows, and Linux).
 
 Glimmer DSL for Swing relies on Swing, which does not render native widgets on every platform. Glimmer DSL for JFX relies on JavaFX, which also does not render native widgets on every platform.
 
@@ -1416,7 +1416,7 @@ GUI Toolkits implement low-level GUI rendering concerns. And, while some of them
 
 Glimmer GUI DSLs on the other hand are fully declarative and follow Rails' Convention Over Configuration maxim by including smart defaults and automation of low-level details, so they enable software engineers to write the simplest most minimalistic code that maps to the actual visual GUI concepts, maximizing productivity and resulting in code that is very maintainable and intuitive to reason about.
 
-Furthermore, Glimmer GUI DSLs offer advanced Bidirectional/Unidirectional Data-Binding Support, which enables syncing View data with Model attributes with the tersest code syntax possible to greatly simplify reasoning about the code while supporting proper separation of concerns through correct adherence to MVC (Model-View-Controller) and MVP (Model-View-Presenter). 
+Furthermore, Glimmer GUI DSLs offer advanced Bidirectional/Unidirectional Data-Binding Support, which enables syncing View data with Model attributes with the tersest code syntax possible to greatly simplify reasoning about the code while supporting proper separation of concerns through correct adherence to MVC (Model-View-Controller) and MVP (Model-View-Presenter).
 
 That's in addition to scaffolding and native executable packaging in some Glimmer GUI DSLs. As a result, productivity increases even further and maintainability becomes even less expensive, thus enabling software engineers to deliver pieces of software in a matter of minutes or hours for desktop application MVPs (Minimal Viable Products). As such, Glimmer GUI DSLs significantly shorten the feedback cycle and enable incrementally releasing features at a very fast pace, not possible with GUI toolkit low-level APIs.
 

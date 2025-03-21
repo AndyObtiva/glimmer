@@ -228,7 +228,7 @@ module Glimmer
       end
 
       def options_property_name
-        self.property_name + "_options"
+        "#{self.property_name}_options"
       end
 
       def property_indexed?(property_expression)
