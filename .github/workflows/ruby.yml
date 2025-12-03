@@ -24,7 +24,7 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
-        ruby-version: 3.0
+        ruby-version: 3.1.4
     - name: Install dependencies
       run: bundle install
     - name: Run tests
@@ -38,11 +38,10 @@ jobs:
     - name: Set up Ruby
     # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
     # change this to (see https://github.com/ruby/setup-ruby#versioning):
-    # uses: ruby/setup-ruby@v1
-      uses: ruby/setup-ruby@21351ecc0a7c196081abca5dc55b08f085efe09a
+      uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
-        ruby-version: jruby-head
+        ruby-version: jruby-9.4.10.0
     - name: Install dependencies
       run: bundle install
     - name: Run tests
