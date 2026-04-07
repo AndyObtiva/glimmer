@@ -4,7 +4,7 @@ source 'http://rubygems.org'
 gem 'array_include_methods', '>= 1.4.0', '< 1.6.0'
 
 # 3rd party gems (flexible versions to support other user gems that may share dependencies)
-gem 'facets', '>= 3.1.0', '< 4.0.0', require: false
+gem 'facets', '3.1.0', require: false
 
 group :development do
   gem 'rspec-mocks', '~> 3.5.0'
