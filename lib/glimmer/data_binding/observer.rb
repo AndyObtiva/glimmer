@@ -120,7 +120,7 @@ module Glimmer
 
       def unobserve_dependents_with_observable(registration, dependent_observable)
         thedependents = dependents_for(registration).select do |thedependent|
-          thedependent.observable == dependent_observable
+          thedependent.observable.equal?(dependent_observable)
         end
         thedependents.each(&:deregister)
       end

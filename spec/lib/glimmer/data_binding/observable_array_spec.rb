@@ -377,6 +377,22 @@ module Glimmer
           expect(@fired).to eq(true)
         end
         
+        it 'keeps observing an element that remains after replacing one occurrence' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          repeated_element = project_task1
+          array = [repeated_element, repeated_element]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name])
+
+          array[0] = project_task3
+          @fired = false
+          repeated_element.name = 'Still observed'
+          expect(@fired).to eq(true)
+        end
+
         it 'notifies observers when Array#insert is called with one argument' do
           @fired = false
           observer = Observer.proc {
@@ -544,6 +560,24 @@ module Glimmer
           expect(@fired).to eq(false)
         end
         
+        it 'unobserves every equal element removed by Array#delete' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          first_element = project_task1
+          equal_element = first_element.clone
+          array = [first_element, equal_element]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name])
+
+          array.delete(first_element)
+          expect(array).to be_empty
+          @fired = false
+          equal_element.name = 'No longer observed'
+          expect(@fired).to eq(false)
+        end
+
         it 'notifies observers when Array#delete_at is called' do
           @fired = false
           observer = Observer.proc {
@@ -595,6 +629,64 @@ module Glimmer
           expect(@fired).to eq(false)
         end
         
+        it 'unobserves only the removed identity when equal elements remain after Array#delete_if' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          removed_element = project_task1
+          retained_element = removed_element.clone
+          array = [removed_element, retained_element]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, [:name])
+
+          array.delete_if { |element| element.equal?(removed_element) }
+          expect(array).to eq([retained_element])
+
+          @fired = false
+          removed_element.name = 'No longer observed'
+          expect(@fired).to eq(false)
+          retained_element.name = 'Still observed'
+          expect(@fired).to eq(true)
+        end
+
+        it 'retains recursive observation on an equal nested array after removal' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          removed_element = [1]
+          retained_element = [1]
+          array = [removed_element, retained_element]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, recursive: true)
+
+          array.delete_if { |element| element.equal?(removed_element) }
+          @fired = false
+          retained_element << 2
+          expect(@fired).to eq(true)
+        end
+
+        it 'keeps only the retained equal nested array observed after removal' do
+          @fired = false
+          observer = Observer.proc {
+            @fired = true
+          }
+          retained_element = [1]
+          removed_element = [1]
+          array = [retained_element, removed_element]
+          array.singleton_class.include(ObservableArray)
+          array.add_observer(observer, recursive: true)
+
+          array.delete_if { |element| element.equal?(removed_element) }
+          @fired = false
+          retained_element << 2
+          expect(@fired).to eq(true)
+          @fired = false
+          removed_element << 2
+          expect(@fired).to eq(false)
+        end
+
         it 'notifies observers when Array#clear is called' do
           @fired = false
           observer = Observer.proc {
@@ -1073,7 +1165,8 @@ module Glimmer
           array.add_observer(observer, [:name, :priority])
 
           old_element = array.first
-          array.replace([project_task2])
+          new_element = project_task2
+          array.replace([new_element])
           expect(@fired).to eq(true)
           
           @fired = false
@@ -1087,6 +1180,10 @@ module Glimmer
           @fired = false
           old_element.priority = 'Medium'
           expect(@fired).to eq(false)
+
+          @fired = false
+          new_element.name = 'Observed after replacement'
+          expect(@fired).to eq(true)
         end
                                           
       end

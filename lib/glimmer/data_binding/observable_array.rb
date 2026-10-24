@@ -86,8 +86,8 @@ module Glimmer
       
       def array_object_observer_for(object)
         @array_object_observers ||= Concurrent::Hash.new
-        @array_object_observers[object] = Notifier.new(self) unless @array_object_observers.has_key?(object)
-        @array_object_observers[object]
+        @array_object_observers[object.object_id] = Notifier.new(self) unless @array_object_observers.has_key?(object.object_id)
+        @array_object_observers[object.object_id]
       end
 
       def remove_observer(observer, *args)
@@ -161,45 +161,41 @@ module Glimmer
       
       def []=(index, value)
         old_value = self[index]
-        unregister_dependent_observers(old_value)
-        remove_element_observers(old_value)
-        add_element_observers(value)
         super(index, value).tap do
+          unobserve_element_if_removed(old_value)
+          add_element_observers(value)
           notify_observers
         end
       end
       
       def pop
-        popped_element = last
-        unregister_dependent_observers(popped_element)
-        remove_element_observers(popped_element)
+        old_value = last
         super.tap do
+          unobserve_element_if_removed(old_value)
           notify_observers
         end
       end
       
       def shift
-        shifted_element = first
-        unregister_dependent_observers(shifted_element)
-        remove_element_observers(shifted_element)
+        old_value = first
         super.tap do
+          unobserve_element_if_removed(old_value)
           notify_observers
         end
       end
       
       def delete(element)
-        unregister_dependent_observers(element)
-        remove_element_observers(element)
+        old_array = Array.new(self)
         super(element).tap do
+          unobserve_removed_elements(old_array)
           notify_observers
         end
       end
       
       def delete_at(index)
         old_value = self[index]
-        unregister_dependent_observers(old_value)
-        remove_element_observers(old_value)
         super(index).tap do
+          unobserve_element_if_removed(old_value)
           notify_observers
         end
       end
@@ -207,11 +203,8 @@ module Glimmer
       def delete_if(&block)
         if block_given?
           old_array = Array.new(self)
-          super(&block).tap do |new_array|
-            (old_array - new_array).each do |element|
-              unregister_dependent_observers(element)
-              remove_element_observers(element)
-            end
+          super(&block).tap do
+            unobserve_removed_elements(old_array)
             notify_observers
           end
         else
@@ -275,10 +268,7 @@ module Glimmer
         if block_given?
           old_array = Array.new(self)
           super(&block).tap do
-            (old_array - self).each do |old_value|
-              unregister_dependent_observers(old_value)
-              remove_element_observers(old_value)
-            end
+            unobserve_removed_elements(old_array)
             notify_observers
           end
         else
@@ -290,10 +280,7 @@ module Glimmer
         if block_given?
           old_array = Array.new(self)
           super(&block).tap do
-            (old_array - self).each do |old_value|
-              unregister_dependent_observers(old_value)
-              remove_element_observers(old_value)
-            end
+            unobserve_removed_elements(old_array)
             notify_observers
           end
         else
@@ -308,10 +295,7 @@ module Glimmer
       def slice!(arg1, arg2=nil)
         old_array = Array.new(self)
         (arg2.nil? ? super(arg1) : super(arg1, arg2)).tap do
-          (old_array - self).each do |old_value|
-            unregister_dependent_observers(old_value)
-            remove_element_observers(old_value)
-          end
+          unobserve_removed_elements(old_array)
           notify_observers
         end
       end
@@ -358,10 +342,7 @@ module Glimmer
         else
           old_array = Array.new(self)
           super(&block).tap do
-            (old_array - self).each do |old_value|
-              unregister_dependent_observers(old_value)
-              remove_element_observers(old_value)
-            end
+            unobserve_removed_elements(old_array)
             notify_observers
           end
         end
@@ -370,10 +351,8 @@ module Glimmer
       def replace(other_array)
         old_array = Array.new(self)
         super(other_array).tap do
-          (old_array - self).each do |old_value|
-            unregister_dependent_observers(old_value)
-            remove_element_observers(old_value)
-          end
+          unobserve_removed_elements(old_array)
+          each { |element| add_element_observers(element) }
           notify_observers
         end
       end
@@ -383,6 +362,26 @@ module Glimmer
         property_observer_list.each { |observer, options| observer.unregister_dependents_with_observable(observer.registration_for(self), old_value) }
       end
       alias deregister_dependent_observers unregister_dependent_observers
+
+      private
+
+      def unobserve_element_if_removed(element)
+        return if any? { |current_element| current_element.equal?(element) }
+        unobserve_element(element)
+      end
+
+      def unobserve_element(element)
+        unregister_dependent_observers(element)
+        remove_element_observers(element)
+      end
+
+      def unobserve_removed_elements(old_elements)
+        current_element_ids = map(&:object_id).to_set
+        old_elements.uniq(&:object_id).each do |old_value|
+          next if current_element_ids.include?(old_value.object_id)
+          unobserve_element(old_value)
+        end
+      end
     end
   end
 end
